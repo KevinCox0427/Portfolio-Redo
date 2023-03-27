@@ -1,0 +1,39 @@
+main {
+    justify-content: center;
+
+    .MainCopy {
+        align-items: flex-start;
+
+        h1 {
+            display: none;
+        }
+
+        h3 {
+            flex-direction: row;
+            justify-content: center;
+            font-family: var(--franklin);
+            font-size: 3em;
+            font-weight: 100;
+
+            span {
+                font-weight: 300;
+                font-size: 2em;
+                font-family: var(--arima);
+            }
+        }
+
+        .Subtitle {
+            flex-direction: row;
+            justify-content: center;
+
+            h2 {
+                font-family: var(--cairo);
+                font-weight: 300;
+            }
+
+            a {
+                font-family: var(--workSans);
+            }
+        }
+    }
+}
