@@ -1,2 +1,2 @@
 # Redoing my portfolio website
-https://dreamstate.graphics
+https://www.dreamstate.graphics
