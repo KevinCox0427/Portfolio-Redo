@@ -160,16 +160,17 @@ main {
         }
 
         .IframeSlider {
-            display: block;
+            flex-direction: row;
             margin-top: 3em;
             width: calc(100vw - 2em);
-            gap: 1em;
+            gap: 15px;
             padding: 0 1em;
-            overflow-x: scroll;
 
             iframe {
-                height: 15em;
-                width: 22em;
+                opacity: 0;
+                height: 240px;
+                width: 350px;
+                flex-shrink: 0;
                 border: none;
                 box-shadow: 0 0 0 0.1em var(--black) inset;
                 border-radius: 0.5em;

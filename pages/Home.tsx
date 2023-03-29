@@ -6,6 +6,16 @@ import FloralSVG from './parts/FloralSVG';
 import HandSVG from './parts/HandSVG';
 
 const Home:FunctionComponent = () => {
+    if(typeof window != 'undefined') {
+        window.addEventListener('load', () => {
+            const iframeSliderItems = Array.from(document.getElementsByClassName('IframeSlider')[0]!.getElementsByTagName('iframe')) as HTMLIFrameElement[];
+            console.log(iframeSliderItems)
+            iframeSliderItems.forEach((item, i) => {
+                item.style.animation = `0.35s ease-out ${5.5 + (i*0.15)}s forwards SlideDown`;
+            });
+        });
+    }
+
     return <>
         <Header></Header>
         <main>

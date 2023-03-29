@@ -3,9 +3,8 @@ import { FunctionComponent } from "react";
 
 const FloralSVG:FunctionComponent = () => {
     if(typeof window != 'undefined') {
-        window.onload = () => {
+        window.addEventListener('load', () => {
             const floralItems = Array.from(document.getElementsByClassName('FloralItem')) as SVGElement[];
-            
             floralItems.sort((elmntA, elmntB) => {
                 return parseInt(elmntA.id.split('Floral')[1]) > parseInt(elmntB.id.split('Floral')[1]) ? 1 : 0;
             });
@@ -22,7 +21,7 @@ const FloralSVG:FunctionComponent = () => {
                     elmnt.style.animation = '6s linear 0s infinite Wind';
                 }, Math.random()*4000);
             });
-        }
+        });
     }
 
     return <svg id="FloralPatternSVG" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 1603.06 1229.42">
