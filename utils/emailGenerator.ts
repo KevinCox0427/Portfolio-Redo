@@ -2,7 +2,7 @@
  * A Utility Class to generate a templated HTML file to send emails.
  * The constructor will create the template, while the functions use the template to fill in the necessary data and return it as a string.
  */
-class EmailGenerator {
+class EmailGenerator { 
     color:string;
     message:string;
     name:string;
