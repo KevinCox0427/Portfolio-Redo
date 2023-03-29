@@ -1,38 +1,178 @@
 main {
-    justify-content: center;
 
-    .MainCopy {
-        align-items: flex-start;
+    .SplashImage {
+        height: 100vh;
+        width: 100%;
 
-        h1 {
-            display: none;
-        }
+        #FloralPatternSVG {
+            position: absolute;
+            pointer-events: none;
+            width: 90vw;
+            top: -22vw;
+            right: 7vw;
 
-        h3 {
-            flex-direction: row;
-            justify-content: center;
-            font-family: var(--franklin);
-            font-size: 3em;
-            font-weight: 100;
+            .WindWrapper {
+                
+                @keyframes Wind {
+                    from { transform: translateX(0) scale(1) }
+                    10% { transform: translateX(0) scale(1) }
+                    30% { transform: translateX(0.05vw) scale(1.0005, 1.0004) }
+                    50% { transform: translateX(0) scale(1.0008, 1.0006) }
+                    70% { transform: translateX(-0.04vw) scale(1.0005, 1.0006) }
+                    90% { transform: translateX(0) scale(1) }
+                    to { transform: translateX(0) scale(1) }
+                }
 
-            span {
-                font-weight: 300;
-                font-size: 2em;
-                font-family: var(--arima);
+                .FloralItem {
+                    transform: translate(91.5%, 88%) scale(0);
+                    opacity: 0.5;
+                    transition: transform 0.35s ease-out, opacity 0.35s linear;
+                }
             }
         }
 
-        .Subtitle {
-            flex-direction: row;
-            justify-content: center;
+        #HandSVG {
+            position: absolute;
+            pointer-events: none;
+            width: 44vw;
+            top: 36.1vw;
+            right: -29vw;
+            transform: translateX(15vw);
+            animation: 0.5s ease-in-out 2.25s forwards SlideIn, 0.75s ease-in-out 3s forwards LiftHand;
 
-            h2 {
-                font-family: var(--cairo);
-                font-weight: 300;
+            @keyframes LiftHand {
+                from { transform: rotateY(0deg) scale(1); }
+                55% { transform: rotateY(-15deg) scale(1.1); }
+                75% { transform: rotateY(-15deg) scale(1.1); }
+                to { transform: rotateY(0deg) scale(1); }
+            }
+    
+            @keyframes SlideIn {
+                from { transform: translateX(15vw) rotate(10deg) }
+                to {transform: translateX(0vw) rotate(0deg) }
+            }
+        }
+
+        #RightCover {
+            position: absolute;
+            pointer-events: none;
+            right: 0;
+            top: 0;
+            width: 22vw;
+        }
+
+        .MainCopy {
+            align-items: flex-start;
+            margin-left: 2em;
+            margin-top: 16em;
+    
+            h1 {
+                display: none;
             }
 
-            a {
-                font-family: var(--workSans);
+            h3 {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5em;
+                font-family: var(--franklin);
+                font-size: 3em;
+                font-weight: 100;
+    
+                .Titling {
+                    font-weight: 300;
+                    font-size: 2em;
+                    font-family: var(--arima);
+                    margin: 0.05em 0 -0.05em -0.08em;
+                }
+
+                @keyframes DiffuseIn {
+                    from { filter: blur(20px); opacity: 0; }
+                    to { filter: blur(0px); opacity: 1;}
+                }
+
+                @keyframes SlideRight {
+                    from { transform: translateX(-75%); opacity: 0;}
+                    to { transform: translateX(0%); opacity: 1;}
+                }
+
+                @keyframes SlideDown {
+                    from { transform: translateY(-50%); opacity: 0;}
+                    to { transform: translateY(0%); opacity: 1;}
+                }
+
+                span:nth-child(1) {
+                    opacity: 0;
+                    animation: 0.3s ease-in 0.5s forwards DiffuseIn;
+                }
+
+                span:nth-child(2) {
+                    opacity: 0;
+                    transform: translateX(-75%);
+                    animation: 0.3s ease-out 1s forwards SlideRight;
+                }
+
+                span:nth-child(3) {
+                    opacity: 0;
+                    transform: translateY(-50%);
+                    animation: 0.3s ease-in 1.5s forwards SlideDown;
+                }
+            }
+    
+            .Subtitle {
+                flex-direction: row;
+                align-items: center;
+                gap: 1em;
+    
+                h2 {
+                    font-size: 1.8em;
+                    font-family: var(--cairo);
+                    font-weight: 300;
+                    opacity: 0;
+                    animation: 0.25s ease-out 4.75s forwards SlideDown;
+                }
+    
+                a {
+                    color: var(--black);
+                    text-decoration: none;
+                    font-size: 1.15em;
+                    font-family: var(--workSans);
+                    padding: 0.35em 1em;
+                    box-shadow: 0 0 0 0.1em var(--black);
+                    border-radius: 100em;
+                    text-transform: uppercase;
+                    transition: background-color 0.1s linear, color 0.1s linear, font-weight 0.1s linear, transform 0.1s linear;
+                    opacity: 0;
+                    animation: 0.25s ease-out 5s forwards SlideDown;
+    
+                    &:hover {
+                        background-color: var(--black);
+                        color: var(--white);
+                        font-weight: 500;
+                        transform: scale(1.05);
+                    }
+                }
+
+                @keyframes FadeInText {
+                    from {opacity: 0;}
+                    to {opacity: 1;}
+                }
+            }
+        }
+
+        .IframeSlider {
+            display: block;
+            margin-top: 3em;
+            width: calc(100vw - 2em);
+            gap: 1em;
+            padding: 0 1em;
+            overflow-x: scroll;
+
+            iframe {
+                height: 15em;
+                width: 22.5em;
+                border: none;
+                box-shadow: 0 0 0 0.1em var(--black) inset;
+                border-radius: 0.5em;
             }
         }
     }

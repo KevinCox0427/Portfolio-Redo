@@ -40,9 +40,16 @@ app.use('/', index);
 /**
  * Declaring static files in the assets folder and starting up server
  */
-app.use('/assets', express.static('dist/puclic/assets'));
+app.use('/assets', express.static('dist/public/assets'));
 app.use('/css', express.static('dist/public/css'));
 app.use('/js', express.static('dist/public/js'));
+
+
+/**
+ * Creating 404 route.
+ */
+import route404 from './routes/route404';
+app.use('*', route404);
 
 
 
