@@ -6,20 +6,15 @@ const FloralSVG:FunctionComponent = () => {
         window.addEventListener('load', () => {
             const floralItems = Array.from(document.getElementsByClassName('FloralItem')) as SVGElement[];
             floralItems.sort((elmntA, elmntB) => {
-                return parseInt(elmntA.id.split('Floral')[1]) > parseInt(elmntB.id.split('Floral')[1]) ? 1 : 0;
+                return parseInt(elmntA.id.split('Floral')[1]) > parseInt(elmntB.id.split('Floral')[1]) ? 1 : -1;
             });
             floralItems.forEach((elmnt, i) => {
-                setTimeout(() => {
-                    elmnt.style.transform = 'translate(0,0) scale(1)';
-                    elmnt.style.opacity = '1';
-                }, 3700 + (i*20));
+                elmnt.style.animation = `0.35s ease-out ${3.6 + (i*0.02)}s forwards Burst`;
             });
 
             const windWrappers = Array.from(document.getElementsByClassName('WindWrapper')) as SVGElement[];
             windWrappers.forEach((elmnt, i) => {
-                setTimeout(() => {
-                    elmnt.style.animation = '6s linear 0s infinite Wind';
-                }, Math.random()*4000);
+                //elmnt.style.animation = `6s linear ${Math.random()*4}s infinite Wind`;
             });
         });
     }

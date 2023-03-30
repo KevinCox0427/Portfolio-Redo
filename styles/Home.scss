@@ -10,23 +10,34 @@ main {
             width: 90vw;
             top: -22vw;
             right: 7vw;
+            filter: drop-shadow(0.3em 0.4em 0px rgba(0, 0, 0, 0.08));
 
             .WindWrapper {
-                
+
                 @keyframes Wind {
-                    from { transform: translateX(0) scale(1) }
-                    10% { transform: translateX(0) scale(1) }
-                    30% { transform: translateX(0.05vw) scale(1.0005, 1.0004) }
-                    50% { transform: translateX(0) scale(1.0008, 1.0006) }
-                    70% { transform: translateX(-0.04vw) scale(1.0005, 1.0006) }
-                    90% { transform: translateX(0) scale(1) }
-                    to { transform: translateX(0) scale(1) }
+                    from { transform: scale(1,1) }
+                    10% { transform: scale(1,1) }
+                    30% { transform: scale(1.001, 1) }
+                    50% { transform: scale(1.000, 1) }
+                    70% { transform: scale(1.001, 1) }
+                    90% { transform: scale(1,1) }
+                    to { transform: scale(1,1) }
                 }
 
                 .FloralItem {
                     transform: translate(91.5%, 88%) scale(0);
                     opacity: 0.5;
-                    transition: transform 0.35s ease-out, opacity 0.35s linear;
+                    transition: transform 0.4s ease-out, opacity 0.4s linear;
+
+                    @keyframes Burst {
+                        from {
+                            transform: translate(91.5%, 88%) scale(0);
+                            opacity: 0.5;
+                        }
+                        to {
+                            transform: translate(0,0) scale(1);
+                            opacity:1}
+                    }
                 }
             }
         }
@@ -160,21 +171,25 @@ main {
         }
 
         .IframeSlider {
-            flex-direction: row;
             margin-top: 3em;
-            width: calc(100vw - 2em);
-            gap: 15px;
-            padding: 0 1em;
 
-            iframe {
-                opacity: 0;
-                height: 240px;
-                width: 350px;
-                flex-shrink: 0;
-                border: none;
-                box-shadow: 0 0 0 0.1em var(--black) inset;
-                border-radius: 0.5em;
-            } 
+
+            .IframeWrapper {
+                flex-direction: row;
+                width: calc(100vw - 2em);
+                gap: 15px;
+                padding: 0 1em;
+
+                iframe {
+                    opacity: 1;
+                    height: 240px;
+                    width: 350px;
+                    flex-shrink: 0;
+                    box-shadow: 0 0 0 0.1em var(--black) inset;
+                    border-radius: 0.5em;
+                    border: none;
+                }
+            }
         }
     }
 }
