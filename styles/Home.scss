@@ -8,6 +8,7 @@ main {
             position: absolute;
             pointer-events: none;
             width: 90vw;
+            height: auto;
             top: -22vw;
             right: 7vw;
             filter: drop-shadow(0.3em 0.4em 0px rgba(0, 0, 0, 0.08));
@@ -26,17 +27,15 @@ main {
 
                 .FloralItem {
                     transform: translate(91.5%, 88%) scale(0);
-                    opacity: 0.5;
-                    transition: transform 0.4s ease-out, opacity 0.4s linear;
+                    transition: transform 0.4s ease-out;
 
                     @keyframes Burst {
                         from {
                             transform: translate(91.5%, 88%) scale(0);
-                            opacity: 0.5;
                         }
                         to {
                             transform: translate(0,0) scale(1);
-                            opacity:1}
+                        }
                     }
                 }
             }
@@ -46,6 +45,7 @@ main {
             position: absolute;
             pointer-events: none;
             width: 44vw;
+            height: auto;
             top: 36.1vw;
             right: -29vw;
             transform: translateX(15vw);
@@ -180,8 +180,13 @@ main {
                 gap: 15px;
                 padding: 0 1em;
 
-                iframe {
-                    opacity: 1;
+                @keyframes Slide {
+                    from {margin-left: 0}
+                    to {margin-left: -362.5px}
+                }
+
+                div {
+                    opacity: 0;
                     height: 240px;
                     width: 350px;
                     flex-shrink: 0;

@@ -27,6 +27,7 @@ body {
     font-family: var(--cairo);
     color: var(--black);
     background-color: var(--white);
+    overflow-x: hidden;
 
     * {
         display: flex;
@@ -42,6 +43,7 @@ body {
 #root, main {
     flex-basis: 1px;
     flex-grow: 1;
+    overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {

@@ -1,25 +1,26 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { FunctionComponent } from "react";
 
 const FloralSVG:FunctionComponent = () => {
-    if(typeof window != 'undefined') {
-        window.addEventListener('load', () => {
-            const floralItems = Array.from(document.getElementsByClassName('FloralItem')) as SVGElement[];
-            floralItems.sort((elmntA, elmntB) => {
-                return parseInt(elmntA.id.split('Floral')[1]) > parseInt(elmntB.id.split('Floral')[1]) ? 1 : -1;
-            });
-            floralItems.forEach((elmnt, i) => {
-                elmnt.style.animation = `0.35s ease-out ${3.6 + (i*0.02)}s forwards Burst`;
-            });
+    const floralPattern = useRef<SVGSVGElement>(null);
 
-            const windWrappers = Array.from(document.getElementsByClassName('WindWrapper')) as SVGElement[];
-            windWrappers.forEach((elmnt, i) => {
-                //elmnt.style.animation = `6s linear ${Math.random()*4}s infinite Wind`;
-            });
+    useEffect(() => {
+        if(!floralPattern.current) return;
+        const floralItems = Array.from(floralPattern.current.getElementsByClassName('FloralItem')) as SVGElement[];
+        floralItems.sort((elmntA, elmntB) => {
+            return parseInt(elmntA.id.split('Floral')[1]) > parseInt(elmntB.id.split('Floral')[1]) ? 1 : -1;
         });
-    }
+        floralItems.forEach((elmnt, i) => {
+            elmnt.style.animation = `0.35s ease-out ${3.65 + (i*0.02)}s forwards Burst`;
+        });
 
-    return <svg id="FloralPatternSVG" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 1603.06 1229.42">
+        const windWrappers = Array.from(floralPattern.current.getElementsByClassName('WindWrapper')) as SVGElement[];
+        windWrappers.forEach((elmnt, i) => {
+            //elmnt.style.animation = `6s linear ${Math.random()*4}s infinite Wind`;
+        });
+    }, [floralPattern]);
+
+    return <svg ref={floralPattern} id="FloralPatternSVG" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 1603.06 1229.42">
     <defs>
       <clipPath id="clippath">
         <path fill="none" d="m1359.52,1025.13C1088.66,737.67,442.41,340.92,0,365.94h1455.91c-88.7,94.92-121.66,385.16-24.6,618.48l-71.79,40.71Z" />

@@ -1,14 +1,21 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useRef } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import Header from './parts/Header';
 import Footer from './parts/Footer';
-import FloralSVG from './parts/FloralSVG';
-import HandSVG from './parts/HandSVG';
+import FloralSVG from './parts/Home/FloralSVG';
+import HandSVG from './parts/Home/HandSVG';
 
 const Home:FunctionComponent = () => {
-    const iframeUrls = ['','','','',''];
-    const sliderRate = 0.5;
-    const [sliderIndex, setSliderIndex] = useState(0);
+    const iframeUrls = ['red','orange','yellow','green','blue', 'purple'];
+    const sliderRate = 7;
+    const sliderWrapper = useRef<HTMLDivElement>(null);
+    
+    setInterval(moveIframes, sliderRate*1000);
+
+    function moveIframes() {
+        if(!sliderWrapper.current) return;
+        sliderWrapper.current.append(sliderWrapper.current.children[0]);
+    }
 
     return <>
         <Header></Header>
@@ -24,11 +31,14 @@ const Home:FunctionComponent = () => {
                     </div>
                 </div>
                 <div className='IframeSlider'>
-                    <div className='IframeWrapper'>
+                    <div className='IframeWrapper' ref={sliderWrapper} style={{
+                        animation: `${sliderRate}s linear 0s infinite Slide`
+                    }}>
                         {iframeUrls.map((url, i) => {
-                            return <iframe key={i} style={{
-                                transition: `margin ${sliderRate}s linear`
-                            }}></iframe>;
+                            return <div key={i} style={{
+                                backgroundColor: url,
+                                animation: `0.3s ease-out ${5.5+(i*0.15)}s forwards SlideDown`
+                            }}></div>;
                         })}
                     </div>
                 </div>
