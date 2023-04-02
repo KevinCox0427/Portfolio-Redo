@@ -6,16 +6,16 @@ import FloralSVG from './parts/Home/FloralSVG';
 import HandSVG from './parts/Home/HandSVG';
 import Link from './parts/Home/Link';
 import DataSection from './parts/Home/DataSection';
+import NavBars from './parts/Home/NavBars';
+import AuthSection from './parts/Home/AuthSection';
 
 const Home:FunctionComponent = () => {
     const iframeUrls = ['red','orange','yellow','green','blue', 'purple'];
     const sliderRate = 7;
     const sliderWrapper = useRef<HTMLDivElement>(null);
     const [startAnimations, setStartAnimations] = useState<React.CSSProperties[]>([{},{},{},{},{}]);
-    const navBarTop = useRef<HTMLDivElement>(null);
-    const navBarBottom = useRef<HTMLDivElement>(null);
     const contentWrapper = useRef<HTMLDivElement>(null);
-    const [isNavBarStatic, setIsNavBarStatic] = useState(false);
+    const [currentSection, setCurrentSection] = useState(-1);
     
 
     if(typeof window != 'undefined') {
@@ -47,22 +47,23 @@ const Home:FunctionComponent = () => {
             setTimeout(() => {
                 setStartAnimations([diffuseIn, slideRight, slideDown, slideDown, slideDown]);
             }, 4750);
-
-            testNavBars();
-            document.getElementById('root')!.addEventListener('scroll', testNavBars);
         });
+        document.getElementById('root')!.addEventListener('scroll', checkSections);
     }
 
-    function testNavBars () {
-        if(!contentWrapper.current || !navBarTop.current || !navBarBottom.current) return;
-        const contentBox = contentWrapper.current.getBoundingClientRect();
-        const navBarTopBox = navBarTop.current.getBoundingClientRect();
-        const navBarBottomBox = navBarBottom.current.getBoundingClientRect();
-
-        const isContentOnscreen = contentBox.top < window.innerHeight && contentBox.bottom > 0;
-        const areNavBarsOnscreen = window.innerWidth > 1400 ? (navBarTopBox.top + (navBarTopBox.height/2) < window.innerHeight/2) && (navBarBottomBox.top + (navBarBottomBox.height/2) > window.innerHeight/2) : navBarTopBox.top < 0;
-
-        setIsNavBarStatic(isContentOnscreen && areNavBarsOnscreen);
+    function checkSections() { 
+        const clamp = (num:number, min:number, max:number) => Math.min(Math.max(num, min), max);
+        const sections = Array.from(document.getElementsByClassName('Section'));
+        const sectionMap = sections.map(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            const sectionBottom = section.getBoundingClientRect().bottom;
+            return clamp(sectionBottom, 0, window.innerHeight) - clamp(sectionTop, 0, window.innerHeight);
+        });
+        setCurrentSection(sectionMap.reduce((previousIndex, current, i) => {
+            if(current < window.innerHeight/3) return previousIndex;
+            if(previousIndex == -1) return i;
+            return current > sectionMap[previousIndex] ? i : previousIndex;
+        }, -1));
     }
     
     setInterval(moveIframes, sliderRate*1000);
@@ -104,49 +105,10 @@ const Home:FunctionComponent = () => {
             <HandSVG></HandSVG>
         </div>
         <div id="WhatICanDo" className='Contain'>
-            <div className='NavBars'>
-                <div className='NavBar Top' ref={navBarTop} style={{
-                    opacity: isNavBarStatic ? 0 : 1
-                }}>
-                    <h2>I can create:</h2>
-                    <div className='LinksWrapper'>
-                        <Link url="/#data" text="Optimized data" activated={false}></Link>
-                        <Link url="/#authentication" text="Secure authentication" activated={false}></Link>
-                        <Link url="/#integrations" text="Seamless integrations" activated={false}></Link>
-                        <Link url="/#analytics" text="Detailed analytics" activated={false}></Link>
-                        <Link url="/#ui" text="User interfaces to control it all" activated={false}></Link>
-                        <Link url="/#websites" text="Beautiful websites to show it all" activated={false}></Link>
-                    </div>
-                </div>
-                <div className='NavBar Bottom' ref={navBarBottom} style={{
-                    opacity: isNavBarStatic ? 0 : 1
-                }}>
-                    <h2>I can create:</h2>
-                    <div className='LinksWrapper'>
-                        <Link url="/#data" text="Optimized data" activated={false}></Link>
-                        <Link url="/#authentication" text="Secure authentication" activated={false}></Link>
-                        <Link url="/#integrations" text="Seamless integrations" activated={false}></Link>
-                        <Link url="/#analytics" text="Detailed analytics" activated={false}></Link>
-                        <Link url="/#ui" text="User interfaces to control it all" activated={false}></Link>
-                        <Link url="/#websites" text="Beautiful websites to show it all" activated={false}></Link>
-                    </div>
-                </div>
-                <div className='NavBar Static' style={{
-                    display: isNavBarStatic ? 'flex' : 'none'
-                }}>
-                    <h2>I can create:</h2>
-                    <div className='LinksWrapper'>
-                        <Link url="/#data" text="Optimized data" activated={false}></Link>
-                        <Link url="/#authentication" text="Secure authentication" activated={false}></Link>
-                        <Link url="/#integrations" text="Seamless integrations" activated={false}></Link>
-                        <Link url="/#analytics" text="Detailed analytics" activated={false}></Link>
-                        <Link url="/#ui" text="User interfaces to control it all" activated={false}></Link>
-                        <Link url="/#websites" text="Beautiful websites to show it all" activated={false}></Link>
-                    </div>
-                </div>
-            </div>
+            <NavBars contentWrapper={contentWrapper} currentSection={currentSection}></NavBars>
             <div className='Content' ref={contentWrapper}>
                 <DataSection></DataSection>
+                <AuthSection></AuthSection>
             </div>
         </div>
         <Footer></Footer>

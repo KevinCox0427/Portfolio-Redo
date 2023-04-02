@@ -2,11 +2,17 @@ import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from 
 
 const date = new Date();
 
+const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
+
 function isPrice(price:string) {
     if(price == '') return true;
     if(typeof price.split('.')[1] != 'undefined' && price.split('.')[1].length > 2) return false;
     return price.match(/^[\d.]+$/);
 }
+
 
 const DataSection:FunctionComponent = () => {
     const [currentData, setCurrentData] = useState<{
@@ -53,15 +59,33 @@ const DataSection:FunctionComponent = () => {
         });
     }
 
-    const [galleryIndex, setGalleryIndex] = useState(0)
+    const [galleryIndex, setGalleryIndex] = useState(0);
+    const [selectedQuantity, setSelectedQuantity] = useState<number | null>(1);
+
+    const saleValue = currentData.sales.reduce((total, sale) => {
+        if(!sale.amount) return total;
+        if(!((sale.expires.year && sale.expires.year >= date.getFullYear()) && (sale.expires.month && sale.expires.month >= date.getMonth()+1) && (sale.expires.day && sale.expires.day > date.getDate()))) return total;
+        return total + (sale.type == 'percent' ? parseFloat(currentData.price) * (parseFloat(sale.amount)/100) : parseFloat(sale.amount));
+    }, 0);
 
     return <div id="data" className='Section'>
         <h3 className='Title'>It always starts with the data...</h3>
-        <p className='Description'>Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future. Let's create one together:</p>
+        <p className='Description'>Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future. Let's fill in one together:</p>
         <div className='Example'>
             <div className='DataEntry'>
                 <div className='Line'>
-                    <span className='Green'>"shopItems"</span>: <span className='Purple'>&#91;</span> <span className='Yellow'>&#123;</span>
+                    <span className='Green'>"shopItems"</span>: <span className='Purple'>&#91;</span> <span className='Yellow'>&#123;</span><i className="fa-solid fa-arrow-rotate-left Reset" onClick={() => {
+                        setCurrentData({
+                            name: '',
+                            price: '',
+                            description: '',
+                            minQuantity: null,
+                            maxQuantity: null,
+                            categories:[],
+                            imageUrls: [],
+                            sales: []
+                        });
+                    }}></i>
                 </div>
                 <div className='Line' style={{marginLeft: '1.25em'}}>
                     <span className='Green'>"name"</span>:<input style={{marginLeft: '1.25em'}} value={currentData.name} onChange={e => {
@@ -256,7 +280,7 @@ const DataSection:FunctionComponent = () => {
                             type: 'flat',
                             amount: '',
                             expires: {
-                                day: date.getDay() + 1,
+                                day: date.getDate() + 1,
                                 month: date.getMonth() + 1,
                                 year: date.getFullYear()
                             }
@@ -282,25 +306,66 @@ const DataSection:FunctionComponent = () => {
                             }}><img src={url}></img></div>
                         })
                     }</div>
+                    {currentData.categories.length > 0 ? <div className="CategoryWrapper">
+                        {currentData.categories.map((category, i) => {
+                            return category ? <p key={i} className="Category">{category}</p> : <Fragment key={i}></Fragment>
+                        })}
+                    </div> : <></>}
                 </div>
-                {currentData.imageUrls.length > 0 ? <div className="Pagination">
+                {currentData.imageUrls.length > 1 ? <div className="Pagination">
                     {currentData.imageUrls.map((url, i) => {
-                        return <div key={i} style={{
+                        return url ? <div key={i} style={{
                             backgroundColor: i == galleryIndex ? 'var(--blue)' : ''
                         }} onClick={() => {
                             setGalleryIndex(i);
-                        }}></div>
-                    })}
-                </div> : <></>}
-                {currentData.categories.length > 0 ? <div className="CategoryWrapper">
-                    {currentData.categories.map((category, i) => {
-                        return <p key={i} className="Category">{category}</p>
+                        }}></div> : <Fragment key={i}></Fragment>
                     })}
                 </div> : <></>}
                 <h3>{currentData.name}</h3>
-                <p className="Price">{currentData.price ? '$' : ''}{currentData.price}</p>
-                <p className="Description">{currentData.description}</p>
+                <div className="SubContent">
+                    {currentData.price ? <div className="PriceWrapper">
+                        <p className="Price">
+                            {formatter.format(parseFloat(currentData.price) * (selectedQuantity ? selectedQuantity : 1))}
+                            {saleValue != parseFloat(currentData.price) ? <span></span> : <></>}
 
+                        </p>
+                        {saleValue != parseFloat(currentData.price) ? <p className="Price" style={{
+                            color:'var(--red)'
+                        }}>
+                            {formatter.format((parseFloat(currentData.price) - saleValue) * (selectedQuantity ? selectedQuantity : 1))}
+                        </p> : <></>}
+                        {currentData.maxQuantity && currentData.minQuantity && currentData.maxQuantity - currentData.minQuantity > 0 ? <div className="QuantityButtons">
+                            <button onClick={() => {
+                                if(!selectedQuantity) {
+                                    setSelectedQuantity(1);
+                                    return;
+                                }
+                                if(selectedQuantity+1 > currentData.maxQuantity!) return;
+                                setSelectedQuantity(selectedQuantity+1);
+                            }}>+</button>
+                            <input value={selectedQuantity ? selectedQuantity : ''} onChange={e => {
+                                if(e.target.value == '') {
+                                    setSelectedQuantity(null);
+                                    return;
+                                }
+                                const value = parseInt(e.target.value);
+                                if(Number.isNaN(value)) return;
+                                if(value < currentData.minQuantity! || value > currentData.maxQuantity!) return;
+                                setSelectedQuantity(value);
+                            }}></input>
+                            <button onClick={() => {
+                                if(!selectedQuantity) {
+                                    setSelectedQuantity(1);
+                                    return;
+                                }
+                                if(selectedQuantity-1 < currentData.minQuantity!) return;
+                                setSelectedQuantity(selectedQuantity-1);
+                            }}>-</button>
+                        </div> : <></>}
+                    </div> : <></>}
+                    {currentData.price && currentData.description ? <div className="Divider"></div> : <></>}
+                    {currentData.description ? <p className="Description">{currentData.description}</p> : <></>}
+                </div>
             </div>
         </div>
     </div>

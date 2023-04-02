@@ -1,3 +1,8 @@
+:root {
+    --ecommerceGrey: #d9dee3;
+    --ecommerceWhite: #f7f7f7;
+}
+
 .SplashImage {
     height: 100vh;
     width: 100%;
@@ -237,10 +242,9 @@
             pointer-events: none;
     
             &.Static {
-                display: none;
                 position: fixed;
-                width: 24em;
-                left: clamp(2em, calc(calc(100% - 1600px) * 0.5), 100%);
+                width: 24.1em;
+                left: clamp(2.1em, calc(calc(100% - 1600px) * 0.5), 100%);
                 top: 50%;
                 transform: translateY(-50%);
             }
@@ -257,7 +261,7 @@
             }
     
             .LinksWrapper {
-                flex-basis: 1px;
+                flex-basis: 40em;
                 flex-grow: 1;
                 flex-direction: row;
                 flex-wrap: wrap;
@@ -311,25 +315,49 @@
         }
     }
 
+    @media (max-width: 1400px) {
+        flex-direction: column;
+
+        .NavBars .NavBar {
+            border-right: none;
+            border-bottom: 0.1em dashed var(--black);
+
+            &.Bottom {
+                display: none;
+            }
+
+            &.Static {
+                padding: 1em 2.1em;
+                width: calc(100vw - 4.2em);
+                left: 0;
+                top: 0;
+                transform: none;
+            }
+        }
+    }
+
     .Content {
         flex-basis: 1px;
         flex-grow: 1;
         min-width: calc(100% - 27.1em);
-        margin-bottom: 30em;
 
         .Section {
-            padding: 2em 0;
+            padding-top: 15em;
+
+            &:first-child {
+                padding-top: 0em;
+            }
 
             .Title {
                 font-weight: 200;
-                font-size: 3em;
-                margin-bottom: 0.2em;
+                font-size: 3.5em;
+                margin-bottom: 0.25em;
             }
 
             .Description {
                 font-weight: 100;
-                font-size: 1.4em;
-                line-height: 130%;
+                font-size: 1.5em;
+                line-height: 140%;
                 font-family: var(--franklin);
             }
 
@@ -347,14 +375,14 @@
 
         .DataEntry {
             width: fit-content;
-            flex-basis: 20em;
+            flex-basis: 15em;
             flex-grow: 1;
             font-size: 1.25em;
             color: var(--white);
             background-color: var(--black);
             border-radius: 0.5em;
             padding: 1.25em 1.5em;
-            gap: 0.75em;
+            gap: 0.5em;
             overflow: hidden;
             max-width: 100%;
     
@@ -362,8 +390,7 @@
                 display: inline;
                 flex-direction: row;
                 align-items: baseline;
-                width: fit-content;
-                white-space: nowrap;
+                line-height: 120%;
     
                 span {
                     display: inline;
@@ -372,6 +399,7 @@
                 input, select {
                     display: inline;
                     min-width: 25px;
+                    max-width: 50%;
                     margin-right: 0.25em;
                     background-color: var(--black);
                     border-bottom: 0.075em dashed var(--white);
@@ -387,12 +415,30 @@
                         border-bottom: 0.075em solid var(--white);
                     }
                 }
+
+                .Reset {
+                    position: absolute;
+                    font-size: 1.1em;
+                    right: 0;
+                    top: 0;
+                    color: var(--white);
+                    padding: 0.25em;
+                    border-radius: 10em;
+                    transition: background-color 0.1s linear, color 0.1s linear, transform 0.25s ease-in-out;
+    
+                    &:hover {
+                        background-color: var(--white);
+                        color: var(--black);
+                        transform: scale(1.1) rotate(-270deg);
+                        cursor: pointer;
+                    }
+                }
     
                 .AddButton {
                     color: var(--white);
                     font-size: 0.8em;
                     padding: 0.2em 0.25em;
-                    border: 0.1em solid var(--white);
+                    border: 0.125em solid var(--white);
                     border-radius: 0.25em;
                     width: fit-content;
                     transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
@@ -406,7 +452,7 @@
                 }
     
                 .DeleteButton {
-                    font-size: 0.9em;
+                    font-size: 1em;
                     color: var(--lightRed);
                     margin-left: 0.25em;
                     padding: 0.25em;
@@ -440,21 +486,22 @@
         }
     
         .DataResult {
-            background-color: #f4f4f4;
+            background-color: var(--ecommerceWhite);
             border-radius: 0.5em;
-            padding: 1em;
+            padding: 1.5em 1.5em 0.75em 1.5em;
             flex-grow: 1;
-            flex-basis: 20em;
+            flex-basis: 15em;
             max-width: 30em;
             filter: drop-shadow(2px 1px 4px rgba(0,0,0, 0.05));
-            gap: 0.5em;
+            overflow: hidden;
+            height: fit-content;
 
             .Gallery {
-                height:  20em;
-                width: 100%;
-                background: #d9dee3;
+                height: 17.5em;
+                width: calc(100% + 3em);
+                margin-left: -1.5em;
+                margin-top: -1.5em;
                 overflow: hidden;
-                border-radius: 0.25em;
 
                 .GallerySlider {
                     flex-direction: row;
@@ -470,25 +517,31 @@
 
                         img {
                             height: 100%;
-                            width: auto;
+                            width: 100%;
                             object-fit: contain;
                         }
                     }
                 }
-            }
-            
-            .CategoryWrapper {
-                justify-content: flex-end;
-                flex-wrap: wrap;
-                flex-direction: row;
-                gap: 0.25em 0.5em;
 
-                .Category {
-                    padding: 0.1em 0.75em;
-                    border-radius: 10em;
-                    background: var(--blue);
-                    color: #f4f4f4;
-                    font-weight: 500;
+                .CategoryWrapper {
+                    position: absolute;
+                    right: 0.75em;
+                    top: 0.75em;
+                    max-width: calc(100% - 1.5em);
+                    justify-content: flex-end;
+                    flex-wrap: wrap;
+                    flex-direction: row;
+                    gap: 0.25em 0.5em;
+                    font-size: 1.15em;
+    
+                    .Category {
+                        padding: 0.1em 0.75em;
+                        border-radius: 10em;
+                        background: var(--blue);
+                        color: white;
+                        font-weight: 600;
+                        box-shadow: 1px 1px 3px 0 rgba(0,0,0,0.1);
+                    }
                 }
             }
 
@@ -498,12 +551,13 @@
                 gap: 0.5em;
                 width: 100%;
                 justify-content: center;
+                margin: 1em 0;
 
                 div {
                     height: 0.75em;
                     width: 2em;
                     border-radius: 0.1em;
-                    background-color: #d9dee3;
+                    background-color: var(--ecommerceGrey);
                     transition: background-color 0.1s linear;
 
                     &:hover {
@@ -517,41 +571,194 @@
                 font-family: var(--rubik);
                 font-weight: 200;
                 font-size: 2em;
+                padding: 0.5em 0;
+                border-top: 0.05em solid var(--ecommerceGrey);
+                border-bottom: 0.05em solid var(--ecommerceGrey);
             }
 
-            .Price {
-                font-family: var(--cairo);
-                font-size: 2em;
-                font-weight: 500;
-                color: var(--blue);
-            }
+            .SubContent {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                gap: 1.25em;
 
-            .Description {
-                font-size: 1.15em;
-                font-family: var(--workSans);
-                font-weight: 300;
-                line-height: 120%;
+                .PriceWrapper {
+                    justify-content: center;
+                    align-items: center;
+                    flex-basis: 8em;
+                    padding: 1.5em 0em;
+
+                    .Price {
+                        font-family: var(--cairo);
+                        font-size: 1.5em;
+                        font-weight: 400;
+                        margin-bottom: 0.2em;
+
+                        span {
+                            position: absolute;
+                            height: 0.1em;
+                            width: 110%;
+                            left: 50%;
+                            top: 50%;
+                            transform: translate(-50%, -50%) rotate(10deg);
+                            background-color: var(--red);
+                        }
+                    }
+
+                    .QuantityButtons {
+                        flex-direction: row;
+                        font-family: var(--rubik);
+                        margin-top: 0.25em;
+
+                        button {
+                            height: 29px;
+                            width: 25px;
+                            font-size: 1.25em;
+                            font-weight: 700;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: var(--blue);
+                            color: white;
+                            line-height: 50%;
+                            transition: transform 0.1s linear;
+
+                            &:first-of-type {
+                                border-radius: 0.3em 0 0 0.3em;
+                            }
+
+                            &:last-of-type {
+                                border-radius: 0 0.3em 0.3em 0;
+                            }
+
+                            &:hover {
+                                transform: scale(1.15);
+                                cursor: pointer;
+                            }
+                        }
+
+                        input {
+                            height: calc(30px - 0.2em);
+                            font-size: 1em;
+                            font-weight: 400;
+                            font-family: var(--rubik);
+                            width: 2em;
+                            padding: 0 0.5em;
+                            background: none;
+                            border-top: 0.1em solid var(--blue);
+                            border-bottom: 0.1em solid var(--blue);
+                        }
+                    }
+                }
+
+                .Divider {
+                    align-self: stretch;
+                    width: 0.075em;
+                    background-color: var(--ecommerceGrey);
+                    height: none;
+                }
+    
+                .Description {
+                    flex-grow: 1;
+                    flex-basis: 10em;
+                    font-size: 1.15em;
+                    font-family: var(--workSans);
+                    font-weight: 300;
+                    line-height: 120%;
+                    padding: 0.75em 0;
+                }
             }
         }
     }
 
-    @media (max-width: 1400px) {
-        flex-direction: column;
+    #authentication {
+        .Example {
+            .Register {
+                flex-direction: row;
+                flex-wrap: wrap;
+                flex-basis: 20em;
+                flex-grow: 1;
+                gap: 1em 2em;
 
-        .NavBars .NavBar {
-            border-right: none;
-            border-bottom: 0.1em dashed var(--black);
+                h4 {
+                    flex-basis: 100%;
+                    font-family: var(--cairo);
+                    font-size: 2.5em;
+                    font-weight: 200;
+                }
 
-            &.Bottom {
-                display: none;
+                .InputWrapper {
+                    flex-basis: 15em;
+                    flex-grow: 1;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    align-items: baseline;
+                    gap: 0.5em;
+                    padding-bottom: 0.1em;
+                    border-bottom: 0.125em solid;
+                    transition: border-color 0.1s linear;
+
+                    p {
+                        font-size: 1.35em;
+                        font-weight: 300;
+                        font-family: var(--arima);
+                        letter-spacing: 0.02em;
+                    }
+
+                    input {
+                        flex-basis: 5em;
+                        flex-grow: 1;
+                        font-size: 1.7em;
+                        padding: 0 0.25em;
+                        font-family: var(--franklin);
+                        font-weight: 100;
+                        background-color: var(--white);
+                        min-width: 2em;
+                    }
+                }
+
+                .Submit {
+                    width: 100%;
+
+                    button {
+                        font-size: 1.3em;
+                        font-weight: 200;
+                        font-family: var(--franklin);
+                        padding: 0.2em 1em;
+                        box-shadow: 0 0 0 0.05em var(--black);
+                        border-radius: 10em;
+                        background-color: var(--white);
+                        width: fit-content;
+                        align-self: center;
+                        transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
+
+                        &:hover {
+                            background-color: var(--black);
+                            font-weight: 400;
+                            color: var(--white);
+                            transform: scale(1.1);
+                            cursor: pointer;
+                        }
+                    }
+                }
             }
 
-            &.Static {
-                padding: 1em 2em;
-                width: calc(100vw - 4em);
-                left: 0;
-                top: 0;
-                transform: none;
+            .EncryptionWrapper {
+                flex-basis: 20em;
+                flex-grow: 1;
+                gap: 1em;
+
+                h4 {
+                    font-family: var(--cairo);
+                    font-size: 2.5em;
+                    font-weight: 200;
+                }
+
+                .EncryptedPassword {
+                    word-break: break-all;
+                    font-family: var(--franklin);
+                    font-weight: 300;
+                    line-height: 110%;
+                }
             }
         }
     }
