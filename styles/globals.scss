@@ -3,7 +3,14 @@
 :root{
     --white: #eee5e4;
     --black: #47484d;
-    --lightBlue: #5dc1ff;
+    --red: #d9363e;
+    --lightRed: #e53f47;
+    --purple: #583982;
+    --lightPurple: #9542ce;
+    --green: #96bc51;
+    --yellow: #f0ab2e;
+    --grey: #77787d;
+    --blue: #5dc1ff;
     --arima: "Arima", serif;
     --franklin: "Libre Franklin", sans-serif;
     --cairo: "Cairo", sans-serif;
@@ -43,7 +50,8 @@ body {
     }
 }
 
-#root, main {
+#root {
+    scroll-behavior: smooth;
     flex-basis: 1px;
     flex-grow: 1;
     overflow-x: hidden;
@@ -67,17 +75,17 @@ button, input, select, option {
 
 #Header {
     position: absolute;
-    top: 0;
+    top: -2px;
     left: 50%;
     transform: translateX(-50%);
     align-self: center;
-    height: 3.5em;
+    height: 3.75em;
     width: fit-content;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     border-radius: 0 0 0.5em 0.5em;
-    z-index: 1;
+    z-index: 100;
 
     .Logo {
         height: 100%;

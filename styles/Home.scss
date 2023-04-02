@@ -1,225 +1,557 @@
-main {
+.SplashImage {
+    height: 100vh;
+    width: 100%;
 
-    .SplashImage {
-        height: 100vh;
-        width: 100%;
+    #FloralPatternSVG {
+        position: absolute;
+        pointer-events: none;
+        width: 90vw;
+        height: auto;
+        top: -22vw;
+        right: 7vw;
+        filter: drop-shadow(0.3em 0.4em 0px rgba(0, 0, 0, 0.08));
 
-        #FloralPatternSVG {
-            position: absolute;
-            pointer-events: none;
-            width: 90vw;
-            height: auto;
-            top: -22vw;
-            right: 7vw;
-            filter: drop-shadow(0.3em 0.4em 0px rgba(0, 0, 0, 0.08));
+        .WindWrapper {
 
-            .WindWrapper {
+            @keyframes Wind {
+                from { transform: scale(1,1) }
+                10% { transform: scale(1,1) }
+                30% { transform: scale(1.001, 1) }
+                50% { transform: scale(1.000, 1) }
+                70% { transform: scale(1.001, 1) }
+                90% { transform: scale(1,1) }
+                to { transform: scale(1,1) }
+            }
 
-                @keyframes Wind {
-                    from { transform: scale(1,1) }
-                    10% { transform: scale(1,1) }
-                    30% { transform: scale(1.001, 1) }
-                    50% { transform: scale(1.000, 1) }
-                    70% { transform: scale(1.001, 1) }
-                    90% { transform: scale(1,1) }
-                    to { transform: scale(1,1) }
-                }
+            .FloralItem {
+                transform: translate(91.5%, 88%) scale(0);
+                transition: transform 0.4s ease-out;
 
-                .FloralItem {
-                    transform: translate(91.5%, 88%) scale(0);
-                    transition: transform 0.4s ease-out;
-
-                    @keyframes Burst {
-                        from {
-                            transform: translate(91.5%, 88%) scale(0);
-                        }
-                        to {
-                            transform: translate(0,0) scale(1);
-                        }
+                @keyframes Burst {
+                    from {
+                        transform: translate(91.5%, 88%) scale(0);
                     }
-                }
-            }
-        }
-
-        #HandSVG {
-            position: absolute;
-            pointer-events: none;
-            width: 44vw;
-            height: auto;
-            top: 36.1vw;
-            right: -29vw;
-            transform: translateX(15vw);
-            animation: 0.5s ease-in-out 2.25s forwards SlideIn, 0.75s ease-in-out 3s forwards LiftHand;
-
-            @keyframes LiftHand {
-                from { transform: rotateY(0deg) scale(1); }
-                55% { transform: rotateY(-15deg) scale(1.1); }
-                75% { transform: rotateY(-15deg) scale(1.1); }
-                to { transform: rotateY(0deg) scale(1); }
-            }
-    
-            @keyframes SlideIn {
-                from { transform: translateX(15vw) rotate(10deg) }
-                to {transform: translateX(0vw) rotate(0deg) }
-            }
-        }
-
-        #RightCover {
-            position: absolute;
-            pointer-events: none;
-            right: 0;
-            top: 0;
-            width: 22vw;
-        }
-
-        .MainCopy {
-            align-items: flex-start;
-            margin-left: 2em;
-            margin-top: 16em;
-    
-            h1 {
-                display: none;
-            }
-
-            h3 {
-                flex-direction: row;
-                align-items: center;
-                gap: 0.5em;
-                font-family: var(--franklin);
-                font-size: 3em;
-                font-weight: 100;
-    
-                .Titling {
-                    font-weight: 300;
-                    font-size: 2em;
-                    font-family: var(--arima);
-                    margin: 0.05em 0 -0.05em -0.08em;
-                }
-
-                @keyframes DiffuseIn {
-                    from { filter: blur(20px); opacity: 0; }
-                    to { filter: blur(0px); opacity: 1;}
-                }
-
-                @keyframes SlideRight {
-                    from { transform: translateX(-75%); opacity: 0;}
-                    to { transform: translateX(0%); opacity: 1;}
-                }
-
-                @keyframes SlideDown {
-                    from { transform: translateY(-50%); opacity: 0;}
-                    to { transform: translateY(0%); opacity: 1;}
-                }
-
-                span:nth-child(1) {
-                    opacity: 0;
-                    animation: 0.3s ease-in 0.5s forwards DiffuseIn;
-                }
-
-                span:nth-child(2) {
-                    opacity: 0;
-                    transform: translateX(-75%);
-                    animation: 0.3s ease-out 1s forwards SlideRight;
-                }
-
-                span:nth-child(3) {
-                    opacity: 0;
-                    transform: translateY(-50%);
-                    animation: 0.3s ease-in 1.5s forwards SlideDown;
-                }
-            }
-    
-            .Subtitle {
-                flex-direction: row;
-                align-items: center;
-                gap: 1em;
-    
-                h2 {
-                    font-size: 1.8em;
-                    font-family: var(--cairo);
-                    font-weight: 300;
-                    opacity: 0;
-                    animation: 0.25s ease-out 4.75s forwards SlideDown;
-                }
-    
-                a {
-                    color: var(--black);
-                    text-decoration: none;
-                    font-size: 1.15em;
-                    font-family: var(--workSans);
-                    padding: 0.35em 1em;
-                    box-shadow: 0 0 0 0.1em var(--black);
-                    border-radius: 100em;
-                    text-transform: uppercase;
-                    transition: background-color 0.1s linear, color 0.1s linear, font-weight 0.1s linear, transform 0.1s linear;
-                    opacity: 0;
-                    animation: 0.25s ease-out 5s forwards SlideDown;
-    
-                    &:hover {
-                        background-color: var(--black);
-                        color: var(--white);
-                        font-weight: 500;
-                        transform: scale(1.05);
+                    to {
+                        transform: translate(0,0) scale(1);
                     }
-                }
-
-                @keyframes FadeInText {
-                    from {opacity: 0;}
-                    to {opacity: 1;}
-                }
-            }
-        }
-
-        .IframeSlider {
-            margin-top: 4em;
-
-            .IframeWrapper {
-                flex-direction: row;
-                width: calc(100vw - 2em);
-                gap: 15px;
-                padding: 0 1em;
-
-                @keyframes Slide {
-                    from {margin-left: 0}
-                    to {margin-left: -362.5px}
-                }
-
-                div {
-                    opacity: 0;
-                    height: 240px;
-                    width: 350px;
-                    flex-shrink: 0;
-                    box-shadow: 0 0 0 0.1em var(--black) inset;
-                    border-radius: 0.5em;
-                    border: none;
                 }
             }
         }
     }
 
-    #WhatICanDo {
-        margin-top: 15em;
+    #HandSVG {
+        position: absolute;
+        pointer-events: none;
+        width: 44vw;
+        height: auto;
+        top: 36.1vw;
+        right: -29vw;
+        transform: translateX(15vw);
+        animation: 0.5s ease-in-out 2.25s forwards SlideIn, 0.75s ease-in-out 3s forwards LiftHand;
 
-        .NavBar {
+        @keyframes LiftHand {
+            from { transform: rotateY(0deg) scale(1); }
+            55% { transform: rotateY(-15deg) scale(1.1); }
+            75% { transform: rotateY(-15deg) scale(1.1); }
+            to { transform: rotateY(0deg) scale(1); }
+        }
+
+        @keyframes SlideIn {
+            from { transform: translateX(15vw) rotate(10deg) }
+            to {transform: translateX(0vw) rotate(0deg) }
+        }
+    }
+
+    #RightCover {
+        position: absolute;
+        pointer-events: none;
+        right: 0;
+        top: 0;
+        width: 22vw;
+    }
+
+    .MainCopy {
+        align-items: flex-start;
+        margin-left: 2em;
+        margin-top: 16em;
+        z-index: 2;
+
+        h1 {
+            display: none;
+        }
+
+        h3 {
             flex-direction: row;
-            align-items: baseline;
-            gap: 0.1em 1em;
-            font-size: 2.5em;
-            font-family: var(--arima);
-            font-weight: 200;
             flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5em;
+            font-family: var(--franklin);
+            font-size: 3em;
+            font-weight: 100;
+
+            .Titling {
+                font-weight: 300;
+                font-size: 2em;
+                font-family: var(--arima);
+                margin: 0.05em 0 -0.05em -0.08em;
+            }
+
+            span:nth-child(1) {
+                filter: blur(20px); 
+                opacity: 0;
+                transition: filter 0.3s ease-in, opacity 0.3s ease-in;
+            }
+
+            span:nth-child(2) {
+                opacity: 0;
+                transform: translateX(-75%);
+                transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            }
+
+            span:nth-child(3) {
+                opacity: 0;
+                transform: translateY(-50%);
+                transition: transform 0.3s ease-in, opacity 0.3s ease-in;
+            }
+        }
+
+        .Subtitle {
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1em;
 
             h2 {
+                flex-wrap: wrap;
+                font-size: 1.8em;
+                font-family: var(--cairo);
                 font-weight: 300;
-                font-size: 1.25em;
+                width: fit-content;
+                opacity: 0;
+                transform: translateY(-35%);
+                transition: transform 0.25s ease-out, opacity 0.25s ease-out;
             }
 
             a {
-                font-size: 0.6em;
+                color: var(--black);
+                text-decoration: none;
+                font-size: 1.15em;
+                font-family: var(--workSans);
+                padding: 0.35em 1em;
+                box-shadow: 0 0 0 0.1em var(--black);
+                border-radius: 100em;
+                text-transform: uppercase;
+                transition: background-color 0.1s linear, color 0.1s linear, font-weight 0.1s linear, transform 0.1s linear, box-shadow 0.1s linear, transform 0.25s ease-out, opacity 0.25s ease-out;
+                transform: translateY(-35%);
+                opacity: 0;
+
+                &:hover {
+                    background-color: var(--green);
+                    box-shadow: 0 0 0 0em var(--black);
+                    color: var(--white);
+                    font-weight: 500;
+                    animation: 0.4s linear 0s forwards ColorJump !important;
+                }
+
+                @keyframes ColorJump {
+                    0% {
+                        background-color: var(--white);
+                        transform: scale(1);
+                    }
+                    20% {
+                        background-color: var(--green);
+                        transform: scale(1.1, 1.15);
+                    }
+                    40% {
+                        background-color: var(--yellow);
+                        transform: scale(1.2, 1.27);
+                    }
+                    60% {
+                        background-color: var(--red);
+                        transform: scale(1.15, 1.25);
+                    }
+                    80% {
+                        background-color: var(--green);
+                        transform: scale(1.1, 1.15);
+                    }
+                    100% {
+                        background-color: var(--yellow);
+                        transform: scale(1.1, 1.125);
+                    }
+                }
+            }
+
+            @keyframes FadeInText {
+                from {opacity: 0;}
+                to {opacity: 1;}
+            }
+        }
+    }
+
+    .IframeSlider {
+        margin-top: 4em;
+
+        .IframeWrapper {
+            flex-direction: row;
+            width: calc(100vw - 2em);
+            gap: 15px;
+            padding: 0 1em;
+
+            div {
+                opacity: 0;
+                height: 240px;
+                width: 350px;
+                flex-shrink: 0;
+                box-shadow: 0 0 0 0.1em var(--black) inset;
+                border-radius: 0.5em;
+                border: none;
+            }
+        }
+    }
+}
+
+#WhatICanDo {
+    margin-top: 15em;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: 0em 3em;
+
+    .NavBars {
+        flex-basis: 1px;
+        flex-grow: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+
+        .NavBar {
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            width: 100%;
+            gap: 1em 3em;
+            background-color: var(--white);
+            border-right: 0.1em dashed var(--black);
+            transform: translateX(0.1em);
+            z-index: 1;
+            padding: 1em 0;
+            pointer-events: none;
+    
+            &.Static {
+                display: none;
+                position: fixed;
+                width: 24em;
+                left: clamp(2em, calc(calc(100% - 1600px) * 0.5), 100%);
+                top: 50%;
+                transform: translateY(-50%);
+            }
+    
+            h2 {
+                font-weight: 300;
+                font-size: 3.9em;
+                font-family: var(--arima);
                 font-weight: 200;
+    
+                * {
+                    line-height: 100%;
+                }
+            }
+    
+            .LinksWrapper {
+                flex-basis: 1px;
+                flex-grow: 1;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.75em 1.5em;
+    
+                .Link {
+                    font-size: 1.25em;
+                    font-weight: 200;
+                    width: fit-content;
+                    text-decoration: none;
+                    color: var(--black);
+                    font-family: var(--franklin);
+                    padding: 0.2em 0.3em 0.2em 0.15em;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 0.4em;
+                    transition: font-weight 0.1s linear, padding 0.1s linear;
+                    pointer-events: all;
+    
+                    i {
+                        color: var(--yellow);
+                        transition: color 0.1s linear;
+                    }
+    
+                    .Underline {
+                        position: absolute;
+                        background-color: var(--yellow);
+                        bottom: 0;
+                        left: 0;
+                        height: 0.1em;
+                        width: 100%;
+                        transition: height 0.15s ease-in-out, border-radius 0.1s linear;
+                        z-index: -1;
+                    }
+    
+                    &:hover {
+                        font-weight: 400;
+                        padding: 0.2em 0.4em 0.2em 0.3em;
+    
+                        i {
+                            color: var(--black);
+                        }
+    
+                        .Underline {
+                            height: 100%;
+                            border-radius: 0.2em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .Content {
+        flex-basis: 1px;
+        flex-grow: 1;
+        min-width: calc(100% - 27.1em);
+        margin-bottom: 30em;
+
+        .Section {
+            padding: 2em 0;
+
+            .Title {
+                font-weight: 200;
+                font-size: 3em;
+                margin-bottom: 0.2em;
+            }
+
+            .Description {
+                font-weight: 100;
+                font-size: 1.4em;
+                line-height: 130%;
                 font-family: var(--franklin);
-                border-bottom: 0.075em solid var(--black);
-                padding: 0.1em 0.2em;
+            }
+
+            .Example {
+                flex-direction: row;
+                flex-wrap: wrap;
+                margin-top: 4em;
+                gap: 2em;
+            }
+        }
+    }
+
+    #data {
+        justify-content: center;
+
+        .DataEntry {
+            width: fit-content;
+            flex-basis: 20em;
+            flex-grow: 1;
+            font-size: 1.25em;
+            color: var(--white);
+            background-color: var(--black);
+            border-radius: 0.5em;
+            padding: 1.25em 1.5em;
+            gap: 0.75em;
+            overflow: hidden;
+            max-width: 100%;
+    
+            .Line {
+                display: inline;
+                flex-direction: row;
+                align-items: baseline;
+                width: fit-content;
+                white-space: nowrap;
+    
+                span {
+                    display: inline;
+                }
+    
+                input, select {
+                    display: inline;
+                    min-width: 25px;
+                    margin-right: 0.25em;
+                    background-color: var(--black);
+                    border-bottom: 0.075em dashed var(--white);
+                    transform: translateY(-0.15em);
+                    color: var(--white);
+                    font-size: 0.9em;
+                    font-weight: 200;
+                    padding: 0 0.2em;
+                    font-family: var(--franklin);
+                    transition: border 0.1s linear;
+    
+                    &:hover, &:focus {
+                        border-bottom: 0.075em solid var(--white);
+                    }
+                }
+    
+                .AddButton {
+                    color: var(--white);
+                    font-size: 0.8em;
+                    padding: 0.2em 0.25em;
+                    border: 0.1em solid var(--white);
+                    border-radius: 0.25em;
+                    width: fit-content;
+                    transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
+    
+                    &:hover {
+                        background-color: var(--white);
+                        color: var(--black);
+                        transform: scale(1.1);
+                        cursor: pointer;
+                    }
+                }
+    
+                .DeleteButton {
+                    font-size: 0.9em;
+                    color: var(--lightRed);
+                    margin-left: 0.25em;
+                    padding: 0.25em;
+                    border-radius: 0.25em;
+                    transition: color 0.1s linear, background-color 0.1s linear, transform 0.1s linear;
+    
+                    &:hover {
+                        color: var(--white);
+                        background-color: var(--lightRed);
+                        transform: scale(1.1);
+                        cursor: pointer;
+                    }
+                }
+    
+                .Red {
+                    color: var(--lightRed);
+                }
+    
+                .Purple {
+                    color: var(--lightPurple);
+                }
+                
+                .Yellow {
+                    color: var(--yellow);
+                }
+    
+                .Green {
+                    color: var(--green);
+                }
+            }
+        }
+    
+        .DataResult {
+            background-color: #f4f4f4;
+            border-radius: 0.5em;
+            padding: 1em;
+            flex-grow: 1;
+            flex-basis: 20em;
+            max-width: 30em;
+            filter: drop-shadow(2px 1px 4px rgba(0,0,0, 0.05));
+            gap: 0.5em;
+
+            .Gallery {
+                height:  20em;
+                width: 100%;
+                background: #d9dee3;
+                overflow: hidden;
+                border-radius: 0.25em;
+
+                .GallerySlider {
+                    flex-direction: row;
+                    flex-shrink: 0;
+                    height: 100%;
+                    width: 100%;
+                    transition: transform 0.5s ease-in-out;
+
+                    .ImageWrapper {
+                        height: 100%;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            height: 100%;
+                            width: auto;
+                            object-fit: contain;
+                        }
+                    }
+                }
+            }
+            
+            .CategoryWrapper {
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                flex-direction: row;
+                gap: 0.25em 0.5em;
+
+                .Category {
+                    padding: 0.1em 0.75em;
+                    border-radius: 10em;
+                    background: var(--blue);
+                    color: #f4f4f4;
+                    font-weight: 500;
+                }
+            }
+
+            .Pagination {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.5em;
+                width: 100%;
+                justify-content: center;
+
+                div {
+                    height: 0.75em;
+                    width: 2em;
+                    border-radius: 0.1em;
+                    background-color: #d9dee3;
+                    transition: background-color 0.1s linear;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: var(--blue);
+                    }
+                }
+            }
+
+            h3 {
+                font-family: var(--rubik);
+                font-weight: 200;
+                font-size: 2em;
+            }
+
+            .Price {
+                font-family: var(--cairo);
+                font-size: 2em;
+                font-weight: 500;
+                color: var(--blue);
+            }
+
+            .Description {
+                font-size: 1.15em;
+                font-family: var(--workSans);
+                font-weight: 300;
+                line-height: 120%;
+            }
+        }
+    }
+
+    @media (max-width: 1400px) {
+        flex-direction: column;
+
+        .NavBars .NavBar {
+            border-right: none;
+            border-bottom: 0.1em dashed var(--black);
+
+            &.Bottom {
+                display: none;
+            }
+
+            &.Static {
+                padding: 1em 2em;
+                width: calc(100vw - 4em);
+                left: 0;
+                top: 0;
+                transform: none;
             }
         }
     }
