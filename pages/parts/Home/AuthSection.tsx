@@ -1,20 +1,18 @@
-import { json } from "express";
-import React, { FunctionComponent, useRef, useState } from "react";
+import React, { FunctionComponent, useState } from "react";
+import { cacheLocalStorage } from "../../Home";
 
 const AuthSection:FunctionComponent = () => {
-    const subtle = useRef<SubtleCrypto | null>(null);
     const [userData, setUserData] = useState({
         username: '',
-        password: ''
+        password: '',
+        hash: '',
+        salt: ''
     });
+    cacheLocalStorage('DreamStateUserRegister', userData, setUserData);
+
     const [isEngangingField, setIsEngagingField] = useState({
         username: false,
         password: false
-    });
-
-    const [encryptedPassword, setEncryptedPassword] = useState({
-        hash: '',
-        salt: ''
     });
 
     async function encryptPassword() {
@@ -28,11 +26,10 @@ const AuthSection:FunctionComponent = () => {
                 password: userData.password
             })
         })).json()
-        setEncryptedPassword(response);
-    }
-
-    if(typeof window != 'undefined') {
-        subtle.current = globalThis.crypto.subtle;
+        setUserData({...userData,
+            hash: response.hash,
+            salt: response.salt
+        });
     }
 
     return <div id="authentication" className="Section">
@@ -41,6 +38,14 @@ const AuthSection:FunctionComponent = () => {
         <div className='Example'>
             <div className="Register">
                 <h4>Register</h4>
+                <i className="fa-solid fa-arrow-rotate-left Reset" onClick={() => {
+                        setUserData({
+                            username: '',
+                            password: '',
+                            hash: '',
+                            salt: ''
+                        });
+                    }}></i>
                 <div className="InputWrapper" style={{
                     borderColor: isEngangingField.username ? 'var(--yellow)' : userData.username ? 'var(--green)' : 'var(--lightRed)'
                 }} onMouseOver={() => {setIsEngagingField({...isEngangingField,
@@ -69,7 +74,9 @@ const AuthSection:FunctionComponent = () => {
                     <p>Password:</p>
                     <input value={userData.password} onChange={e => {
                         setUserData({...userData,
-                            password: e.target.value
+                            password: e.target.value,
+                            hash: '',
+                            salt: ''
                         });
                     }} onFocus={() => {setIsEngagingField({...isEngangingField,
                         password: true
@@ -77,15 +84,13 @@ const AuthSection:FunctionComponent = () => {
                         password: false
                     })}}></input>
                 </div>
-                <div className="Submit">
-                    <button onClick={encryptPassword}>Submit</button>
-                </div>
+                <button className="Submit" onClick={encryptPassword}>Submit</button>
             </div>
             <div className="EncryptionWrapper">
-                {encryptedPassword.salt && encryptedPassword.hash ? <>
-                    <h4>Your encrypted password:</h4>
-                    <p className="EncryptedPassword">{`${encryptedPassword.salt}:${encryptedPassword.hash}`}</p>
-                    <p className="Disclaimer"></p>
+                <h4>Your encrypted password</h4>
+                {userData.salt && userData.hash ? <>
+                    <p className="EncryptedPassword">{`${userData.salt}:${userData.hash}`}</p>
+                    <p className="Disclaimer">Note: This password encryption is type 8, however all password encryption implementions I use are type 9. The main difference is that type 9 is much more computationally expensive to encrypt, and therefore crack. This is also why I haven't used it in this example, because I cannot afford those server costs! For more information, visit <a target='_blank' href="https://media.defense.gov/2022/Feb/17/2002940795/-1/-1/0/CSI_CISCO_PASSWORD_TYPES_BEST_PRACTICES_20220217.PDF">here</a>.</p>
                 </> : <></>}
             </div>
         </div>

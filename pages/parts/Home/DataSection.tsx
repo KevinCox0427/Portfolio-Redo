@@ -1,4 +1,5 @@
-import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from "react";
+import React, { Fragment, FunctionComponent, useState } from "react";
+import { cacheLocalStorage } from "../../Home";
 
 const date = new Date();
 
@@ -12,7 +13,6 @@ function isPrice(price:string) {
     if(typeof price.split('.')[1] != 'undefined' && price.split('.')[1].length > 2) return false;
     return price.match(/^[\d.]+$/);
 }
-
 
 const DataSection:FunctionComponent = () => {
     const [currentData, setCurrentData] = useState<{
@@ -42,22 +42,7 @@ const DataSection:FunctionComponent = () => {
         imageUrls: [],
         sales: []
     });
-
-    const hasLoaded = useRef(false);
-
-    useEffect(() => {
-        if(hasLoaded.current) localStorage.setItem('DreamStateDataEntry', JSON.stringify(currentData));
-    }, [currentData]);
-
-    if(typeof window != 'undefined'){
-        window.addEventListener('load', () => {
-            const previousSave = localStorage.getItem('DreamStateDataEntry');
-            if(previousSave && typeof JSON.parse(previousSave) != 'undefined') {
-                setCurrentData(JSON.parse(previousSave));
-            }
-            hasLoaded.current = true;
-        });
-    }
+    cacheLocalStorage('DreamStateDataEntry', currentData, setCurrentData);
 
     const [galleryIndex, setGalleryIndex] = useState(0);
     const [selectedQuantity, setSelectedQuantity] = useState<number | null>(1);
@@ -182,7 +167,7 @@ const DataSection:FunctionComponent = () => {
                     </div>
                 })}
                 <div className='Line' style={{marginLeft: '2.5em'}}>
-                <i className="fa-regular fa-plus AddButton" onClick={() => {
+                    <i className="fa-regular fa-plus AddButton" onClick={() => {
                         const newImages = JSON.parse(JSON.stringify(currentData.imageUrls));
                         newImages.push('');
                         setCurrentData({...currentData,
@@ -291,7 +276,10 @@ const DataSection:FunctionComponent = () => {
                     }}></i>
                 </div>
                 <div className='Line' style={{marginLeft: '1.25em'}}>
-                    <span className='Purple'>&#93;</span> ,
+                    <span className='Purple'>&#93;</span>
+                </div>
+                <div className='Line'>
+                    <span className='Yellow'>&#125;</span> <span className='Purple'>&#93;</span>
                 </div>
             </div>
             <div className='DataResult'>

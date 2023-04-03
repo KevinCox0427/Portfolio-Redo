@@ -672,22 +672,47 @@
 
     #authentication {
         .Example {
+            gap:3em;
+
             .Register {
+                height: fit-content;
                 flex-direction: row;
+                flex-grow: 1;
                 flex-wrap: wrap;
                 flex-basis: 20em;
-                flex-grow: 1;
                 gap: 1em 2em;
+                justify-content: center;
+                align-items: center;
 
                 h4 {
-                    flex-basis: 100%;
                     font-family: var(--cairo);
                     font-size: 2.5em;
-                    font-weight: 200;
+                    font-weight: 300;
+                    margin-bottom: 0.3em;
+                    padding-bottom: 0.01em;
+                    border-bottom: 0.06em solid var(--black);
+                    align-self: center;
+                }
+
+                .Reset {
+                    position: absolute;
+                    top: 0.2em;
+                    right: 0;
+                    font-size: 1.5em;
+                    padding: 0.25em;
+                    border-radius: 10em;
+                    transition: background-color 0.1s linear, color 0.1s linear, transform 0.25s ease-in-out;
+    
+                    &:hover {
+                        background-color: var(--black);
+                        color: var(--white);
+                        transform: scale(1.1) rotate(-270deg);
+                        cursor: pointer;
+                    }
                 }
 
                 .InputWrapper {
-                    flex-basis: 15em;
+                    flex-basis: 100%;
                     flex-grow: 1;
                     flex-direction: row;
                     flex-wrap: wrap;
@@ -700,7 +725,7 @@
                     p {
                         font-size: 1.35em;
                         font-weight: 300;
-                        font-family: var(--arima);
+                        font-family: var(--cairo);
                         letter-spacing: 0.02em;
                     }
 
@@ -717,27 +742,23 @@
                 }
 
                 .Submit {
-                    width: 100%;
+                    font-size: 1.5em;
+                    font-weight: 200;
+                    font-family: var(--franklin);
+                    margin-top: 1.25em;
+                    padding: 0.2em 1em;
+                    box-shadow: 0 0 0 0.075em var(--black);
+                    border-radius: 10em;
+                    background-color: var(--white);
+                    width: fit-content;
+                    transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
 
-                    button {
-                        font-size: 1.3em;
-                        font-weight: 200;
-                        font-family: var(--franklin);
-                        padding: 0.2em 1em;
-                        box-shadow: 0 0 0 0.05em var(--black);
-                        border-radius: 10em;
-                        background-color: var(--white);
-                        width: fit-content;
-                        align-self: center;
-                        transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
-
-                        &:hover {
-                            background-color: var(--black);
-                            font-weight: 400;
-                            color: var(--white);
-                            transform: scale(1.1);
-                            cursor: pointer;
-                        }
+                    &:hover {
+                        background-color: var(--black);
+                        font-weight: 400;
+                        color: var(--white);
+                        transform: scale(1.1);
+                        cursor: pointer;
                     }
                 }
             }
@@ -750,14 +771,38 @@
                 h4 {
                     font-family: var(--cairo);
                     font-size: 2.5em;
-                    font-weight: 200;
+                    font-weight: 300;
+                    width: fit-content;
+                    align-self: center;
+                    margin-bottom: 0.3em;
+                    padding-bottom: 0.01em;
+                    border-bottom: 0.06em solid var(--black);
                 }
 
                 .EncryptedPassword {
                     word-break: break-all;
+                    font-weight: 300;
+                    line-height: 140%;
+                    font-size: 1.4em;
+                }
+
+                .Disclaimer {
+                    display: inline;
                     font-family: var(--franklin);
                     font-weight: 300;
-                    line-height: 110%;
+                    align-self: flex-end;
+                    font-style: italic;
+                    font-size: 0.85em;
+
+                    a {
+                        display: inline;
+                        color: var(--blue);
+                        transition: color 0.1s linear;
+
+                        &:hover {
+                            color: var(--black);
+                        }
+                    }
                 }
             }
         }

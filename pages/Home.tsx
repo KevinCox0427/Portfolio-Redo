@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import Header from './parts/Header';
 import Footer from './parts/Footer';
@@ -8,6 +8,23 @@ import Link from './parts/Home/Link';
 import DataSection from './parts/Home/DataSection';
 import NavBars from './parts/Home/NavBars';
 import AuthSection from './parts/Home/AuthSection';
+
+export function cacheLocalStorage(itemName:string, stateVariable:any, setStateVariable:React.Dispatch<React.SetStateAction<any>>) {
+    useEffect(() => {
+        if(hasLoaded.current) localStorage.setItem(itemName, JSON.stringify(stateVariable));
+    }, [stateVariable]);
+
+    const hasLoaded = useRef(false);
+    if(typeof window != 'undefined'){
+        window.addEventListener('load', () => {
+            const previousSave = localStorage.getItem(itemName);
+            if(previousSave && typeof JSON.parse(previousSave) != 'undefined') {
+                setStateVariable(JSON.parse(previousSave));
+            }
+            hasLoaded.current = true;
+        });
+    }
+}
 
 const Home:FunctionComponent = () => {
     const iframeUrls = ['red','orange','yellow','green','blue', 'purple'];
