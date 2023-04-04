@@ -235,7 +235,7 @@
             width: 100%;
             gap: 1em 3em;
             background-color: var(--white);
-            border-right: 0.1em dashed var(--black);
+            border-right: 0.125em dashed var(--black);
             transform: translateX(0.1em);
             z-index: 1;
             padding: 1em 0;
@@ -320,7 +320,11 @@
 
         .NavBars .NavBar {
             border-right: none;
-            border-bottom: 0.1em dashed var(--black);
+            border-bottom: 0.125em dashed var(--black);
+
+            &.Top {
+                margin-bottom: 3em;
+            }
 
             &.Bottom {
                 display: none;
@@ -672,26 +676,25 @@
 
     #authentication {
         .Example {
-            gap:3em;
+            gap: 3.75em 3em;
 
-            .Register {
+            .Form {
                 height: fit-content;
                 flex-direction: row;
                 flex-grow: 1;
                 flex-wrap: wrap;
-                flex-basis: 20em;
+                flex-basis: 25em;
                 gap: 1em 2em;
                 justify-content: center;
                 align-items: center;
 
                 h4 {
-                    font-family: var(--cairo);
-                    font-size: 2.5em;
-                    font-weight: 300;
-                    margin-bottom: 0.3em;
-                    padding-bottom: 0.01em;
-                    border-bottom: 0.06em solid var(--black);
+                    font-family: var(--arima);
+                    font-size: 2.75em;
+                    font-weight: 200;
+                    margin-bottom: 0.2em;
                     align-self: center;
+                    text-align: center;
                 }
 
                 .Reset {
@@ -742,10 +745,10 @@
                 }
 
                 .Submit {
-                    font-size: 1.5em;
-                    font-weight: 200;
-                    font-family: var(--franklin);
-                    margin-top: 1.25em;
+                    font-size: 1.4em;
+                    font-weight: 300;
+                    font-family: var(--rubik);
+                    margin-top: 1.2em;
                     padding: 0.2em 1em;
                     box-shadow: 0 0 0 0.075em var(--black);
                     border-radius: 10em;
@@ -755,7 +758,6 @@
 
                     &:hover {
                         background-color: var(--black);
-                        font-weight: 400;
                         color: var(--white);
                         transform: scale(1.1);
                         cursor: pointer;
@@ -764,19 +766,18 @@
             }
 
             .EncryptionWrapper {
-                flex-basis: 20em;
+                flex-basis: 25em;
                 flex-grow: 1;
                 gap: 1em;
 
                 h4 {
-                    font-family: var(--cairo);
-                    font-size: 2.5em;
-                    font-weight: 300;
+                    font-family: var(--arima);
+                    font-size: 2.75em;
+                    font-weight: 200;
                     width: fit-content;
                     align-self: center;
-                    margin-bottom: 0.3em;
-                    padding-bottom: 0.01em;
-                    border-bottom: 0.06em solid var(--black);
+                    text-align: center;
+                    margin-bottom: 0.2em;
                 }
 
                 .EncryptedPassword {
@@ -803,6 +804,34 @@
                             color: var(--black);
                         }
                     }
+                }
+            }
+
+            .Divider {
+                width: 100%;
+                border-bottom: 0.125em dashed var(--black);
+            }
+
+            .SessionWrapper {
+                flex-basis: 25em;
+                flex-grow: 1;
+                gap: 1em;
+
+                h4 {
+                    font-family: var(--arima);
+                    font-size: 2.75em;
+                    font-weight: 200;
+                    width: fit-content;
+                    align-self: center;
+                    text-align: center;
+                    margin-bottom: 0.2em;
+                }
+
+                p {
+                    word-break: break-all;
+                    font-weight: 300;
+                    line-height: 140%;
+                    font-size: 1.4em;
                 }
             }
         }
