@@ -744,6 +744,13 @@
                     }
                 }
 
+                .ErrorMessage {
+                    flex-basis: 100%;
+                    align-self: center;
+                    font-size: 1.25em;
+                    font-weight: 300;
+                }
+
                 .Submit {
                     font-size: 1.4em;
                     font-weight: 300;
@@ -828,10 +835,16 @@
                 }
 
                 p {
+                    display: inline;
                     word-break: break-all;
                     font-weight: 300;
                     line-height: 140%;
                     font-size: 1.4em;
+
+                    span {
+                        display: inline;
+                        transition: color 2s linear;
+                    }
                 }
             }
         }

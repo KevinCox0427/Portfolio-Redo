@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef, useState } from "react";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { cacheLocalStorage } from "../../Home";
 
 const base64Characters = 'abcdefghijklmnopqrxtuvwxyzABCDEFGHIJKLMNOPQRXTUVWXYZ0123456789+/';
@@ -42,12 +42,15 @@ const AuthSection:FunctionComponent = () => {
         });
     }
 
+    const sessionCounterAmount = 1;
     const [sessionCounter, setSessionCounter] = useState(0);
+    cacheLocalStorage('DreamStateSessionCounter', sessionCounter, setSessionCounter);
     const sessionCounterInterval = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     function createSession() {
         if(sessionCounterInterval.current) clearInterval(sessionCounterInterval.current);
-        
+        setSessionCounter(0);
+
         if(userData.loginUsername != userData.registerUsername || userData.loginPassword != userData.registerPassword) {
             setUserData({...userData,
                 loginUsername: '',
@@ -57,6 +60,10 @@ const AuthSection:FunctionComponent = () => {
                     expires: 0
                 }
             });
+            setErrorMessage({
+                message: 'Error: Incorrect username and password.',
+                success: false
+            });
             return;
         }
 
@@ -65,22 +72,52 @@ const AuthSection:FunctionComponent = () => {
         }).join('');
 
         setUserData({...userData,
+            loginUsername: '',
+            loginPassword: '',
             session: {
                 key: key,
-                expires: Date.now() + (1000*5*60)
+                expires: Date.now() + (sessionCounterAmount*1000*60)
             }
         });
+        setErrorMessage({
+            message: 'Success! Take a look at your session to see how long you\'re logged in for.',
+            success: true
+        });
+        setSessionCounter(sessionCounterAmount*1000*60);
+    }
 
-        setSessionCounter(userData.session.expires - Date.now());
-        sessionCounterInterval.current = setInterval(() => {
+    function startSessionCounter() {
+        tick();
+        sessionCounterInterval.current = setInterval(tick, 1000);
+
+        function tick() {
             const amount = userData.session.expires - Date.now();
             if(amount < 0) {
                 setSessionCounter(0);
                 clearInterval(sessionCounterInterval.current!);
             }
             else setSessionCounter(amount);
-        }, 1000);
+        }
     }
+
+    useEffect(() => {
+        if(initialLoad.current) {
+            startSessionCounter();
+            initialLoad.current = false;
+        }
+        if(sessionCounter != (sessionCounterAmount*1000*60)) return;
+        startSessionCounter();
+    }, [sessionCounter]);
+
+    const initialLoad = useRef(false);
+    if(typeof window != 'undefined') window.addEventListener('load', () => {
+        initialLoad.current = true;
+    });
+
+    const [errorMessage, setErrorMessage] = useState({
+        success: false,
+        message: ''
+    });
 
     return <div id="authentication" className="Section">
         <h3 className='Title'>In order to have users, you need secure authentication...</h3>
@@ -155,6 +192,7 @@ const AuthSection:FunctionComponent = () => {
                                 expires: 0
                             }
                         });
+                        setSessionCounter(0);
                     }}></i>
                 <div className="InputWrapper" style={{
                     borderColor: isEngangingField.loginUsername ? 'var(--yellow)' : userData.loginUsername ? 'var(--green)' : 'var(--lightRed)'
@@ -192,13 +230,20 @@ const AuthSection:FunctionComponent = () => {
                         loginPassword: false
                     })}}></input>
                 </div>
+                {errorMessage.message ? <p className="ErrorMessage" style={{
+                    color: errorMessage.success ? 'var(--green)' : 'var(--lightRed)'
+                }}>
+                    {errorMessage.message}
+                </p> : <></>}
                 <button className="Submit" onClick={createSession}>Submit</button>
             </div>
             <div className="SessionWrapper">
                 <h4>Your current session</h4>
                 {userData.session.key && userData.session.expires > Date.now() ? <>
                     <p>{userData.session.key}</p>
-                    <p>Expires in {Math.floor(sessionCounter/(1000*60))}m {Math.floor(sessionCounter/1000) % 60}s</p>
+                    <p>Expires in: <span style={{
+                        color: Math.floor(sessionCounter/1000) > (sessionCounterAmount*60) / 2 ? 'var(--green)' : Math.floor(sessionCounter/1000) > (sessionCounterAmount*60) / 4 ? 'var(--yellow)' : 'var(--lightRed)'
+                    }}>{Math.floor(sessionCounter/(1000*60))}m {Math.floor(sessionCounter/1000) % 60}s</span></p>
                 </>: <></>}
              </div>
         </div>

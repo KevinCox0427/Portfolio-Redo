@@ -9,21 +9,42 @@ import DataSection from './parts/Home/DataSection';
 import NavBars from './parts/Home/NavBars';
 import AuthSection from './parts/Home/AuthSection';
 
-export function cacheLocalStorage(itemName:string, stateVariable:any, setStateVariable:React.Dispatch<React.SetStateAction<any>>) {
-    useEffect(() => {
-        if(hasLoaded.current) localStorage.setItem(itemName, JSON.stringify(stateVariable));
-    }, [stateVariable]);
-
-    const hasLoaded = useRef(false);
-    if(typeof window != 'undefined'){
-        window.addEventListener('load', () => {
-            const previousSave = localStorage.getItem(itemName);
-            if(previousSave && typeof JSON.parse(previousSave) != 'undefined') {
-                setStateVariable(JSON.parse(previousSave));
-            }
-            hasLoaded.current = true;
-        });
+let hasLoaded = false;
+let cachedValues: {
+    [itemName:string]: {
+        stateVariable: any, 
+        setStateVariable: React.Dispatch<React.SetStateAction<any>>
     }
+} = {}
+
+export function cacheLocalStorage(itemName:string, stateVariable:any, setStateVariable:React.Dispatch<React.SetStateAction<any>>) {
+    cachedValues = {...cachedValues,
+        [itemName]: {
+            stateVariable: stateVariable,
+            setStateVariable: setStateVariable
+        }
+    };
+    useEffect(() => {
+        let parsedValues = {};
+        Object.keys(cachedValues).map(itemName => {
+            parsedValues = {...parsedValues,
+                [itemName]: cachedValues[itemName].stateVariable
+            }
+        });
+        if(hasLoaded) localStorage.setItem('DreamStateCachedValues', JSON.stringify(parsedValues));
+    }, [stateVariable]);
+}
+
+if(typeof window != 'undefined'){
+    window.addEventListener('load', () => {
+        const previousSave = localStorage.getItem('DreamStateCachedValues');
+        if(previousSave && typeof JSON.parse(previousSave) != 'undefined') {
+            Object.keys(cachedValues).map(itemName => {
+                cachedValues[itemName].setStateVariable(JSON.parse(previousSave)[itemName]);
+            });
+        }
+        hasLoaded = true;
+    });
 }
 
 const Home:FunctionComponent = () => {
