@@ -4,10 +4,10 @@ import Header from './parts/Header';
 import Footer from './parts/Footer';
 import FloralSVG from './parts/Home/FloralSVG';
 import HandSVG from './parts/Home/HandSVG';
-import Link from './parts/Home/Link';
 import DataSection from './parts/Home/DataSection';
 import NavBars from './parts/Home/NavBars';
 import AuthSection from './parts/Home/AuthSection';
+import IntegrationSection from './parts/Home/IntegrationSection';
 
 let hasLoaded = false;
 let cachedValues: {
@@ -147,6 +147,7 @@ const Home:FunctionComponent = () => {
             <div className='Content' ref={contentWrapper}>
                 <DataSection></DataSection>
                 <AuthSection></AuthSection>
+                <IntegrationSection></IntegrationSection>
             </div>
         </div>
         <Footer></Footer>

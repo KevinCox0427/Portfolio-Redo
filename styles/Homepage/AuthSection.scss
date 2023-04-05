@@ -1,0 +1,188 @@
+#authentication {
+    .Example {
+        gap: 3.75em 3em;
+
+        .Form {
+            height: fit-content;
+            flex-direction: row;
+            flex-grow: 1;
+            flex-wrap: wrap;
+            flex-basis: 25em;
+            gap: 2.25em;
+            justify-content: center;
+            align-items: center;
+
+            h4 {
+                font-family: var(--arima);
+                font-size: 2.75em;
+                font-weight: 200;
+                align-self: center;
+                text-align: center;
+            }
+
+            .Reset {
+                position: absolute;
+                top: 0.2em;
+                right: 0;
+                font-size: 1.5em;
+                padding: 0.25em;
+                border-radius: 10em;
+                transition: background-color 0.1s linear, color 0.1s linear, transform 0.25s ease-in-out;
+
+                &:hover {
+                    background-color: var(--black);
+                    color: var(--white);
+                    transform: scale(1.1) rotate(-270deg);
+                    cursor: pointer;
+                }
+            }
+
+            .InputWrapper {
+                flex-basis: 100%;
+                flex-grow: 1;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: baseline;
+                gap: 0.5em;
+                padding-bottom: 0.1em;
+                border-bottom: 0.125em solid;
+                transition: border-color 0.1s linear;
+                margin-top: -1.4em;
+
+                p {
+                    font-size: 1.35em;
+                    font-weight: 300;
+                    font-family: var(--cairo);
+                    letter-spacing: 0.02em;
+                }
+
+                input {
+                    flex-basis: 5em;
+                    flex-grow: 1;
+                    font-size: 1.7em;
+                    padding: 0 0.25em;
+                    font-family: var(--franklin);
+                    font-weight: 100;
+                    background-color: var(--white);
+                    min-width: 2em;
+                }
+            }
+
+            .ErrorMessage {
+                flex-basis: 100%;
+                text-align: center;
+                font-size: 1.35em;
+                font-style: italic;
+                font-family: var(--rubik);
+                font-weight: 300;
+                line-height: 120%;
+                margin: -0.6em 0;
+            }
+
+            .Submit {
+                font-size: 1.5em;
+                font-weight: 300;
+                font-family: var(--rubik);
+                padding: 0.2em 1em;
+                box-shadow: 0 0 0 0.075em var(--black);
+                border-radius: 10em;
+                background-color: var(--white);
+                width: fit-content;
+                transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
+
+                &:hover {
+                    background-color: var(--black);
+                    color: var(--white);
+                    transform: scale(1.1);
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .EncryptionWrapper {
+            flex-basis: 25em;
+            flex-grow: 1;
+            gap: 1em;
+
+            h4 {
+                font-family: var(--arima);
+                font-size: 2.75em;
+                font-weight: 200;
+                width: fit-content;
+                align-self: center;
+                text-align: center;
+                margin-bottom: 0.2em;
+            }
+
+            .EncryptedPassword {
+                word-break: break-all;
+                font-weight: 300;
+                line-height: 140%;
+                font-size: 1.4em;
+            }
+
+            .Disclaimer {
+                display: inline;
+                font-family: var(--franklin);
+                font-weight: 300;
+                align-self: flex-end;
+                font-style: italic;
+                font-size: 0.85em;
+
+                a {
+                    display: inline;
+                    color: var(--blue);
+                    transition: color 0.1s linear;
+
+                    &:hover {
+                        color: var(--black);
+                    }
+                }
+            }
+        }
+
+        .Divider {
+            width: 100%;
+            border-bottom: 0.125em dashed var(--black);
+        }
+
+        .SessionWrapper {
+            flex-basis: 25em;
+            flex-grow: 1;
+            gap: 1em;
+
+            h4 {
+                font-family: var(--arima);
+                font-size: 2.75em;
+                font-weight: 200;
+                width: fit-content;
+                align-self: center;
+                text-align: center;
+            }
+
+            .Key {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5em;
+                font-weight: 300;
+                line-height: 130%;
+                font-size: 1.4em;
+                gap: 0.5em;
+                word-break: break-all;
+
+                span {
+                    font-size: 1.05em;
+                    word-break: normal;
+                    font-family: var(--franklin);
+                }
+            }
+
+            .Timer {
+                align-self: center;
+                font-weight: 300;
+                font-size: 2.3em;
+                margin: 0.2em 0;
+            }
+        }
+    }
+}

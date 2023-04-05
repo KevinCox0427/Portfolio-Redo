@@ -25,6 +25,17 @@ const AuthSection:FunctionComponent = () => {
         loginPassword: false
     });
 
+    const [errorMessage, setErrorMessage] = useState({
+        success: false,
+        message: ''
+    });
+
+    const sessionCounterAmount = 20;
+    const [sessionCounter, setSessionCounter] = useState(0);
+    cacheLocalStorage('DreamStateSessionCounter', sessionCounter, setSessionCounter);
+
+    const sessionCounterInterval = useRef<ReturnType<typeof setTimeout> | null>(null);
+
     async function encryptPassword() {
         const response = await (await fetch('/encrypt', {
             method: 'POST',
@@ -41,11 +52,6 @@ const AuthSection:FunctionComponent = () => {
             salt: response.salt
         });
     }
-
-    const sessionCounterAmount = 1;
-    const [sessionCounter, setSessionCounter] = useState(0);
-    cacheLocalStorage('DreamStateSessionCounter', sessionCounter, setSessionCounter);
-    const sessionCounterInterval = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     function createSession() {
         if(sessionCounterInterval.current) clearInterval(sessionCounterInterval.current);
@@ -92,7 +98,7 @@ const AuthSection:FunctionComponent = () => {
 
         function tick() {
             const amount = userData.session.expires - Date.now();
-            if(amount < 0) {
+            if(amount <= 0) {
                 setSessionCounter(0);
                 clearInterval(sessionCounterInterval.current!);
             }
@@ -100,24 +106,19 @@ const AuthSection:FunctionComponent = () => {
         }
     }
 
+    const [initialLoad, setInitialLoad] = useState(false);
+    if(typeof window != 'undefined') window.addEventListener('load', () => {
+        setInitialLoad(true);
+    });
+
     useEffect(() => {
-        if(initialLoad.current) {
+        if(initialLoad) {
             startSessionCounter();
-            initialLoad.current = false;
+            setInitialLoad(false);
         }
         if(sessionCounter != (sessionCounterAmount*1000*60)) return;
         startSessionCounter();
-    }, [sessionCounter]);
-
-    const initialLoad = useRef(false);
-    if(typeof window != 'undefined') window.addEventListener('load', () => {
-        initialLoad.current = true;
-    });
-
-    const [errorMessage, setErrorMessage] = useState({
-        success: false,
-        message: ''
-    });
+    }, [sessionCounter, initialLoad]);
 
     return <div id="authentication" className="Section">
         <h3 className='Title'>In order to have users, you need secure authentication...</h3>
@@ -174,7 +175,7 @@ const AuthSection:FunctionComponent = () => {
                 <button className="Submit" onClick={encryptPassword}>Submit</button>
             </div>
             <div className="EncryptionWrapper">
-                <h4>Your encrypted password</h4>
+                <h4>Your encrypted password:</h4>
                 {userData.salt && userData.hash ? <>
                     <p className="EncryptedPassword">{`${userData.salt}:${userData.hash}`}</p>
                     {/* <p className="Disclaimer">Note: This password encryption is type 8, however all password encryption implementions I use are type 9. The main difference is that type 9 is much more computationally expensive to encrypt, and therefore crack. I haven't used it in this example since someone could spam my server. For more information, visit <a target='_blank' href="https://media.defense.gov/2022/Feb/17/2002940795/-1/-1/0/CSI_CISCO_PASSWORD_TYPES_BEST_PRACTICES_20220217.PDF">here</a>.</p> */}
@@ -206,6 +207,10 @@ const AuthSection:FunctionComponent = () => {
                         setUserData({...userData,
                             loginUsername: e.target.value
                         });
+                        setErrorMessage({
+                            message: '',
+                            success: false
+                        });
                     }} onFocus={() => {setIsEngagingField({...isEngangingField,
                         loginUsername: true
                     })}} onBlur={() => {setIsEngagingField({...isEngangingField,
@@ -224,6 +229,10 @@ const AuthSection:FunctionComponent = () => {
                         setUserData({...userData,
                             loginPassword: e.target.value
                         });
+                        setErrorMessage({
+                            message: '',
+                            success: false
+                        });
                     }} onFocus={() => {setIsEngagingField({...isEngangingField,
                         loginPassword: true
                     })}} onBlur={() => {setIsEngagingField({...isEngangingField,
@@ -235,15 +244,15 @@ const AuthSection:FunctionComponent = () => {
                 }}>
                     {errorMessage.message}
                 </p> : <></>}
-                <button className="Submit" onClick={createSession}>Submit</button>
+                <button className="Submit" onClick={() => {createSession()}}>Submit</button>
             </div>
             <div className="SessionWrapper">
-                <h4>Your current session</h4>
+                <h4>Your current session:</h4>
                 {userData.session.key && userData.session.expires > Date.now() ? <>
-                    <p>{userData.session.key}</p>
-                    <p>Expires in: <span style={{
-                        color: Math.floor(sessionCounter/1000) > (sessionCounterAmount*60) / 2 ? 'var(--green)' : Math.floor(sessionCounter/1000) > (sessionCounterAmount*60) / 4 ? 'var(--yellow)' : 'var(--lightRed)'
-                    }}>{Math.floor(sessionCounter/(1000*60))}m {Math.floor(sessionCounter/1000) % 60}s</span></p>
+                    <p className="Timer" style={{
+                        color: Math.floor(sessionCounter/1000) > (sessionCounterAmount*60) / 2 ? 'var(--green)' : Math.floor(sessionCounter/1000) > (sessionCounterAmount*60) / 4 ? 'var(--yellow)' : 'var(--lightRed)',
+                    }}>{Math.floor(sessionCounter/(1000*60))}m {Math.floor(sessionCounter/1000) % 60}s</p>
+                    <p className="Key"><span>Key:</span> {userData.session.key}</p>
                 </>: <></>}
              </div>
         </div>
