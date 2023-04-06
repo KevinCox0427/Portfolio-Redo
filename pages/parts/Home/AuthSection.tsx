@@ -122,7 +122,7 @@ const AuthSection:FunctionComponent = () => {
 
     return <div id="authentication" className="Section">
         <h3 className='Title'>In order to have users, you need secure authentication...</h3>
-        <p className='Description'>Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch. Let's create a user from stratch together:</p>
+        <p className='Description'>Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.<span>Let's create you a user from stratch together!</span></p>
         <div className='Example'>
             <div className="Form">
                 <h4>Register</h4>
