@@ -1,0 +1,32 @@
+@mixin LinkHover($color, $hoverColor, $startingAmount) {
+    color: var(--black);
+    padding: 0.25em 0.3em 0.2em 0.25em;
+    background: linear-gradient(to bottom, $color 0%, $color 100%);
+    background-position: 0 100%;
+    background-repeat: repeat-x;
+    background-size: 0.05em $startingAmount;
+    border-radius: 0em;
+    text-decoration: none;
+    width: fit-content;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4em;
+    transition: background-size 0.15s ease-in-out, color 0.1s linear, border-radius 0.15s ease-in-out, font-weight 0.1s linear;
+
+    i {
+        color: $color;
+        transition: color 0.1s linear;
+    }
+
+    &:hover, &.Activated {
+        color: $hoverColor;
+        font-weight: 400;
+        background-size: 0.05em 100%;
+        cursor: pointer;
+        border-radius: 0.1em;
+
+        i {
+            color: $hoverColor;
+        }
+    }
+}

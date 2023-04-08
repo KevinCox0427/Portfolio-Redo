@@ -34,7 +34,7 @@ readSpotifyBearerToken();
 
 index.route('/spotify')
     .post(async (req, res) => {
-        if( !(
+        if( ! (
             typeof req.body !== 'undefined' && 
             typeof req.body.search === 'string' &&
             typeof req.body.recommend === 'boolean'
@@ -49,6 +49,129 @@ index.route('/spotify')
             if(!writeResult) {
                 res.status(400).send('Error: Spotify API configuration is not working');
                 return;
+            }
+        }
+
+        const reqeust = req.body as {
+            search: string,
+            recommend: boolean
+        }
+
+        if(reqeust.recommend) {
+            
+        } else {
+            try {
+                const url = `https://api.spotify.com/v1/search?q=${reqeust.search}&type=album,track&market=US`;
+                const result = await axios.get(url, {
+                    headers: {
+                        Authorization: `Bearer ${bearerToken.token}`
+                    }
+                });
+
+                type AlbumType = {
+                    artists: ArtistType[],
+                    external_urls: {
+                        spotify: string
+                    },
+                    images: {
+                        url: string
+                    }[],
+                    name: string,
+                    release_date: string,
+                    total_tracks: number
+                }
+
+                type TrackType = {
+                    album: AlbumType,
+                    artists: ArtistType[],
+                    disc_number: number,
+                    duration_ms: number,
+                    external_urls: {
+                        spotify: string
+                    },
+                    name: string,
+                    track_number: number,
+                }
+
+                type ArtistType = {
+                    external_urls: {
+                        spotify: string
+                    },
+                    name: string
+                }
+
+                const typedResponse = result.data as {
+                    albums: {
+                        items: AlbumType[]
+                    },
+                    tracks: {
+                        items: TrackType[]
+                    }
+                };
+
+                const parsedResponse:{
+                    type: string,
+                    name: string,
+                    url: string,
+                    image: string,
+                    length: number,
+                    release: string,
+                    artists: {
+                        name: string,
+                        url:string
+                    }[],
+                    album?: {
+                        name: string,
+                        url:string,
+                        length: number,
+                        discNumber: number
+                    }
+                }[] = [];
+
+                typedResponse.albums.items.forEach((album, i) => {
+                    parsedResponse.push({
+                        type: 'album',
+                        name: album.name,
+                        artists: album.artists.map(artist => {
+                            return {
+                                name: artist.name,
+                                url: artist.external_urls.spotify
+                            }
+                        }),
+                        url: album.external_urls.spotify,
+                        image: album.images[0].url,
+                        length: album.total_tracks,
+                        release: album.release_date
+                    });
+
+                    const track = typedResponse.tracks.items[i];
+                    parsedResponse.push({
+                        type: 'track',
+                        name: track.name,
+                        artists: track.artists.map(artist => {
+                            return {
+                                name: artist.name,
+                                url: artist.external_urls.spotify
+                            }
+                        }),
+                        url: track.external_urls.spotify,
+                        image: track.album.images[0].url,
+                        length: track.duration_ms,
+                        release: track.album.release_date,
+                        album: { 
+                            name: track.album.name,
+                            url: track.album.external_urls.spotify,
+                            discNumber: track.track_number,
+                            length: track.album.total_tracks
+                        }
+                    })
+                })
+
+                res.status(200).send(parsedResponse);
+            } catch (e:any) {
+                res.status(400).send({
+                    error: e.response.data.error.message
+                });
             }
         }
     })

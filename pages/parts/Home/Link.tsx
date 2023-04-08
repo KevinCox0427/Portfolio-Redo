@@ -7,18 +7,9 @@ type Props = {
 }
 
 const Link:FunctionComponent<Props> = (props) => {
-    return <a className="Link" href={props.url} style={props.activated ? {
-        fontWeight: 400,
-        padding: '0.2em 0.4em 0.2em 0.3em'
-    } : {}}>
+    return <a className={`Link ${props.activated ? 'Activated' : ''}`} href={props.url} target={props.url.charAt(0) == '/' ? '_self' : '_blank'}>
         {props.text}
-        <i className="fa-solid fa-angle-right" style={props.activated ? {
-            color: 'var(--black)'
-        } : {}}></i>
-        <div className="Underline" style={props.activated ? {
-            height: '100%',
-            borderRadius: '0.2em'
-        } : {}}></div>
+        <i className="fa-solid fa-angle-right"></i>
     </a>
 }
 

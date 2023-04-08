@@ -46,7 +46,9 @@ function watchScript() {
         if(Date.now() - compileTimestamp < 200) return;
         node.kill('SIGTERM');
 
-        compileTimestamp = Date.now();
+        const processTimestamp = Date.now();
+
+        compileTimestamp = processTimestamp
         console.log('\nCompiling: ' + fileName);
         let compiler:ChildProcess | null = null;
         
@@ -66,6 +68,7 @@ function watchScript() {
         if(!compiler) return;
 
         compiler.on('exit', () => {
+            if(processTimestamp != compileTimestamp) return;
             console.log('Done!\n');
             node = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
         });

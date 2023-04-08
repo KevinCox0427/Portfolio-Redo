@@ -78,7 +78,7 @@ button, input, select, option {
     left: 50%;
     transform: translateX(-50%);
     align-self: center;
-    height: 3.75em;
+    min-height: 3.75em;
     width: fit-content;
     flex-direction: row;
     justify-content: center;
@@ -87,6 +87,7 @@ button, input, select, option {
     z-index: 100;
 
     .Logo {
+        position: absolute;
         height: 100%;
         width: fit-content;
         border-radius: 0 0 0 0.5em;

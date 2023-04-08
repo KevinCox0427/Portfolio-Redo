@@ -18,13 +18,6 @@ const AuthSection:FunctionComponent = () => {
     });
     cacheLocalStorage('DreamStateUserRegister', userData, setUserData);
 
-    const [isEngangingField, setIsEngagingField] = useState({
-        registerUsername: false,
-        registerPassword: false,
-        loginUsername: false,
-        loginPassword: false
-    });
-
     const [errorMessage, setErrorMessage] = useState({
         success: false,
         message: ''
@@ -132,45 +125,40 @@ const AuthSection:FunctionComponent = () => {
                             registerPassword: '',
                             hash: '',
                             salt: '',
+                            session: {
+                                key: '',
+                                expires: 0
+                            }
                         });
+                        setSessionCounter(0);
                     }}></i>
-                <div className="InputWrapper" style={{
-                    borderColor: isEngangingField.registerUsername ? 'var(--yellow)' : userData.registerUsername ? 'var(--green)' : 'var(--lightRed)'
-                }} onMouseOver={() => {setIsEngagingField({...isEngangingField,
-                    registerUsername: true
-                })}} onMouseOut={() => {setIsEngagingField({...isEngangingField,
-                    registerUsername: false
-                })}}>
-                    <p>Username:</p>
-                    <input value={userData.registerUsername} onChange={e => {
+                <div className="InputWrapper">
+                    <input placeholder=" " id="userCreateUsername" value={userData.registerUsername} onChange={e => {
                         setUserData({...userData,
-                            registerUsername: e.target.value
+                            registerUsername: e.target.value,
+                            session: {
+                                key: '',
+                                expires: 0
+                            }
                         });
-                    }} onFocus={() => {setIsEngagingField({...isEngangingField,
-                        registerUsername: true
-                    })}} onBlur={() => {setIsEngagingField({...isEngangingField,
-                        registerUsername: false
-                    })}}></input>
+                        setSessionCounter(0);
+                    }}></input>
+                    <label htmlFor="userCreateUsername">Username:</label>
                 </div>
-                <div className="InputWrapper" style={{
-                    borderColor: isEngangingField.registerPassword ? 'var(--yellow)' : userData.registerPassword ? 'var(--green)' : 'var(--lightRed)'
-                }} onMouseOver={() => {setIsEngagingField({...isEngangingField,
-                    registerPassword: true
-                })}} onMouseOut={() => {setIsEngagingField({...isEngangingField,
-                    registerPassword: false
-                })}}>
-                    <p>Password:</p>
-                    <input value={userData.registerPassword} onChange={e => {
+                <div className="InputWrapper">
+                    <input placeholder=" " id="userCreatePassword" value={userData.registerPassword} onChange={e => {
                         setUserData({...userData,
                             registerPassword: e.target.value,
                             hash: '',
-                            salt: ''
+                            salt: '',
+                            session: {
+                                key: '',
+                                expires: 0
+                            }
                         });
-                    }} onFocus={() => {setIsEngagingField({...isEngangingField,
-                        registerPassword: true
-                    })}} onBlur={() => {setIsEngagingField({...isEngangingField,
-                        registerPassword: false
-                    })}}></input>
+                        setSessionCounter(0);
+                    }}></input>
+                    <label htmlFor="userCreatePassword">Password:</label>
                 </div>
                 <button className="Submit" onClick={encryptPassword}>Submit</button>
             </div>
@@ -195,15 +183,8 @@ const AuthSection:FunctionComponent = () => {
                         });
                         setSessionCounter(0);
                     }}></i>
-                <div className="InputWrapper" style={{
-                    borderColor: isEngangingField.loginUsername ? 'var(--yellow)' : userData.loginUsername ? 'var(--green)' : 'var(--lightRed)'
-                }} onMouseOver={() => {setIsEngagingField({...isEngangingField,
-                    loginUsername: true
-                })}} onMouseOut={() => {setIsEngagingField({...isEngangingField,
-                    loginUsername: false
-                })}}>
-                    <p>Username:</p>
-                    <input value={userData.loginUsername} onChange={e => {
+                <div className="InputWrapper">
+                    <input placeholder=" " id="userLoginUsername" value={userData.loginUsername} onChange={e => {
                         setUserData({...userData,
                             loginUsername: e.target.value
                         });
@@ -211,21 +192,11 @@ const AuthSection:FunctionComponent = () => {
                             message: '',
                             success: false
                         });
-                    }} onFocus={() => {setIsEngagingField({...isEngangingField,
-                        loginUsername: true
-                    })}} onBlur={() => {setIsEngagingField({...isEngangingField,
-                        loginUsername: false
-                    })}}></input>
+                    }}></input>
+                    <label htmlFor="userLoginUsername">Username:</label>
                 </div>
-                <div className="InputWrapper" style={{
-                    borderColor: isEngangingField.loginPassword ? 'var(--yellow)' : userData.loginPassword ? 'var(--green)' : 'var(--lightRed)'
-                }} onMouseOver={() => {setIsEngagingField({...isEngangingField,
-                    loginPassword: true
-                })}} onMouseOut={() => {setIsEngagingField({...isEngangingField,
-                    loginPassword: false
-                })}}>
-                    <p>Password:</p>
-                    <input value={userData.loginPassword} onChange={e => {
+                <div className="InputWrapper">
+                    <input placeholder=" " id="userLoginPassword" value={userData.loginPassword} onChange={e => {
                         setUserData({...userData,
                             loginPassword: e.target.value
                         });
@@ -233,11 +204,8 @@ const AuthSection:FunctionComponent = () => {
                             message: '',
                             success: false
                         });
-                    }} onFocus={() => {setIsEngagingField({...isEngangingField,
-                        loginPassword: true
-                    })}} onBlur={() => {setIsEngagingField({...isEngangingField,
-                        loginPassword: false
-                    })}}></input>
+                    }}></input>
+                    <label htmlFor="userLoginPassword">Password:</label>
                 </div>
                 {errorMessage.message ? <p className="ErrorMessage" style={{
                     color: errorMessage.success ? 'var(--green)' : 'var(--lightRed)'

@@ -1,7 +1,7 @@
 #authentication {
     .Example {
         gap: 3.75em 3em;
-        margin-top: 6em;
+        margin-top: 5.5em;
 
         .Form {
             height: fit-content;
@@ -9,6 +9,7 @@
             flex-grow: 1;
             flex-wrap: wrap;
             flex-basis: 25em;
+            min-width: 1px;
             gap: 2.25em;
             justify-content: center;
             align-items: center;
@@ -39,33 +40,51 @@
             }
 
             .InputWrapper {
-                flex-basis: 100%;
+                flex-direction: row-reverse;
+                flex-basis: 1px;
                 flex-grow: 1;
-                flex-direction: row;
-                flex-wrap: wrap;
-                align-items: baseline;
-                gap: 0.5em;
-                padding-bottom: 0.1em;
-                border-bottom: 0.125em solid;
-                transition: border-color 0.1s linear;
+                max-width: 100%;
+                align-items: flex-end;
+                justify-content: flex-end;
+                gap: 0em;
                 margin-top: -1.4em;
+        
+                input {
+                    background: none;
+                    flex-basis: 5em;
+                    flex-grow: 1;
+                    font-size: 1.8em;
+                    padding: 0.005em 0.2em;
+                    font-family: var(--franklin);
+                    font-weight: 100;
+                    min-width: 2em;
+                    transition: border-color 0.1s linear;
+                    border-bottom: 2px solid var(--lightRed);
+        
+                    &:not(:placeholder-shown), &:not(:placeholder-shown) ~ label {
+                        border-bottom: 2px solid var(--green);
+                    }
 
-                p {
-                    font-size: 1.35em;
+                    &:hover, &:hover ~ label {
+                        border-bottom: 2px solid var(--yellow);
+                        cursor:text;
+                    }
+                }
+            
+                label {
+                    font-size: 1.25em;
                     font-weight: 300;
                     font-family: var(--cairo);
                     letter-spacing: 0.02em;
-                }
-
-                input {
-                    flex-basis: 5em;
-                    flex-grow: 1;
-                    font-size: 1.7em;
-                    padding: 0 0.25em;
-                    font-family: var(--franklin);
-                    font-weight: 100;
-                    background-color: var(--white);
-                    min-width: 2em;
+                    transition: border-color 0.1s linear;
+                    padding: 0.25em 0.2em;
+                    height: fit-content;
+                    border-bottom: 2px solid var(--lightRed);
+            
+                    &:hover, &:hover~input {
+                        border-bottom: 2px solid var(--yellow);
+                        cursor:text;
+                    }
                 }
             }
 
@@ -168,7 +187,7 @@
                 font-weight: 300;
                 line-height: 130%;
                 font-size: 1.4em;
-                gap: 0.5em;
+                gap: 0.75em;
                 word-break: break-all;
 
                 span {

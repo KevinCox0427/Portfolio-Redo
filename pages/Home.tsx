@@ -24,14 +24,23 @@ export function cacheLocalStorage(itemName:string, stateVariable:any, setStateVa
             setStateVariable: setStateVariable
         }
     };
+
+    let timeoutBuffer:NodeJS.Timeout;
+    
     useEffect(() => {
+        if(!hasLoaded) return;
+
         let parsedValues = {};
         Object.keys(cachedValues).map(itemName => {
             parsedValues = {...parsedValues,
                 [itemName]: cachedValues[itemName].stateVariable
             }
         });
-        if(hasLoaded) localStorage.setItem('DreamStateCachedValues', JSON.stringify(parsedValues));
+
+        if(timeoutBuffer) clearTimeout(timeoutBuffer);
+        timeoutBuffer = setTimeout(() => {
+            localStorage.setItem('DreamStateCachedValues', JSON.stringify(parsedValues));
+        }, 5000);
     }, [stateVariable]);
 }
 
@@ -86,7 +95,12 @@ const Home:FunctionComponent = () => {
                 setStartAnimations([diffuseIn, slideRight, slideDown, slideDown, slideDown]);
             }, 4750);
         });
-        document.getElementById('root')!.addEventListener('scroll', checkSections);
+
+        let timeoutBuffer:NodeJS.Timeout;
+        document.getElementById('root')!.addEventListener('scroll', () => {
+            if(timeoutBuffer) clearTimeout(timeoutBuffer)
+            timeoutBuffer = setTimeout(() => {checkSections()}, 20);
+        });
     }
 
     function checkSections() { 
