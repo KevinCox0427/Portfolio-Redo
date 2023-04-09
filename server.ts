@@ -12,6 +12,7 @@ import express from "express";
 export const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.set('trust proxy', true);
 
 
 /**
@@ -19,8 +20,14 @@ app.use(express.urlencoded({extended:true}));
  */
 declare global { 
     type ServerPropsType = Partial<{
-        
+        location: LocationData
     }>
+
+    type LocationData = {
+        ip: string,
+        city: string,
+        ll: number[]
+    } | null
 }
 export type { ServerPropsType };
 

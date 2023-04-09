@@ -229,6 +229,7 @@
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
+        z-index: 10;
 
         .NavBar {
             flex-direction: row;
@@ -239,7 +240,6 @@
             background-color: var(--white);
             border-right: 0.125em dashed var(--black);
             transform: translateX(0.1em);
-            z-index: 10;
             padding: 1em 0;
             pointer-events: none;
     
@@ -348,5 +348,5 @@
         }
     }
 
-    @import 'Homepage/AuthSection', 'Homepage/DataSection', 'Homepage/IntegrationSection';
+    @import 'Homepage/AuthSection', 'Homepage/DataSection', 'Homepage/IntegrationSection', 'Homepage/AnalyticsSection';
 }

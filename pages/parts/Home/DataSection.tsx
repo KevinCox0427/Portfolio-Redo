@@ -54,8 +54,13 @@ const DataSection:FunctionComponent = () => {
     }, 0);
 
     return <div id="data" className='Section'>
-        <h3 className='Title'>It always starts with the data...</h3>
-        <p className='Description'>Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.<span>Let's fill in one to create some new products together!</span></p>
+        <h3 className='Title'>
+            It always starts with the data...
+        </h3>
+        <p className='Description'>
+            Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.
+            <span>Let's fill in one to create some new products together!</span>
+        </p>
         <div className='Example'>
             <div className='DataEntry'>
                 <div className='Line'>

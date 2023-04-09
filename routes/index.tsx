@@ -6,6 +6,7 @@ import { pbkdf2Sync, randomBytes } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import geoip from 'geoip-lite';
 
 dotenv.config();
 
@@ -13,7 +14,19 @@ const index = express.Router();
 
 index.route('/')
     .get(async (req, res) => {
-        res.send(serveHTML(<Home/>, 'Home'));
+        const ip = req.ip.replace('::ffff:', '');
+        const locationRespones = await axios.get(`http://ip-api.com/json/${'66.24.32.201'}`);
+        const parsedLocation = locationRespones.data.status === 'success' ? {
+            ip: locationRespones.data.query,
+            city: `${locationRespones.data.city}, ${locationRespones.data.region}, ${locationRespones.data.countryCode}`,
+            ll: [locationRespones.data.lat as number, locationRespones.data.lon as number]
+        } : null;
+
+        const serverProps = {
+            location: parsedLocation
+        }
+
+        res.send(serveHTML(<Home serverProps={serverProps}/>, 'Home', serverProps));
     });
 
 index.route('/encrypt')
@@ -32,12 +45,44 @@ let bearerToken: {
 };
 readSpotifyBearerToken();
 
+type AlbumType = {
+    artists: ArtistType[],
+    external_urls: {
+        spotify: string
+    },
+    images: {
+        url: string
+    }[],
+    name: string,
+    release_date: string,
+    total_tracks: number
+}
+
+type TrackType = {
+    album: AlbumType,
+    artists: ArtistType[],
+    disc_number: number,
+    duration_ms: number,
+    external_urls: {
+        spotify: string
+    },
+    id: string,
+    name: string,
+    track_number: number,
+}
+
+type ArtistType = {
+    external_urls: {
+        spotify: string
+    },
+    name: string
+}
+
 index.route('/spotify')
     .post(async (req, res) => {
         if( ! (
             typeof req.body !== 'undefined' && 
-            typeof req.body.search === 'string' &&
-            typeof req.body.recommend === 'boolean'
+            (typeof req.body.search === 'string' || typeof req.body.id === 'string')
         )) {
             res.status(400).send('Error: Bad Request');
             return;
@@ -51,128 +96,72 @@ index.route('/spotify')
                 return;
             }
         }
+        
+        const url = req.body.search ? 
+            `https://api.spotify.com/v1/search?q=${req.body.search}&type=track&market=US&limit=40` 
+        :   
+            `https://api.spotify.com/v1/recommendations?seed_tracks=${req.body.id}&market=US&limit=40`;
 
-        const reqeust = req.body as {
-            search: string,
-            recommend: boolean
-        }
-
-        if(reqeust.recommend) {
-            
-        } else {
-            try {
-                const url = `https://api.spotify.com/v1/search?q=${reqeust.search}&type=album,track&market=US`;
-                const result = await axios.get(url, {
-                    headers: {
-                        Authorization: `Bearer ${bearerToken.token}`
-                    }
-                });
-
-                type AlbumType = {
-                    artists: ArtistType[],
-                    external_urls: {
-                        spotify: string
-                    },
-                    images: {
-                        url: string
-                    }[],
-                    name: string,
-                    release_date: string,
-                    total_tracks: number
+        try {
+            const result = await axios.get(url, {
+                headers: {
+                    Authorization: `Bearer ${bearerToken.token}`,
+                    Accept: 'application/json'
                 }
+            });
 
-                type TrackType = {
-                    album: AlbumType,
-                    artists: ArtistType[],
-                    disc_number: number,
-                    duration_ms: number,
-                    external_urls: {
-                        spotify: string
-                    },
+            const tracks = req.body.search ? result.data.tracks.items as TrackType[] : result.data.tracks as TrackType[];
+
+            const parsedResponse:{
+                type: string,
+                id: string,
+                name: string,
+                url: string,
+                image: string,
+                length: number,
+                release: string,
+                artists: {
                     name: string,
-                    track_number: number,
-                }
-
-                type ArtistType = {
-                    external_urls: {
-                        spotify: string
-                    },
-                    name: string
-                }
-
-                const typedResponse = result.data as {
-                    albums: {
-                        items: AlbumType[]
-                    },
-                    tracks: {
-                        items: TrackType[]
-                    }
-                };
-
-                const parsedResponse:{
-                    type: string,
+                    url:string
+                }[],
+                album: {
                     name: string,
-                    url: string,
-                    image: string,
+                    url:string,
                     length: number,
-                    release: string,
-                    artists: {
-                        name: string,
-                        url:string
-                    }[],
-                    album?: {
-                        name: string,
-                        url:string,
-                        length: number,
-                        discNumber: number
-                    }
-                }[] = [];
+                    discNumber: number
+                }
+            }[] = [];
 
-                typedResponse.albums.items.forEach((album, i) => {
-                    parsedResponse.push({
-                        type: 'album',
-                        name: album.name,
-                        artists: album.artists.map(artist => {
-                            return {
-                                name: artist.name,
-                                url: artist.external_urls.spotify
-                            }
-                        }),
-                        url: album.external_urls.spotify,
-                        image: album.images[0].url,
-                        length: album.total_tracks,
-                        release: album.release_date
-                    });
-
-                    const track = typedResponse.tracks.items[i];
-                    parsedResponse.push({
-                        type: 'track',
-                        name: track.name,
-                        artists: track.artists.map(artist => {
-                            return {
-                                name: artist.name,
-                                url: artist.external_urls.spotify
-                            }
-                        }),
-                        url: track.external_urls.spotify,
-                        image: track.album.images[0].url,
-                        length: track.duration_ms,
-                        release: track.album.release_date,
-                        album: { 
-                            name: track.album.name,
-                            url: track.album.external_urls.spotify,
-                            discNumber: track.track_number,
-                            length: track.album.total_tracks
+            tracks.forEach((track, i) => {
+                parsedResponse.push({
+                    type: 'track',
+                    name: track.name,
+                    id: track.id,
+                    artists: track.artists.map(artist => {
+                        return {
+                            name: artist.name,
+                            url: artist.external_urls.spotify
                         }
-                    })
+                    }),
+                    url: track.external_urls.spotify,
+                    image: track.album.images[0].url,
+                    length: track.duration_ms,
+                    release: track.album.release_date,
+                    album: { 
+                        name: track.album.name,
+                        url: track.album.external_urls.spotify,
+                        discNumber: track.track_number,
+                        length: track.album.total_tracks
+                    }
                 })
+            })
 
-                res.status(200).send(parsedResponse);
-            } catch (e:any) {
-                res.status(400).send({
-                    error: e.response.data.error.message
-                });
-            }
+            res.status(200).send(parsedResponse);
+        } catch (e:any) {
+            console.log(e);
+            res.status(400).send({
+                error: typeof e.response === 'object' ? e.response.data.error.message : e
+            });
         }
     })
 

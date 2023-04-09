@@ -8,6 +8,7 @@ import DataSection from './parts/Home/DataSection';
 import NavBars from './parts/Home/NavBars';
 import AuthSection from './parts/Home/AuthSection';
 import IntegrationSection from './parts/Home/IntegrationSection';
+import AnalyticsSection from './parts/Home/AnalyticsSection';
 
 let hasLoaded = false;
 let cachedValues: {
@@ -17,6 +18,8 @@ let cachedValues: {
     }
 } = {}
 
+let cacheTimeoutBuffer:NodeJS.Timeout;
+
 export function cacheLocalStorage(itemName:string, stateVariable:any, setStateVariable:React.Dispatch<React.SetStateAction<any>>) {
     cachedValues = {...cachedValues,
         [itemName]: {
@@ -24,8 +27,6 @@ export function cacheLocalStorage(itemName:string, stateVariable:any, setStateVa
             setStateVariable: setStateVariable
         }
     };
-
-    let timeoutBuffer:NodeJS.Timeout;
     
     useEffect(() => {
         if(!hasLoaded) return;
@@ -37,8 +38,8 @@ export function cacheLocalStorage(itemName:string, stateVariable:any, setStateVa
             }
         });
 
-        if(timeoutBuffer) clearTimeout(timeoutBuffer);
-        timeoutBuffer = setTimeout(() => {
+        if(cacheTimeoutBuffer) clearTimeout(cacheTimeoutBuffer);
+        cacheTimeoutBuffer = setTimeout(() => {
             localStorage.setItem('DreamStateCachedValues', JSON.stringify(parsedValues));
         }, 5000);
     }, [stateVariable]);
@@ -56,7 +57,11 @@ if(typeof window != 'undefined'){
     });
 }
 
-const Home:FunctionComponent = () => {
+type Props = {
+    serverProps: ServerPropsType
+}
+
+const Home:FunctionComponent<Props> = (props) => {
     const iframeUrls = ['red','orange','yellow','green','blue', 'purple'];
     const sliderRate = 7;
     const sliderWrapper = useRef<HTMLDivElement>(null);
@@ -64,7 +69,7 @@ const Home:FunctionComponent = () => {
     const contentWrapper = useRef<HTMLDivElement>(null);
     const [currentSection, setCurrentSection] = useState(-1);
     
-
+    const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
     if(typeof window != 'undefined') {
         const diffuseIn = {
             filter: 'blur(0px)',
@@ -96,10 +101,9 @@ const Home:FunctionComponent = () => {
             }, 4750);
         });
 
-        let timeoutBuffer:NodeJS.Timeout;
         document.getElementById('root')!.addEventListener('scroll', () => {
-            if(timeoutBuffer) clearTimeout(timeoutBuffer)
-            timeoutBuffer = setTimeout(() => {checkSections()}, 20);
+            if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
+            scrollTimeoutBuffer.current = setTimeout(() => {checkSections()}, 20);
         });
     }
 
@@ -162,12 +166,13 @@ const Home:FunctionComponent = () => {
                 <DataSection></DataSection>
                 <AuthSection></AuthSection>
                 <IntegrationSection></IntegrationSection>
+                <AnalyticsSection location={props.serverProps.location ? props.serverProps.location : null}></AnalyticsSection>
             </div>
         </div>
         <Footer></Footer>
     </>
 }
 
-if (typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Home/>);
+if (typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Home serverProps={window.ServerProps}/>);
 
 export default Home;

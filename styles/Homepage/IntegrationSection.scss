@@ -14,6 +14,7 @@
             gap: 0em;
             margin-top: -1.4em;
             max-width: 100%;
+            margin-bottom: 5em;
 
             .EnterButton {
                 position: absolute;
@@ -60,7 +61,7 @@
                 font-size: 1.4em;
                 font-weight: 300;
                 font-family: var(--cairo);
-                max-width: 40%;
+                max-width: 35%;
                 letter-spacing: 0.02em;
                 transition: border-color 0.1s linear;
                 padding: 0.25em 0.2em;
@@ -75,51 +76,26 @@
             }
         }
 
-        .SpotifySearchResults {
-            align-items: center;
-            width: 100%;
+        .SliderWrapper {
+            flex-direction: row;
+            gap: 2.5em;
             min-height: 18em;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
 
-            h3 {
-                margin-top: 0.8em;
-                font-size: 3em;
-                font-weight: 300;
-                align-self: flex-start;
-            }
-
-            .fa-arrows-rotate {
+            button {
                 font-size: 2em;
-                color: var(--black);
-                animation: 1s ease-in-out 0s infinite Spin;
-                justify-self: center;
-                align-self: center;
+                background: none;
+                padding: 0.3em 0.37em;
+                border-radius: 10em;
+                transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
 
-                @keyframes Spin {
-                    from {transform: rotate(0deg);}
-                    to {transform: rotate(360deg);}
-                }
-            }
-
-            .SearchWrapper {
-                flex-direction: row;
-                gap: 2.5em;
-                width: 100%;
-                align-items: center;
-                justify-content: center;
-
-                button {
-                    font-size: 2em;
-                    background: none;
-                    padding: 0.3em 0.37em;
-                    border-radius: 10em;
-                    transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
-
-                    &:hover {
-                        background-color: var(--black);
-                        color: var(--white);
-                        transform: scale(1.05);
-                        cursor: pointer;
-                    }
+                &:hover {
+                    background-color: var(--black);
+                    color: var(--white);
+                    transform: scale(1.05);
+                    cursor: pointer;
                 }
             }
 
@@ -127,7 +103,7 @@
                 overflow: hidden;
                 flex-basis: 1px;
                 flex-grow: 1;
-                padding: 1.5em 0 1em 0;
+                padding-top: 1.5em;
 
                 .ResultsSlider {
                     flex-direction: row;
@@ -137,7 +113,7 @@
 
                     .Result {
                         flex-direction: column;
-                        gap: 0.4em;
+                        gap: 0.5em;
                         flex-shrink: 0;
                         width: 14em;
         
@@ -179,7 +155,7 @@
                                 transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out, font-weight 0.2s ease-in-out;
                             }
         
-                            &:hover {
+                            &.Hover:hover {
                                 cursor: pointer;
         
                                 img {
@@ -198,28 +174,13 @@
                                 }
                             }
                         }
-        
-                        &.Album {
-                            .Type {
-                                background-color: var(--lightPurple);
-                            }
-        
-                            a {
-                                @include LinkHover(var(--lightPurple), var(--white), 0.1em);
-                            }
-                        }
-        
-                        &.Song {
-                            .AlbumCover:hover .Button {
-                                background-color: var(--yellow);
-                            }
-                            
-                            .Type {
-                                background-color: var(--yellow);
-                            }
-                            
-                            a {
-                                @include LinkHover(var(--yellow), var(--black), 0.1em);
+                        
+                        a {
+                            @include LinkHover(var(--lightPurple), var(--white), 0.1em);
+                            gap: 0.5em;
+
+                            i {
+                                font-size: 0.8em;
                             }
                         }
         
@@ -238,26 +199,14 @@
                             gap: 0.2em 0.3em;
                             font-family: var(--franklin);
                         }
-        
-                        .Type {
-                            font-size: 0.95em;
-                            text-transform: uppercase;
-                            align-self: flex-end;
-                            margin-top: 0.25em;
-                            margin-bottom: -0.15em;
-                            font-weight: 600;
-                            color: var(--white);
-                            padding: 0.2em 0.5em;
-                            border-radius: 0.2em;
-                        }
-        
+
                         .Title {
                             font-size: 1.4em;
                             font-weight: 300;
                             font-family: var(--arima);
                             padding: 0.3em 0.25em 0.15em 0.15em !important;
                             gap: 0.3em;
-                            margin-bottom: 0.5em;
+                            margin-bottom: 0.15em;
             
                             i {
                                 margin-top: -0.25em;
@@ -268,15 +217,40 @@
             }
         }
 
-        .SpotifyRecommendationResults {
+        .SpotifyResults {
             align-items: center;
             width: 100%;
-            min-height: 18em;
 
             h3 {
+                flex-direction: row;
+                gap: 0.5em;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
                 font-size: 3em;
                 font-weight: 300;
                 align-self: flex-start;
+                margin-bottom: 0.2em;
+                border-bottom: 0.05em dashed var(--black);
+
+                span {
+                    white-space: nowrap;
+                    font-family: var(--cairo);
+                    font-size: 0.6em;
+                }
+            }
+
+            .fa-arrows-rotate {
+                font-size: 2em;
+                color: var(--black);
+                animation: 1s ease-in-out 0s infinite Spin;
+                justify-self: center;
+                align-self: center;
+
+                @keyframes Spin {
+                    from {transform: rotate(0deg);}
+                    to {transform: rotate(360deg);}
+                }
             }
         }
     }
