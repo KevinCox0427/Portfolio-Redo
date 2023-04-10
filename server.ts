@@ -20,14 +20,8 @@ app.set('trust proxy', true);
  */
 declare global { 
     type ServerPropsType = Partial<{
-        location: LocationData
+        
     }>
-
-    type LocationData = {
-        ip: string,
-        city: string,
-        ll: number[]
-    } | null
 }
 export type { ServerPropsType };
 

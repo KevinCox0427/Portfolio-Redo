@@ -14,19 +14,7 @@ const index = express.Router();
 
 index.route('/')
     .get(async (req, res) => {
-        const ip = req.ip.replace('::ffff:', '');
-        const locationRespones = await axios.get(`http://ip-api.com/json/${'66.24.32.201'}`);
-        const parsedLocation = locationRespones.data.status === 'success' ? {
-            ip: locationRespones.data.query,
-            city: `${locationRespones.data.city}, ${locationRespones.data.region}, ${locationRespones.data.countryCode}`,
-            ll: [locationRespones.data.lat as number, locationRespones.data.lon as number]
-        } : null;
-
-        const serverProps = {
-            location: parsedLocation
-        }
-
-        res.send(serveHTML(<Home serverProps={serverProps}/>, 'Home', serverProps));
+        res.send(serveHTML(<Home/>, 'Home'));
     });
 
 index.route('/encrypt')

@@ -32,9 +32,14 @@ const Track:FunctionComponent<Props> = (props) => {
     }}>
         <div className={`AlbumCover ${props.isRecommend ? '' : 'Hover'}`} onClick={() => {
             props.search(props.searchResult.id, true);
+        }} style={{
+            pointerEvents: 'none'
         }}>
             <RecordSVG></RecordSVG>
-            <img src={props.searchResult.image}></img>
+            <img src={props.searchResult.image} style={{
+                width: `${props.width}px`,
+                height: `${props.width}px`
+            }}></img>
             {props.isRecommend ? <></> : <p className="Button">Recommend</p>}
         </div>
         <a className="Title" href={props.searchResult.url} target='_blank'>

@@ -37,6 +37,10 @@ function serveHTML(reactComponent:ReactElement<any>, fileName:string, inputServe
             <link rel="stylesheet" type="text/css" href="/css/globals.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <script>window.ServerProps=${JSON.stringify(inputServerProps)}</script>
+            ${fileName == 'Home' ? `
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossOrigin=""/>
+                <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossOrigin=""></script>`
+            : ''}
         </head>
         <body>
             <div id="root">${renderToString(reactComponent)}</div>

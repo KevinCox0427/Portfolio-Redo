@@ -4,13 +4,28 @@
     .GraphWrapper {
 
         .Graph {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 2em;
 
             #map {
-                height: 20em;
-                width: 25em;
+                filter: brightness(0.97) hue-rotate(-27deg);
+                display: block;
+                height: 250px;
+                width: 300px;
+                border-radius: 1em;
 
                 * {
                     display: block;
+                }
+            }
+
+            .Location {
+                .Error {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
                 }
             }
         }

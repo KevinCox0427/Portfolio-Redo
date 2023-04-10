@@ -1,24 +1,74 @@
-import React, { FunctionComponent } from "react";
-
-type Props = {
-    location: LocationData
-}
+import React, { FunctionComponent, useState } from "react";
+import { cacheLocalStorage } from "../../Home";
 
 declare const L:any;
 
-const AnalyticsSection:FunctionComponent<Props> = (props) => {
+const AnalyticsSection:FunctionComponent = () => {
+    const [analytics, setAnalytics] = useState({
+        location: {
+            ip: '',
+            city: '',
+            ll: [0,0]
+        }
+    });
+    cacheLocalStorage('DreamStateAnalytics', analytics, setAnalytics);
+
+    async function getLocationData() {
+        const ip = await (await fetch('https://api.ipify.org?format=json', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json'
+            }
+        })).json();
+
+        const locationResponse = await (await fetch(`http://ip-api.com/json/${ip.ip}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json'
+            }
+        })).json();
+        
+        if(locationResponse.status === 'success') return {
+            ip: locationResponse.query,
+            city: `${locationResponse.city}, ${locationResponse.region}, ${locationResponse.countryCode}`,
+            ll: [locationResponse.lat as number, locationResponse.lon as number]
+        }
+        else return {
+            ip: '',
+            city: '',
+            ll: [0, 0]
+        }
+    }
+
     if(typeof window != 'undefined') { 
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                if(!props.location) return;
-                const map = L.map('map').setView(props.location.ll, 8);
-                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            setTimeout(async () => {
+                let locationData = analytics.location;
+                if(!locationData.ip) {
+                    locationData = await getLocationData();
+                    setAnalytics({...analytics,
+                        location: locationData
+                    });
+                }
+                if(!locationData.ip) return;
+
+                const map = L.map('map', {
+                    zoomControl: false,
+                    center: new L.LatLng(locationData.ll[0], locationData.ll[1]),
+                    zoom: 7,
+                    minZoom: 4,
                     maxZoom: 19,
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
-                L.marker(props.location.ll).addTo(map).bindPopup(`
-                    IP Address: ${props.location.ip}<br>
-                    City: ${props.location.city}
+                    layers: [
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        })
+                    ],
+                    attributionControl: false
+                });
+                
+                L.marker(locationData.ll).addTo(map).bindPopup(`
+                    IP Address: ${locationData.ip}<br>
+                    City: ${locationData.city}
                 `);
             }, 100);
         });
@@ -35,15 +85,15 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
         <div className="GraphWrapper">
             <div className="Graph UserData">
                 <h3>User Location:</h3>
-                {props.location ? <>
-                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossOrigin=""/>
-                    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossOrigin=""></script>
-                    <p>Ip Address: <span>{props.location.ip}</span></p>
-                    <p>City: <span>{props.location.city}</span></p>
-                    <div id="map"></div>
-                </> :
-                    <p>No location data was found.</p>
-                }
+                <div id="map"></div>
+                <div className="Location">
+                    {analytics.location.city ? <>
+                        <p>Ip Address: <span>{analytics.location.ip}</span></p>
+                        <p>City: <span>{analytics.location.city}</span></p>
+                    </> :
+                        <p className="Error">No location data was found.</p>
+                    }
+                </div>
             </div>
         </div>
     </div>

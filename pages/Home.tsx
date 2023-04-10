@@ -57,11 +57,7 @@ if(typeof window != 'undefined'){
     });
 }
 
-type Props = {
-    serverProps: ServerPropsType
-}
-
-const Home:FunctionComponent<Props> = (props) => {
+const Home:FunctionComponent = () => {
     const iframeUrls = ['red','orange','yellow','green','blue', 'purple'];
     const sliderRate = 7;
     const sliderWrapper = useRef<HTMLDivElement>(null);
@@ -166,13 +162,13 @@ const Home:FunctionComponent<Props> = (props) => {
                 <DataSection></DataSection>
                 <AuthSection></AuthSection>
                 <IntegrationSection></IntegrationSection>
-                <AnalyticsSection location={props.serverProps.location ? props.serverProps.location : null}></AnalyticsSection>
+                <AnalyticsSection></AnalyticsSection>
             </div>
         </div>
         <Footer></Footer>
     </>
 }
 
-if (typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Home serverProps={window.ServerProps}/>);
+if (typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Home/>);
 
 export default Home;
