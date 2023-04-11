@@ -1,14 +1,22 @@
-import React, { FunctionComponent, useState } from "react";
-import { cacheLocalStorage } from "../../Home";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import { cacheLocalStorage, hasLoaded } from "../../Home";
 
 declare const L:any;
+let map;
 
 const AnalyticsSection:FunctionComponent = () => {
+    const map = useRef(null);
     const [analytics, setAnalytics] = useState({
-        location: {
-            ip: '',
-            city: '',
-            ll: [0,0]
+        userData: {
+            location: {
+                ip: '',
+                city: '',
+                ll: [0,0]
+            },
+            agent: {
+                os: '',
+                browser: ''
+            }
         }
     });
     cacheLocalStorage('DreamStateAnalytics', analytics, setAnalytics);
@@ -40,37 +48,56 @@ const AnalyticsSection:FunctionComponent = () => {
         }
     }
 
-    if(typeof window != 'undefined') { 
-        window.addEventListener('load', () => {
-            setTimeout(async () => {
-                let locationData = analytics.location;
-                if(!locationData.ip) {
-                    locationData = await getLocationData();
-                    setAnalytics({...analytics,
-                        location: locationData
-                    });
-                }
-                if(!locationData.ip) return;
+    async function loadMap() {
+        let locationData = analytics.userData.location;
 
-                const map = L.map('map', {
-                    zoomControl: false,
-                    center: new L.LatLng(locationData.ll[0], locationData.ll[1]),
-                    zoom: 7,
-                    minZoom: 4,
-                    maxZoom: 19,
-                    layers: [
-                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        })
-                    ],
-                    attributionControl: false
-                });
-                
-                L.marker(locationData.ll).addTo(map).bindPopup(`
-                    IP Address: ${locationData.ip}<br>
-                    City: ${locationData.city}
-                `);
-            }, 100);
+        console.log(locationData)
+
+        if(!locationData.city) {
+            locationData = await getLocationData();
+            setAnalytics({...analytics,
+                userData: {...analytics.userData,
+                    location: locationData
+                }
+            });
+        }
+
+        map.current = L.map('map', {
+            zoomControl: false,
+            center: new L.LatLng(locationData.ll[0], locationData.ll[1]),
+            zoom: 7,
+            minZoom: 4,
+            maxZoom: 19,
+            layers: [
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                })
+            ],
+            attributionControl: false
+        });
+        
+        L.marker(new L.LatLng(locationData.ll[0], locationData.ll[1])).addTo(map.current).bindPopup(`
+            IP Address: ${locationData.ip}<br>
+            City: ${locationData.city}
+        `);
+    }
+
+    if(typeof window != 'undefined') {
+        useEffect(() => {
+            if(!hasLoaded) return;
+            console.log(analytics)
+            if(!map.current) loadMap();
+        }, [analytics]);
+
+        window.addEventListener('load', () => {
+            setAnalytics({...analytics,
+                userData: {...analytics.userData,
+                    agent: {
+                        os: window.navigator.userAgent.split(')')[0].split('(')[1].split(';')[1],
+                        browser: window.navigator.userAgent.split(')')[1]
+                    }
+                }
+            })
         });
     }
 
@@ -84,16 +111,24 @@ const AnalyticsSection:FunctionComponent = () => {
         </p>
         <div className="GraphWrapper">
             <div className="Graph UserData">
-                <h3>User Location:</h3>
-                <div id="map"></div>
+                <h3>User Data:</h3>
                 <div className="Location">
-                    {analytics.location.city ? <>
-                        <p>Ip Address: <span>{analytics.location.ip}</span></p>
-                        <p>City: <span>{analytics.location.city}</span></p>
+                    {analytics ? <>
+                        <p>Ip Address: <span>{analytics.userData.location.ip}</span></p>
+                        <p>City: <span>{analytics.userData.location.city}</span></p>
+                        <p>Browser: <span>{analytics.userData.agent.browser}</span></p>
+                        <p>Operating System: <span>{analytics.userData.agent.os}</span></p>
                     </> :
                         <p className="Error">No location data was found.</p>
                     }
                 </div>
+                <div className="MapWrapper">
+                    <div id="map"></div>
+                    <div className="Feather"></div>
+                </div>
+            </div>
+            <div className="Graph">
+
             </div>
         </div>
     </div>

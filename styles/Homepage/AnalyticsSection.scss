@@ -2,25 +2,84 @@
     padding-top: 0em;
 
     .GraphWrapper {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2em;
+        padding-top: 5em;
 
         .Graph {
             flex-direction: row;
             flex-wrap: wrap;
+            gap: 1em;
+            flex-basis: 35em;
+            flex-grow: 1;
+        }
+
+        .UserData {
             gap: 2em;
+            align-items: center;
+            justify-content: center;
 
-            #map {
-                filter: brightness(0.97) hue-rotate(-27deg);
-                display: block;
-                height: 250px;
-                width: 300px;
-                border-radius: 1em;
+            .MapWrapper {
+                border-radius: 2em;
+                flex-basis: 250px;
 
-                * {
+                #map {
+                    filter: brightness(0.97) hue-rotate(-27deg);
                     display: block;
+                    height: 300px;
+                    width: 250px;
+                    border-radius: inherit;
+    
+                    * {
+                        display: block;
+                    }
+                }
+
+                .Feather {
+                    position: absolute;
+                    border-radius: inherit;
+                    height: 100%;
+                    width: 100%;
+                    box-shadow: 0 0 0.1em 0.1em var(--white) inset;
+                    pointer-events: none;
                 }
             }
 
+            h3 {
+                font-size: 2.5em;
+                font-weight: 300;
+                flex-basis: 100%;
+                text-align: center;
+            }
+
             .Location {
+                gap: 0.8em;
+                flex-grow: 1;
+                flex-basis: 15em;
+
+                p {
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 0.5em;
+                    font-size: 1.25em;
+                    font-weight: 400;
+                    border-bottom: 0.1em dashed var(--black);
+                    padding-bottom: 0.6em;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    span {
+                        font-size: 1.1em;
+                        font-family: var(--franklin);
+                        font-weight: 200;
+                        text-align: end;
+                    }
+                }
+
                 .Error {
                     position: absolute;
                     left: 50%;

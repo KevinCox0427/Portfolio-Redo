@@ -10,7 +10,7 @@ import AuthSection from './parts/Home/AuthSection';
 import IntegrationSection from './parts/Home/IntegrationSection';
 import AnalyticsSection from './parts/Home/AnalyticsSection';
 
-let hasLoaded = false;
+export let hasLoaded = false;
 let cachedValues: {
     [itemName:string]: {
         stateVariable: any, 
@@ -30,7 +30,7 @@ export function cacheLocalStorage(itemName:string, stateVariable:any, setStateVa
     
     useEffect(() => {
         if(!hasLoaded) return;
-
+        
         let parsedValues = {};
         Object.keys(cachedValues).map(itemName => {
             parsedValues = {...parsedValues,
