@@ -1,6 +1,6 @@
 import React, { Fragment, FunctionComponent, useRef, useState } from "react";
-import { cacheLocalStorage } from "../../Home";
 import Track from "./Track";
+import WindowCache from "../../windowCache";
 
 type SearchResponse = {
     type: string,
@@ -22,7 +22,11 @@ type SearchResponse = {
     }
 }[]
 
-const IntegrationSection:FunctionComponent = () => {
+type Props = {
+    windowCache: WindowCache
+}
+
+const IntegrationSection:FunctionComponent<Props> = (props) => {
     const [searchData, setSearchData] = useState<{
         searchBar: string,
         searchResults: SearchResponse,
@@ -32,7 +36,7 @@ const IntegrationSection:FunctionComponent = () => {
         searchResults: [],
         searchRecommendations: []
     });
-    cacheLocalStorage('DreamStateSearchData', searchData, setSearchData);
+    props.windowCache.registerCache('DreamStateSearchData', searchData, setSearchData);
 
 
     const [isSearching, setIsSearching] = useState({

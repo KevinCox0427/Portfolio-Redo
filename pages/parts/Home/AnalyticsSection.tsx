@@ -1,10 +1,13 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
-import { cacheLocalStorage, hasLoaded } from "../../Home";
+import WindowCache from "../../windowCache";
 
 declare const L:any;
-let map;
 
-const AnalyticsSection:FunctionComponent = () => {
+type Props = {
+    windowCache: WindowCache
+}
+
+const AnalyticsSection:FunctionComponent<Props> = (props) => {
     const map = useRef(null);
     const [analytics, setAnalytics] = useState({
         userData: {
@@ -19,7 +22,7 @@ const AnalyticsSection:FunctionComponent = () => {
             }
         }
     });
-    cacheLocalStorage('DreamStateAnalytics', analytics, setAnalytics);
+    props.windowCache.registerCache('DreamStateAnalytics', analytics, setAnalytics);
 
     async function getLocationData() {
         const ip = await (await fetch('https://api.ipify.org?format=json', {
@@ -50,8 +53,6 @@ const AnalyticsSection:FunctionComponent = () => {
 
     async function loadMap() {
         let locationData = analytics.userData.location;
-
-        console.log(locationData)
 
         if(!locationData.city) {
             locationData = await getLocationData();
@@ -84,8 +85,7 @@ const AnalyticsSection:FunctionComponent = () => {
 
     if(typeof window != 'undefined') {
         useEffect(() => {
-            if(!hasLoaded) return;
-            console.log(analytics)
+            if(!props.windowCache.hasLoaded) return;
             if(!map.current) loadMap();
         }, [analytics]);
 

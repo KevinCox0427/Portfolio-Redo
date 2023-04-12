@@ -1,9 +1,14 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
-import { cacheLocalStorage } from "../../Home";
+import WindowCache from "../../windowCache";
 
 const base64Characters = 'abcdefghijklmnopqrxtuvwxyzABCDEFGHIJKLMNOPQRXTUVWXYZ0123456789+/';
 
-const AuthSection:FunctionComponent = () => {
+
+type Props = {
+    windowCache: WindowCache
+}
+
+const AuthSection:FunctionComponent<Props> = (props) => {
     const [userData, setUserData] = useState({
         registerUsername: '',
         registerPassword: '',
@@ -16,7 +21,7 @@ const AuthSection:FunctionComponent = () => {
             expires: 0
         }
     });
-    cacheLocalStorage('DreamStateUserRegister', userData, setUserData);
+    props.windowCache.registerCache('DreamStateUserRegister', userData, setUserData);
 
     const [errorMessage, setErrorMessage] = useState({
         success: false,
@@ -25,7 +30,7 @@ const AuthSection:FunctionComponent = () => {
 
     const sessionCounterAmount = 20;
     const [sessionCounter, setSessionCounter] = useState(0);
-    cacheLocalStorage('DreamStateSessionCounter', sessionCounter, setSessionCounter);
+    props.windowCache.registerCache('DreamStateSessionCounter', sessionCounter, setSessionCounter);
 
     const sessionCounterInterval = useRef<ReturnType<typeof setTimeout> | null>(null);
 

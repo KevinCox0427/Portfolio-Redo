@@ -20,6 +20,7 @@
                 font-weight: 200;
                 align-self: center;
                 text-align: center;
+                flex-basis: 100%;
             }
 
             .Reset {
@@ -40,9 +41,8 @@
             }
 
             .InputWrapper {
+                flex-basis: 100%;
                 flex-direction: row-reverse;
-                flex-basis: 1px;
-                flex-grow: 1;
                 max-width: 100%;
                 align-items: flex-end;
                 justify-content: flex-end;

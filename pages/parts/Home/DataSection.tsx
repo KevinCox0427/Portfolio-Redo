@@ -1,5 +1,5 @@
 import React, { Fragment, FunctionComponent, useState } from "react";
-import { cacheLocalStorage } from "../../Home";
+import WindowCache from "../../windowCache";
 
 const date = new Date();
 
@@ -14,7 +14,11 @@ function isPrice(price:string) {
     return price.match(/^[\d.]+$/);
 }
 
-const DataSection:FunctionComponent = () => {
+type Props = {
+    windowCache: WindowCache
+}
+
+const DataSection:FunctionComponent<Props> = (props) => {
     const [currentData, setCurrentData] = useState<{
         name: string,
         price: string,
@@ -42,7 +46,7 @@ const DataSection:FunctionComponent = () => {
         imageUrls: [],
         sales: []
     });
-    cacheLocalStorage('DreamStateDataEntry', currentData, setCurrentData);
+    props.windowCache.registerCache('DreamStateDataEntry', currentData, setCurrentData);
 
     const [galleryIndex, setGalleryIndex] = useState(0);
     const [selectedQuantity, setSelectedQuantity] = useState<number | null>(1);
