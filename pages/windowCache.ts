@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
 class WindowCache {
-    cacheTimeoutBuffer:NodeJS.Timeout | null = null;
-    loadedCount = 0;
-    hasLoaded = false;
+    isLoaded:{
+        [itemName:string]: boolean
+    } = {}
     previousSave: any;
     cachedValues: {
         [itemName:string]: {
@@ -18,54 +18,64 @@ class WindowCache {
             if(previousSaveStringified && typeof JSON.parse(previousSaveStringified) != 'undefined') {
                 this.previousSave = JSON.parse(previousSaveStringified);
                 Object.keys(this.cachedValues).map(itemName => {
-                    this.cachedValues[itemName].setStateVariable(this.previousSave[itemName]);
+                    if(!deepEquals(this.previousSave[itemName], this.cachedValues[itemName].stateVariable)) {
+                        this.cachedValues[itemName].setStateVariable(this.previousSave[itemName]);
+                    }
+                    else this.updateLoad(itemName);
                 });
+            } else {
+                this.previousSave = {};
+                Object.keys(this.cachedValues).map(itemName => {
+                    this.previousSave = {...this.previousSave,
+                        [itemName]: this.cachedValues[itemName].stateVariable
+                    }
+                });
+                localStorage.setItem('DreamStateCachedValues', JSON.stringify(this.previousSave));
             }
         });
     }
 
     registerCache(itemName:string, stateVariable:any, setStateVariable:React.Dispatch<React.SetStateAction<any>>) {
-        this.cachedValues = {...this.cachedValues,
-            [itemName]: {
-                stateVariable: stateVariable,
-                setStateVariable: setStateVariable
+        if(typeof this.cachedValues[itemName] === 'undefined'){
+            this.cachedValues = {...this.cachedValues,
+                [itemName]: {
+                    stateVariable: stateVariable,
+                    setStateVariable: setStateVariable
+                }
+            };
+            this.isLoaded = {...this.isLoaded,
+                [itemName]: false
             }
-        };
+        }
 
         useEffect(() => {
-            console.log(this.getLoadCount(), this.previousSave)
-            if(!this.hasLoaded) {
-                if(!this.previousSave || deepEquals(stateVariable, this.previousSave[itemName])) {
-                    this.addLoadCount();
-                }
-                else return;
+            if(typeof this.previousSave == 'undefined') return;
+            console.log(itemName, stateVariable)
+            if(!this.hasLoaded()) {
+                if(deepEquals(this.previousSave[itemName], stateVariable)) this.updateLoad(itemName);
+                return;
             }
-            
-            this.updateCacheValue(itemName);
+            else this.updateCacheValue();
         }, [stateVariable]);
     }
 
-    updateCacheValue(itemName: string) {
-        this.cachedValues = {...this.cachedValues,
-            [itemName]: this.cachedValues[itemName].stateVariable
-        }
-
-        console.log('Saving: ' + itemName)
-
-        if(this.cacheTimeoutBuffer) clearTimeout(this.cacheTimeoutBuffer);
-        this.cacheTimeoutBuffer = setTimeout(() => {
-            console.log('Saved!', this.cachedValues)
-            localStorage.setItem('DreamStateCachedValues', JSON.stringify(this.cachedValues));
-        }, 3000);
+    updateCacheValue() {
+        let parsedCachedValues = {};
+        Object.keys(this.cachedValues).map(cacheItemName => {
+            parsedCachedValues = {...parsedCachedValues,
+                [cacheItemName]: this.cachedValues[cacheItemName].stateVariable
+            }
+        });
+        localStorage.setItem('DreamStateCachedValues', JSON.stringify(parsedCachedValues));
     }
 
-    addLoadCount() {
-        this.loadedCount++;
-        if(this.getLoadCount() == Object.keys(this.cachedValues).length) this.hasLoaded = true;
+    updateLoad(itemName:string) {
+        this.isLoaded[itemName] = true;
+        console.log(itemName, this.isLoaded[itemName], this.isLoaded)
     }
 
-    getLoadCount() {
-        return this.loadedCount;
+    hasLoaded() {
+        return Object.keys(this.isLoaded).every(key => this.isLoaded[key as keyof typeof this.isLoaded]);
     }
 }
 

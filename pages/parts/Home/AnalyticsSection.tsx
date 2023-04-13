@@ -85,7 +85,7 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
 
     if(typeof window != 'undefined') {
         useEffect(() => {
-            if(!props.windowCache.hasLoaded) return;
+            if(!props.windowCache.hasLoaded()) return;
             if(!map.current) loadMap();
         }, [analytics]);
 

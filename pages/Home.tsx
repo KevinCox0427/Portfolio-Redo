@@ -12,7 +12,7 @@ import AnalyticsSection from './parts/Home/AnalyticsSection';
 import WindowCache from './windowCache';
 
 const Home:FunctionComponent = () => {
-    const windowCache = new WindowCache();
+    const windowCache = useRef(new WindowCache());
 
     const iframeUrls = ['red','orange','yellow','green','blue', 'purple'];
     const sliderRate = 7;
@@ -115,10 +115,10 @@ const Home:FunctionComponent = () => {
         <div id="WhatICanDo" className='Contain'>
             <NavBars contentWrapper={contentWrapper} currentSection={currentSection}></NavBars>
             <div className='Content' ref={contentWrapper}>
-                <DataSection windowCache={windowCache}></DataSection>
-                <AuthSection windowCache={windowCache}></AuthSection>
-                <IntegrationSection windowCache={windowCache}></IntegrationSection>
-                <AnalyticsSection windowCache={windowCache}></AnalyticsSection>
+                <DataSection windowCache={windowCache.current}></DataSection>
+                <AuthSection windowCache={windowCache.current}></AuthSection>
+                <IntegrationSection windowCache={windowCache.current}></IntegrationSection>
+                <AnalyticsSection windowCache={windowCache.current}></AnalyticsSection>
             </div>
         </div>
         <Footer></Footer>
