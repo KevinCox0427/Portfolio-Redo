@@ -10,29 +10,66 @@
         .Graph {
             flex-direction: row;
             flex-wrap: wrap;
-            gap: 1em;
-            flex-basis: 35em;
+            flex-basis: 32.5em;
             flex-grow: 1;
-        }
-
-        .UserData {
             gap: 2em;
-            align-items: center;
+            height: fit-content;
             justify-content: center;
+            align-items: center;
 
             .MapWrapper {
-                border-radius: 2em;
+                border-radius: 1.25em;
                 flex-basis: 250px;
 
                 #map {
-                    filter: brightness(0.97) hue-rotate(-27deg);
+                    filter: brightness(0.971) hue-rotate(-45deg);
                     display: block;
                     height: 300px;
                     width: 250px;
                     border-radius: inherit;
-    
+
                     * {
                         display: block;
+                    }
+
+                    .leaflet-control {
+                        border: none;
+                        border-radius: 2px;
+                        margin-left: 1.25em;
+                        margin-top: 1.25em;
+
+                        a {
+                            background-color: #f4edec;
+                            font-size: 1.5em;
+                            height: fit-content;
+                            width: fit-content;
+                            padding: 0.45em 0.4em 0.25em 0.35em;
+                            transition: transform 0.1s linear;
+                            border: 1px solid var(--black);
+
+                            &:last-child {
+                                margin-top: -1px;
+                            }
+
+                            span {
+                                font-family: var(--arima);
+                                line-height: 70%;
+                                font-weight: 300;
+                            }
+
+                            &:hover {
+                                z-index: 9999;
+                                transform: scale(1.15);
+                            }
+                        }
+
+                        * {
+                            color: var(--black);
+                        }
+                    }
+
+                    .leaflet-marker-icon {
+                        filter: brightness(1.1) hue-rotate(30deg)
                     }
                 }
 
@@ -41,14 +78,14 @@
                     border-radius: inherit;
                     height: 100%;
                     width: 100%;
-                    box-shadow: 0 0 0.1em 0.1em var(--white) inset;
+                    box-shadow: 0 0 0.125em 0.125em var(--white) inset;
                     pointer-events: none;
                 }
             }
 
             h3 {
-                font-size: 2.5em;
-                font-weight: 300;
+                font-size: 2.75em;
+                font-weight: 200;
                 flex-basis: 100%;
                 text-align: center;
             }
@@ -63,7 +100,7 @@
                     align-items: center;
                     justify-content: space-between;
                     gap: 1em;
-                    font-size: 1.2em;
+                    font-size: 1.15em;
                     font-weight: 400;
                     border-bottom: 0.1em dashed var(--black);
                     padding-bottom: 0.6em;

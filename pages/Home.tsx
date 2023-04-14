@@ -14,7 +14,7 @@ import WindowCache from './windowCache';
 const Home:FunctionComponent = () => {
     const windowCache = useRef(new WindowCache());
 
-    const iframeUrls = ['red','orange','yellow','green','blue', 'purple'];
+    const iframeUrls = ['red','orange','yellow','green', 'blue', 'purple'];
     const sliderRate = 7;
     const sliderWrapper = useRef<HTMLDivElement>(null);
     const [startAnimations, setStartAnimations] = useState<React.CSSProperties[]>([{},{},{},{},{}]);
