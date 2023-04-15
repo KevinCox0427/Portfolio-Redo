@@ -19,7 +19,37 @@ const Home:FunctionComponent = () => {
     const sliderWrapper = useRef<HTMLDivElement>(null);
     const [startAnimations, setStartAnimations] = useState<React.CSSProperties[]>([{},{},{},{},{}]);
     const contentWrapper = useRef<HTMLDivElement>(null);
+
     const [currentSection, setCurrentSection] = useState(-1);
+    const [watchTime, setWatchTime] = useState({
+        start: Date.now(),
+        timeStamps: {
+            home: 0,
+            data: 0,
+            authentication: 0,
+            integration: 0,
+            analytics: 0,
+            ui: 0,
+            web: 0,
+            footer: 0
+        }
+    });
+
+    useEffect(() => {
+        if(currentSection !== 4) return;
+        const interval = setInterval(() => {
+            setWatchTime(previousWatchTime => {
+                return {...previousWatchTime,
+                    timeStamps: {...previousWatchTime.timeStamps,
+                        analytics: previousWatchTime.timeStamps.analytics + 1000
+                    }
+                }
+            })
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [currentSection]);
+
+    console.log('Rerender');
     
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
     if(typeof window != 'undefined') {
@@ -57,21 +87,38 @@ const Home:FunctionComponent = () => {
             if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
             scrollTimeoutBuffer.current = setTimeout(() => {checkSections()}, 20);
         });
+
+        if(typeof window != 'undefined') window.addEventListener('load', checkSections);
     }
 
     function checkSections() { 
         const clamp = (num:number, min:number, max:number) => Math.min(Math.max(num, min), max);
-        const sections = Array.from(document.getElementsByClassName('Section'));
+        const sections = [document.getElementsByClassName('SplashImage')[0], ...Array.from(document.getElementsByClassName('Section')), document.getElementById('Footer')] as HTMLElement[];
+
         const sectionMap = sections.map(section => {
             const sectionTop = section.getBoundingClientRect().top;
             const sectionBottom = section.getBoundingClientRect().bottom;
             return clamp(sectionBottom, 0, window.innerHeight) - clamp(sectionTop, 0, window.innerHeight);
         });
-        setCurrentSection(sectionMap.reduce((previousIndex, current, i) => {
+
+        const newSection = sectionMap.reduce((previousIndex, current, i) => {
             if(current < window.innerHeight/3) return previousIndex;
-            if(previousIndex == -1) return i;
-            return current > sectionMap[previousIndex] ? i : previousIndex;
-        }, -1));
+            else return current > sectionMap[previousIndex] ? i : previousIndex;
+        }, 0);
+
+        if(newSection !== currentSection) {
+            if(currentSection !== -1) setWatchTime(previousWatchTime => {
+                const timeStampName = Object.keys(previousWatchTime.timeStamps)[currentSection];
+
+                return {...previousWatchTime,
+                    start: Date.now(),
+                    timeStamps: {...previousWatchTime.timeStamps,
+                        [timeStampName]: previousWatchTime.timeStamps[timeStampName as keyof typeof previousWatchTime.timeStamps] +  (Date.now() - previousWatchTime.start)
+                    }
+                }
+            });
+            setCurrentSection(newSection);
+        }
     }
     
     setInterval(moveIframes, sliderRate*1000);
@@ -118,7 +165,7 @@ const Home:FunctionComponent = () => {
                 <DataSection windowCache={windowCache.current}></DataSection>
                 <AuthSection windowCache={windowCache.current}></AuthSection>
                 <IntegrationSection windowCache={windowCache.current}></IntegrationSection>
-                <AnalyticsSection windowCache={windowCache.current}></AnalyticsSection>
+                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection}></AnalyticsSection>
             </div>
         </div>
         <Footer></Footer>

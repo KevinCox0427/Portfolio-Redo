@@ -10,6 +10,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
     const navBarStatic = useRef<HTMLDivElement>(null);
     const navBarTop = useRef<HTMLDivElement>(null);
     const navBarBottom = useRef<HTMLDivElement>(null);
+
     const [isNavBarStatic, setIsNavBarStatic] = useState(false);
     const [navBarStaticLimit, setNavBarStaticLimit] = useState(0);
 
@@ -40,12 +41,12 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                <Link url="/#data" text="Optimized data" activated={props.currentSection == 0}></Link>
-                <Link url="/#authentication" text="Secure authentication" activated={props.currentSection == 1}></Link>
-                <Link url="/#integrations" text="Seamless integrations" activated={props.currentSection == 2}></Link>
-                <Link url="/#analytics" text="Detailed analytics" activated={props.currentSection == 3}></Link>
-                <Link url="/#ui" text="User interfaces to control it all" activated={props.currentSection == 4}></Link>
-                <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection == 5}></Link>
+                <Link url="/#data" text="Optimized data" activated={props.currentSection === 1}></Link>
+                <Link url="/#authentication" text="Secure authentication" activated={props.currentSection === 2}></Link>
+                <Link url="/#integrations" text="Seamless integrations" activated={props.currentSection === 3}></Link>
+                <Link url="/#analytics" text="Detailed analytics" activated={props.currentSection === 4}></Link>
+                <Link url="/#ui" text="User interfaces to control it all" activated={props.currentSection === 5}></Link>
+                <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection === 6}></Link>
             </div>
         </div>
         <div className='NavBar Bottom' ref={navBarBottom} style={{
@@ -53,12 +54,12 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                <Link url="/#data" text="Optimized data" activated={props.currentSection == 0}></Link>
-                <Link url="/#authentication" text="Secure authentication" activated={props.currentSection == 1}></Link>
-                <Link url="/#integrations" text="Seamless integrations" activated={props.currentSection == 2}></Link>
-                <Link url="/#analytics" text="Detailed analytics" activated={props.currentSection == 3}></Link>
-                <Link url="/#ui" text="User interfaces to control it all" activated={props.currentSection == 4}></Link>
-                <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection == 5}></Link>
+                <Link url="/#data" text="Optimized data" activated={props.currentSection == 1}></Link>
+                <Link url="/#authentication" text="Secure authentication" activated={props.currentSection == 2}></Link>
+                <Link url="/#integrations" text="Seamless integrations" activated={props.currentSection == 3}></Link>
+                <Link url="/#analytics" text="Detailed analytics" activated={props.currentSection == 4}></Link>
+                <Link url="/#ui" text="User interfaces to control it all" activated={props.currentSection == 5}></Link>
+                <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection == 6}></Link>
             </div>
         </div>
         <div className='NavBar Static' ref={navBarStatic} style={navBarStaticLimit < 0 ? {
@@ -71,12 +72,12 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                <Link url="/#data" text="Optimized data" activated={props.currentSection == 0}></Link>
-                <Link url="/#authentication" text="Secure authentication" activated={props.currentSection == 1}></Link>
-                <Link url="/#integrations" text="Seamless integrations" activated={props.currentSection == 2}></Link>
-                <Link url="/#analytics" text="Detailed analytics" activated={props.currentSection == 3}></Link>
-                <Link url="/#ui" text="User interfaces to control it all" activated={props.currentSection == 4}></Link>
-                <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection == 5}></Link>
+                <Link url="/#data" text="Optimized data" activated={props.currentSection == 1}></Link>
+                <Link url="/#authentication" text="Secure authentication" activated={props.currentSection == 2}></Link>
+                <Link url="/#integrations" text="Seamless integrations" activated={props.currentSection == 3}></Link>
+                <Link url="/#analytics" text="Detailed analytics" activated={props.currentSection == 4}></Link>
+                <Link url="/#ui" text="User interfaces to control it all" activated={props.currentSection == 5}></Link>
+                <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection == 6}></Link>
             </div>
         </div>
     </div>

@@ -8,80 +8,11 @@
         padding-top: 5em;
 
         .Graph {
-            flex-direction: row;
-            flex-wrap: wrap;
             flex-basis: 32.5em;
             flex-grow: 1;
-            gap: 2em;
             height: fit-content;
             justify-content: center;
             align-items: center;
-
-            .MapWrapper {
-                border-radius: 1.25em;
-                flex-basis: 250px;
-
-                #map {
-                    filter: brightness(0.971) hue-rotate(-45deg);
-                    display: block;
-                    height: 300px;
-                    width: 250px;
-                    border-radius: inherit;
-
-                    * {
-                        display: block;
-                    }
-
-                    .leaflet-control {
-                        border: none;
-                        border-radius: 2px;
-                        margin-left: 1.25em;
-                        margin-top: 1.25em;
-
-                        a {
-                            background-color: #f4edec;
-                            font-size: 1.5em;
-                            height: fit-content;
-                            width: fit-content;
-                            padding: 0.45em 0.4em 0.25em 0.35em;
-                            transition: transform 0.1s linear;
-                            border: 1px solid var(--black);
-
-                            &:last-child {
-                                margin-top: -1px;
-                            }
-
-                            span {
-                                font-family: var(--arima);
-                                line-height: 70%;
-                                font-weight: 300;
-                            }
-
-                            &:hover {
-                                z-index: 9999;
-                                transform: scale(1.15);
-                            }
-                        }
-
-                        * {
-                            color: var(--black);
-                        }
-                    }
-
-                    .leaflet-marker-icon {
-                        filter: brightness(1.1) hue-rotate(30deg)
-                    }
-                }
-
-                .Feather {
-                    position: absolute;
-                    border-radius: inherit;
-                    height: 100%;
-                    width: 100%;
-                    box-shadow: 0 0 0.125em 0.125em var(--white) inset;
-                    pointer-events: none;
-                }
-            }
 
             h3 {
                 font-size: 2.75em;
@@ -89,39 +20,177 @@
                 flex-basis: 100%;
                 text-align: center;
             }
+        }
+    }
 
-            .Location {
-                gap: 0.8em;
-                flex-grow: 1;
-                flex-basis: 15em;
+    .UserData {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2em;
 
-                p {
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 1em;
-                    font-size: 1.15em;
-                    font-weight: 400;
-                    border-bottom: 0.1em dashed var(--black);
-                    padding-bottom: 0.6em;
+        .MapWrapper {
+            border-radius: 1.25em;
+            flex-basis: 250px;
 
-                    &:last-child {
-                        border-bottom: none;
+            #map {
+                filter: brightness(0.971) hue-rotate(-45deg);
+                display: block;
+                height: 300px;
+                width: 250px;
+                border-radius: inherit;
+
+                * {
+                    display: block;
+                }
+
+                .leaflet-control {
+                    border: none;
+                    border-radius: 2px;
+                    margin-left: 1.25em;
+                    margin-top: 1.25em;
+
+                    a {
+                        background-color: #f4edec;
+                        font-size: 1.5em;
+                        height: fit-content;
+                        width: fit-content;
+                        padding: 0.45em 0.4em 0.25em 0.35em;
+                        transition: transform 0.1s linear;
+                        border: 1px solid var(--black);
+
+                        &:last-child {
+                            margin-top: -1px;
+                        }
+
+                        span {
+                            font-family: var(--arima);
+                            line-height: 70%;
+                            font-weight: 300;
+                        }
+
+                        &:hover {
+                            z-index: 9999;
+                            transform: scale(1.15);
+                        }
                     }
 
-                    span {
-                        font-size: 1.1em;
-                        font-family: var(--franklin);
-                        font-weight: 200;
-                        text-align: end;
+                    * {
+                        color: var(--black);
                     }
                 }
 
-                .Error {
-                    position: absolute;
-                    left: 50%;
-                    top: 50%;
-                    transform: translate(-50%, -50%);
+                .leaflet-marker-icon {
+                    filter: brightness(1.1) hue-rotate(30deg)
+                }
+            }
+
+            .Feather {
+                position: absolute;
+                border-radius: inherit;
+                height: 100%;
+                width: 100%;
+                box-shadow: 0 0 0.125em 0.125em var(--white) inset;
+                pointer-events: none;
+            }
+        }
+
+        .Location {
+            gap: 0.8em;
+            flex-grow: 1;
+            flex-basis: 15em;
+
+            p {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1em;
+                font-size: 1.15em;
+                font-weight: 400;
+                border-bottom: 0.1em dashed var(--black);
+                padding-bottom: 0.6em;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                span {
+                    font-size: 1.1em;
+                    font-family: var(--franklin);
+                    font-weight: 200;
+                    text-align: end;
+                }
+            }
+
+            .Error {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+
+    .WatchTime {
+
+        .AxisWrapper {
+            flex-basis: 100%;
+            width: 100%;
+            display: grid;
+            grid-template-rows: 100%;
+            
+            .Column {
+                display: grid;
+                grid-template-columns: 100%;
+                grid-template-rows: 20em auto;
+
+                .YLabels {
+                    justify-content: space-between;
+
+                    p {
+                        white-space: nowrap;
+                        text-align: center;
+                        padding: 0 0.5em;
+                        font-family: var(--franklin);
+                        font-weight: 300;
+                        font-size: 1.05em;
+                    }
+                }
+
+                &:nth-child(2) {
+                    .Timestamp {
+                        border-left: 0.1em solid var(--black);
+                    }
+                }
+
+                .XLabel {
+                    text-align: center;
+                    padding: 0.3em 0.5em;
+                    border-top: 0.1em solid var(--black);
+                    writing-mode: vertical-rl;
+                    text-orientation: mixed;
+                    letter-spacing: 0.05em;
+                    justify-content: center;
+                    text-align: start;
+                    word-break: break-all;
+                    font-family: var(--franklin);
+                    font-weight: 300;
+                    font-size: 1.05em;
+                }
+
+                .Timestamp {
+                    padding: 0 0.5em;
+                    justify-content: flex-end;
+                    overflow: hidden;
+
+                    .Value {
+                        width: 100%;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                        background-color: var(--yellow);
+                        overflow: hidden;
+                        transition: height 0.5s ease-in-out;
+                    }
                 }
             }
         }

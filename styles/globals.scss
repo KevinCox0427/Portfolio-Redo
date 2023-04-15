@@ -138,5 +138,23 @@ button, input, select, option {
 }
 
 #Footer {
-    
+    .Contain {
+        justify-content: center;
+        gap: 0.1em;
+        padding: 15em 0;
+        margin-top: 15em;
+        border-top: 0.15em dashed var(--black);
+        
+        h1 {
+            font-weight: 200;
+            font-size: 7em;
+        }
+
+        p {
+            font-family: var(--arima);
+            font-weight: 200;
+            font-size: 2.25em;
+            //font-style: italic;
+        }
+    }
 }

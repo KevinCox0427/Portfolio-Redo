@@ -4,7 +4,14 @@ import WindowCache from "../../windowCache";
 declare const L:any;
 
 type Props = {
-    windowCache: WindowCache
+    windowCache: WindowCache,
+    watchTime: {
+        start: number,
+        timeStamps: {
+            [sectionName: string]: number
+        }
+    },
+    currentSection: number
 }
 
 const AnalyticsSection:FunctionComponent<Props> = (props) => {
@@ -88,6 +95,20 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
         }, [analytics]);
     }
 
+    function createTimeString(time: number) {
+        const minutes = Math.floor((time/1000) / 60);
+        const seconds = Math.floor((time/1000) % 60);
+        return (minutes ? `${minutes}m ` : '') + `${seconds}s`;
+    }
+
+    const XAxisLabels = ["Landing Page", "Optimized Data", "Secure Authentication", "Seamless Integrations", "Detailed Analytics", "User Interfaces", "Beautiful Websites", "Footer"];
+
+    let largestTimestamp = 0;
+    Object.keys(props.watchTime.timeStamps).forEach(timeStampKey => {
+        const value = props.watchTime.timeStamps[timeStampKey as keyof typeof props.watchTime.timeStamps];
+        if(value > largestTimestamp) largestTimestamp = value;
+    });
+
     return <div id="analytics" className='Section'>
         <h3 className='Title'>
             The more detailed the analytics, the more detailed the strategy...
@@ -117,8 +138,36 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
                     <div className="Feather"></div>
                 </div>
             </div>
-            <div className="Graph">
-                    <h3>Page Visit Time:</h3>
+            <div className="Graph WatchTime">
+                <h3>Watch Time:</h3>
+                <div className="AxisWrapper" style={{
+                    gridTemplateColumns: `4.5em ${'3.5em '.repeat(XAxisLabels.length)}`
+                }}>
+                    <div className="Column">
+                        <div className="YLabels">
+                            {['','','',''].map((value, i) => {
+                                return <p>{createTimeString(largestTimestamp*((4-i)/4))}</p>
+                            })}
+                            <p>0s</p>
+                        </div>
+                        <div className="Spacer"></div>
+                    </div>
+                    {Object.keys(props.watchTime.timeStamps).map((timeStampKey, i) => {
+                        const value = props.watchTime.timeStamps[timeStampKey as keyof typeof props.watchTime.timeStamps];
+                        return <div key={i} className="Column">
+                            <p className="Timestamp">
+                                <p className="Value" style={{
+                                    height: props.currentSection === 4 ? `${(value/largestTimestamp) * 100}%` : '0%'
+                                }}>
+                                    {createTimeString(value)}
+                                </p>
+                            </p>
+                            <p className="XLabel">
+                                {XAxisLabels[i]}
+                            </p>
+                        </div>
+                    })}
+                </div>
             </div>
         </div>
     </div>
