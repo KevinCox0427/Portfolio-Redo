@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import WindowCache from "../../windowCache";
+import html2canvas from 'html2canvas';
 
 declare const L:any;
 
@@ -88,17 +89,35 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
         `);
     }
 
-    if(typeof window !== 'undefined') {
-        useEffect(() => {
-            if(!analytics.userData.location.city) return;
-            if(!map.current) loadMap();
-        }, [analytics]);
+    useEffect(() => {
+        if(!analytics.userData.location.city) return;
+        if(!map.current) loadMap();
+    }, [analytics]);
+
+    const [screenShot, setScreenShot] = useState<string>('');
+    const [heatMap, setHeatMap] = useState<number[][]>([[]]);
+
+    async function loadHeatMap() {
+        const root = document.getElementById('root') as HTMLDivElement;
+        const canvas = await html2canvas(root, {
+            height: root.scrollHeight,
+            windowHeight: root.scrollHeight, 
+        });
+        setScreenShot(canvas.toDataURL());
+
+        const height = Math.ceil((root.scrollHeight + root.clientHeight)/100);
+        const width = Math.ceil(root.clientWidth/100);
+        
+        setHeatMap(Array.from({length: height}, () => Array.from({length: width}, () => 0)));
     }
 
+    if(typeof window !== 'undefined') window.addEventListener('load', loadHeatMap);
+
     function createTimeString(time: number) {
-        const minutes = Math.floor((time/1000) / 60);
-        const seconds = Math.floor((time/1000) % 60);
-        return (minutes ? `${minutes}m ` : '') + `${seconds}s`;
+        const hours = Math.floor((time/1000) / 3600);
+        const minutes = Math.floor((time/1000) / 60) % 60;
+        const seconds = Math.floor((time/100) % 600) / 10;
+        return (hours ? `${hours}h ` : '') + (minutes ? `${minutes}m ` : '') + `${seconds}s`;
     }
 
     const XAxisLabels = ["Landing Page", "Optimized Data", "Secure Authentication", "Seamless Integrations", "Detailed Analytics", "User Interfaces", "Beautiful Websites", "Footer"];
@@ -146,7 +165,7 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
                     <div className="Column">
                         <div className="YLabels">
                             {['','','',''].map((value, i) => {
-                                return <p>{createTimeString(largestTimestamp*((4-i)/4))}</p>
+                                return <p key={i}>{createTimeString(largestTimestamp*((4-i)/4))}</p>
                             })}
                             <p>0s</p>
                         </div>
@@ -155,20 +174,36 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
                     {Object.keys(props.watchTime.timeStamps).map((timeStampKey, i) => {
                         const value = props.watchTime.timeStamps[timeStampKey as keyof typeof props.watchTime.timeStamps];
                         return <div key={i} className="Column">
-                            <p className="Timestamp">
+                            <div className="Timestamp">
                                 <p className="Value" style={{
                                     height: props.currentSection === 4 ? `${(value/largestTimestamp) * 100}%` : '0%'
                                 }}>
                                     {createTimeString(value)}
                                 </p>
-                            </p>
+                            </div>
                             <p className="XLabel">
-                                {XAxisLabels[i]}
+                                <span>{XAxisLabels[i]}</span>
                             </p>
                         </div>
                     })}
                 </div>
             </div>
+            <div className="Graph Heatmap">
+                <h3>Interaction Heatmap</h3>
+                <div className="HeatmapScroll">
+                    <div className="HeatmapWrapper">
+                        {screenShot ? <img src={screenShot}></img> : <></>}
+                        <svg className="Gradient" viewBox={`0 0 ${heatMap.length} ${heatMap[0].length}`} xmlns="http://www.w3.org/2000/svg">
+                            {heatMap.map((row, i) => {
+                                return heatMap.map((value, j) => {
+                                    return <rect key={(i*heatMap.length) + j} x={j} y={i} height={1} width={1}></rect>
+                                });
+                            })}
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div className="Graph"></div>
         </div>
     </div>
 }

@@ -6,7 +6,6 @@ import { pbkdf2Sync, randomBytes } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
 import dotenv from 'dotenv';
 import axios from 'axios';
-import geoip from 'geoip-lite';
 
 dotenv.config();
 

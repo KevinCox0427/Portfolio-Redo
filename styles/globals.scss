@@ -47,6 +47,10 @@ body {
         margin: 0px;
         padding: 0px;
     }
+
+    style, script {
+        display: none !important;
+    }
 }
 
 #root {
@@ -54,6 +58,7 @@ body {
     flex-basis: 1px;
     flex-grow: 1;
     overflow-x: hidden;
+    background-color: var(--white);
 }
 
 h1, h2, h3, h4, h5, h6 {

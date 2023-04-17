@@ -34,12 +34,14 @@ const Home:FunctionComponent = () => {
             footer: 0
         }
     });
+    windowCache.current.registerCache('DreamStateWatchTime', watchTime, setWatchTime);
 
     useEffect(() => {
         if(currentSection !== 4) return;
         const interval = setInterval(() => {
             setWatchTime(previousWatchTime => {
                 return {...previousWatchTime,
+                    start: previousWatchTime.start + 1000,
                     timeStamps: {...previousWatchTime.timeStamps,
                         analytics: previousWatchTime.timeStamps.analytics + 1000
                     }
@@ -48,8 +50,6 @@ const Home:FunctionComponent = () => {
         }, 1000);
         return () => clearInterval(interval);
     }, [currentSection]);
-
-    console.log('Rerender');
     
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
     if(typeof window != 'undefined') {
