@@ -17,7 +17,6 @@ const Home:FunctionComponent = () => {
     const iframeUrls = ['red','orange','yellow','green', 'blue', 'purple'];
     const sliderRate = 7;
     const sliderWrapper = useRef<HTMLDivElement>(null);
-    const [startAnimations, setStartAnimations] = useState<React.CSSProperties[]>([{},{},{},{},{}]);
     const contentWrapper = useRef<HTMLDivElement>(null);
 
     const [currentSection, setCurrentSection] = useState(-1);
@@ -52,43 +51,14 @@ const Home:FunctionComponent = () => {
     }, [currentSection]);
     
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
-    if(typeof window != 'undefined') {
-        const diffuseIn = {
-            filter: 'blur(0px)',
-            opacity: 1
-        }
-        const slideRight = {
-            transform: 'translateX(0)',
-            opacity: 1
-        }
-        const slideDown = {
-            transform: 'translateY(0)',
-            opacity: 1
-        }
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                setStartAnimations([diffuseIn, {}, {}, {}, {}]);
-            }, 500);
-            setTimeout(() => {
-                setStartAnimations([diffuseIn, slideRight, {}, {}, {}]);
-            }, 1000);
-            setTimeout(() => {
-                setStartAnimations([diffuseIn, slideRight, slideDown, {}, {}]);
-            }, 1500);
-            setTimeout(() => {
-                setStartAnimations([diffuseIn, slideRight, slideDown, slideDown, {}]);
-            }, 4500);
-            setTimeout(() => {
-                setStartAnimations([diffuseIn, slideRight, slideDown, slideDown, slideDown]);
-            }, 4750);
-        });
 
+    if(typeof window != 'undefined') {
         document.getElementById('root')!.addEventListener('scroll', () => {
             if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
             scrollTimeoutBuffer.current = setTimeout(() => {checkSections()}, 20);
         });
-
-        if(typeof window != 'undefined') window.addEventListener('load', checkSections);
+        
+        window.addEventListener('load', checkSections);
     }
 
     function checkSections() { 
@@ -121,7 +91,7 @@ const Home:FunctionComponent = () => {
         }
     }
     
-    setInterval(moveIframes, sliderRate*1000);
+    //setInterval(moveIframes, sliderRate*1000);
 
     function moveIframes() {
         if(!sliderWrapper.current) return;
@@ -135,12 +105,14 @@ const Home:FunctionComponent = () => {
                 <h1>Dream State</h1>
                 <h3>Your bridge between</h3>
                 <h3>
-                    <span className='Titling' style={startAnimations[0]}>Dreams</span>
-                    <span style={startAnimations[1]}>and</span>
-                    <span className='Titling' style={startAnimations[2]}>Reality</span></h3>
+                    <span className='Titling'>Dreams</span>
+                    <span>and</span>
+                    <span className='Titling'>Reality</span></h3>
                 <div className='Subtitle'>
-                    <h2 style={startAnimations[3]}>Full stack developer & full graphic designer</h2>
-                    <a style={startAnimations[4]} href='/#WhatICanDo'>Learn More</a>
+                    <h2>Full stack developer & full graphic designer</h2>
+                    <div className='LinkWrapper'>
+                        <a href='/#WhatICanDo'>Learn More</a>
+                    </div>
                 </div>
             </div>
             <div className='IframeSlider'>

@@ -98,17 +98,19 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
     const [heatMap, setHeatMap] = useState<number[][]>([[]]);
 
     async function loadHeatMap() {
-        const root = document.getElementById('root') as HTMLDivElement;
-        const canvas = await html2canvas(root, {
-            height: root.scrollHeight,
-            windowHeight: root.scrollHeight, 
-        });
-        setScreenShot(canvas.toDataURL());
+        setTimeout(async () => {
+            const root = document.getElementById('root') as HTMLDivElement;
+            const canvas = await html2canvas(root, {
+                height: root.scrollHeight,
+                windowHeight: root.scrollHeight, 
+            });
+            setScreenShot(canvas.toDataURL());
 
-        const height = Math.ceil((root.scrollHeight + root.clientHeight)/100);
-        const width = Math.ceil(root.clientWidth/100);
-        
-        setHeatMap(Array.from({length: height}, () => Array.from({length: width}, () => 0)));
+            const height = Math.ceil((root.scrollHeight + root.clientHeight)/100);
+            const width = Math.ceil(root.clientWidth/100);
+            
+            setHeatMap(Array.from({length: height}, () => Array.from({length: width}, () => 0)));
+        }, 6000);
     }
 
     if(typeof window !== 'undefined') window.addEventListener('load', loadHeatMap);

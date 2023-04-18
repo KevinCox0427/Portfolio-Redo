@@ -20,29 +20,15 @@
         filter: drop-shadow(0.3em 0.4em 0px rgba(0, 0, 0, 0.08));
 
         .WindWrapper {
-
-            @keyframes Wind {
-                from { transform: scale(1,1) }
-                10% { transform: scale(1,1) }
-                30% { transform: scale(1.001, 1) }
-                50% { transform: scale(1.000, 1) }
-                70% { transform: scale(1.001, 1) }
-                90% { transform: scale(1,1) }
-                to { transform: scale(1,1) }
+            @for $i from 1 through 26 {
+                #Floral#{$i} {
+                    animation: 0.35s ease-out (3.75s + ($i*0.02s)) forwards Burst;
+                }
             }
 
             .FloralItem {
                 transform: translate(91.5%, 88%) scale(0);
-                transition: transform 0.4s ease-out;
-
-                @keyframes Burst {
-                    from {
-                        transform: translate(91.5%, 88%) scale(0);
-                    }
-                    to {
-                        transform: translate(0,0) scale(1);
-                    }
-                }
+                will-change: transform;
             }
         }
     }
@@ -56,18 +42,6 @@
         right: -29vw;
         transform: translateX(15vw);
         animation: 0.5s ease-in-out 2.25s forwards SlideIn, 0.75s ease-in-out 3s forwards LiftHand;
-
-        @keyframes LiftHand {
-            from { transform: rotateY(0deg) scale(1); }
-            55% { transform: rotateY(-15deg) scale(1.1); }
-            75% { transform: rotateY(-15deg) scale(1.1); }
-            to { transform: rotateY(0deg) scale(1); }
-        }
-
-        @keyframes SlideIn {
-            from { transform: translateX(15vw) rotate(10deg) }
-            to {transform: translateX(0vw) rotate(0deg) }
-        }
     }
 
     #RightCover {
@@ -102,24 +76,25 @@
                 font-size: 2em;
                 font-family: var(--arima);
                 margin: 0.05em 0 -0.05em -0.08em;
+                will-change: transform, filter, opacity;
             }
 
             span:nth-child(1) {
                 filter: blur(20px); 
                 opacity: 0;
-                transition: filter 0.3s ease-in, opacity 0.3s ease-in;
+                animation: 0.3s ease-in 0.5s forwards DiffuseIn;
             }
 
             span:nth-child(2) {
                 opacity: 0;
                 transform: translateX(-75%);
-                transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+                animation: 0.3s ease-in 1s forwards SlideRight;
             }
 
             span:nth-child(3) {
                 opacity: 0;
                 transform: translateY(-50%);
-                transition: transform 0.3s ease-in, opacity 0.3s ease-in;
+                animation: 0.3s ease-in 1.5s forwards SlideDown;
             }
         }
 
@@ -137,61 +112,31 @@
                 width: fit-content;
                 opacity: 0;
                 transform: translateY(-35%);
-                transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+                animation: 0.25s ease-out 4.5s forwards SlideDown;
             }
 
-            a {
-                color: var(--black);
-                text-decoration: none;
-                font-size: 1.15em;
-                font-family: var(--workSans);
-                padding: 0.35em 1em;
-                box-shadow: 0 0 0 0.1em var(--black);
-                border-radius: 100em;
-                text-transform: uppercase;
-                transition: background-color 0.1s linear, color 0.1s linear, font-weight 0.1s linear, transform 0.1s linear, box-shadow 0.1s linear, transform 0.25s ease-out, opacity 0.25s ease-out;
-                transform: translateY(-35%);
+            .LinkWrapper {
                 opacity: 0;
-
-                &:hover {
-                    background-color: var(--green);
-                    box-shadow: 0 0 0 0em var(--black);
-                    color: var(--white);
-                    font-weight: 500;
-                    animation: 0.4s linear 0s forwards ColorJump !important;
-                }
-
-                @keyframes ColorJump {
-                    0% {
-                        background-color: var(--white);
-                        transform: scale(1);
-                    }
-                    20% {
-                        background-color: var(--green);
-                        transform: scale(1.1, 1.15);
-                    }
-                    40% {
-                        background-color: var(--yellow);
-                        transform: scale(1.2, 1.27);
-                    }
-                    60% {
-                        background-color: var(--red);
-                        transform: scale(1.15, 1.25);
-                    }
-                    80% {
-                        background-color: var(--green);
-                        transform: scale(1.1, 1.15);
-                    }
-                    100% {
-                        background-color: var(--yellow);
-                        transform: scale(1.1, 1.125);
+                animation: 0.25s ease-out 4.75s forwards SlideDown;
+                
+                a {
+                    color: var(--black);
+                    text-decoration: none;
+                    font-size: 1.15em;
+                    font-family: var(--workSans);
+                    padding: 0.35em 1em;
+                    box-shadow: 0 0 0 0.1em var(--black);
+                    border-radius: 100em;
+                    text-transform: uppercase;
+                    transition: color 0.1s linear, font-weight 0.1s linear, box-shadow 0.1s linear;
+    
+                    &:hover {
+                        box-shadow: 0 0 0 0em var(--black);
+                        color: var(--white);
+                        font-weight: 500;
+                        animation: 0.4s linear 0s forwards ColorJump !important;
                     }
                 }
-            }
-
-            @keyframes FadeInText {
-                from {opacity: 0;}
-                to {opacity: 1;}
             }
         }
     }
