@@ -220,9 +220,14 @@
                     position: absolute;
                     top: 0;
                     left: 0;
-                    height: 100%;
+                    height: auto;
                     width: 100%;
-                    background-color: rgba(0,0,0, 0.1);
+                    background-color: rgba(0,0,0, 0.25);
+
+                    rect {
+                        opacity: 0.4;
+                        filter: blur(0.25px);
+                    }
                 }
             }
         }

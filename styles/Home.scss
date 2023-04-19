@@ -112,12 +112,12 @@
                 width: fit-content;
                 opacity: 0;
                 transform: translateY(-35%);
-                animation: 0.25s ease-out 4.5s forwards SlideDown;
+                animation: 0.25s ease-out 4.75s forwards SlideDown;
             }
 
             .LinkWrapper {
                 opacity: 0;
-                animation: 0.25s ease-out 4.75s forwards SlideDown;
+                animation: 0.25s ease-out 5s forwards SlideDown;
                 
                 a {
                     color: var(--black);

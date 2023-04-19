@@ -95,7 +95,13 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
     }, [analytics]);
 
     const [screenShot, setScreenShot] = useState<string>('');
-    const [heatMap, setHeatMap] = useState<number[][]>([[]]);
+    const [heatMap, setHeatMap] = useState<{
+        matrix: number[][],
+        maxValue: number
+    }>({
+        matrix: [[]],
+        maxValue: 0
+    });
 
     async function loadHeatMap() {
         setTimeout(async () => {
@@ -106,11 +112,23 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
             });
             setScreenShot(canvas.toDataURL());
 
-            const height = Math.ceil((root.scrollHeight + root.clientHeight)/100);
-            const width = Math.ceil(root.clientWidth/100);
+            const height = Math.ceil((root.scrollHeight + root.clientHeight)/50);
+            const width = Math.ceil(root.clientWidth/50);
             
-            setHeatMap(Array.from({length: height}, () => Array.from({length: width}, () => 0)));
-        }, 6000);
+            setHeatMap({
+                matrix: Array.from({length: height}, () => Array.from({length: width}, () => 0)),
+                maxValue: 0
+            });
+        }, 0);
+    }
+
+    const colors = ['green', 'yellow', 'orange', 'red'];
+    function loadHeatMapColor(value: number) {
+        const interval = heatMap.maxValue / colors.length;
+        let index = Math.round(value/(interval ? interval : 1));
+        index = index === colors.length ? index - 1 : index;
+
+        return colors[index];
     }
 
     if(typeof window !== 'undefined') window.addEventListener('load', loadHeatMap);
@@ -195,10 +213,10 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
                 <div className="HeatmapScroll">
                     <div className="HeatmapWrapper">
                         {screenShot ? <img src={screenShot}></img> : <></>}
-                        <svg className="Gradient" viewBox={`0 0 ${heatMap.length} ${heatMap[0].length}`} xmlns="http://www.w3.org/2000/svg">
-                            {heatMap.map((row, i) => {
-                                return heatMap.map((value, j) => {
-                                    return <rect key={(i*heatMap.length) + j} x={j} y={i} height={1} width={1}></rect>
+                        <svg className="Gradient" viewBox={`0 0 ${heatMap.matrix[0].length} ${heatMap.matrix.length}`} xmlns="http://www.w3.org/2000/svg">
+                            {heatMap.matrix.map((row, i) => {
+                                return heatMap.matrix[i].map((value, j) => {
+                                    return <rect key={(i*heatMap.matrix.length) + j} x={j-0.05} y={i-0.05} height={1.1} width={1.1} fill={loadHeatMapColor(value)}></rect>
                                 });
                             })}
                         </svg>
