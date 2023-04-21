@@ -210,6 +210,7 @@
             .HeatmapWrapper {
                 width: 100%;
                 height: fit-content;
+                min-height: 100%;
                 
                 img {
                     width: 100%;
@@ -218,15 +219,25 @@
     
                 .Gradient {
                     position: absolute;
+                    pointer-events: none;
                     top: 0;
                     left: 0;
                     height: auto;
                     width: 100%;
-                    background-color: rgba(0,0,0, 0.25);
+                    min-height: 100%;
+                    background-color: rgba(0,0,0, 0.3);
+                    filter: blur(3px);
+                    mix-blend-mode: color-burn;
+                    transform: translate3d(0,0,0);
 
-                    rect {
-                        opacity: 0.4;
-                        filter: blur(0.25px);
+                    .Circle {
+                        position: absolute;
+                        height: 0.75em;
+                        width: 0.75em;
+                        background-color: #f87400;
+                        opacity: 0.07;
+                        border-radius: 10em;
+                        transform: translate(-50%,-50%);
                     }
                 }
             }

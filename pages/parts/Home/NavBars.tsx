@@ -49,7 +49,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
                 <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection === 6}></Link>
             </div>
         </div>
-        <div className='NavBar Bottom' ref={navBarBottom} style={{
+        <div className='NavBar Bottom' ref={navBarBottom} data-html2canvas-ignore={true} style={{
             opacity: isNavBarStatic ? 0 : 1
         }}>
             <h2>I can create:</h2>
@@ -62,7 +62,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
                 <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection == 6}></Link>
             </div>
         </div>
-        <div className='NavBar Static' ref={navBarStatic} style={navBarStaticLimit < 0 ? {
+        <div className='NavBar Static' ref={navBarStatic} data-html2canvas-ignore={true} style={navBarStaticLimit < 0 ? {
             opacity: isNavBarStatic ? 1 : 0,
             zIndex: isNavBarStatic ? 1 : -1000,
             top: navBarStaticLimit

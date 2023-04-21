@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import WindowCache from "../../windowCache";
-import html2canvas from 'html2canvas';
+import WatchTime from "./Analytics/WatchTime";
 
 declare const L:any;
 
@@ -16,7 +16,6 @@ type Props = {
 }
 
 const AnalyticsSection:FunctionComponent<Props> = (props) => {
-    const map = useRef(null);
     const [analytics, setAnalytics] = useState({
         userData: {
             location: {
@@ -30,7 +29,38 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
             }
         }
     });
+
     props.windowCache.registerCache('DreamStateAnalytics', analytics, setAnalytics, getUserData);
+
+    useEffect(() => {
+        if(!analytics.userData.location.city) return;
+        if(!map.current) loadMap();
+    }, [analytics]);
+
+
+    const map = useRef(null);
+    async function loadMap() {
+        const locationData = analytics.userData.location;
+
+        map.current = L.map('map', {
+            center: new L.LatLng(locationData.ll[0], locationData.ll[1]),
+            zoom: 7,
+            minZoom: 4,
+            maxZoom: 19,
+            layers: [
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                })
+            ],
+            attributionControl: false,
+            scrollWheelZoom: false
+        });
+        
+        L.marker(new L.LatLng(locationData.ll[0], locationData.ll[1])).addTo(map.current).bindPopup(`
+            IP Address: ${locationData.ip}<br>
+            City: ${locationData.city}
+        `);
+    }
 
     async function getUserData() {
         const ip = await (await fetch('https://api.ipify.org?format=json', {
@@ -66,87 +96,41 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
         }
     }
 
-    async function loadMap() {
-        const locationData = analytics.userData.location;
-
-        map.current = L.map('map', {
-            center: new L.LatLng(locationData.ll[0], locationData.ll[1]),
-            zoom: 7,
-            minZoom: 4,
-            maxZoom: 19,
-            layers: [
-                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                })
-            ],
-            attributionControl: false,
-            scrollWheelZoom: false
-        });
-        
-        L.marker(new L.LatLng(locationData.ll[0], locationData.ll[1])).addTo(map.current).bindPopup(`
-            IP Address: ${locationData.ip}<br>
-            City: ${locationData.city}
-        `);
-    }
+    const [heatMap, setHeatMap] = useState<{
+        height: number,
+        width: number, 
+        values: number[][]
+    }>({
+        height: 0,
+        width: 0,
+        values: []
+    });
 
     useEffect(() => {
-        if(!analytics.userData.location.city) return;
-        if(!map.current) loadMap();
-    }, [analytics]);
+        const root = document.getElementById('root') as HTMLDivElement;
+        const wrapper = document.getElementsByClassName('HeatmapWrapper')[0] as HTMLDivElement
+        if(!root || !wrapper) return;
 
-    const [screenShot, setScreenShot] = useState<string>('');
-    const [heatMap, setHeatMap] = useState<{
-        matrix: number[][],
-        maxValue: number
-    }>({
-        matrix: [[]],
-        maxValue: 0
-    });
+        root.addEventListener('click', e => {
+            console.log(e.clientY, root.scrollTop);
+            const coordinate = [Math.round((e.clientX / window.innerWidth)*100), Math.round(((e.clientY + root.scrollTop) / root.scrollHeight)*100)];
+            setHeatMap(oldHeatMap => {
+                return {...oldHeatMap, 
+                    values: [...oldHeatMap.values, coordinate]
+                };
+            })
+        });
 
-    async function loadHeatMap() {
-        setTimeout(async () => {
-            const root = document.getElementById('root') as HTMLDivElement;
-            const canvas = await html2canvas(root, {
-                height: root.scrollHeight,
-                windowHeight: root.scrollHeight, 
+        setHeatmapSize();
+        window.addEventListener('resize', setHeatmapSize);
+
+        function setHeatmapSize() {
+            setHeatMap({...heatMap,
+                height: Math.ceil(wrapper.clientWidth * (root.scrollHeight / window.innerWidth)),
+                width: Math.ceil(wrapper.clientWidth)
             });
-            setScreenShot(canvas.toDataURL());
-
-            const height = Math.ceil((root.scrollHeight + root.clientHeight)/50);
-            const width = Math.ceil(root.clientWidth/50);
-            
-            setHeatMap({
-                matrix: Array.from({length: height}, () => Array.from({length: width}, () => 0)),
-                maxValue: 0
-            });
-        }, 0);
-    }
-
-    const colors = ['green', 'yellow', 'orange', 'red'];
-    function loadHeatMapColor(value: number) {
-        const interval = heatMap.maxValue / colors.length;
-        let index = Math.round(value/(interval ? interval : 1));
-        index = index === colors.length ? index - 1 : index;
-
-        return colors[index];
-    }
-
-    if(typeof window !== 'undefined') window.addEventListener('load', loadHeatMap);
-
-    function createTimeString(time: number) {
-        const hours = Math.floor((time/1000) / 3600);
-        const minutes = Math.floor((time/1000) / 60) % 60;
-        const seconds = Math.floor((time/100) % 600) / 10;
-        return (hours ? `${hours}h ` : '') + (minutes ? `${minutes}m ` : '') + `${seconds}s`;
-    }
-
-    const XAxisLabels = ["Landing Page", "Optimized Data", "Secure Authentication", "Seamless Integrations", "Detailed Analytics", "User Interfaces", "Beautiful Websites", "Footer"];
-
-    let largestTimestamp = 0;
-    Object.keys(props.watchTime.timeStamps).forEach(timeStampKey => {
-        const value = props.watchTime.timeStamps[timeStampKey as keyof typeof props.watchTime.timeStamps];
-        if(value > largestTimestamp) largestTimestamp = value;
-    });
+        }
+    }, []);
 
     return <div id="analytics" className='Section'>
         <h3 className='Title'>
@@ -177,49 +161,22 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
                     <div className="Feather"></div>
                 </div>
             </div>
-            <div className="Graph WatchTime">
-                <h3>Watch Time:</h3>
-                <div className="AxisWrapper" style={{
-                    gridTemplateColumns: `4.5em ${'3.5em '.repeat(XAxisLabels.length)}`
-                }}>
-                    <div className="Column">
-                        <div className="YLabels">
-                            {['','','',''].map((value, i) => {
-                                return <p key={i}>{createTimeString(largestTimestamp*((4-i)/4))}</p>
-                            })}
-                            <p>0s</p>
-                        </div>
-                        <div className="Spacer"></div>
-                    </div>
-                    {Object.keys(props.watchTime.timeStamps).map((timeStampKey, i) => {
-                        const value = props.watchTime.timeStamps[timeStampKey as keyof typeof props.watchTime.timeStamps];
-                        return <div key={i} className="Column">
-                            <div className="Timestamp">
-                                <p className="Value" style={{
-                                    height: props.currentSection === 4 ? `${(value/largestTimestamp) * 100}%` : '0%'
-                                }}>
-                                    {createTimeString(value)}
-                                </p>
-                            </div>
-                            <p className="XLabel">
-                                <span>{XAxisLabels[i]}</span>
-                            </p>
-                        </div>
-                    })}
-                </div>
-            </div>
+            <WatchTime watchTime={props.watchTime} currentSection={props.currentSection}></WatchTime>
             <div className="Graph Heatmap">
                 <h3>Interaction Heatmap</h3>
                 <div className="HeatmapScroll">
                     <div className="HeatmapWrapper">
-                        {screenShot ? <img src={screenShot}></img> : <></>}
-                        <svg className="Gradient" viewBox={`0 0 ${heatMap.matrix[0].length} ${heatMap.matrix.length}`} xmlns="http://www.w3.org/2000/svg">
-                            {heatMap.matrix.map((row, i) => {
-                                return heatMap.matrix[i].map((value, j) => {
-                                    return <rect key={(i*heatMap.matrix.length) + j} x={j-0.05} y={i-0.05} height={1.1} width={1.1} fill={loadHeatMapColor(value)}></rect>
-                                });
+                        <div className="Gradient" style={{
+                            width: heatMap.width,
+                            height: heatMap.height
+                        }}>
+                            {heatMap.values.map((value, i) => {
+                                return <div className="Circle" key={i} style={{
+                                    left: `${value[0]}%`,
+                                    top: `${value[1]}%`
+                                }}></div>
                             })}
-                        </svg>
+                        </div>
                     </div>
                 </div>
             </div>

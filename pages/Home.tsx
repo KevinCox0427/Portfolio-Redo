@@ -52,14 +52,13 @@ const Home:FunctionComponent = () => {
     
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
 
-    if(typeof window != 'undefined') {
-        document.getElementById('root')!.addEventListener('scroll', () => {
+    useEffect(() => {
+        checkSections();
+        document.getElementById('root')!.addEventListener('scroll', e => {
             if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
             scrollTimeoutBuffer.current = setTimeout(() => {checkSections()}, 20);
         });
-        
-        window.addEventListener('load', checkSections);
-    }
+    }, []);
 
     function checkSections() { 
         const clamp = (num:number, min:number, max:number) => Math.min(Math.max(num, min), max);

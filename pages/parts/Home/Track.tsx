@@ -46,7 +46,7 @@ const Track:FunctionComponent<Props> = (props) => {
             {props.searchResult.name}
             <i className="fa-solid fa-arrow-up-right-from-square"></i>
         </a>
-        <p className="Artist">
+        <p className="Artist" data-html2canvas-ignore={true}>
             Artists: 
             <span>
                 {props.searchResult.artists.map((artist, j) => {
@@ -57,7 +57,7 @@ const Track:FunctionComponent<Props> = (props) => {
                 })}
             </span>
         </p>
-        <p className="Album">
+        <p className="Album" data-html2canvas-ignore={true}>
             Album: 
             <span>
                 <a className="Link" href={props.searchResult.album.url} target='_blank'>
@@ -66,7 +66,7 @@ const Track:FunctionComponent<Props> = (props) => {
                 </a>
             </span>
         </p>
-        <p className="TrackNumber">
+        <p className="TrackNumber" >
             Track Number: <span>{`${props.searchResult.album.discNumber} / ${props.searchResult.album.length}`}</span>
         </p>
         <p className="SongLength">

@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, useRef, useState } from "react";
+import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from "react";
 import Track from "./Track";
 import WindowCache from "../../windowCache";
 
@@ -75,14 +75,12 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
         else setSearchData({...searchData,
             searchResults: result as SearchResponse,
             searchRecommendations: []
-        })
+        });
 
         setIsSearching({
             search: false,
             recommendations: false
         });
-
-        resizeResults();
     }
 
 
@@ -94,15 +92,13 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
     });
     
     const timeoutBuffer = useRef<NodeJS.Timeout | null>(null);
-    if(typeof window != 'undefined') {
-        window.addEventListener('load', () => {
-            setTimeout(resizeResults, 100)
-        });
+    useEffect(() => {
+        setTimeout(resizeResults, 100);
         window.addEventListener('resize', () => {
             if(timeoutBuffer.current) clearTimeout(timeoutBuffer.current);
             timeoutBuffer.current = setTimeout(resizeResults, 100);
         });
-    }
+    }, []);
 
     function resizeResults() {
         const wrapper = document.getElementsByClassName('ResultsWrapper')[0] as HTMLDivElement;
@@ -122,6 +118,10 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
             recommendSlider: count != results.count ? recommendSliderAdjust : results.searchSlider
         });
     }
+
+    useEffect(() => {
+        if(searchData.searchRecommendations.length > 0 || searchData.searchResults.length > 0) resizeResults();
+    }, [searchData])
 
     const translateAmount = searchData.searchResults.length != 0 ? (100/searchData.searchResults.length) *  results.count : 0;
 
