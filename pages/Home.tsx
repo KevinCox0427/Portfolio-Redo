@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import Header from './parts/Header';
 import Footer from './parts/Footer';
@@ -9,10 +9,22 @@ import NavBars from './parts/Home/NavBars';
 import AuthSection from './parts/Home/AuthSection';
 import IntegrationSection from './parts/Home/IntegrationSection';
 import AnalyticsSection from './parts/Home/AnalyticsSection';
-import WindowCache from './windowCache';
+import WindowCache from './parts/windowCache';
+import UISection from './parts/Home/UISection';
+
+export type { SectionContent }
+
+type SectionContent = {
+    name: string,
+    navName: string,
+    title: string,
+    description: string,
+    subDescription: string
+}
 
 const Home:FunctionComponent = () => {
-    const windowCache = useRef(new WindowCache());
+    const [cacheHasLoaded, setCacheHasLoaded] = useState(false)
+    const windowCache = useRef(new WindowCache(setCacheHasLoaded));
 
     const iframeUrls = ['red','orange','yellow','green', 'blue', 'purple'];
     const sliderRate = 7;
@@ -35,32 +47,50 @@ const Home:FunctionComponent = () => {
     });
     windowCache.current.registerCache('DreamStateWatchTime', watchTime, setWatchTime);
 
+    function resetWatchTime() {
+        setWatchTime({
+            start: Date.now(),
+            timeStamps: {
+                home: 0,
+                data: 0,
+                authentication: 0,
+                integration: 0,
+                analytics: 0,
+                ui: 0,
+                web: 0,
+                footer: 0
+            }
+        });
+    }
+
     useEffect(() => {
-        if(currentSection !== 4) return;
-        const interval = setInterval(() => {
-            setWatchTime(previousWatchTime => {
-                return {...previousWatchTime,
-                    start: previousWatchTime.start + 1000,
-                    timeStamps: {...previousWatchTime.timeStamps,
-                        analytics: previousWatchTime.timeStamps.analytics + 1000
+        if(currentSection === 4) {
+            const interval = setInterval(() => {
+                setWatchTime(previousWatchTime => {
+                    return {...previousWatchTime,
+                        start: previousWatchTime.start + 1000,
+                        timeStamps: {...previousWatchTime.timeStamps,
+                            analytics: previousWatchTime.timeStamps.analytics + 1000
+                        }
                     }
-                }
-            })
-        }, 1000);
-        return () => clearInterval(interval);
+                })
+            }, 1000);
+            return () => clearInterval(interval);
+        }
     }, [currentSection]);
     
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-        checkSections();
+        if(!cacheHasLoaded) return;
         document.getElementById('root')!.addEventListener('scroll', e => {
             if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
-            scrollTimeoutBuffer.current = setTimeout(() => {checkSections()}, 20);
+            scrollTimeoutBuffer.current = setTimeout(checkSections, 100);
         });
-    }, []);
+    }, [cacheHasLoaded, checkSections]);
 
-    function checkSections() { 
+
+    function checkSections() {
         const clamp = (num:number, min:number, max:number) => Math.min(Math.max(num, min), max);
         const sections = [document.getElementsByClassName('SplashImage')[0], ...Array.from(document.getElementsByClassName('Section')), document.getElementById('Footer')] as HTMLElement[];
 
@@ -89,6 +119,52 @@ const Home:FunctionComponent = () => {
             setCurrentSection(newSection);
         }
     }
+
+    const [sectionContent, setSectionContent] = useState<SectionContent[]>([
+        {
+            name: 'data',
+            navName: 'Optimized Data',
+            title: 'It always starts with the data...',
+            description: 'Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.',
+            subDescription: 'Let\'s fill in a data structure to create some new products together!'
+        },
+        {
+            name: 'authentication',
+            navName: 'Secure authentication',
+            title: 'In order to have users, you need secure authentication...',
+            description: 'Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.',
+            subDescription: 'Let\'s create you a user from stratch together!'
+        },
+        {
+            name: 'integrations',
+            navName: 'Seamless integrations',
+            title: 'Integrations give more power to your applications...',
+            description: 'Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.',
+            subDescription: 'Let\'s use an integration with Spotify together to find you some new music!'
+        },
+        {
+            name: 'analytics',
+            navName: 'Detailed analytics',
+            title: 'The more detailed the analytics, the more detailed the strategy...',
+            description: 'Data collect is an invaluable resource for growing, adapting, and focusing your business operations.',
+            subDescription: 'Here\'s some examples of your activity on this page! Don\'t worry, none of this is stored or sent to my server, you can check the network calls :)'
+        },
+        {
+            name: 'ui',
+            navName: 'User interfaces to control it all',
+            title: 'Powerful user interfaces give you the greatest control...',
+            description: ' ',
+            subDescription: 'Let\'s use a user interface to screw up all my hard work!'
+        },
+        {
+            name: 'web',
+            navName: 'Beautiful websites to show it all',
+            title: ' ',
+            description: ' ',
+            subDescription: ' '
+        }
+    ]);
+    windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
     
     //setInterval(moveIframes, sliderRate*1000);
 
@@ -131,12 +207,34 @@ const Home:FunctionComponent = () => {
             <HandSVG></HandSVG>
         </div>
         <div id="WhatICanDo" className='Contain'>
-            <NavBars contentWrapper={contentWrapper} currentSection={currentSection}></NavBars>
+            <NavBars contentWrapper={contentWrapper} currentSection={currentSection} sectionContent={sectionContent}></NavBars>
             <div className='Content' ref={contentWrapper}>
-                <DataSection windowCache={windowCache.current}></DataSection>
-                <AuthSection windowCache={windowCache.current}></AuthSection>
-                <IntegrationSection windowCache={windowCache.current}></IntegrationSection>
-                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection}></AnalyticsSection>
+                {sectionContent.map((currentSectionContent, i) => {
+                    switch(currentSectionContent.name) {
+                        case 'data':
+                            return <Fragment key={i}>
+                                <DataSection windowCache={windowCache.current} content={currentSectionContent}></DataSection>
+                            </Fragment>
+                        case 'authentication':
+                            return <Fragment key={i}>
+                                <AuthSection windowCache={windowCache.current} content={currentSectionContent}></AuthSection>
+                            </Fragment>
+                        case 'integrations':
+                            return <Fragment key={i}>
+                                <IntegrationSection windowCache={windowCache.current} content={currentSectionContent}></IntegrationSection>
+                            </Fragment>
+                        case 'analytics':
+                            return <Fragment key={i}>
+                                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} resetWatchTime={resetWatchTime} content={currentSectionContent}></AnalyticsSection>
+                            </Fragment>
+                        case 'ui':
+                            return <Fragment key={i}>
+                                <UISection content={currentSectionContent} sectionContent={sectionContent} setSectionContent={setSectionContent}></UISection>
+                            </Fragment>
+                        case 'web':
+                            return <Fragment key={i}></Fragment>
+                    }
+                })}
             </div>
         </div>
         <Footer></Footer>

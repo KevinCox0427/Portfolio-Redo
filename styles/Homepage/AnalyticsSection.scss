@@ -1,14 +1,15 @@
+@import './../mixins';
+
 #analytics {
-    padding-top: 0em;
 
     .GraphWrapper {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 2em;
+        gap: 5em;
         padding-top: 5em;
 
         .Graph {
-            flex-basis: 32.5em;
+            flex-basis: 20.5em;
             flex-grow: 1;
             height: fit-content;
             justify-content: center;
@@ -16,10 +17,22 @@
             gap: 2em;
 
             h3 {
+                flex-direction: row;
+                gap: 0.25em;
                 font-size: 2.75em;
                 font-weight: 200;
                 flex-basis: 100%;
                 text-align: center;
+                align-items: center;
+                justify-content: center;
+
+                .Reset {
+                    @include ResetButton();
+                    display: inline;
+                    position: relative;
+                    font-size: 0.55em;
+                    width: fit-content;
+                }
             }
         }
     }
@@ -56,7 +69,7 @@
                         width: fit-content;
                         padding: 0.45em 0.4em 0.25em 0.35em;
                         transition: transform 0.1s linear;
-                        border: 1px solid var(--black);
+                        border: 1.5px solid var(--black);
 
                         &:last-child {
                             margin-top: -1px;
@@ -105,8 +118,8 @@
                 justify-content: space-between;
                 gap: 1em;
                 font-size: 1.15em;
-                font-weight: 400;
-                border-bottom: 0.1em dashed var(--black);
+                font-weight: 300;
+                border-bottom: 0.125em dashed var(--black);
                 padding-bottom: 0.6em;
 
                 &:last-child {
@@ -131,10 +144,9 @@
     }
 
     .WatchTime {
+        margin-bottom: -1em;
 
         .AxisWrapper {
-            flex-basis: 100%;
-            width: 100%;
             display: grid;
             grid-template-rows: 100%;
             

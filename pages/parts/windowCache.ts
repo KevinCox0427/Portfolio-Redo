@@ -5,6 +5,9 @@ class WindowCache {
     defaultValues: {
         [itemName:string]: any
     } = {};
+    previousValues: {
+        [itemName:string]: any
+    } | null = null;
     cachedValues: {
         [itemName:string]: {
             value: any, 
@@ -14,30 +17,28 @@ class WindowCache {
     isLoaded: {
         [itemName:string]: boolean
     } = {};
-    callbacks: {
-        [itemName:string]: {
-            hasCalled: boolean,
-            function: () => any
-        }
-    } = {};
+    setHasLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 
 
-    constructor() {
+    constructor(setHasLoaded: React.Dispatch<React.SetStateAction<boolean>>) {
+        this.setHasLoaded = setHasLoaded;
         if(typeof window != 'undefined') window.addEventListener('load', () => {
-            const previousSaveStringified = localStorage.getItem('DreamStateCachedValues');
+            const previousValuesStringified = localStorage.getItem('DreamStateCachedValues');
 
-            if(previousSaveStringified && typeof JSON.parse(previousSaveStringified) != 'undefined') {
-                const previousSave = JSON.parse(previousSaveStringified);
-
+            if(previousValuesStringified && typeof JSON.parse(previousValuesStringified) != 'undefined') {
+                this.previousValues = JSON.parse(previousValuesStringified);
                 Object.keys(this.cachedValues).map(itemName => {
-                    if(!deepEquals(previousSave[itemName], this.cachedValues[itemName].value)) {
-                        this.cachedValues[itemName].value = previousSave[itemName];
-                        this.cachedValues[itemName].setState(previousSave[itemName]);
+                    if(typeof this.previousValues![itemName] !== 'undefined' && !deepEquals(this.previousValues![itemName], this.cachedValues[itemName].value)) {
+                        this.cachedValues[itemName].value = this.previousValues![itemName];
+                        this.cachedValues[itemName].setState(this.previousValues![itemName]);
                     }
                     else this.updateLoad(itemName);
                 });
             }
-            else localStorage.setItem('DreamStateCachedValues', JSON.stringify(this.defaultValues));
+            else {
+                this.previousValues = this.defaultValues;
+                localStorage.setItem('DreamStateCachedValues', JSON.stringify(this.defaultValues));
+            }
         });
     }
 
@@ -56,26 +57,20 @@ class WindowCache {
             this.isLoaded = {...this.isLoaded,
                 [itemName]: false
             };
-            if(callback) this.callbacks = {...this.callbacks,
-                [itemName]: {
-                    function: callback,
-                    hasCalled: false
-                }
-            };
         }
 
         useEffect(() => {
             if(!this.hasLoaded()) {
-                if(deepEquals(this.cachedValues[itemName].value, stateVariable)) {
+                if(deepEquals(this.cachedValues[itemName].value, stateVariable) && this.previousValues) {
                     this.updateLoad(itemName);
                 }
             }
-            else this.updateCacheValue(itemName, stateVariable);
+            else this.saveCacheValue(itemName, stateVariable);
         }, [stateVariable]);
     }
 
 
-    updateCacheValue(updateName:string, updateValue:any) {
+    saveCacheValue(updateName:string, updateValue:any) {
         this.cachedValues[updateName].value = updateValue;
 
         let parsedCachedValues = {};
@@ -84,7 +79,6 @@ class WindowCache {
                 [cacheItemName]: this.cachedValues[cacheItemName].value
             }
         });
-
         localStorage.setItem('DreamStateCachedValues', JSON.stringify(parsedCachedValues));
     }
 
@@ -92,16 +86,7 @@ class WindowCache {
     updateLoad(itemName:string) {
         this.isLoaded[itemName] = true;
         if(!this.hasLoaded() || typeof window === 'undefined') return;
-        
-        Object.keys(this.callbacks).forEach(callbackItemName => {
-            if(this.callbacks[callbackItemName].hasCalled) return;
-            window.addEventListener('load', () => {
-                if(deepEquals(this.defaultValues[callbackItemName], this.cachedValues[callbackItemName].value)) {
-                    this.callbacks[callbackItemName].function();
-                    this.callbacks[callbackItemName].hasCalled = true;
-                }
-            });
-        });
+        this.setHasLoaded(true);
     }
 
     

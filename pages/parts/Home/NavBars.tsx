@@ -1,7 +1,9 @@
-import React, { FunctionComponent, useRef, useState } from "react";
+import React, { Fragment, FunctionComponent, useRef, useState } from "react";
 import Link from "./Link";
+import { SectionContent } from "../../Home";
 
 type Props = {
+    sectionContent: SectionContent[],
     contentWrapper: React.RefObject<HTMLDivElement>,
     currentSection: number
 }
@@ -41,12 +43,11 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                <Link url="/#data" text="Optimized data" activated={props.currentSection === 1}></Link>
-                <Link url="/#authentication" text="Secure authentication" activated={props.currentSection === 2}></Link>
-                <Link url="/#integrations" text="Seamless integrations" activated={props.currentSection === 3}></Link>
-                <Link url="/#analytics" text="Detailed analytics" activated={props.currentSection === 4}></Link>
-                <Link url="/#ui" text="User interfaces to control it all" activated={props.currentSection === 5}></Link>
-                <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection === 6}></Link>
+                {props.sectionContent.map((content, i) => {
+                    return <Fragment key={i}>
+                        <Link url={`/#${content.name}`} text={content.navName} activated={props.currentSection === i+1}></Link>
+                    </Fragment>
+                })}
             </div>
         </div>
         <div className='NavBar Bottom' ref={navBarBottom} data-html2canvas-ignore={true} style={{
@@ -54,12 +55,11 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                <Link url="/#data" text="Optimized data" activated={props.currentSection == 1}></Link>
-                <Link url="/#authentication" text="Secure authentication" activated={props.currentSection == 2}></Link>
-                <Link url="/#integrations" text="Seamless integrations" activated={props.currentSection == 3}></Link>
-                <Link url="/#analytics" text="Detailed analytics" activated={props.currentSection == 4}></Link>
-                <Link url="/#ui" text="User interfaces to control it all" activated={props.currentSection == 5}></Link>
-                <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection == 6}></Link>
+                {props.sectionContent.map((content, i) => {
+                    return <Fragment key={i}>
+                        <Link url={`/#${content.name}`} text={content.navName} activated={props.currentSection === i+1}></Link>
+                    </Fragment>
+                })}
             </div>
         </div>
         <div className='NavBar Static' ref={navBarStatic} data-html2canvas-ignore={true} style={navBarStaticLimit < 0 ? {
@@ -72,12 +72,11 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                <Link url="/#data" text="Optimized data" activated={props.currentSection == 1}></Link>
-                <Link url="/#authentication" text="Secure authentication" activated={props.currentSection == 2}></Link>
-                <Link url="/#integrations" text="Seamless integrations" activated={props.currentSection == 3}></Link>
-                <Link url="/#analytics" text="Detailed analytics" activated={props.currentSection == 4}></Link>
-                <Link url="/#ui" text="User interfaces to control it all" activated={props.currentSection == 5}></Link>
-                <Link url="/#websites" text="Beautiful websites to show it all" activated={props.currentSection == 6}></Link>
+                {props.sectionContent.map((content, i) => {
+                    return <Fragment key={i}>
+                        <Link url={`/#${content.name}`} text={content.navName} activated={props.currentSection === i+1}></Link>
+                    </Fragment>
+                })}
             </div>
         </div>
     </div>

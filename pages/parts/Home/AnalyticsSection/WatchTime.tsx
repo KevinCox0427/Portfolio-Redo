@@ -7,6 +7,7 @@ type Props = {
             [sectionName: string]: number
         }
     },
+    resetWatchTime: () => void,
     currentSection: number
 }
 
@@ -27,7 +28,10 @@ const WatchTime:FunctionComponent<Props> = (props) => {
     });
 
     return <div className="Graph WatchTime">
-        <h3>Watch Time:</h3>
+        <h3>
+            Watch Time:
+            <i className="fa-solid fa-rotate-left Reset" onClick={props.resetWatchTime}></i>
+        </h3>
         <div className="AxisWrapper" style={{
             gridTemplateColumns: `4.5em ${'3.5em '.repeat(XAxisLabels.length)}`
         }}>

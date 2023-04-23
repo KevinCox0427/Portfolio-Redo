@@ -1,19 +1,27 @@
 import { resolve } from 'path';
 import { spawn, execSync, ChildProcess } from 'child_process';
-import { readdirSync, watch } from 'fs';
+import { readdirSync, watch, existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 
 watchScript();
 
 function watchScript() {
     console.log('Compiling...\n');
+
     try {
         execSync('tsc');
         execSync('sass styles:dist/public/css');
         execSync('webpack');
+        copyPublicFiles();
     } catch (e:any) {
-        console.log(e.output.filter((err:any) => err instanceof Buffer).map((buffer:Buffer) => {
-            return `Error:\n\n${buffer.toString()}`
-        }).filter((errStr:string) => errStr.length > 'Error:\n\n '.length).join('\n'));
+        console.log(
+            e.output
+                .filter((err:any) => err instanceof Buffer)
+                .map((buffer:Buffer) => {
+                    return `Error:\n\n${buffer.toString()}`
+                })
+                .filter((errStr:string) => errStr.length > 'Error:\n\n '.length)
+                .join('\n')
+        );
         return;
     }
 
@@ -25,52 +33,96 @@ function watchScript() {
     console.log('Watching!\n');
 
     function watchDirectory(folder:string, pointer:string) {
-        watch(folder + '/' + pointer, (x, file) => {
-            if(pointer == 'pages' || folder.includes('pages')) {
-                runProcess('webpack', file);
-            }
-            if(file.split('.')[1] == 'scss') runProcess('sass', file);
-            if(file.split('.')[1] == 'ts' || file.split('.')[1] == 'tsx') runProcess('tsc', file);
+        if(!existsSync(`${folder}/${pointer}`)) return;
+
+        watch(`${folder}/${pointer}`, (x, file) => {
+            if(!existsSync(`${folder}/${pointer}/${file}`)) return;
+            
+            if(folder === '.' && pointer === 'public') copyPublicFiles();
+
+            if((pointer == 'pages' || folder.includes('pages'))) runProcess('Webpack', file);
+
+            if(file.split('.')[1] == 'scss') runProcess('Sass', file);
+
+            if(file.split('.')[1] == 'ts' || file.split('.')[1] == 'tsx') runProcess('Typescript', file);
+
+            if(!file.includes('.') || file.split('.')[1].length == 0) watchDirectory(`${folder}/${pointer}`, file);
         });
     }
 
     function readDirectorys(folder:string) {
         readdirSync(folder).forEach(pointer => {
             if(pointer.includes('.') || pointer == 'node_modules' || pointer == 'dist') return;
+
             watchDirectory(folder, pointer);
-            readDirectorys(folder + '/' + pointer);
+            readDirectorys(`${folder}/${pointer}`);
         }); 
     }
 
     function runProcess(command: string, fileName: string) {
         if(Date.now() - compileTimestamp < 200) return;
+
         node.kill('SIGTERM');
 
         const processTimestamp = Date.now();
 
-        compileTimestamp = processTimestamp
-        console.log('\nCompiling: ' + fileName);
+        compileTimestamp = processTimestamp;
+        console.log(`\nCompiling: ${fileName} (${command})`);
+        
         let compiler:ChildProcess | null = null;
         
         switch(command){
-            case 'webpack':
+            case 'Webpack':
                 compiler = spawn('tsc', {shell: true});
                 compiler = spawn('webpack', {shell: true});
                 break;
-            case 'sass':
+            case 'Sass':
                 compiler = spawn('sass', ['styles:dist/public/css'], {shell: true});
                 break;
-            case 'tsc':
-                compiler = spawn('tsc', {shell: true}).on('error', e => {console.log(e)});
+            case 'Typescript':
+                compiler = spawn('tsc', {shell: true});
                 break;
         }
 
         if(!compiler) return;
 
-        compiler.on('exit', () => {
+        let compilerMessage = '';
+
+        if(compiler.stderr) compiler.stderr.on('data', (data) => {
+            compilerMessage = data.toString();
+        })
+        if(compiler.stdout) compiler.stdout.on('data', (data) => {
+            compilerMessage = data.toString();
+        })
+
+        compiler.on('exit', code => {
             if(processTimestamp != compileTimestamp) return;
+
+            if(code !== 0 && compilerMessage) {
+                if(command === 'Webpack') {
+                    const errorArray = compilerMessage.split('ERROR');
+                    errorArray.splice(0, 1);
+                    compilerMessage = 'ERROR' + errorArray.join('\n\nERROR').split('\nwebpack ')[0];
+                }
+                console.log(`\nError:\n\n${compilerMessage}\n\nWaiting for changes...\n`);
+                return;
+            }
+            
             console.log('Done!\n');
             node = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
         });
     }
+
+    function copyPublicFiles() {
+        ['js', 'css', 'assets'].forEach(assetType => {
+            if(existsSync(`./public/${assetType}`)) {
+                if(!existsSync(`./dist/public/${assetType}`)) mkdirSync(`./dist/public/${assetType}`);
+                readdirSync(`./public/${assetType}`).forEach(file => {
+                    if(!existsSync(`./dist/public/${assetType}/${file}`)) {
+                        writeFileSync(`./dist/public/${assetType}/${file}`, readFileSync(`./public/${assetType}/${file}`));
+                    }
+                });
+            }
+        })
+    }   
 }

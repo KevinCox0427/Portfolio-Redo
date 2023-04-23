@@ -47,10 +47,10 @@
             .Reset {
                 position: absolute;
                 font-size: 1.1em;
-                right: 0;
-                top: 0;
+                right: -0.3em;
+                top: -0.3em;
                 color: var(--white);
-                padding: 0.25em;
+                padding: 0.35em;
                 border-radius: 10em;
                 transition: background-color 0.1s linear, color 0.1s linear, transform 0.25s ease-in-out;
 
@@ -197,7 +197,7 @@
 
         h3 {
             font-family: var(--rubik);
-            font-weight: 200;
+            font-weight: 400;
             font-size: 2em;
             padding: 0.5em 0;
             border-top: 0.05em solid var(--ecommerceGrey);
@@ -280,7 +280,7 @@
 
             .Divider {
                 align-self: stretch;
-                width: 0.075em;
+                width: 0.1em;
                 background-color: var(--ecommerceGrey);
                 height: none;
             }
@@ -290,7 +290,7 @@
                 flex-basis: 10em;
                 font-size: 1.15em;
                 font-family: var(--workSans);
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 120%;
                 padding: 0.75em 0;
             }

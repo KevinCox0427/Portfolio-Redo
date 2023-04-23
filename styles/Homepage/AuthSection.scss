@@ -1,3 +1,5 @@
+@import './../mixins';
+
 #authentication {
     .Example {
         gap: 3.75em 3em;
@@ -24,68 +26,13 @@
             }
 
             .Reset {
-                position: absolute;
-                top: 0.2em;
-                right: 0;
-                font-size: 1.5em;
-                padding: 0.25em;
-                border-radius: 10em;
-                transition: background-color 0.1s linear, color 0.1s linear, transform 0.25s ease-in-out;
-
-                &:hover {
-                    background-color: var(--black);
-                    color: var(--white);
-                    transform: scale(1.1) rotate(-270deg);
-                    cursor: pointer;
-                }
+                @include ResetButton();
             }
 
             .InputWrapper {
+                @include Input();
                 flex-basis: 100%;
-                flex-direction: row-reverse;
-                max-width: 100%;
-                align-items: flex-end;
-                justify-content: flex-end;
-                gap: 0em;
                 margin-top: -1.4em;
-        
-                input {
-                    background: none;
-                    flex-basis: 5em;
-                    flex-grow: 1;
-                    font-size: 1.8em;
-                    padding: 0.005em 0.2em;
-                    font-family: var(--franklin);
-                    font-weight: 100;
-                    min-width: 2em;
-                    transition: border-color 0.1s linear;
-                    border-bottom: 2px solid var(--lightRed);
-        
-                    &:not(:placeholder-shown), &:not(:placeholder-shown) ~ label {
-                        border-bottom: 2px solid var(--green);
-                    }
-
-                    &:hover, &:hover ~ label {
-                        border-bottom: 2px solid var(--yellow);
-                        cursor:text;
-                    }
-                }
-            
-                label {
-                    font-size: 1.25em;
-                    font-weight: 300;
-                    font-family: var(--cairo);
-                    letter-spacing: 0.02em;
-                    transition: border-color 0.1s linear;
-                    padding: 0.25em 0.2em;
-                    height: fit-content;
-                    border-bottom: 2px solid var(--lightRed);
-            
-                    &:hover, &:hover~input {
-                        border-bottom: 2px solid var(--yellow);
-                        cursor:text;
-                    }
-                }
             }
 
             .ErrorMessage {

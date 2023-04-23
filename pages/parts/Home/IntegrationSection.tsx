@@ -1,6 +1,7 @@
 import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from "react";
-import Track from "./Track";
-import WindowCache from "../../windowCache";
+import Track from "./IntegrationSection/Track";
+import WindowCache from "../windowCache";
+import { SectionContent } from "../../Home";
 
 type SearchResponse = {
     type: string,
@@ -23,7 +24,8 @@ type SearchResponse = {
 }[]
 
 type Props = {
-    windowCache: WindowCache
+    windowCache: WindowCache,
+    content: SectionContent
 }
 
 const IntegrationSection:FunctionComponent<Props> = (props) => {
@@ -83,7 +85,6 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
         });
     }
 
-
     const [results, setResults] = useState({
         amount: 250,
         count: 3,
@@ -125,16 +126,22 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
 
     const translateAmount = searchData.searchResults.length != 0 ? (100/searchData.searchResults.length) *  results.count : 0;
 
-    return <div id='integrations' className='Section'>
-        <h3 className='Title'>
-            Integrations give more power to your applications...
-        </h3>
+    return <div id={props.content.name} className='Section'>
+        <h3 className='Title'>{props.content.title}</h3>
         <p className='Description'>
-            Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.
-            <span>Let's use an integration with Spotify together to find you some new music!</span>
+            {props.content.description}
+            <span>{props.content.subDescription}</span>
         </p>
         <div className="Example">
             <div className="InputWrapper">
+                <i className="fa-solid fa-rotate-left Reset" onClick={() => {
+                    setSearchData(oldSearchData => {
+                        return {...oldSearchData,
+                            searchResults: [],
+                            searchRecommendations: []
+                        }
+                    });
+                }}></i>
                 <i className="fa-solid fa-arrow-turn-down EnterButton" onClick={() => {
                     if(searchData.searchBar) search(searchData.searchBar, false);
                 }}></i>
@@ -192,7 +199,7 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
                         {searchData.searchRecommendations.length > 0 ? <button onClick={() => {
                             if(results.recommendSlider != 0) setResults({...results,
                                 recommendSlider: results.recommendSlider-1
-                            });
+                            })
                         }}><i className="fa-solid fa-arrow-left"></i></button> : <></>}
                         <div className="ResultsWrapper">
                             <div className="ResultsSlider" style={{

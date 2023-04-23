@@ -5,22 +5,18 @@
 
     .Example {
         margin-top: 7em;
+        gap: 2.5em;
 
         .InputWrapper {
-            flex-direction: row-reverse;
-            flex-basis: 100%;
-            flex-grow: 1;
-            align-items: flex-end;
-            gap: 0em;
+            @include Input();
             margin-top: -1.4em;
-            max-width: 100%;
             margin-bottom: 5em;
 
             .EnterButton {
                 position: absolute;
                 top: 48%;
                 right: 0.25em;
-                padding: 0.32em 0.2em 0.28em 0.25em;
+                padding: 0.37em 0.3em 0.33em 0.35em;
                 border-radius: 0.2em;
                 font-size: 1.5em;
                 transform: translateY(-50%) rotate(-90deg);
@@ -34,45 +30,19 @@
                     color: var(--white);
                 }
             }
-    
-            input {
-                background: none;
-                flex-basis: 5em;
-                flex-grow: 1;
-                font-size: 2em;
-                padding: 0.005em 0.2em;
-                font-family: var(--franklin);
-                font-weight: 100;
-                min-width: 2em;
-                transition: border-color 0.1s linear;
-                border-bottom: 2px solid var(--lightRed);
-    
-                &:not(:placeholder-shown), &:not(:placeholder-shown) ~ label {
-                    border-bottom: 2px solid var(--green);
-                }
-    
-                &:hover, &:hover ~ label {
-                    border-bottom: 2px solid var(--yellow);
-                    cursor:text;
-                }
+
+            .Reset {
+                @include ResetButton();
+                z-index: 1;
+                left: 0.125em;
+                top: 0.3em;
+                width: fit-content;
+                font-size: 1.2em;
             }
         
             label {
-                font-size: 1.4em;
-                font-weight: 300;
-                font-family: var(--cairo);
                 max-width: 35%;
-                letter-spacing: 0.02em;
-                transition: border-color 0.1s linear;
-                padding: 0.25em 0.2em;
-                height: fit-content;
-                border-bottom: 2px solid var(--lightRed);
-                text-align: center;
-        
-                &:hover, &:hover~input {
-                    border-bottom: 2px solid var(--yellow);
-                    cursor:text;
-                }
+                padding: 0.25em 0.2em 0.25em 1.75em;
             }
         }
 
@@ -83,7 +53,6 @@
             width: 100%;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
 
             button {
                 font-size: 2em;
@@ -157,7 +126,7 @@
                                 transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out, font-weight 0.2s ease-in-out;
                             }
         
-                            &.Hover:hover {
+                            &:hover {
                                 cursor: pointer;
         
                                 img {
@@ -176,42 +145,47 @@
                                 }
                             }
                         }
-                        
-                        a {
-                            @include LinkHover(var(--lightPurple), var(--white), 0.1em);
+
+                        .Details {
                             gap: 0.5em;
+                            flex-shrink: 0;
 
-                            i {
-                                font-size: 0.8em;
+                            a {
+                                @include LinkHover(var(--lightPurple), var(--white), 0.1em);
+                                gap: 0.5em;
+    
+                                i {
+                                    font-size: 0.8em;
+                                }
                             }
-                        }
-        
-                        p {
-                            font-size: 1.1em;
-                            flex-direction: row;
-                            align-items: baseline;
-                            gap: 0em 0.5em;
-                            font-weight: 300;
-                        }
-        
-                        span {
-                            flex-direction: row;
-                            flex-wrap: wrap;
-                            align-items: baseline;
-                            gap: 0.2em 0.3em;
-                            font-family: var(--franklin);
-                        }
-
-                        .Title {
-                            font-size: 1.4em;
-                            font-weight: 300;
-                            font-family: var(--arima);
-                            padding: 0.3em 0.25em 0.15em 0.15em !important;
-                            gap: 0.3em;
-                            margin-bottom: 0.15em;
             
-                            i {
-                                margin-top: -0.25em;
+                            p {
+                                font-size: 1.1em;
+                                flex-direction: row;
+                                align-items: baseline;
+                                gap: 0em 0.5em;
+                                font-weight: 300;
+                            }
+            
+                            span {
+                                flex-direction: row;
+                                flex-wrap: wrap;
+                                align-items: baseline;
+                                gap: 0.2em 0.3em;
+                                font-family: var(--franklin);
+                            }
+    
+                            .Title {
+                                font-size: 1.4em;
+                                font-weight: 300;
+                                font-family: var(--arima);
+                                padding: 0.3em 0.25em 0.15em 0.15em !important;
+                                gap: 0.3em;
+                                margin-bottom: 0.15em;
+                
+                                i {
+                                    margin-top: -0.25em;
+                                }
                             }
                         }
                     }
