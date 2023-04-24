@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { SectionContent } from "../../Home";
 
 type Props = {
@@ -8,6 +8,7 @@ type Props = {
 }
 
 const UISection: FunctionComponent<Props> = (props) => {
+    const [quillContent, setQuillContent] = useState('')
     
     return <div id={props.content.name} className='Section'>
         <h3 className='Title'>{props.content.title}</h3>

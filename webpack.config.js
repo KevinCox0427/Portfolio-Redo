@@ -14,14 +14,31 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx)?$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
+        include: /pages/,
+        exclude: /node_modules/
       },
+      {
+        test: /\.(js|mjs)?$/,
+        resolve: { fullySpecified: false },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', { targets: "defaults" }]
+            ]
+          }
+        }
+      },
+      {
+        test: /\.(css)$/,
+        use: ['style-loader','css-loader']
+      }
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts'],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
     filename: '[name].js',
