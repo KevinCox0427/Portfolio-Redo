@@ -1,23 +1,37 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent } from "react";
 import { SectionContent } from "../../Home";
+import TextEditor from "./UISection/TextEditor";
+import parse, { Element } from 'html-react-parser';
 
 type Props = {
-    content: SectionContent,
-    sectionContent: SectionContent[],
+    sectionContent: SectionContent,
+    allSectionContent: SectionContent[],
     setSectionContent: React.Dispatch<React.SetStateAction<SectionContent[]>>
 }
 
 const UISection: FunctionComponent<Props> = (props) => {
-    const [quillContent, setQuillContent] = useState('')
     
-    return <div id={props.content.name} className='Section'>
-        <h3 className='Title'>{props.content.title}</h3>
-        <p className='Description'>
-            {props.content.description}
-            <span>{props.content.subDescription}</span>
-        </p>
+    function setContent(sectionContent:string, i: number) {
+        props.setSectionContent(oldSectionData => {
+            const deepClone:SectionContent[] = JSON.parse(JSON.stringify(oldSectionData))
+            deepClone[i] = {...deepClone[i],
+                content: sectionContent
+            };
+            return deepClone;
+        });
+    }
+    
+    return <div id={props.sectionContent.name} className='Section'>
+        {parse(props.sectionContent.content, {
+            replace: (node) => {
+                const validTags = ['DIV', 'P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A', 'SPAN', 'EM', 'STRONG', 'SMALL', 'IMAGE'];
+                if(!(node instanceof Element)) return node;
+                if(validTags.includes(node.tagName)) return node;
+                return false;
+            }
+        })}
         <div className="Example">
-            {props.sectionContent.map((content, i) => {
+            {props.allSectionContent.map((sectionContent, i) => {
                 return <div key={i} className="SectionContent">
                     <div className="ButtonWrapper">
                         <i className={`Button Activated fa-solid fa-caret-right`}></i>
@@ -25,7 +39,7 @@ const UISection: FunctionComponent<Props> = (props) => {
                     </div>
                     <div className="ContentWrapper">
                         <div className="InputWrapper">
-                            <input placeholder=" " id={`${content.name}NavName`} value={content.navName} onChange={e => {
+                            <input placeholder=" " id={`${sectionContent.name}NavName`} value={sectionContent.navName} onChange={e => {
                                 props.setSectionContent(oldSectionData => {
                                     const deepClone:SectionContent[] = JSON.parse(JSON.stringify(oldSectionData))
                                     deepClone[i] = {...deepClone[i],
@@ -34,43 +48,11 @@ const UISection: FunctionComponent<Props> = (props) => {
                                     return deepClone;
                                 });
                             }}></input>
-                            <label htmlFor={`${content.name}NavName`}>Name:</label>
+                            <label htmlFor={`${sectionContent.name}NavName`}>Name:</label>
                         </div>
-                        <div className="TextareaWrapper">
-                            <textarea placeholder=" " id={`${content.name}Title`} value={content.title} onChange={e => {
-                                props.setSectionContent(oldSectionData => {
-                                    const deepClone:SectionContent[] = JSON.parse(JSON.stringify(oldSectionData))
-                                    deepClone[i] = {...deepClone[i],
-                                        title: e.target.value
-                                    };
-                                    return deepClone;
-                                });
-                            }}></textarea>
-                            <label htmlFor={`${content.name}Title`}>Title:</label>
-                        </div>
-                        <div className="TextareaWrapper">
-                            <textarea placeholder=" " id={`${content.name}Description`} value={content.description} onChange={e => {
-                                props.setSectionContent(oldSectionData => {
-                                    const deepClone:SectionContent[] = JSON.parse(JSON.stringify(oldSectionData))
-                                    deepClone[i] = {...deepClone[i],
-                                        description: e.target.value
-                                    };
-                                    return deepClone;
-                                });
-                            }}></textarea>
-                            <label htmlFor={`${content.name}Description`}>Description:</label>
-                        </div>
-                        <div className="TextareaWrapper">
-                            <textarea placeholder=" " id={`${content.name}SubDescription`} value={content.subDescription} onChange={e => {
-                                props.setSectionContent(oldSectionData => {
-                                    const deepClone:SectionContent[] = JSON.parse(JSON.stringify(oldSectionData))
-                                    deepClone[i] = {...deepClone[i],
-                                        subDescription: e.target.value
-                                    };
-                                    return deepClone;
-                                });
-                            }}></textarea>
-                            <label htmlFor={`${content.name}SubDescription`}>Italic Text:</label>
+                        <div className="TextEditorWrapper">
+                            <label htmlFor={`Editor${i}`}>Description:</label>
+                            <TextEditor content={sectionContent.content} setContent={setContent} index={i}></TextEditor>
                         </div>
                     </div>
                 </div>

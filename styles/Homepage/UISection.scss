@@ -68,21 +68,29 @@
                     }
                 }
 
-                .TextareaWrapper {
-                    @include Input();
-                    flex-direction: column-reverse;
+                .TextEditorWrapper {
+                    flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
-
-                    textarea {
-                        font-size: 1.4em;
-                        width: calc(100% - 0.6em - 4px);
-                    }
 
                     label {
                         font-size: 1.35em;
                         font-weight: 400;
-                        border: none !important;
+                    }
+
+                    .ql-toolbar, .ql-container {
+                        width: 100%;
+                    }
+
+                    .ql-toolbar {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        gap: 1em;
+                    }
+
+                    .ql-container {
+                        
                     }
                 }
             }

@@ -17,9 +17,7 @@ export type { SectionContent }
 type SectionContent = {
     name: string,
     navName: string,
-    title: string,
-    description: string,
-    subDescription: string
+    content: string
 }
 
 const Home:FunctionComponent = () => {
@@ -124,44 +122,32 @@ const Home:FunctionComponent = () => {
         {
             name: 'data',
             navName: 'Optimized Data',
-            title: 'It always starts with the data...',
-            description: 'Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.',
-            subDescription: 'Let\'s fill in a data structure to create some new products together!'
+            content: '<h3 class="Title">It always starts with the data...</h3><p class="Description">Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.<span>Let\'s fill in a data structure to create some new products together!</span></p>'
         },
         {
             name: 'authentication',
             navName: 'Secure authentication',
-            title: 'In order to have users, you need secure authentication...',
-            description: 'Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.',
-            subDescription: 'Let\'s create you a user from stratch together!'
+            content: '<h3 class="Title">In order to have users, you need secure authentication...</h3><p class="Description">Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.<span>Let\'s create you a user from stratch together!</span></p>'
         },
         {
             name: 'integrations',
             navName: 'Seamless integrations',
-            title: 'Integrations give more power to your applications...',
-            description: 'Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.',
-            subDescription: 'Let\'s use an integration with Spotify together to find you some new music!'
+            content: '<h3 class="Title">Integrations give more power to your applications...</h3><p class="Description">Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.<span>Let\'s use an integration with Spotify together to find you some new music!</span></p>'
         },
         {
             name: 'analytics',
             navName: 'Detailed analytics',
-            title: 'The more detailed the analytics, the more detailed the strategy...',
-            description: 'Data collect is an invaluable resource for growing, adapting, and focusing your business operations.',
-            subDescription: 'Here\'s some examples of your activity on this page! Don\'t worry, none of this is stored or sent to my server, you can check the network calls :)'
+            content: '<h3 class="Title">The more detailed the analytics, the more detailed the strategy...</h3><p class="Description">Data collect is an invaluable resource for growing, adapting, and focusing your business operations.<span>Here\'s some examples of your activity on this page!<small>Don\'t worry, none of this is stored or sent to my server, you can check the network calls :)</small></span></p>'
         },
         {
             name: 'ui',
             navName: 'User interfaces to control it all',
-            title: 'Powerful user interfaces give you the greatest control...',
-            description: ' ',
-            subDescription: 'Let\'s use a user interface to screw up all my hard work!'
+            content: '<h3 class="Title">Powerful user interfaces give you the greatest control...</h3><p class="Description"> <span>Let\'s use a user interface to screw up all my hard work!</span></p>'
         },
         {
             name: 'web',
             navName: 'Beautiful websites to show it all',
-            title: ' ',
-            description: ' ',
-            subDescription: ' '
+            content: '<h3 class="Title"> </h3><p class="Description"><span></span></p>'
         }
     ]);
     windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
@@ -213,23 +199,23 @@ const Home:FunctionComponent = () => {
                     switch(currentSectionContent.name) {
                         case 'data':
                             return <Fragment key={i}>
-                                <DataSection windowCache={windowCache.current} content={currentSectionContent}></DataSection>
+                                <DataSection windowCache={windowCache.current} sectionContent={currentSectionContent}></DataSection>
                             </Fragment>
                         case 'authentication':
                             return <Fragment key={i}>
-                                <AuthSection windowCache={windowCache.current} content={currentSectionContent}></AuthSection>
+                                <AuthSection windowCache={windowCache.current} sectionContent={currentSectionContent}></AuthSection>
                             </Fragment>
                         case 'integrations':
                             return <Fragment key={i}>
-                                <IntegrationSection windowCache={windowCache.current} content={currentSectionContent}></IntegrationSection>
+                                <IntegrationSection windowCache={windowCache.current} sectionContent={currentSectionContent}></IntegrationSection>
                             </Fragment>
                         case 'analytics':
                             return <Fragment key={i}>
-                                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} resetWatchTime={resetWatchTime} content={currentSectionContent}></AnalyticsSection>
+                                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} resetWatchTime={resetWatchTime} sectionContent={currentSectionContent}></AnalyticsSection>
                             </Fragment>
                         case 'ui':
                             return <Fragment key={i}>
-                                <UISection content={currentSectionContent} sectionContent={sectionContent} setSectionContent={setSectionContent}></UISection>
+                                <UISection sectionContent={currentSectionContent} allSectionContent={sectionContent} setSectionContent={setSectionContent}></UISection>
                             </Fragment>
                         case 'web':
                             return <Fragment key={i}></Fragment>

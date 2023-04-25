@@ -3,6 +3,7 @@ import WindowCache from "../windowCache";
 import Register from "./AuthSection/Register";
 import Login from "./AuthSection/Login";
 import { SectionContent } from "../../Home";
+import parse, { Element } from 'html-react-parser';
 
 export type { UserData }
 
@@ -21,7 +22,7 @@ type UserData = {
 
 type Props = {
     windowCache: WindowCache,
-    content: SectionContent
+    sectionContent: SectionContent
 }
 
 const AuthSection:FunctionComponent<Props> = (props) => {
@@ -43,12 +44,15 @@ const AuthSection:FunctionComponent<Props> = (props) => {
     const [sessionCounter, setSessionCounter] = useState(0);
     props.windowCache.registerCache('DreamStateSessionCounter', sessionCounter, setSessionCounter);
 
-    return <div id={props.content.name} className="Section">
-        <h3 className='Title'>{props.content.title}</h3>
-        <p className='Description'>
-            {props.content.description}
-            <span>{props.content.subDescription}</span>
-        </p>
+    return <div id={props.sectionContent.name} className="Section">
+        {parse(props.sectionContent.content, {
+            replace: (node) => {
+                const validTags = ['DIV', 'P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A', 'SPAN', 'EM', 'STRONG', 'SMALL', 'IMAGE'];
+                if(!(node instanceof Element)) return node;
+                if(validTags.includes(node.tagName)) return node;
+                return false;
+            }
+        })}
         <div className='Example'>
             <Register userData={userData} setUserData={setUserData} setSessionCounter={setSessionCounter}></Register>
             <div className="Divider"></div>

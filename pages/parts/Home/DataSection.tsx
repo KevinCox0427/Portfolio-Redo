@@ -3,6 +3,7 @@ import WindowCache from "../windowCache";
 import JsonInput from "./DataSection/JsonInput";
 import Result from "./DataSection/Result";
 import { SectionContent } from "../../Home";
+import parse, { Element } from 'html-react-parser';
 
 export type { CurrentData }
 
@@ -27,7 +28,7 @@ type CurrentData = {
 
 type Props = {
     windowCache: WindowCache,
-    content: SectionContent
+    sectionContent: SectionContent
 }
 
 const DataSection:FunctionComponent<Props> = (props) => {
@@ -43,12 +44,15 @@ const DataSection:FunctionComponent<Props> = (props) => {
     });
     props.windowCache.registerCache('DreamStateDataEntry', currentData, setCurrentData);
 
-    return <div id={props.content.name} className='Section'>
-        <h3 className='Title'>{props.content.title}</h3>
-        <p className='Description'>
-            {props.content.description}
-            <span>{props.content.subDescription}</span>
-        </p>
+    return <div id={props.sectionContent.name} className='Section'>
+        {parse(props.sectionContent.content, {
+            replace: (node) => {
+                const validTags = ['div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'span', 'em', 'strong', 'small', 'image'];
+                if(!(node instanceof Element)) return node;
+                if(validTags.includes(node.tagName.toLowerCase())) return node;
+                return false;
+            }
+        })}
         <div className='Example'>
             <JsonInput currentData={currentData} setCurrentData={setCurrentData}></JsonInput>
             <Result currentData={currentData}></Result>

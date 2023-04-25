@@ -2,6 +2,7 @@ import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from 
 import Track from "./IntegrationSection/Track";
 import WindowCache from "../windowCache";
 import { SectionContent } from "../../Home";
+import parse, { Element } from 'html-react-parser';
 
 type SearchResponse = {
     type: string,
@@ -25,7 +26,7 @@ type SearchResponse = {
 
 type Props = {
     windowCache: WindowCache,
-    content: SectionContent
+    sectionContent: SectionContent
 }
 
 const IntegrationSection:FunctionComponent<Props> = (props) => {
@@ -126,12 +127,15 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
 
     const translateAmount = searchData.searchResults.length != 0 ? (100/searchData.searchResults.length) *  results.count : 0;
 
-    return <div id={props.content.name} className='Section'>
-        <h3 className='Title'>{props.content.title}</h3>
-        <p className='Description'>
-            {props.content.description}
-            <span>{props.content.subDescription}</span>
-        </p>
+    return <div id={props.sectionContent.name} className='Section'>
+        {parse(props.sectionContent.content, {
+            replace: (node) => {
+                const validTags = ['DIV', 'P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A', 'SPAN', 'EM', 'STRONG', 'SMALL', 'IMAGE'];
+                if(!(node instanceof Element)) return node;
+                if(validTags.includes(node.tagName)) return node;
+                return false;
+            }
+        })}
         <div className="Example">
             <div className="InputWrapper">
                 <i className="fa-solid fa-rotate-left Reset" onClick={() => {
