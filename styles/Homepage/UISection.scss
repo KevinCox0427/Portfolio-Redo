@@ -8,16 +8,14 @@
             flex-direction: column;
             background-color: var(--ecommerceWhite);
             border-radius: 0.5em;
-            padding: 0.5em 1em 1em 1em;
-            gap: 1.5em;
+            padding: 1em 1em;
+            gap: 1em;
             box-shadow: 2px 1px 2px 0px rgba(0, 0, 0, 0.07);
 
             .ButtonWrapper {
                 flex-direction: row;
                 align-items: center;
                 gap: 0.25em;
-                padding-bottom: 0.3em;
-                border-bottom: 0.15em dashed var(--black);
 
                 .Button {
                     width: fit-content;
@@ -48,13 +46,6 @@
                         z-index: 1;
                     }
                 }
-            }
-
-            .ContentWrapper {
-                flex-direction: column;
-                height: fit-content;
-                width: 100%;
-                gap: 1.5em;
 
                 .InputWrapper {
                     @include Input();
@@ -67,6 +58,13 @@
                         font-weight: 400;
                     }
                 }
+            }
+
+            .ContentWrapper {
+                flex-direction: column;
+                height: fit-content;
+                width: 100%;
+                gap: 1.5em;
 
                 .TextEditorWrapper {
                     flex-direction: column;
@@ -87,10 +85,36 @@
                         flex-direction: row;
                         flex-wrap: wrap;
                         gap: 1em;
+                        margin-top: 0.5em;
+                        border: 0.1em solid var(--black);
                     }
 
                     .ql-container {
-                        
+                        display: block;
+                        padding: 1em;
+                        border: 0.1em dashed var(--black);
+                        border-top: none;
+
+                        * {
+                            display: block;
+                        }
+
+                        .ql-hidden {
+                            display: none !important;
+                        }
+
+                        .ql-editor {
+                            display: block;
+                            line-height: 1.4;
+
+                            p, h3, span {
+                                display: block;
+                                line-height: 1.4;
+                                line-height: inherit;
+                                tab-size: inherit;
+                                white-space: inherit;
+                            }
+                        }
                     }
                 }
             }

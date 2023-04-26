@@ -1,8 +1,8 @@
 import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from "react";
-import Track from "./IntegrationSection/Track";
-import WindowCache from "../windowCache";
-import { SectionContent } from "../../Home";
-import parse, { Element } from 'html-react-parser';
+import Track from "./Track";
+import WindowCache from "../../windowCache";
+import { SectionContent } from "../../../Home";
+import Title from "../Title";
 
 type SearchResponse = {
     type: string,
@@ -128,14 +128,7 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
     const translateAmount = searchData.searchResults.length != 0 ? (100/searchData.searchResults.length) *  results.count : 0;
 
     return <div id={props.sectionContent.name} className='Section'>
-        {parse(props.sectionContent.content, {
-            replace: (node) => {
-                const validTags = ['DIV', 'P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A', 'SPAN', 'EM', 'STRONG', 'SMALL', 'IMAGE'];
-                if(!(node instanceof Element)) return node;
-                if(validTags.includes(node.tagName)) return node;
-                return false;
-            }
-        })}
+        <Title content={props.sectionContent.content}></Title>
         <div className="Example">
             <div className="InputWrapper">
                 <i className="fa-solid fa-rotate-left Reset" onClick={() => {

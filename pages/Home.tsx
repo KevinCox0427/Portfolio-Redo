@@ -4,13 +4,13 @@ import Header from './parts/Header';
 import Footer from './parts/Footer';
 import FloralSVG from './parts/Home/FloralSVG';
 import HandSVG from './parts/Home/HandSVG';
-import DataSection from './parts/Home/DataSection';
+import DataSection from './parts/Home/DataSection/DataSection';
 import NavBars from './parts/Home/NavBars';
-import AuthSection from './parts/Home/AuthSection';
-import IntegrationSection from './parts/Home/IntegrationSection';
-import AnalyticsSection from './parts/Home/AnalyticsSection';
+import AuthSection from './parts/Home/AuthSection/AuthSection';
+import IntegrationSection from './parts/Home/IntegrationSection/IntegrationSection';
+import AnalyticsSection from './parts/Home/AnalyticsSection/AnalyticsSection';
 import WindowCache from './parts/windowCache';
-import UISection from './parts/Home/UISection';
+import UISection from './parts/Home/UISection/UISection';
 
 export type { SectionContent }
 
@@ -122,32 +122,32 @@ const Home:FunctionComponent = () => {
         {
             name: 'data',
             navName: 'Optimized Data',
-            content: '<h3 class="Title">It always starts with the data...</h3><p class="Description">Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.<span>Let\'s fill in a data structure to create some new products together!</span></p>'
+            content: '<h3>It always starts with the data...</h3><p>Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.</p><p><em>Let\'s fill in a data structure to create some new products together!</em></p>'
         },
         {
             name: 'authentication',
             navName: 'Secure authentication',
-            content: '<h3 class="Title">In order to have users, you need secure authentication...</h3><p class="Description">Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.<span>Let\'s create you a user from stratch together!</span></p>'
+            content: '<h3>In order to have users, you need secure authentication...</h3><p>Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.</p><p><em>Let\'s create you a user from stratch together!</em></p>'
         },
         {
             name: 'integrations',
             navName: 'Seamless integrations',
-            content: '<h3 class="Title">Integrations give more power to your applications...</h3><p class="Description">Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.<span>Let\'s use an integration with Spotify together to find you some new music!</span></p>'
+            content: '<h3>Integrations give more power to your applications...</h3><p>Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.</p><p><em>Let\'s use an integration with Spotify together to find you some new music!</em></p>'
         },
         {
             name: 'analytics',
             navName: 'Detailed analytics',
-            content: '<h3 class="Title">The more detailed the analytics, the more detailed the strategy...</h3><p class="Description">Data collect is an invaluable resource for growing, adapting, and focusing your business operations.<span>Here\'s some examples of your activity on this page!<small>Don\'t worry, none of this is stored or sent to my server, you can check the network calls :)</small></span></p>'
+            content: '<h3>The more detailed the analytics, the more detailed the strategy...</h3><p>Data collect is an invaluable resource for growing, adapting, and focusing your business operations.<p><em>Here\'s some examples of your activity on this page!<small>Don\'t worry, none of this is stored or sent to my server, you can check the network calls :)</small></em></p>'
         },
         {
             name: 'ui',
             navName: 'User interfaces to control it all',
-            content: '<h3 class="Title">Powerful user interfaces give you the greatest control...</h3><p class="Description"> <span>Let\'s use a user interface to screw up all my hard work!</span></p>'
+            content: '<h3>Powerful user interfaces give you the greatest control...</h3><p></p><p><em>Let\'s use a user interface to screw up all my hard work!</em></p>'
         },
         {
             name: 'web',
             navName: 'Beautiful websites to show it all',
-            content: '<h3 class="Title"> </h3><p class="Description"><span></span></p>'
+            content: '<h3></h3><p></p><p><em></em></p>'
         }
     ]);
     windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);

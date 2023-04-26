@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Analytics } from "../AnalyticsSection";
+import { Analytics } from "./AnalyticsSection";
 
 type Props = {
     analytics: Analytics,

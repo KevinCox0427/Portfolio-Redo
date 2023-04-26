@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useRef } from "react";
-import { Analytics } from "../AnalyticsSection";
+import { Analytics } from "./AnalyticsSection";
 
 declare const L:any;
 

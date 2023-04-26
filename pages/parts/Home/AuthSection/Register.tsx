@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { UserData } from "../AuthSection";
+import { UserData } from "./AuthSection";
 
 type Props = {
     userData: UserData,

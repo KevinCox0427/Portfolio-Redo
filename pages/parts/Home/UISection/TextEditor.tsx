@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useRef } from "react";
 import type Quill from "quill";
+import parse from 'html-react-parser';
 
 
 type Props = {
@@ -18,11 +19,13 @@ const TextEditor: FunctionComponent<Props> = (props) => {
             theme: 'snow'
         });
 
-        editor.current!.innerHTML = props.content;
+        editor.current!.children[0].innerHTML = `${props.content}`
     }, [editor]);
     
     return <>
-        <div ref={editor} id={`Editor${props.index}`}></div>
+        <div ref={editor} id={`Editor${props.index}`} className="TitleWrapper">
+            {/* {parse(props.content)} */}
+        </div>
     </>
 }
 

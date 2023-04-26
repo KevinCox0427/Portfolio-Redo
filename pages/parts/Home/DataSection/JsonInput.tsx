@@ -1,5 +1,5 @@
 import React, { Fragment, FunctionComponent } from "react";
-import { CurrentData } from "../DataSection";
+import { CurrentData } from "./DataSection";
 
 const date = new Date();
 
