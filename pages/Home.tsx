@@ -159,6 +159,8 @@ const Home:FunctionComponent = () => {
         sliderWrapper.current.append(sliderWrapper.current.children[0]);
     }
 
+    console.log('Rerendering', Date.now());
+
     return <>
         <Header></Header>
         <div className='SplashImage'>

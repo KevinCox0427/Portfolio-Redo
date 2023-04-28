@@ -39,21 +39,24 @@ body {
     overflow-x: hidden;
     scroll-behavior: smooth;
 
-    * {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        line-height: 100%;
-        margin: 0px;
-        padding: 0px;
-    }
-
-    style, script {
+    style, script, link {
         display: none !important;
     }
 }
 
+* {
+    margin: 0px;
+    padding: 0px;
+    // display: flex;
+    flex-direction: column;
+    position: relative;
+    line-height: 100%;
+}
+
 #root {
+    display: flex;
+    flex-direction: column;
+    position: relative;
     scroll-behavior: smooth;
     flex-basis: 1px;
     flex-grow: 1;

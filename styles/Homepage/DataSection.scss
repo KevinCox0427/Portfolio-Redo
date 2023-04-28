@@ -1,5 +1,9 @@
 #data {
     justify-content: center;
+    display: flex;
+    * {
+        display: flex;
+    }
 
     .DataEntry {
         width: fit-content;

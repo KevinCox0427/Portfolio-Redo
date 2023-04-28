@@ -1,6 +1,10 @@
 @import './../mixins';
 
 #analytics {
+    display: flex;
+    * {
+        display: flex;
+    }
 
     .GraphWrapper {
         flex-direction: row;

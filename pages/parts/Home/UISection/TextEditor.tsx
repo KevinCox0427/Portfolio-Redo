@@ -19,13 +19,11 @@ const TextEditor: FunctionComponent<Props> = (props) => {
             theme: 'snow'
         });
 
-        editor.current!.children[0].innerHTML = `${props.content}`
+        editor.current!.children[0].innerHTML = `${props.content}`;
     }, [editor]);
     
     return <>
-        <div ref={editor} id={`Editor${props.index}`} className="TitleWrapper">
-            {/* {parse(props.content)} */}
-        </div>
+        <div ref={editor} id={`Editor${props.index}`} className="TitleWrapper"></div>
     </>
 }
 

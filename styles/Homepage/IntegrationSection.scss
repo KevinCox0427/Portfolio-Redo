@@ -2,6 +2,10 @@
 
 #integrations {
     margin-bottom: 5em;
+    display: flex;
+    * {
+        display: flex;
+    }
 
     .Example {
         margin-top: 7em;

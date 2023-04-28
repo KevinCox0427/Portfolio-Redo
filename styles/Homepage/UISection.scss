@@ -1,10 +1,14 @@
 @import './../mixins';
 
 #ui {
+    display: flex;
+
     .Example {
+        display: flex;
         flex-direction: column;
 
         .SectionContent {
+            display: flex;
             flex-direction: column;
             background-color: var(--ecommerceWhite);
             border-radius: 0.5em;
@@ -16,6 +20,10 @@
                 flex-direction: row;
                 align-items: center;
                 gap: 0.25em;
+                display: flex;
+                * {
+                    display: flex;
+                }
 
                 .Button {
                     width: fit-content;
@@ -67,6 +75,7 @@
                 gap: 1.5em;
 
                 .TextEditorWrapper {
+                    display: block;
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
@@ -90,29 +99,21 @@
                     }
 
                     .ql-container {
-                        display: block;
-                        padding: 1em;
                         border: 0.1em dashed var(--black);
                         border-top: none;
-
-                        * {
-                            display: block;
-                        }
-
-                        .ql-hidden {
-                            display: none !important;
-                        }
+                        padding: 0.25em 0.5em;
 
                         .ql-editor {
-                            display: block;
-                            line-height: 1.4;
+                            p {
+                                margin: 0.625em 0;
+                            }
 
-                            p, h3, span {
-                                display: block;
-                                line-height: 1.4;
-                                line-height: inherit;
-                                tab-size: inherit;
-                                white-space: inherit;
+                            h3 {
+                                margin: 0.2em 0;
+                            }
+
+                            strong {
+                                font-weight: 400;
                             }
                         }
                     }

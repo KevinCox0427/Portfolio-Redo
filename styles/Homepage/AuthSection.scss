@@ -1,6 +1,11 @@
 @import './../mixins';
 
 #authentication {
+    display: flex;
+    * {
+        display: flex;
+    }
+
     .Example {
         gap: 3.75em 3em;
         margin-top: 5.5em;

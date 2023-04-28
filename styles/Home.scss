@@ -9,6 +9,10 @@
     height: 100vh;
     width: 100%;
     padding-bottom: 15em;
+    display: flex;
+    * {
+        display: flex;
+    }
 
     #FloralPatternSVG {
         position: absolute;
@@ -165,6 +169,7 @@
 }
 
 #WhatICanDo {
+    display: flex;
     align-items: flex-start;
     flex-direction: row;
     gap: 0em 3em;
@@ -176,6 +181,10 @@
         justify-content: space-between;
         height: 100%;
         z-index: 10;
+        display: flex;
+        * {
+            display: flex;
+        }
 
         .NavBar {
             flex-direction: row;
