@@ -93,6 +93,11 @@ button, input, select, option {
     align-items: center;
     border-radius: 0 0 0.5em 0.5em;
     z-index: 100;
+    display: flex;
+
+    * {
+        display: flex;
+    }
 
     .Logo {
         position: absolute;
@@ -146,6 +151,12 @@ button, input, select, option {
 }
 
 #Footer {
+    display: flex;
+
+    * {
+        display: flex;
+    }
+
     .Contain {
         justify-content: center;
         gap: 0.1em;

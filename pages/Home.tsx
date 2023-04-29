@@ -142,12 +142,12 @@ const Home:FunctionComponent = () => {
         {
             name: 'ui',
             navName: 'User interfaces to control it all',
-            content: '<h3>Powerful user interfaces give you the greatest control...</h3><p></p><p><em>Let\'s use a user interface to screw up all my hard work!</em></p>'
+            content: '<h3>Powerful user interfaces give you the greatest control...</h3><p><em>Let\'s use a user interface to screw up all my hard work!</em></p>'
         },
         {
             name: 'web',
             navName: 'Beautiful websites to show it all',
-            content: '<h3></h3><p></p><p><em></em></p>'
+            content: ''
         }
     ]);
     windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
@@ -159,7 +159,11 @@ const Home:FunctionComponent = () => {
         sliderWrapper.current.append(sliderWrapper.current.children[0]);
     }
 
-    console.log('Rerendering', Date.now());
+    console.log('Rerendering', new Date().toString().split(':').map((value, i) => {
+        if(i === 0) return value.substring(value.length-2, value.length);
+        if(i === 2) return value.substring(0, 2);
+        else return value;
+    }).join(':'));
 
     return <>
         <Header></Header>

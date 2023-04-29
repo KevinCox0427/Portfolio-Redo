@@ -12,9 +12,11 @@
             flex-direction: column;
             background-color: var(--ecommerceWhite);
             border-radius: 0.5em;
-            padding: 1em 1em;
-            gap: 1em;
+            padding: 0.75em 1em 1em 1em;
+            gap: 15px;
             box-shadow: 2px 1px 2px 0px rgba(0, 0, 0, 0.07);
+            overflow: hidden;
+            transition: opacity 0.15s linear, height 0.4s ease-in-out;
 
             .ButtonWrapper {
                 flex-direction: row;
@@ -33,7 +35,7 @@
                     border-radius: 10em;
                     transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
 
-                    &:first-child {
+                    &.fa-caret-right {
                         font-size: 1.5em;
                         padding: 0.25em 0.5em 0.25em 0.5em;
 
@@ -57,6 +59,7 @@
 
                 .InputWrapper {
                     @include Input();
+                    margin-left: 0.5em;
 
                     input {
                         font-size: 1.5em;
@@ -69,56 +72,26 @@
             }
 
             .ContentWrapper {
-                flex-direction: column;
                 height: fit-content;
                 width: 100%;
-                gap: 1.5em;
 
                 .TextEditorWrapper {
-                    display: block;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-
                     label {
                         font-size: 1.35em;
                         font-weight: 400;
                     }
 
-                    .ql-toolbar, .ql-container {
-                        width: 100%;
-                    }
-
-                    .ql-toolbar {
-                        display: flex;
-                        flex-direction: row;
-                        flex-wrap: wrap;
-                        gap: 1em;
-                        margin-top: 0.5em;
-                        border: 0.1em solid var(--black);
-                    }
-
-                    .ql-container {
-                        border: 0.1em dashed var(--black);
-                        border-top: none;
-                        padding: 0.25em 0.5em;
-
-                        .ql-editor {
-                            p {
-                                margin: 0.625em 0;
-                            }
-
-                            h3 {
-                                margin: 0.2em 0;
-                            }
-
-                            strong {
-                                font-weight: 400;
-                            }
-                        }
-                    }
+                    @include QuillStyleAdjustments();
                 }
             }
+        }
+
+        .MovingIndicator {
+            background-color: var(--blue);
+            height: 0.15em;
+            width: 100%;
+            border-radius: 10em;
+            transition: opacity 0.15s linear, margin 0.15s linear;
         }
     }
 }
