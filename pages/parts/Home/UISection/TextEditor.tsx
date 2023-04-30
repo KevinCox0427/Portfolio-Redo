@@ -4,8 +4,8 @@ import QuillType from "quill";
 
 type Props = {
     content: string,
-    setContent: (content: string, i:number) => void,
-    index: number
+    setContent: (content: string, name: string) => void,
+    name: string
 }
 
 declare const Quill: any
@@ -37,7 +37,7 @@ const TextEditor: FunctionComponent<Props> = (props) => {
         });
 
         quill.current!.on('text-change', (delta, delta2, source) => {
-            if(source === 'user') props.setContent(editor.current!.children[0].innerHTML, props.index);
+            if(source === 'user') props.setContent(editor.current!.children[0].innerHTML, props.name);
         });
     }, [editor]);
 
@@ -51,7 +51,7 @@ const TextEditor: FunctionComponent<Props> = (props) => {
     }, [props.content]);
     
     return <>
-        <div ref={editor} id={`Editor${props.index}`} className="TitleWrapper"></div>
+        <div ref={editor} id={`${props.name}TextEditor`} className="TitleWrapper"></div>
     </>
 }
 

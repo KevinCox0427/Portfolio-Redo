@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { Fragment, FunctionComponent } from "react";
 import RecordSVG from "./RecordSVG";
 
 type Props = {
@@ -59,10 +59,13 @@ const Track:FunctionComponent<Props> = (props) => {
                 Artists: 
                 <span>
                     {props.searchResult.artists.map((artist, j) => {
-                    return <a key={j} className="Link" href={artist.url} target='_blank'>
-                        {artist.name}
-                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
+                    return j < 3 ? 
+                        <a key={j} className="Link" href={artist.url} target='_blank'>
+                            {artist.name}
+                            <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a> 
+                    :   
+                        <Fragment key={j}></Fragment>
                     })}
                 </span>
             </p>

@@ -28,7 +28,8 @@ type CurrentData = {
 
 type Props = {
     windowCache: WindowCache,
-    sectionContent: SectionContent
+    sectionContent: SectionContent,
+    style: React.CSSProperties
 }
 
 const DataSection:FunctionComponent<Props> = (props) => {
@@ -44,7 +45,7 @@ const DataSection:FunctionComponent<Props> = (props) => {
     });
     props.windowCache.registerCache('DreamStateDataEntry', currentData, setCurrentData);
 
-    return <div id={props.sectionContent.name} className='Section'>
+    return <div id="data" className='Section' style={props.style}>
         <Title content={props.sectionContent.content}></Title>
         <div className='Example'>
             <JsonInput currentData={currentData} setCurrentData={setCurrentData}></JsonInput>

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useRef, useState } from "react";
 import WindowCache from "../../windowCache";
 import WatchTime from "./WatchTime";
 import UserData from "./UserData";
@@ -20,7 +20,7 @@ type Analytics = {
             browser: string
         }
     },
-    heatMap: number[][]
+    heatMap: number[][],
 }
 
 type Props = {
@@ -33,8 +33,9 @@ type Props = {
         }
     },
     resetWatchTime: () => void,
-    currentSection: number,
-    cacheHasLoaded: boolean
+    currentSection: string,
+    cacheHasLoaded: boolean,
+    style: React.CSSProperties
 }
 
 const AnalyticsSection:FunctionComponent<Props> = (props) => {
@@ -54,7 +55,7 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
     });
     props.windowCache.registerCache('DreamStateAnalytics', analytics, setAnalytics);
 
-    return <div id={props.sectionContent.name} className='Section'>
+    return <div id="analytics" className='Section' style={props.style}>
         <Title content={props.sectionContent.content}></Title>
         <div className="GraphWrapper">
             <UserData analytics={analytics} setAnalytics={setAnalytics} cacheHasLoaded={props.cacheHasLoaded}></UserData>

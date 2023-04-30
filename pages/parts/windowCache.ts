@@ -30,7 +30,9 @@ class WindowCache {
                 Object.keys(this.cachedValues).map(itemName => {
                     if(typeof this.previousValues![itemName] !== 'undefined' && !deepEquals(this.previousValues![itemName], this.cachedValues[itemName].value)) {
                         this.cachedValues[itemName].value = this.previousValues![itemName];
-                        this.cachedValues[itemName].setState(this.previousValues![itemName]);
+                        this.cachedValues[itemName].setState((previousState:any) => {
+                            return this.previousValues![itemName]
+                        });
                     }
                     else this.updateLoad(itemName);
                 });
@@ -63,6 +65,9 @@ class WindowCache {
             if(!this.hasLoaded()) {
                 if(deepEquals(this.cachedValues[itemName].value, stateVariable) && this.previousValues) {
                     this.updateLoad(itemName);
+                }
+                if(!deepEquals(this.cachedValues[itemName].value, stateVariable) && this.previousValues !== null) {
+                    console.log(this.cachedValues[itemName].value, stateVariable)
                 }
             }
             else this.saveCacheValue(itemName, stateVariable);

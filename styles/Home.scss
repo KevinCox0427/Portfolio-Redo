@@ -79,7 +79,7 @@
                 font-weight: 300;
                 font-size: 2em;
                 font-family: var(--arima);
-                margin: 0.05em 0 -0.05em -0.08em;
+                margin: 0.1em 0 0em -0.07em;
                 will-change: transform, filter, opacity;
             }
 
@@ -106,7 +106,7 @@
             flex-direction: row;
             flex-wrap: wrap;
             align-items: center;
-            gap: 1em;
+            gap: 0.85em;
 
             h2 {
                 flex-wrap: wrap;
@@ -117,6 +117,7 @@
                 opacity: 0;
                 transform: translateY(-35%);
                 animation: 0.25s ease-out 4.75s forwards SlideDown;
+                margin-top: -0.15em;
             }
 
             .LinkWrapper {
@@ -126,9 +127,9 @@
                 a {
                     color: var(--black);
                     text-decoration: none;
-                    font-size: 1.15em;
+                    font-size: 1.1em;
                     font-family: var(--workSans);
-                    padding: 0.35em 1em;
+                    padding: 0.35em 0.9em;
                     box-shadow: 0 0 0 0.1em var(--black);
                     border-radius: 100em;
                     text-transform: uppercase;
@@ -261,6 +262,7 @@
     }
 
     .Content {
+        display: flex;
         flex-basis: 1px;
         flex-grow: 1;
         min-width: calc(100% - 27.1em);

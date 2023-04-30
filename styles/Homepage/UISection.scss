@@ -6,17 +6,19 @@
     .Example {
         display: flex;
         flex-direction: column;
+        flex-wrap: nowrap;
 
         .SectionContent {
             display: flex;
             flex-direction: column;
             background-color: var(--ecommerceWhite);
             border-radius: 0.5em;
-            padding: 0.75em 1em 1em 1em;
+            padding: 10px 1em 15px 1em;
             gap: 15px;
             box-shadow: 2px 1px 2px 0px rgba(0, 0, 0, 0.07);
             overflow: hidden;
-            transition: opacity 0.15s linear, height 0.4s ease-in-out;
+            z-index: 1;
+            transition: opacity 0.15s linear, height 0.4s ease-in-out, transform 0.15s ease-in-out;
 
             .ButtonWrapper {
                 flex-direction: row;
@@ -60,6 +62,7 @@
                 .InputWrapper {
                     @include Input();
                     margin-left: 0.5em;
+                    user-select: none;
 
                     input {
                         font-size: 1.5em;
@@ -67,6 +70,8 @@
 
                     label {
                         font-weight: 400;
+                        pointer-events: none;
+                        user-select: none;
                     }
                 }
             }
@@ -88,10 +93,10 @@
 
         .MovingIndicator {
             background-color: var(--blue);
-            height: 0.15em;
-            width: 100%;
+            margin-left: 3px;
+            height: 100%;
+            width: 0.15em;
             border-radius: 10em;
-            transition: opacity 0.15s linear, margin 0.15s linear;
         }
     }
 }

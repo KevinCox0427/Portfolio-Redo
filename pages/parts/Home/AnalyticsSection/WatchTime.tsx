@@ -8,7 +8,7 @@ type Props = {
         }
     },
     resetWatchTime: () => void,
-    currentSection: number
+    currentSection: string
 }
 
 const XAxisLabels = ["Landing Page", "Optimized Data", "Secure Authentication", "Seamless Integrations", "Detailed Analytics", "User Interfaces", "Beautiful Websites", "Footer"];
@@ -51,7 +51,7 @@ const WatchTime:FunctionComponent<Props> = (props) => {
                 return <div key={i} className="Column">
                     <div className="Timestamp">
                         <p className="Value" style={{
-                            height: props.currentSection === 4 ? `${(value/largestTimestamp) * 100}%` : '0%'
+                            height: props.currentSection === 'analytics' ? `${(value/largestTimestamp) * 100}%` : '0%'
                         }}>
                             {createTimeString(value)}
                         </p>

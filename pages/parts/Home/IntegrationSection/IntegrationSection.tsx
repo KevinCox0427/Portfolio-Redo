@@ -26,7 +26,8 @@ type SearchResponse = {
 
 type Props = {
     windowCache: WindowCache,
-    sectionContent: SectionContent
+    sectionContent: SectionContent,
+    style: React.CSSProperties
 }
 
 const IntegrationSection:FunctionComponent<Props> = (props) => {
@@ -127,7 +128,7 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
 
     const translateAmount = searchData.searchResults.length != 0 ? (100/searchData.searchResults.length) *  results.count : 0;
 
-    return <div id={props.sectionContent.name} className='Section'>
+    return <div id="integration" className='Section' style={props.style}>
         <Title content={props.sectionContent.content}></Title>
         <div className="Example">
             <div className="InputWrapper">

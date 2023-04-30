@@ -11,7 +11,9 @@ type Props = {
 
 const UserData:FunctionComponent<Props> = (props) => {
     useEffect(() => {
-        if(props.cacheHasLoaded && !props.analytics.userData.location.city) getUserData();
+        if(props.cacheHasLoaded && !props.analytics.userData.location.city) {
+            getUserData();
+        }
     }, [props.cacheHasLoaded]);
 
     useEffect(() => {

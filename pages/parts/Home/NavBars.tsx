@@ -1,11 +1,12 @@
-import React, { Fragment, FunctionComponent, useRef, useState } from "react";
-import Link from "./Link";
+import React, { FunctionComponent, useRef, useState } from "react";
 import { SectionContent } from "../../Home";
 
 type Props = {
-    sectionContent: SectionContent[],
+    sectionContent: {
+        [sectionName: string]: SectionContent
+    },
     contentWrapper: React.RefObject<HTMLDivElement>,
-    currentSection: number
+    currentSection: string
 }
 
 const NavBars:FunctionComponent<Props> = (props) => {
@@ -43,10 +44,15 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                {props.sectionContent.map((content, i) => {
-                    return <Fragment key={i}>
-                        <Link url={`/#${content.name}`} text={content.navName} activated={props.currentSection === i+1}></Link>
-                    </Fragment>
+                {Object.keys(props.sectionContent).map((sectionName, i) => {
+                    const currentSectionContent = props.sectionContent[sectionName as keyof typeof props.sectionContent];
+
+                    return <a key={i} className={`Link ${props.currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
+                        order: currentSectionContent.order
+                    }}>
+                        {currentSectionContent.navName}
+                        <i className="fa-solid fa-angle-right"></i>
+                    </a>
                 })}
             </div>
         </div>
@@ -55,10 +61,15 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                {props.sectionContent.map((content, i) => {
-                    return <Fragment key={i}>
-                        <Link url={`/#${content.name}`} text={content.navName} activated={props.currentSection === i+1}></Link>
-                    </Fragment>
+                {Object.keys(props.sectionContent).map((sectionName, i) => {
+                    const currentSectionContent = props.sectionContent[sectionName as keyof typeof props.sectionContent];
+
+                    return <a key={i} className={`Link ${props.currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
+                        order: currentSectionContent.order
+                    }}>
+                        {currentSectionContent.navName}
+                        <i className="fa-solid fa-angle-right"></i>
+                    </a>
                 })}
             </div>
         </div>
@@ -72,10 +83,15 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                {props.sectionContent.map((content, i) => {
-                    return <Fragment key={i}>
-                        <Link url={`/#${content.name}`} text={content.navName} activated={props.currentSection === i+1}></Link>
-                    </Fragment>
+                {Object.keys(props.sectionContent).map((sectionName, i) => {
+                    const currentSectionContent = props.sectionContent[sectionName as keyof typeof props.sectionContent];
+
+                    return <a key={i} className={`Link ${props.currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
+                        order: currentSectionContent.order
+                    }}>
+                        {currentSectionContent.navName}
+                        <i className="fa-solid fa-angle-right"></i>
+                    </a>
                 })}
             </div>
         </div>

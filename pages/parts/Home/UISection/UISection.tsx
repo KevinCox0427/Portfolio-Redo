@@ -1,23 +1,54 @@
 import React, { Fragment, FunctionComponent, useEffect, useState } from "react";
-import { SectionContent } from "../../../Home";
+import { AllSectionContent, SectionContent } from "../../../Home";
 import TextEditor from "./TextEditor";
 import Title from "../Title";
 
 type Props = {
     sectionContent: SectionContent,
-    allSectionContent: SectionContent[],
-    setSectionContent: React.Dispatch<React.SetStateAction<SectionContent[]>>
+    allSectionContent: AllSectionContent,
+    setSectionContent: React.Dispatch<React.SetStateAction<AllSectionContent>>,
+    style: React.CSSProperties
 }
 
 const UISection: FunctionComponent<Props> = (props) => {
-    const [contentEditors, setContentEditors] = useState(props.allSectionContent.map(content => {
-        return {
+    const [contentEditors, setContentEditors] = useState({
+        data: {
+            isCollapsed: true,
+            isHovering: false,
+            isMoving: false,
+            height: 0
+        },
+        authentication: {
+            isCollapsed: true,
+            isHovering: false,
+            isMoving: false,
+            height: 0
+        },
+        integration: {
+            isCollapsed: true,
+            isHovering: false,
+            isMoving: false,
+            height: 0
+        },
+        analytics: {
+            isCollapsed: true,
+            isHovering: false,
+            isMoving: false,
+            height: 0
+        },
+        ui: {
+            isCollapsed: true,
+            isHovering: false,
+            isMoving: false,
+            height: 0
+        },
+        web: {
             isCollapsed: true,
             isHovering: false,
             isMoving: false,
             height: 0
         }
-    }));
+    });
 
     const [isMoving, setIsMoving] = useState(false);
 
@@ -26,133 +57,193 @@ const UISection: FunctionComponent<Props> = (props) => {
     }, [props.allSectionContent]);
 
     function getAllEditorHeights() {
-        const editorEls = Array.from(document.getElementsByClassName('SectionContent')) as HTMLDivElement[];
+        Object.keys(contentEditors).forEach(sectionName => {
+            setContentEditors(oldContentEditors => {
+                const element = document.getElementById(`${sectionName}Editor`) as HTMLDivElement;
 
-        if(editorEls.length !== contentEditors.length) return;
-
-        setContentEditors(oldContentEditors => {
-            return [...oldContentEditors].map((editor, i) => {
-                return {...editor,
-                    height: editor.isCollapsed ? editorEls[i].children[0].clientHeight - 1 : editorEls[i].children[0].clientHeight + editorEls[i].children[1].clientHeight + 15
+                return {...oldContentEditors,
+                    [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
+                        height: element ? (oldContentEditors[sectionName as keyof AllSectionContent].isCollapsed ? element.children[0].clientHeight - 1 : element.children[0].clientHeight + element.children[1].clientHeight + 15) : 0
+                    }
                 }
-            });
+            })
         });
     }
     
-    function setContent(sectionContent:string, i: number) {
+    function setContent(sectionContent: string, name: string) {
         props.setSectionContent(oldSectionData => {
-            const deepClone:SectionContent[] = JSON.parse(JSON.stringify(oldSectionData))
-            deepClone[i] = {...deepClone[i],
-                content: sectionContent
+            return {...oldSectionData,
+                [name]: {...oldSectionData[name as keyof AllSectionContent],
+                    content: sectionContent
+                }
             };
-            return deepClone;
         });
     }
-
-    useEffect(() => {
-        console.log(contentEditors)
-    }, [contentEditors])
 
     function moveSection() {
-        const fromIndex = contentEditors.reduce((previousIndex, currentValue, index) => {
-            if(currentValue.isMoving) return index;
-            else return previousIndex;
-        }, -1);
+        const from = Object.keys(contentEditors).reduce((previousName, currentName) => {
+            const editor = contentEditors[currentName as keyof AllSectionContent];
 
-        const toIndex = contentEditors.reduce((previousIndex, currentValue, index) => {
-            if(currentValue.isHovering) return index;
-            else return previousIndex;
-        }, -1);
+            if(editor.isMoving) return currentName;
+            else return previousName;
+        }, '');
 
-        console.log(fromIndex, toIndex)
+        const to = Object.keys(contentEditors).reduce((previousName, currentName) => {
+            const editor = contentEditors[currentName as keyof AllSectionContent];
 
-        if(fromIndex === -1 || toIndex === -1) return;
+            if(editor.isHovering) return currentName;
+            else return previousName;
+        }, '');
 
-        setContentEditors((oldContentEditors) => {
-            const newContentEditors = [...oldContentEditors];
+        resetMove();
 
-            const temp = {...newContentEditors[fromIndex],
-                isMoving: false
-            };
-            newContentEditors.splice(fromIndex, 1);
-            newContentEditors.splice(toIndex, 0, temp);
+        if(from === '' || to === '' || from === to) return;
 
-            return newContentEditors;
+        props.setSectionContent((oldSectionContent) => {
+            let newSectionContent = {...oldSectionContent};
+
+            Object.keys(oldSectionContent).map(sectionName => {
+                const currentContent = newSectionContent[sectionName as keyof AllSectionContent];
+                const toContent = oldSectionContent[to as keyof AllSectionContent];
+                const fromCotent = oldSectionContent[from as keyof AllSectionContent];
+
+                if(sectionName === from) newSectionContent = {...newSectionContent,
+                    [sectionName]: {...currentContent,
+                        order: toContent.order
+                    }
+                }
+                if(fromCotent.order > toContent.order) {
+                    if(currentContent.order >= toContent.order && currentContent.order < fromCotent.order) newSectionContent = {...newSectionContent,
+                        [sectionName]: {...currentContent,
+                            order: currentContent.order + 1
+                        }
+                    }
+                }
+                else {
+                    if(currentContent.order <= toContent.order && currentContent.order > fromCotent.order) newSectionContent = {...newSectionContent,
+                        [sectionName]: {...currentContent,
+                            order: currentContent.order - 1
+                        }
+                    }
+                }
+            });
+
+            return newSectionContent;
         })
     }
-    
-    useEffect(() => {
-        window.addEventListener('mouseup', moveSection);
-    }, []);
 
+    function resetMove() {
+        setIsMoving(false);
+        setContentEditors(oldContentEditors => {
+            return {
+                data: {...oldContentEditors.data,
+                    isHovering: false,
+                    isMoving: false
+                },
+                authentication: {...oldContentEditors.authentication,
+                    isHovering: false,
+                    isMoving: false
+                },
+                integration: {...oldContentEditors.integration,
+                    isHovering: false,
+                    isMoving: false
+                },
+                analytics: {...oldContentEditors.analytics,
+                    isHovering: false,
+                    isMoving: false
+                },
+                ui: {...oldContentEditors.ui,
+                    isHovering: false,
+                    isMoving: false
+                },
+                web: {...oldContentEditors.web,
+                    isHovering: false,
+                    isMoving: false
+                }
+            }
+        }) 
+    }
     
-    return <div id={props.sectionContent.name} className='Section'>
+    return <div id="ui" className='Section' onMouseUp={moveSection} onMouseLeave={resetMove} style={props.style}>
         <Title content={props.sectionContent.content}></Title>
         <div className="Example">
-            {props.allSectionContent.map((sectionContent, i) => {
+            {Object.keys(props.allSectionContent).map((sectionName, i) => {
+                const editor = contentEditors[sectionName as keyof AllSectionContent];
+                const content = props.allSectionContent[sectionName as keyof AllSectionContent]
+
                 return <Fragment key={i}>
-                    <div className="MovingIndicator" style={contentEditors[i].isHovering && isMoving ? {
-                        opacity: 1,
-                        margin: '0em'
+                    <div id={`${sectionName}Editor`} className="SectionContent" style={isMoving ? {
+                        height: editor.height,
+                        order: (content.order-1)*2,
+                        opacity: editor.isMoving ? 0.5 : 1,
+                        transform: editor.isHovering && !editor.isMoving ? 'translate(15px)' : ' ',
+                        userSelect: 'none'
                     } : {
-                        opacity: 0,
-                        margin: '-1em 0'
-                    }}></div>
-                    <div className="SectionContent" style={{
-                        height: contentEditors[i].height,
-                        opacity: contentEditors[i].isMoving ? 0.5 : 1
-                    }} onMouseOver={e => {
-                        console.log((e.target as HTMLElement).classList)
-                        if(!(e.target as HTMLElement).classList.contains('SectionContent')) return;
+                        height: editor.height,
+                        order: (content.order-1)*2
+                    }} onMouseEnter={e => {
                         setContentEditors(oldContentEditors => {
-                            const newContentEditors = [...oldContentEditors];
-                            newContentEditors[i].isHovering = true;
-                            return newContentEditors;
+                            return {...oldContentEditors,
+                                [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
+                                    isHovering: true
+                                }
+                            }
                         });
-                    }} onMouseOut={e => {
-                        console.log((e.target as HTMLElement).classList)
-                        if(!(e.target as HTMLElement).classList.contains('SectionContent')) return;
+                    }} onMouseLeave={e => {
                         setContentEditors(oldContentEditors => {
-                            const newContentEditors = [...oldContentEditors];
-                            newContentEditors[i].isHovering = false;
-                            return newContentEditors;
+                            return {...oldContentEditors,
+                                [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
+                                    isHovering: false
+                                }
+                            }
                         });
                     }}>
                         <div className="ButtonWrapper">
-                            <i className="Button fa-solid fa-arrows-up-down-left-right" onMouseDown={e => {
+                            <i className="Button fa-solid fa-arrows-up-down-left-right" draggable={false} onMouseDown={e => {
+                                setIsMoving(true);
                                 setContentEditors(oldContentEditors => {
-                                    const newContentEditors = [...oldContentEditors];
-                                    newContentEditors[i].isMoving = true;
-                                    return newContentEditors;
+                                    return {...oldContentEditors,
+                                        [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
+                                            isMoving: true
+                                        }
+                                    }
                                 });
                             }}></i>
-                            <i className={`Button ${contentEditors[i].isCollapsed ? ' ' : 'Activated'} fa-solid fa-caret-right`} onClick={() => {
+                            <i className={`Button ${editor.isCollapsed ? ' ' : 'Activated'} fa-solid fa-caret-right`} onClick={() => {
                                 setContentEditors(oldContentEditors => {
-                                    const newContentEditors = [...oldContentEditors];
-                                    newContentEditors[i].isCollapsed = !newContentEditors[i].isCollapsed;
-                                    return newContentEditors;
+                                    return {...oldContentEditors,
+                                        [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
+                                            isCollapsed: !oldContentEditors[sectionName as keyof AllSectionContent].isCollapsed
+                                        }
+                                    }
                                 });
                                 getAllEditorHeights();
                             }}></i>
                             <div className="InputWrapper">
-                                <input placeholder=" " id={`${sectionContent.name}NavName`} value={sectionContent.navName} onChange={e => {
+                                <input placeholder=" " id={`${sectionName}NavName`} value={content.navName} onChange={e => {
                                     props.setSectionContent(oldSectionData => {
-                                        const deepClone:SectionContent[] = JSON.parse(JSON.stringify(oldSectionData))
-                                        deepClone[i] = {...deepClone[i],
-                                            navName: e.target.value
-                                        };
-                                        return deepClone;
+                                        return {...oldSectionData,
+                                            [sectionName]: {...oldSectionData[sectionName as keyof AllSectionContent],
+                                                navName: e.target.value
+                                            }
+                                        }
                                     });
                                 }}></input>
-                                <label htmlFor={`${sectionContent.name}NavName`}>Name:</label>
+                                <label htmlFor={`${sectionName}NavName`}>Name:</label>
                             </div>
                         </div>
                         <div className="ContentWrapper">
                             <div className="TextEditorWrapper">
-                                <TextEditor content={sectionContent.content} setContent={setContent} index={i}></TextEditor>
+                                <TextEditor content={content.content} setContent={setContent} name={sectionName}></TextEditor>
                             </div>
                         </div>
                     </div>
+                    <div className="MovingIndicator" style={{
+                        opacity: editor.isHovering && !editor.isMoving ? 1 : 0,
+                        height: editor.height + 15,
+                        marginTop: -editor.height - 52,
+                        order: (content.order-1)*2 + 1
+                    }}></div>
                 </Fragment>
             })}
         </div>

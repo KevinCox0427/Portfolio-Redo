@@ -12,12 +12,21 @@ import AnalyticsSection from './parts/Home/AnalyticsSection/AnalyticsSection';
 import WindowCache from './parts/windowCache';
 import UISection from './parts/Home/UISection/UISection';
 
-export type { SectionContent }
+export type { SectionContent, AllSectionContent }
 
 type SectionContent = {
-    name: string,
+    order: number,
     navName: string,
     content: string
+}
+
+type AllSectionContent = {
+    data: SectionContent,
+    authentication: SectionContent,
+    integration: SectionContent,
+    analytics: SectionContent,
+    ui: SectionContent,
+    web: SectionContent
 }
 
 const Home:FunctionComponent = () => {
@@ -29,7 +38,7 @@ const Home:FunctionComponent = () => {
     const sliderWrapper = useRef<HTMLDivElement>(null);
     const contentWrapper = useRef<HTMLDivElement>(null);
 
-    const [currentSection, setCurrentSection] = useState(-1);
+    const [currentSection, setCurrentSection] = useState('');
     const [watchTime, setWatchTime] = useState({
         start: Date.now(),
         timeStamps: {
@@ -62,7 +71,7 @@ const Home:FunctionComponent = () => {
     }
 
     useEffect(() => {
-        if(currentSection === 4) {
+        if(currentSection === 'analytics') {
             const interval = setInterval(() => {
                 setWatchTime(previousWatchTime => {
                     return {...previousWatchTime,
@@ -81,36 +90,61 @@ const Home:FunctionComponent = () => {
 
     useEffect(() => {
         if(!cacheHasLoaded) return;
+
+        setWatchTime(oldWatchTime => {
+            return {...oldWatchTime,
+                start: Date.now()
+            }
+        });
+        
         document.getElementById('root')!.addEventListener('scroll', e => {
             if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
             scrollTimeoutBuffer.current = setTimeout(checkSections, 100);
         });
-    }, [cacheHasLoaded, checkSections]);
-
+    }, [cacheHasLoaded]);
 
     function checkSections() {
         const clamp = (num:number, min:number, max:number) => Math.min(Math.max(num, min), max);
-        const sections = [document.getElementsByClassName('SplashImage')[0], ...Array.from(document.getElementsByClassName('Section')), document.getElementById('Footer')] as HTMLElement[];
 
-        const sectionMap = sections.map(section => {
+        const elementArray = [
+            document.getElementById('home') as HTMLDivElement,
+            ...Array.from(document.getElementsByClassName('Section')) as HTMLDivElement[],
+            document.getElementById('footer') as HTMLDivElement
+        ];
+
+        let sections: {
+            [sectionName: string]: {
+                el: HTMLDivElement,
+                screenArea: number
+            }
+        } = {};
+        
+        elementArray.forEach(section => {
             const sectionTop = section.getBoundingClientRect().top;
             const sectionBottom = section.getBoundingClientRect().bottom;
-            return clamp(sectionBottom, 0, window.innerHeight) - clamp(sectionTop, 0, window.innerHeight);
+
+            sections = {...sections,
+                [section.id]: {
+                    el: section,
+                    screenArea: clamp(sectionBottom, 0, window.innerHeight) - clamp(sectionTop, 0, window.innerHeight)
+                }
+            }
         });
 
-        const newSection = sectionMap.reduce((previousIndex, current, i) => {
-            if(current < window.innerHeight/3) return previousIndex;
-            else return current > sectionMap[previousIndex] ? i : previousIndex;
-        }, 0);
+        const newSection = Object.keys(sections).reduce((previousSectionName, currentSectionName, i) => {
+            const currentArea = sections[currentSectionName].screenArea;
+            const previousArea = sections[previousSectionName] ? sections[previousSectionName].screenArea : 0;
+
+            if(currentArea < window.innerHeight/3) return previousSectionName;
+            else return currentArea > previousArea ? currentSectionName : previousSectionName;
+        }, '');
 
         if(newSection !== currentSection) {
-            if(currentSection !== -1) setWatchTime(previousWatchTime => {
-                const timeStampName = Object.keys(previousWatchTime.timeStamps)[currentSection];
-
+            if(currentSection !== '') setWatchTime(previousWatchTime => {
                 return {...previousWatchTime,
                     start: Date.now(),
                     timeStamps: {...previousWatchTime.timeStamps,
-                        [timeStampName]: previousWatchTime.timeStamps[timeStampName as keyof typeof previousWatchTime.timeStamps] +  (Date.now() - previousWatchTime.start)
+                        [currentSection]: previousWatchTime.timeStamps[currentSection as keyof typeof previousWatchTime.timeStamps] + (Date.now() - previousWatchTime.start)
                     }
                 }
             });
@@ -118,38 +152,38 @@ const Home:FunctionComponent = () => {
         }
     }
 
-    const [sectionContent, setSectionContent] = useState<SectionContent[]>([
-        {
-            name: 'data',
+    const [sectionContent, setSectionContent] = useState({
+        data: {
+            order: 1,
             navName: 'Optimized Data',
             content: '<h3>It always starts with the data...</h3><p>Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.</p><p><em>Let\'s fill in a data structure to create some new products together!</em></p>'
         },
-        {
-            name: 'authentication',
+        authentication: {
+            order: 2,
             navName: 'Secure authentication',
             content: '<h3>In order to have users, you need secure authentication...</h3><p>Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.</p><p><em>Let\'s create you a user from stratch together!</em></p>'
         },
-        {
-            name: 'integrations',
+        integration: {
+            order: 3,
             navName: 'Seamless integrations',
             content: '<h3>Integrations give more power to your applications...</h3><p>Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.</p><p><em>Let\'s use an integration with Spotify together to find you some new music!</em></p>'
         },
-        {
-            name: 'analytics',
+        analytics: {
+            order: 4,
             navName: 'Detailed analytics',
             content: '<h3>The more detailed the analytics, the more detailed the strategy...</h3><p>Data collect is an invaluable resource for growing, adapting, and focusing your business operations.<p><em>Here\'s some examples of your activity on this page!<small>Don\'t worry, none of this is stored or sent to my server, you can check the network calls :)</small></em></p>'
         },
-        {
-            name: 'ui',
+        ui: {
+            order: 5,
             navName: 'User interfaces to control it all',
             content: '<h3>Powerful user interfaces give you the greatest control...</h3><p><em>Let\'s use a user interface to screw up all my hard work!</em></p>'
         },
-        {
-            name: 'web',
+        web: {
+            order: 6,
             navName: 'Beautiful websites to show it all',
             content: ''
         }
-    ]);
+    });
     windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
     
     //setInterval(moveIframes, sliderRate*1000);
@@ -159,15 +193,15 @@ const Home:FunctionComponent = () => {
         sliderWrapper.current.append(sliderWrapper.current.children[0]);
     }
 
-    console.log('Rerendering', new Date().toString().split(':').map((value, i) => {
-        if(i === 0) return value.substring(value.length-2, value.length);
-        if(i === 2) return value.substring(0, 2);
-        else return value;
-    }).join(':'));
+    // console.log('Rerendering', new Date().toString().split(':').map((value, i) => {
+    //     if(i === 0) return value.substring(value.length-2, value.length);
+    //     if(i === 2) return value.substring(0, 2);
+    //     else return value;
+    // }).join(':'));
 
     return <>
         <Header></Header>
-        <div className='SplashImage'>
+        <div id='home' className='SplashImage'>
             <div className='MainCopy'>
                 <h1>Dream State</h1>
                 <h3>Your bridge between</h3>
@@ -176,9 +210,9 @@ const Home:FunctionComponent = () => {
                     <span>and</span>
                     <span className='Titling'>Reality</span></h3>
                 <div className='Subtitle'>
-                    <h2>Full stack developer & full graphic designer</h2>
+                    <h2>Full stack developer & graphic designer</h2>
                     <div className='LinkWrapper'>
-                        <a href='/#WhatICanDo'>Learn More</a>
+                        <a href='/#WhatICanDo'>See what I can do</a>
                     </div>
                 </div>
             </div>
@@ -201,32 +235,21 @@ const Home:FunctionComponent = () => {
         <div id="WhatICanDo" className='Contain'>
             <NavBars contentWrapper={contentWrapper} currentSection={currentSection} sectionContent={sectionContent}></NavBars>
             <div className='Content' ref={contentWrapper}>
-                {sectionContent.map((currentSectionContent, i) => {
-                    switch(currentSectionContent.name) {
-                        case 'data':
-                            return <Fragment key={i}>
-                                <DataSection windowCache={windowCache.current} sectionContent={currentSectionContent}></DataSection>
-                            </Fragment>
-                        case 'authentication':
-                            return <Fragment key={i}>
-                                <AuthSection windowCache={windowCache.current} sectionContent={currentSectionContent}></AuthSection>
-                            </Fragment>
-                        case 'integrations':
-                            return <Fragment key={i}>
-                                <IntegrationSection windowCache={windowCache.current} sectionContent={currentSectionContent}></IntegrationSection>
-                            </Fragment>
-                        case 'analytics':
-                            return <Fragment key={i}>
-                                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} resetWatchTime={resetWatchTime} sectionContent={currentSectionContent}></AnalyticsSection>
-                            </Fragment>
-                        case 'ui':
-                            return <Fragment key={i}>
-                                <UISection sectionContent={currentSectionContent} allSectionContent={sectionContent} setSectionContent={setSectionContent}></UISection>
-                            </Fragment>
-                        case 'web':
-                            return <Fragment key={i}></Fragment>
-                    }
-                })}
+                <DataSection windowCache={windowCache.current} sectionContent={sectionContent.data} style={{
+                    order: sectionContent.data.order
+                }}></DataSection>
+                <AuthSection windowCache={windowCache.current} sectionContent={sectionContent.authentication} style={{
+                    order: sectionContent.authentication.order
+                }}></AuthSection>
+                <IntegrationSection windowCache={windowCache.current} sectionContent={sectionContent.integration} style={{
+                    order: sectionContent.integration.order
+                }}></IntegrationSection>
+                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} resetWatchTime={resetWatchTime} sectionContent={sectionContent.analytics} style={{
+                    order: sectionContent.analytics.order
+                }}></AnalyticsSection>
+                <UISection sectionContent={sectionContent.ui} allSectionContent={sectionContent} setSectionContent={setSectionContent} style={{
+                    order: sectionContent.ui.order
+                }}></UISection>
             </div>
         </div>
         <Footer></Footer>
