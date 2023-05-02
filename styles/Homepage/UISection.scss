@@ -7,96 +7,112 @@
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
+        gap: 0;
 
-        .SectionContent {
-            display: flex;
-            flex-direction: column;
-            background-color: var(--ecommerceWhite);
-            border-radius: 0.5em;
-            padding: 10px 1em 15px 1em;
-            gap: 15px;
-            box-shadow: 2px 1px 2px 0px rgba(0, 0, 0, 0.07);
-            overflow: hidden;
-            z-index: 1;
-            transition: opacity 0.15s linear, height 0.4s ease-in-out, transform 0.15s ease-in-out;
+        .SectionEditorWrapper {
+            padding: 1em 0;
 
-            .ButtonWrapper {
-                flex-direction: row;
-                align-items: center;
-                gap: 0.25em;
+            .SectionContent {
                 display: flex;
-                * {
+                flex-direction: column;
+                background-color: var(--ecommerceWhite);
+                border-radius: 0.5em;
+                padding: 10px 1em 12px 1em;
+                gap: 15px;
+                box-shadow: 2px 1px 2px 0px rgba(0, 0, 0, 0.07);
+                overflow: hidden;
+                z-index: 1;
+                transition: opacity 0.15s linear, height 0.4s ease-in-out, transform 0.15s ease-in-out;
+    
+                .ButtonWrapper {
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 1em;
                     display: flex;
-                }
+                    * {
+                        display: flex;
+                    }
+    
+                    .Button {
+                        width: fit-content;
+                        height: fit-content;
+                        font-size: 1.15em;
+                        padding: 0.5em;
+                        border-radius: 10em;
+                        box-shadow: 0 0 0 1px var(--black) inset;
+                        transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
+    
+                        &.fa-caret-right {
+                            font-size: 1.4em;
+                            padding: 0.3em 0.55em 0.3em 0.55em;
+    
+                            &.Activated {
+                                transform: rotate(90deg);
+    
+                                &:hover {
+                                    transform: scale(1.1) rotate(90deg);
+                                }
+                            }
+                        }
+        
+                        &:hover {
+                            background-color: var(--black);
+                            color: var(--ecommerceWhite);
+                            transform: scale(1.1);
+                            cursor: pointer;
+                            z-index: 1;
+                        }
 
-                .Button {
-                    width: fit-content;
-                    height: fit-content;
-                    font-size: 1.25em;
-                    padding: 0.45em;
-                    border-radius: 10em;
-                    transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
-
-                    &.fa-caret-right {
-                        font-size: 1.5em;
-                        padding: 0.25em 0.5em 0.25em 0.5em;
-
-                        &.Activated {
-                            transform: rotate(90deg);
+                        &.fa-arrow-rotate-left {
+                            transition: background-color 0.1s linear, color 0.1s linear, transform 0.15s linear;
 
                             &:hover {
-                                transform: scale(1.1) rotate(90deg);
+                                transform: rotate(-270deg) scale(1.1);
                             }
                         }
                     }
     
-                    &:hover {
-                        background-color: var(--black);
-                        color: var(--ecommerceWhite);
-                        transform: scale(1.1);
-                        cursor: pointer;
-                        z-index: 1;
-                    }
-                }
-
-                .InputWrapper {
-                    @include Input();
-                    margin-left: 0.5em;
-                    user-select: none;
-
-                    input {
-                        font-size: 1.5em;
-                    }
-
-                    label {
-                        font-weight: 400;
-                        pointer-events: none;
+                    .InputWrapper {
+                        @include Input();
                         user-select: none;
+    
+                        input {
+                            font-size: 1.5em;
+                        }
+    
+                        label {
+                            font-weight: 400;
+                            pointer-events: none;
+                            user-select: none;
+                        }
+                    }
+                }
+    
+                .ContentWrapper {
+                    height: fit-content;
+                    width: 100%;
+    
+                    .TextEditorWrapper {
+                        label {
+                            font-size: 1.35em;
+                            font-weight: 400;
+                        }
+    
+                        @include QuillStyleAdjustments();
                     }
                 }
             }
-
-            .ContentWrapper {
-                height: fit-content;
-                width: 100%;
-
-                .TextEditorWrapper {
-                    label {
-                        font-size: 1.35em;
-                        font-weight: 400;
-                    }
-
-                    @include QuillStyleAdjustments();
-                }
+    
+            .MovingIndicator {
+                position: absolute;
+                left: 0.1em;
+                top: 50%;
+                background-color: var(--blue);
+                height: calc(100% - 2.5em);
+                width: 0.2em;
+                border-radius: 10em;
+                transform: translateY(-50%);
             }
-        }
-
-        .MovingIndicator {
-            background-color: var(--blue);
-            margin-left: 3px;
-            height: 100%;
-            width: 0.15em;
-            border-radius: 10em;
         }
     }
 }

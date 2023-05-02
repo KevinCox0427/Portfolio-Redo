@@ -5,10 +5,12 @@ import QuillType from "quill";
 type Props = {
     content: string,
     setContent: (content: string, name: string) => void,
-    name: string
+    name: string,
+    cacheHasLoaded: boolean,
+    resetText: number
 }
 
-declare const Quill: any
+declare const Quill: any;
 
 const TextEditor: FunctionComponent<Props> = (props) => {
     const editor = useRef<HTMLDivElement>(null);
@@ -39,16 +41,13 @@ const TextEditor: FunctionComponent<Props> = (props) => {
         quill.current!.on('text-change', (delta, delta2, source) => {
             if(source === 'user') props.setContent(editor.current!.children[0].innerHTML, props.name);
         });
+
+
     }, [editor]);
 
-    const initHasLoaded = useRef<boolean | null>(null);
-
     useEffect(() => {
-        if(initHasLoaded.current === true) return;
-        if(initHasLoaded.current === false) initHasLoaded.current = true;
-        if(initHasLoaded.current === null) initHasLoaded.current = false;
         editor.current!.children[0].innerHTML = `${props.content}`;
-    }, [props.content]);
+    }, [props.cacheHasLoaded, props.resetText]);
     
     return <>
         <div ref={editor} id={`${props.name}TextEditor`} className="TitleWrapper"></div>

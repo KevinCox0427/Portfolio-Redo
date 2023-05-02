@@ -32,20 +32,20 @@ const Register: FunctionComponent<Props> = (props) => {
         <div className="Form">
             <h4>Register</h4>
             <i className="fa-solid fa-arrow-rotate-left Reset" onClick={() => {
-                    props.setUserData(oldUserData => {
-                        return {...oldUserData,
-                            registerUsername: '',
-                            registerPassword: '',
-                            hash: '',
-                            salt: '',
-                            session: {
-                                key: '',
-                                expires: 0
-                            }
+                props.setUserData(oldUserData => {
+                    return {...oldUserData,
+                        registerUsername: '',
+                        registerPassword: '',
+                        hash: '',
+                        salt: '',
+                        session: {
+                            key: '',
+                            expires: 0
                         }
-                    });
-                    props.setSessionCounter(0);
-                }}></i>
+                    }
+                });
+                props.setSessionCounter(0);
+            }}></i>
             <div className="InputWrapper">
                 <input placeholder=" " id="userCreateUsername" value={props.userData.registerUsername} onChange={e => {
                     props.setUserData(oldUserData => {
@@ -62,7 +62,7 @@ const Register: FunctionComponent<Props> = (props) => {
                 <label htmlFor="userCreateUsername">Username:</label>
             </div>
             <div className="InputWrapper">
-                <input placeholder=" " id="userCreatePassword" value={props.userData.registerPassword} onChange={e => {
+                <input placeholder=" " id="userCreatePassword" type="password" value={props.userData.registerPassword} onChange={e => {
                     props.setUserData(oldUserData => {
                         return {...oldUserData,
                             registerPassword: e.target.value,

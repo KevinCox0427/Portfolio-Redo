@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { AllSectionContent, SectionContent } from "../../../Home";
 import TextEditor from "./TextEditor";
 import Title from "../Title";
@@ -6,8 +6,10 @@ import Title from "../Title";
 type Props = {
     sectionContent: SectionContent,
     allSectionContent: AllSectionContent,
+    defaultSectionContent: AllSectionContent,
     setSectionContent: React.Dispatch<React.SetStateAction<AllSectionContent>>,
-    style: React.CSSProperties
+    style: React.CSSProperties,
+    cacheHasLoaded: boolean
 }
 
 const UISection: FunctionComponent<Props> = (props) => {
@@ -163,6 +165,8 @@ const UISection: FunctionComponent<Props> = (props) => {
             }
         }) 
     }
+
+    const [resetText, setResetText] = useState(0); 
     
     return <div id="ui" className='Section' onMouseUp={moveSection} onMouseLeave={resetMove} style={props.style}>
         <Title content={props.sectionContent.content}></Title>
@@ -171,32 +175,32 @@ const UISection: FunctionComponent<Props> = (props) => {
                 const editor = contentEditors[sectionName as keyof AllSectionContent];
                 const content = props.allSectionContent[sectionName as keyof AllSectionContent]
 
-                return <Fragment key={i}>
+                return <div className="SectionEditorWrapper" key={i} style={{
+                    order: content.order
+                }} onMouseEnter={e => {
+                    setContentEditors(oldContentEditors => {
+                        return {...oldContentEditors,
+                            [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
+                                isHovering: true
+                            }
+                        }
+                    });
+                }} onMouseLeave={e => {
+                    setContentEditors(oldContentEditors => {
+                        return {...oldContentEditors,
+                            [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
+                                isHovering: false
+                            }
+                        }
+                    });
+                }}>
                     <div id={`${sectionName}Editor`} className="SectionContent" style={isMoving ? {
                         height: editor.height,
-                        order: (content.order-1)*2,
                         opacity: editor.isMoving ? 0.5 : 1,
                         transform: editor.isHovering && !editor.isMoving ? 'translate(15px)' : ' ',
                         userSelect: 'none'
                     } : {
-                        height: editor.height,
-                        order: (content.order-1)*2
-                    }} onMouseEnter={e => {
-                        setContentEditors(oldContentEditors => {
-                            return {...oldContentEditors,
-                                [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
-                                    isHovering: true
-                                }
-                            }
-                        });
-                    }} onMouseLeave={e => {
-                        setContentEditors(oldContentEditors => {
-                            return {...oldContentEditors,
-                                [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
-                                    isHovering: false
-                                }
-                            }
-                        });
+                        height: editor.height
                     }}>
                         <div className="ButtonWrapper">
                             <i className="Button fa-solid fa-arrows-up-down-left-right" draggable={false} onMouseDown={e => {
@@ -231,20 +235,25 @@ const UISection: FunctionComponent<Props> = (props) => {
                                 }}></input>
                                 <label htmlFor={`${sectionName}NavName`}>Name:</label>
                             </div>
+                            <i className="Button fa-solid fa-arrow-rotate-left" onClick={() => {
+                                props.setSectionContent(oldSectionContent => {
+                                    return {...oldSectionContent,
+                                        [sectionName]: props.defaultSectionContent[sectionName as keyof AllSectionContent]
+                                    }
+                                });
+                                setResetText(resetText+1);
+                            }}></i>
                         </div>
                         <div className="ContentWrapper">
                             <div className="TextEditorWrapper">
-                                <TextEditor content={content.content} setContent={setContent} name={sectionName}></TextEditor>
+                                <TextEditor content={content.content} setContent={setContent} name={sectionName} cacheHasLoaded={props.cacheHasLoaded} resetText={resetText}></TextEditor>
                             </div>
                         </div>
                     </div>
                     <div className="MovingIndicator" style={{
-                        opacity: editor.isHovering && !editor.isMoving ? 1 : 0,
-                        height: editor.height + 15,
-                        marginTop: -editor.height - 52,
-                        order: (content.order-1)*2 + 1
+                        opacity: editor.isHovering && !editor.isMoving ? 1 : 0
                     }}></div>
-                </Fragment>
+                </div>
             })}
         </div>
     </div>

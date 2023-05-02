@@ -123,7 +123,7 @@ const Login: FunctionComponent<Props> = (props) => {
                 <label htmlFor="userLoginUsername">Username:</label>
             </div>
             <div className="InputWrapper">
-                <input placeholder=" " id="userLoginPassword" value={props.userData.loginPassword} onChange={e => {
+                <input placeholder=" " id="userLoginPassword" type="password" value={props.userData.loginPassword} onChange={e => {
                     props.setUserData(oldUserData => {
                         return {...oldUserData,
                             loginPassword: e.target.value

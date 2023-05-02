@@ -31,10 +31,33 @@
     }
 }
 
+@mixin RoundButton() {
+    font-size: 1.5em;
+    font-weight: 300;
+    font-family: var(--rubik);
+    padding: 0.2em 1.25em;
+    box-shadow: 0 0 0 0.075em var(--black);
+    border-radius: 10em;
+    color: var(--black);
+    background-color: var(--white);
+    text-decoration: none;
+    text-align: center;
+    width: fit-content;
+    transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
+
+    &:hover {
+        background-color: var(--black);
+        color: var(--white);
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+}
+
 @mixin Input() {
     flex-direction: row-reverse;
     flex-grow: 1;
     max-width: 100%;
+    min-width: 2em;
     align-items: flex-end;
     justify-content: flex-end;
     gap: 0em;
@@ -126,6 +149,38 @@
 
         .ql-formats {
             margin: 0 auto;
+
+            .ql-stroke {
+                transition: stroke 0.1s linear;
+            }
+            .ql-fill {
+                transition: fill 0.1s linear;
+            }
+            .ql-picker-label, button {
+                transition: transform 0.1s linear;
+            }
+
+            button:hover {
+                transform: scale(1.2);
+                
+                .ql-stroke {
+                    stroke: var(--yellow);
+                }
+                .ql-fill {
+                    fill: var(--yellow);
+                }
+            }
+
+            .ql-picker-label:hover {
+                transform: scale(1.1);
+                
+                .ql-stroke {
+                    stroke: var(--yellow);
+                }
+                .ql-fill {
+                    fill: var(--yellow);
+                }
+            }
 
             .ql-picker, .ql-picker-label, button, svg {
                 color: var(--ecommerceWhite);

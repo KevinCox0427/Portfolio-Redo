@@ -52,22 +52,7 @@
             }
 
             .Submit {
-                font-size: 1.5em;
-                font-weight: 300;
-                font-family: var(--rubik);
-                padding: 0.2em 1em;
-                box-shadow: 0 0 0 0.075em var(--black);
-                border-radius: 10em;
-                background-color: var(--white);
-                width: fit-content;
-                transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
-
-                &:hover {
-                    background-color: var(--black);
-                    color: var(--white);
-                    transform: scale(1.1);
-                    cursor: pointer;
-                }
+                @include RoundButton();
             }
         }
 

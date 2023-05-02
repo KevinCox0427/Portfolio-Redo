@@ -11,8 +11,9 @@ import IntegrationSection from './parts/Home/IntegrationSection/IntegrationSecti
 import AnalyticsSection from './parts/Home/AnalyticsSection/AnalyticsSection';
 import WindowCache from './parts/windowCache';
 import UISection from './parts/Home/UISection/UISection';
+import WebSection from './parts/Home/WebSection/WebSection';
 
-export type { SectionContent, AllSectionContent }
+export type { SectionContent, AllSectionContent, PortfolioPiece }
 
 type SectionContent = {
     order: number,
@@ -29,6 +30,13 @@ type AllSectionContent = {
     web: SectionContent
 }
 
+type PortfolioPiece = {
+    image: string,
+    title: string,
+    description: string,
+    link: string
+}
+
 const Home:FunctionComponent = () => {
     const [cacheHasLoaded, setCacheHasLoaded] = useState(false)
     const windowCache = useRef(new WindowCache(setCacheHasLoaded));
@@ -38,6 +46,7 @@ const Home:FunctionComponent = () => {
     const sliderWrapper = useRef<HTMLDivElement>(null);
     const contentWrapper = useRef<HTMLDivElement>(null);
 
+    const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
     const [currentSection, setCurrentSection] = useState('');
     const [watchTime, setWatchTime] = useState({
         start: Date.now(),
@@ -54,21 +63,62 @@ const Home:FunctionComponent = () => {
     });
     windowCache.current.registerCache('DreamStateWatchTime', watchTime, setWatchTime);
 
-    function resetWatchTime() {
-        setWatchTime({
-            start: Date.now(),
-            timeStamps: {
-                home: 0,
-                data: 0,
-                authentication: 0,
-                integration: 0,
-                analytics: 0,
-                ui: 0,
-                web: 0,
-                footer: 0
-            }
-        });
+    const sectionDefaults = {
+        data: {
+            order: 1,
+            navName: 'Optimized Data',
+            content: '<h3>It always starts with the data...</h3><p>Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.</p><p><em>Let\'s fill in a data structure to create some new products together!</em></p>'
+        },
+        authentication: {
+            order: 2,
+            navName: 'Secure authentication',
+            content: '<h3>In order to have users, you need secure authentication...</h3><p>Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.</p><p><em>Let\'s create you a user from stratch together!</em></p>'
+        },
+        integration: {
+            order: 3,
+            navName: 'Seamless integrations',
+            content: '<h3>Integrations give more power to your applications...</h3><p>Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.</p><p><em>Let\'s use an integration with Spotify together to find you some new music!</em></p>'
+        },
+        analytics: {
+            order: 4,
+            navName: 'Detailed analytics',
+            content: '<h3>The more detailed the analytics, the more detailed the strategy...</h3><p>Data collect is an invaluable resource for growing, adapting, and focusing your business operations.<p><em>Here\'s some examples of your activity on this page!<small>Don\'t worry, none of this is stored or sent to my server, you can check the network calls :)</small></em></p>'
+        },
+        ui: {
+            order: 5,
+            navName: 'User interfaces to control it all',
+            content: '<h3>Powerful user interfaces give you the greatest control...</h3><p><em>Let\'s use a user interface to screw up all my hard work!</em></p>'
+        },
+        web: {
+            order: 6,
+            navName: 'Beautiful websites to show it all',
+            content: '<h3>Beautiful websites give your messages the widest reach...</h3><p></p><p><em></em></p>'
+        }
     }
+    const [sectionContent, setSectionContent] = useState(sectionDefaults);
+    windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
+
+    const portfolioData: PortfolioPiece[] = [{
+        image: 'https://placehold.co/600x400',
+        title: 'New York Land Quest',
+        description: 'A real-estate company selling large swaths of land in up-state New York.',
+        link: 'https://www.nylandquest.com/'
+    }, {
+        image: 'https://placehold.co/600x400',
+        title: 'New York Land Quest',
+        description: 'A real-estate company selling large swaths of land in up-state New York.',
+        link: 'https://www.nylandquest.com/'
+    }, {
+        image: 'https://placehold.co/600x400',
+        title: 'New York Land Quest',
+        description: 'A real-estate company selling large swaths of land in up-state New York.',
+        link: 'https://www.nylandquest.com/'
+    }, {
+        image: 'https://placehold.co/600x400',
+        title: 'New York Land Quest',
+        description: 'A real-estate company selling large swaths of land in up-state New York.',
+        link: 'https://www.nylandquest.com/'
+    }];
 
     useEffect(() => {
         if(currentSection === 'analytics') {
@@ -85,8 +135,6 @@ const Home:FunctionComponent = () => {
             return () => clearInterval(interval);
         }
     }, [currentSection]);
-    
-    const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if(!cacheHasLoaded) return;
@@ -102,6 +150,22 @@ const Home:FunctionComponent = () => {
             scrollTimeoutBuffer.current = setTimeout(checkSections, 100);
         });
     }, [cacheHasLoaded]);
+
+    function resetWatchTime() {
+        setWatchTime({
+            start: Date.now(),
+            timeStamps: {
+                home: 0,
+                data: 0,
+                authentication: 0,
+                integration: 0,
+                analytics: 0,
+                ui: 0,
+                web: 0,
+                footer: 0
+            }
+        });
+    }
 
     function checkSections() {
         const clamp = (num:number, min:number, max:number) => Math.min(Math.max(num, min), max);
@@ -151,40 +215,6 @@ const Home:FunctionComponent = () => {
             setCurrentSection(newSection);
         }
     }
-
-    const [sectionContent, setSectionContent] = useState({
-        data: {
-            order: 1,
-            navName: 'Optimized Data',
-            content: '<h3>It always starts with the data...</h3><p>Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.</p><p><em>Let\'s fill in a data structure to create some new products together!</em></p>'
-        },
-        authentication: {
-            order: 2,
-            navName: 'Secure authentication',
-            content: '<h3>In order to have users, you need secure authentication...</h3><p>Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.</p><p><em>Let\'s create you a user from stratch together!</em></p>'
-        },
-        integration: {
-            order: 3,
-            navName: 'Seamless integrations',
-            content: '<h3>Integrations give more power to your applications...</h3><p>Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.</p><p><em>Let\'s use an integration with Spotify together to find you some new music!</em></p>'
-        },
-        analytics: {
-            order: 4,
-            navName: 'Detailed analytics',
-            content: '<h3>The more detailed the analytics, the more detailed the strategy...</h3><p>Data collect is an invaluable resource for growing, adapting, and focusing your business operations.<p><em>Here\'s some examples of your activity on this page!<small>Don\'t worry, none of this is stored or sent to my server, you can check the network calls :)</small></em></p>'
-        },
-        ui: {
-            order: 5,
-            navName: 'User interfaces to control it all',
-            content: '<h3>Powerful user interfaces give you the greatest control...</h3><p><em>Let\'s use a user interface to screw up all my hard work!</em></p>'
-        },
-        web: {
-            order: 6,
-            navName: 'Beautiful websites to show it all',
-            content: ''
-        }
-    });
-    windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
     
     //setInterval(moveIframes, sliderRate*1000);
 
@@ -247,9 +277,12 @@ const Home:FunctionComponent = () => {
                 <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} resetWatchTime={resetWatchTime} sectionContent={sectionContent.analytics} style={{
                     order: sectionContent.analytics.order
                 }}></AnalyticsSection>
-                <UISection sectionContent={sectionContent.ui} allSectionContent={sectionContent} setSectionContent={setSectionContent} style={{
+                <UISection sectionContent={sectionContent.ui} allSectionContent={sectionContent} setSectionContent={setSectionContent} defaultSectionContent={sectionDefaults} cacheHasLoaded={cacheHasLoaded} style={{
                     order: sectionContent.ui.order
                 }}></UISection>
+                <WebSection sectionContent={sectionContent.web} portfolioData={portfolioData} style={{
+                    order: sectionContent.web.order
+                }}></WebSection>
             </div>
         </div>
         <Footer></Footer>

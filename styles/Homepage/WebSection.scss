@@ -1,0 +1,64 @@
+@import '../mixins';
+
+#web {
+    display: flex;
+    * {
+        display: flex;
+    }
+
+    .Example {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2em 3em;
+
+        .PortfolioPiece {
+            flex-direction: row;
+            flex-basis: 30em;
+            flex-grow: 1;
+            gap: 1.25em;
+
+            .ImageWrapper {
+                flex-basis: 17em;
+                flex-grow: 1;
+                height: 15em;
+
+                img {
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .Description {
+                height: 100%;
+                flex-basis: 15em;
+                flex-grow: 1;
+                gap: 0.5em;
+                justify-content: space-around;
+
+                h4 {
+                    font-size: 1.75em;
+                    font-weight: 300;
+                }
+
+                p {
+                    font-family: var(--franklin);
+                    font-size: 1.15em;
+                    font-weight: 100;
+                    line-height: 140%;
+                }
+
+                .Link {
+                    @include LinkHover(var(--lightPurple), var(--white), 0.1em);
+                    align-self: center;
+                }
+            }
+        }
+
+        .PortfolioButton {
+            @include RoundButton();
+            padding: 0.4em 1.5em;
+            margin: 3em auto 0em auto;
+        }
+    }
+}

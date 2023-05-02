@@ -269,7 +269,8 @@
         max-width: calc(100vw - 4em);
 
         .Section {
-            padding-top: 15em;
+            padding-top: 5em;
+            margin-top: 10em;
 
             &:first-child {
                 padding-top: 0em;
@@ -362,5 +363,5 @@
         }
     }
 
-    @import 'Homepage/AuthSection', 'Homepage/DataSection', 'Homepage/IntegrationSection', 'Homepage/AnalyticsSection', 'Homepage/UISection';
+    @import 'Homepage/AuthSection', 'Homepage/DataSection', 'Homepage/IntegrationSection', 'Homepage/AnalyticsSection', 'Homepage/UISection', 'Homepage/WebSection.scss';
 }
