@@ -149,7 +149,7 @@ const Home:FunctionComponent = () => {
             if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
             scrollTimeoutBuffer.current = setTimeout(checkSections, 100);
         });
-    }, [cacheHasLoaded]);
+    }, [cacheHasLoaded, currentSection, setCurrentSection]);
 
     function resetWatchTime() {
         setWatchTime({
@@ -202,6 +202,8 @@ const Home:FunctionComponent = () => {
             if(currentArea < window.innerHeight/3) return previousSectionName;
             else return currentArea > previousArea ? currentSectionName : previousSectionName;
         }, '');
+
+        console.log(newSection, currentSection)
 
         if(newSection !== currentSection) {
             if(currentSection !== '') setWatchTime(previousWatchTime => {

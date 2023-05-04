@@ -56,9 +56,14 @@
         }
 
         .PortfolioButton {
-            @include RoundButton();
-            padding: 0.4em 1.5em;
-            margin: 3em auto 0em auto;
+            flex-basis: 100%;
+            justify-content: center;
+
+            a {
+                @include RoundButton();
+                padding: 0.4em 1.5em;
+                margin: 3em auto 0em auto;
+            }
         }
     }
 }

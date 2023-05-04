@@ -1,3 +1,4 @@
+@import "./mixins";
 @import url('https://fonts.googleapis.com/css2?family=Arima:wght@100;200;300;400;500;600;700&family=Cairo:wght@200;300;400;500;600;700;800;900;1000&family=Libre+Franklin:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root{
@@ -158,22 +159,52 @@ button, input, select, option {
     }
 
     .Contain {
-        justify-content: center;
-        gap: 0.1em;
-        padding: 15em 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5em;
+        padding: 10em 0;
         margin-top: 15em;
         border-top: 0.15em dashed var(--black);
-        
-        h1 {
-            font-weight: 200;
-            font-size: 7em;
-        }
 
-        p {
-            font-family: var(--arima);
-            font-weight: 200;
-            font-size: 2.25em;
-            //font-style: italic;
+        .Left {
+            gap: 0.1em;
+
+            h1 {
+                font-weight: 200;
+                font-size: 5.5em;
+                white-space: nowrap;
+            }
+    
+            p {
+                font-family: var(--arima);
+                font-weight: 300;
+                font-size: 1.72em;
+                white-space: nowrap;
+            }
+        }
+        
+        .Right {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 1.5em;
+
+            .Column {
+                flex-direction: column;
+                gap: 0.5em;
+
+                .Link {
+                    @include LinkHover(var(--yellow), var(--black), 0.1em);
+                    font-size: 1.4em;
+                }
+    
+                .Sublink {
+                    @include LinkHover(var(--lightRed), var(--white), 0.1em);
+                    margin-left: 2em;
+                    font-size: 1.2em;
+                }
+            }   
         }
     }
 }

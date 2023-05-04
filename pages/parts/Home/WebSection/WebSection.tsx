@@ -25,7 +25,9 @@ const WebSection: FunctionComponent<Props> = (props) => {
                     </div>
                 </div>
             })}
-            <a className="PortfolioButton" href="/portfolio">View my full portfolio</a>
+            <div className="PortfolioButton">
+                <a href="/portfolio">View my full portfolio</a>
+            </div>
         </div>
     </div>
 }

@@ -89,6 +89,7 @@
                 margin-left: 0.25em;
                 padding: 0.25em;
                 border-radius: 0.25em;
+                width: fit-content;
                 transition: color 0.1s linear, background-color 0.1s linear, transform 0.1s linear;
 
                 &:hover {

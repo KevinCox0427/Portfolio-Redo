@@ -131,7 +131,16 @@ const UISection: FunctionComponent<Props> = (props) => {
             });
 
             return newSectionContent;
-        })
+        });
+
+        setTimeout(() => {
+            console.log(document.getElementById('ui')!.getBoundingClientRect().top)
+            document.getElementById('root')!.scrollTo({
+                top: document.getElementById('ui')!.getBoundingClientRect().top,
+                left: 0,
+                behavior: 'smooth'
+            });
+        }, 500);
     }
 
     function resetMove() {
