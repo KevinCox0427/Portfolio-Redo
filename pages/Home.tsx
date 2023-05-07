@@ -1,19 +1,20 @@
-import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import Header from './parts/Header';
 import Footer from './parts/Footer';
-import FloralSVG from './parts/Home/FloralSVG';
-import HandSVG from './parts/Home/HandSVG';
-import DataSection from './parts/Home/DataSection/DataSection';
-import NavBars from './parts/Home/NavBars';
-import AuthSection from './parts/Home/AuthSection/AuthSection';
-import IntegrationSection from './parts/Home/IntegrationSection/IntegrationSection';
-import AnalyticsSection from './parts/Home/AnalyticsSection/AnalyticsSection';
+import FloralSVG from './Home/FloralSVG';
+import HandSVG from './Home/HandSVG';
+import DataSection from './Home/DataSection/DataSection';
+import NavBars from './Home/NavBars';
+import AuthSection from './Home/AuthSection/AuthSection';
+import IntegrationSection from './Home/IntegrationSection/IntegrationSection';
+import AnalyticsSection from './Home/AnalyticsSection/AnalyticsSection';
 import WindowCache from './parts/windowCache';
-import UISection from './parts/Home/UISection/UISection';
-import WebSection from './parts/Home/WebSection/WebSection';
+import UISection from './Home/UISection/UISection';
+import WebSection from './Home/WebSection/WebSection';
+import WebsiteSlider from './Home/WebsitesSliders';
 
-export type { SectionContent, AllSectionContent, PortfolioPiece }
+export type { SectionContent, AllSectionContent }
 
 type SectionContent = {
     order: number,
@@ -30,24 +31,49 @@ type AllSectionContent = {
     web: SectionContent
 }
 
-type PortfolioPiece = {
-    image: string,
-    title: string,
-    description: string,
-    link: string
+type Props = {
+    ServerProps: ServerPropsType
 }
 
-const Home:FunctionComponent = () => {
+const Home:FunctionComponent<Props> = (props) => {
     const [cacheHasLoaded, setCacheHasLoaded] = useState(false)
     const windowCache = useRef(new WindowCache(setCacheHasLoaded));
 
-    const iframeUrls = ['red','orange','yellow','green', 'blue', 'purple'];
-    const sliderRate = 7;
-    const sliderWrapper = useRef<HTMLDivElement>(null);
-    const contentWrapper = useRef<HTMLDivElement>(null);
-
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
+    const contentWrapper = useRef<HTMLDivElement>(null);
     const [currentSection, setCurrentSection] = useState('');
+
+    useEffect(() => {
+        if(currentSection === 'analytics') {
+            const interval = setInterval(() => {
+                setWatchTime(previousWatchTime => {
+                    return {...previousWatchTime,
+                        start: previousWatchTime.start + 1000,
+                        timeStamps: {...previousWatchTime.timeStamps,
+                            analytics: previousWatchTime.timeStamps.analytics + 1000
+                        }
+                    }
+                })
+            }, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [currentSection]);
+
+    useEffect(() => {
+        if(!cacheHasLoaded) return;
+
+        setWatchTime(oldWatchTime => {
+            return {...oldWatchTime,
+                start: Date.now()
+            }
+        });
+        
+        document.addEventListener('scroll', e => {
+            if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
+            scrollTimeoutBuffer.current = setTimeout(checkSections, 100);
+        });
+    }, [cacheHasLoaded, currentSection, setCurrentSection]);
+
     const [watchTime, setWatchTime] = useState({
         start: Date.now(),
         timeStamps: {
@@ -97,59 +123,9 @@ const Home:FunctionComponent = () => {
     }
     const [sectionContent, setSectionContent] = useState(sectionDefaults);
     windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
+    
+    const sliderUrls = ['/assets/Well_Tank_Goodness.jpg','/assets/Red_Barn_HPC.jpg','/assets/New_York_Land_Quest.jpg', '/assets/Little_Venice_Restaurant.jpg', '/assets/Beck_Speedster.jpg', '/assets/Peggys_Gems.jpg'];
 
-    const portfolioData: PortfolioPiece[] = [{
-        image: 'https://placehold.co/600x400',
-        title: 'New York Land Quest',
-        description: 'A real-estate company selling large swaths of land in up-state New York.',
-        link: 'https://www.nylandquest.com/'
-    }, {
-        image: 'https://placehold.co/600x400',
-        title: 'New York Land Quest',
-        description: 'A real-estate company selling large swaths of land in up-state New York.',
-        link: 'https://www.nylandquest.com/'
-    }, {
-        image: 'https://placehold.co/600x400',
-        title: 'New York Land Quest',
-        description: 'A real-estate company selling large swaths of land in up-state New York.',
-        link: 'https://www.nylandquest.com/'
-    }, {
-        image: 'https://placehold.co/600x400',
-        title: 'New York Land Quest',
-        description: 'A real-estate company selling large swaths of land in up-state New York.',
-        link: 'https://www.nylandquest.com/'
-    }];
-
-    useEffect(() => {
-        if(currentSection === 'analytics') {
-            const interval = setInterval(() => {
-                setWatchTime(previousWatchTime => {
-                    return {...previousWatchTime,
-                        start: previousWatchTime.start + 1000,
-                        timeStamps: {...previousWatchTime.timeStamps,
-                            analytics: previousWatchTime.timeStamps.analytics + 1000
-                        }
-                    }
-                })
-            }, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [currentSection]);
-
-    useEffect(() => {
-        if(!cacheHasLoaded) return;
-
-        setWatchTime(oldWatchTime => {
-            return {...oldWatchTime,
-                start: Date.now()
-            }
-        });
-        
-        document.getElementById('root')!.addEventListener('scroll', e => {
-            if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
-            scrollTimeoutBuffer.current = setTimeout(checkSections, 100);
-        });
-    }, [cacheHasLoaded, currentSection, setCurrentSection]);
 
     function resetWatchTime() {
         setWatchTime({
@@ -203,8 +179,6 @@ const Home:FunctionComponent = () => {
             else return currentArea > previousArea ? currentSectionName : previousSectionName;
         }, '');
 
-        console.log(newSection, currentSection)
-
         if(newSection !== currentSection) {
             if(currentSection !== '') setWatchTime(previousWatchTime => {
                 return {...previousWatchTime,
@@ -217,54 +191,31 @@ const Home:FunctionComponent = () => {
             setCurrentSection(newSection);
         }
     }
-    
-    //setInterval(moveIframes, sliderRate*1000);
-
-    function moveIframes() {
-        if(!sliderWrapper.current) return;
-        sliderWrapper.current.append(sliderWrapper.current.children[0]);
-    }
-
-    // console.log('Rerendering', new Date().toString().split(':').map((value, i) => {
-    //     if(i === 0) return value.substring(value.length-2, value.length);
-    //     if(i === 2) return value.substring(0, 2);
-    //     else return value;
-    // }).join(':'));
 
     return <>
         <Header></Header>
         <div id='home' className='SplashImage'>
             <div className='MainCopy'>
-                <h1>Dream State</h1>
                 <h3>Your bridge between</h3>
                 <h3>
                     <span className='Titling'>Dreams</span>
                     <span>and</span>
-                    <span className='Titling'>Reality</span></h3>
+                    <span className='Titling'>Reality</span>
+                </h3>
                 <div className='Subtitle'>
-                    <h2>Full stack developer & graphic designer</h2>
+                    <h2>Full stack developer & Full graphic designer</h2>
                     <div className='LinkWrapper'>
-                        <a href='/#WhatICanDo'>See what I can do</a>
+                        <a href='/#MyServices'>View services</a>
                     </div>
                 </div>
             </div>
-            <div className='IframeSlider'>
-                <div className='IframeWrapper' ref={sliderWrapper} style={{
-                    animation: `${sliderRate}s linear 0s infinite Slide`
-                }}>
-                    {iframeUrls.map((url, i) => {
-                        return <div key={i} style={{
-                            backgroundColor: url,
-                            animation: `0.3s ease-out ${5.5+(i*0.15)}s forwards SlideDown`
-                        }}></div>;
-                    })}
-                </div>
-            </div>
+            <WebsiteSlider sliderUrls={sliderUrls}></WebsiteSlider>
+            <p className='ScrollDown'>Scroll down to see how I do it!<i className="fa-solid fa-angles-down"></i></p>
             <svg id="RightCover" viewBox="0 0 1000 2000" xmlns="http://www.w3.org/2000/svg"><path d="M 0 0 L 0 1590 L 250 1750 L 475 1750 L 675 2000 L 2000 2000 L 2000 0 Z" fill="#eee5e4"/></svg>
             <FloralSVG></FloralSVG>
             <HandSVG></HandSVG>
         </div>
-        <div id="WhatICanDo" className='Contain'>
+        <div id="MyServices" className='Contain'>
             <NavBars contentWrapper={contentWrapper} currentSection={currentSection} sectionContent={sectionContent}></NavBars>
             <div className='Content' ref={contentWrapper}>
                 <DataSection windowCache={windowCache.current} sectionContent={sectionContent.data} style={{
@@ -282,15 +233,15 @@ const Home:FunctionComponent = () => {
                 <UISection sectionContent={sectionContent.ui} allSectionContent={sectionContent} setSectionContent={setSectionContent} defaultSectionContent={sectionDefaults} cacheHasLoaded={cacheHasLoaded} style={{
                     order: sectionContent.ui.order
                 }}></UISection>
-                <WebSection sectionContent={sectionContent.web} portfolioData={portfolioData} style={{
+                <WebSection sectionContent={sectionContent.web} portfolioConfig={props.ServerProps.portfolioConfig ? props.ServerProps.portfolioConfig : []} style={{
                     order: sectionContent.web.order
                 }}></WebSection>
             </div>
         </div>
-        <Footer></Footer>
+        <Footer portfolioConfig={props.ServerProps.portfolioConfig ? props.ServerProps.portfolioConfig : []}></Footer>
     </>
 }
 
-if (typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Home/>);
+if (typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Home ServerProps={window.ServerProps}/>);
 
 export default Home;

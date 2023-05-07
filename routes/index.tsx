@@ -6,6 +6,7 @@ import { pbkdf2Sync, randomBytes } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import portfolioConfig from "../utils/portfolioConfig";
 
 dotenv.config();
 
@@ -13,7 +14,11 @@ const index = express.Router();
 
 index.route('/')
     .get(async (req, res) => {
-        res.send(serveHTML(<Home/>, 'Home'));
+        const serverProps:ServerPropsType = {
+            portfolioConfig: portfolioConfig
+        }
+
+        res.status(200).send(serveHTML(<Home ServerProps={serverProps}/>, 'Home', serverProps));
     });
 
 index.route('/encrypt')

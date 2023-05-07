@@ -14,7 +14,7 @@ const Portfolio: FunctionComponent<Props> = (props) => {
         <main>
             <h1>My Portfolio Projects</h1>
         </main>
-        <Footer></Footer>
+        <Footer portfolioConfig={props.ServerProps.portfolioConfig ? props.ServerProps.portfolioConfig : []}></Footer>
     </>
 }
 

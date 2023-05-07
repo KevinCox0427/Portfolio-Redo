@@ -20,7 +20,6 @@
 
     &:hover, &.Activated {
         color: $hoverColor;
-        font-weight: 400;
         background-size: 0.05em 100%;
         cursor: pointer;
         border-radius: 0.1em;
@@ -48,7 +47,7 @@
     &:hover {
         background-color: var(--black);
         color: var(--white);
-        transform: scale(1.1);
+        transform: scale(1.05);
         cursor: pointer;
     }
 }
@@ -363,21 +362,25 @@
         background-color: var(--white);
         transform: scale(1);
     }
-    20% {
-        background-color: var(--green);
+    17% {
+        background-color: var(--lightRed);
         transform: scale(1.1, 1.15);
     }
-    40% {
-        background-color: var(--yellow);
+    35% {
+        background-color: var(-blue);
         transform: scale(1.2, 1.27);
     }
-    60% {
-        background-color: var(--red);
+    51% {
+        background-color: var(--green);
         transform: scale(1.15, 1.25);
     }
-    80% {
-        background-color: var(--green);
+    68% {
+        background-color: var(--lightPurple);
         transform: scale(1.1, 1.15);
+    }
+    85% {
+        background-color: var(--green);
+        transform: scale(1.1, 1.125);
     }
     100% {
         background-color: var(--yellow);

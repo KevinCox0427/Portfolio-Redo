@@ -38,13 +38,13 @@ function watchScript() {
         watch(`${folder}/${pointer}`, (x, file) => {
             if(!existsSync(`${folder}/${pointer}/${file}`)) return;
             
-            if(folder === '.' && pointer === 'public') copyPublicFiles();
+            if((pointer === 'public' || folder.includes('public')) && !folder.includes('dist')) copyPublicFiles();
 
             if((pointer == 'pages' || folder.includes('pages'))) runProcess('Webpack', file);
 
-            if(file.split('.')[1] == 'scss') runProcess('Sass', file);
+            if(file.endsWith('.scss')) runProcess('Sass', file);
 
-            if(file.split('.')[1] == 'ts' || file.split('.')[1] == 'tsx') runProcess('Typescript', file);
+            if(file.endsWith('.ts') || file.endsWith('tsx')) runProcess('Typescript', file);
 
             if(!file.includes('.') || file.split('.')[1].length == 0) watchDirectory(`${folder}/${pointer}`, file);
         });

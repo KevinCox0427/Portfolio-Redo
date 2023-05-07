@@ -37,8 +37,7 @@ body {
     font-family: var(--cairo);
     color: var(--black);
     background-color: var(--white);
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+    height: fit-content;
 
     style, script, link {
         display: none !important;
@@ -58,11 +57,10 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    scroll-behavior: smooth;
     flex-basis: 1px;
     flex-grow: 1;
-    overflow-x: hidden;
     background-color: var(--white);
+    height: fit-content;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -86,12 +84,9 @@ button, input, select, option {
     top: -2px;
     left: 50%;
     transform: translateX(-50%);
-    align-self: center;
-    min-height: 3.75em;
-    width: fit-content;
+    width: calc(100% - 4em);
+    height: min-content;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
     border-radius: 0 0 0.5em 0.5em;
     z-index: 100;
     display: flex;
@@ -101,51 +96,70 @@ button, input, select, option {
     }
 
     .Logo {
-        position: absolute;
-        height: 100%;
-        width: fit-content;
-        border-radius: 0 0 0 0.5em;
-        overflow: hidden;
         transition: transform 0.1s linear;
         z-index: 2;
+        margin-left: auto;
+        flex-shrink: 0;
+        overflow: hidden;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        padding: 2px 2px 0px 2px;
+        border-radius: 0 0 5px 5px;
 
         &:hover {
-            transform: scale(1.1);
+            transform: scale(1.075);
         }
 
         svg {
-            height: 100%;
-            width: auto;
+            height: auto;
+            width: 75px;
         }
     }
 
     .Links {
         flex-direction: row;
         flex-wrap: wrap;
-        height: calc(100% - 0.1em);
-        padding: 0em 0.75em;
-        gap: 0.1em 0.5em;
+        margin-right: auto;
+        height: fit-content;
+        min-height: 50%;
+        width: fit-content;
+        padding: clamp(0.5em, 1.5vw, 0.75em) 0.75em;
+        gap: 0em 0.5em;
         border-radius: 0 0 0.5em 0;
-        border-right: 0.125em solid var(--black);
-        border-bottom: 0.125em solid var(--black);
+        border-right: 0.15em solid var(--black);
+        border-bottom: 0.15em solid var(--black);
+        background-color: var(--white);
         align-items: center;
         justify-content: center;
-        background-color: var(--white);
 
         a {
-            font-size: 1.25em;
+            font-size: clamp(1.25em, 1.35vw, 1.35em);
             font-weight: 600;
             text-decoration: none;
             color: var(--black);
             background-color: var(--white);
-            padding: 0.4em 0.75em;
+            padding: clamp(0.25em, 0.5vw, 0.5em) 1em;
             transition: background-color 0.1s linear, transform 0.1s linear, color 0.1s linear;
             border-radius: 10em;
 
             &:hover {
-                background-color: var(--black);
                 color: var(--white);
                 transform: scale(1.05);
+                z-index: 1;
+            }
+
+            &:nth-child(1):hover {
+                background-color: var(--yellow);
+            }
+            &:nth-child(2):hover {
+                background-color: var(--blue);
+            }
+            &:nth-child(3):hover {
+                background-color: var(--green);
+            }
+            &:nth-child(4):hover {
+                background-color: var(--lightPurple);
             }
         }
     }
@@ -160,6 +174,7 @@ button, input, select, option {
 
     .Contain {
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
         gap: 5em;
@@ -168,41 +183,84 @@ button, input, select, option {
         border-top: 0.15em dashed var(--black);
 
         .Left {
-            gap: 0.1em;
 
-            h1 {
-                font-weight: 200;
-                font-size: 5.5em;
-                white-space: nowrap;
-            }
-    
-            p {
-                font-family: var(--arima);
-                font-weight: 300;
-                font-size: 1.72em;
-                white-space: nowrap;
+            .DreamStateWrapper {
+
+                h1 {
+                    font-weight: 200;
+                    font-size: 6em;
+                    white-space: nowrap;
+                }
+        
+                p {
+                    font-family: var(--franklin);
+                    font-weight: 200;
+                    font-size: 1.77em;
+                    white-space: nowrap;
+                }
             }
         }
         
-        .Right {
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: flex-end;
+        .Links {
+            flex-direction: column;
             gap: 1.5em;
+            flex-basis: 100%;
 
-            .Column {
+            .Row {
                 flex-direction: column;
-                gap: 0.5em;
+                flex-wrap: wrap;
+
+                &:nth-child(1) {
+                    a {
+                        @include LinkHover(var(--yellow), var(--black), 0.1em);
+                    }
+                }
+
+                &:nth-child(2) {
+                    a {
+                        @include LinkHover(var(--blue), var(--white), 0.1em);
+                    }
+                }
+
+                &:nth-child(3) {
+                    a {
+                        @include LinkHover(var(--green), var(--white), 0.1em);
+                    }
+                }
+
+                &:nth-child(4) {
+                    a {
+                        @include LinkHover(var(--lightPurple), var(--white), 0.1em);
+                    }
+                }
+
+                &:nth-child(5) {
+                    a {
+                        @include LinkHover(var(--lightRed), var(--white), 0.1em);
+                    }
+                }
 
                 .Link {
-                    @include LinkHover(var(--yellow), var(--black), 0.1em);
-                    font-size: 1.4em;
+                    font-size: 1.75em;
+                    font-weight: 300;
+                    font-family: var(--franklin);
                 }
+                
     
-                .Sublink {
-                    @include LinkHover(var(--lightRed), var(--white), 0.1em);
-                    margin-left: 2em;
-                    font-size: 1.2em;
+                .SubLinks {
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    gap: 0.75em 1.5em;
+                    padding: 0.75em 1em 0.5em 1.25em;
+
+                    a {
+                        font-size: 1.25em;
+                        white-space: nowrap;
+
+                        i {
+                            font-size: 0.9em;
+                        }
+                    }
                 }
             }   
         }

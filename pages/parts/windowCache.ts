@@ -66,9 +66,6 @@ class WindowCache {
                 if(deepEquals(this.cachedValues[itemName].value, stateVariable) && this.previousValues) {
                     this.updateLoad(itemName);
                 }
-                if(!deepEquals(this.cachedValues[itemName].value, stateVariable) && this.previousValues !== null) {
-                    console.log(this.cachedValues[itemName].value, stateVariable)
-                }
             }
             else this.saveCacheValue(itemName, stateVariable);
         }, [stateVariable]);

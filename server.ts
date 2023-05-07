@@ -20,7 +20,7 @@ app.set('trust proxy', true);
  */
 declare global { 
     type ServerPropsType = Partial<{
-        
+        portfolioConfig: PortfolioConfig
     }>
 }
 export type { ServerPropsType };

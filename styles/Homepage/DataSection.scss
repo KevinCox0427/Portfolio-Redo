@@ -1,8 +1,13 @@
 #data {
     justify-content: center;
     display: flex;
+    
     * {
         display: flex;
+    }
+
+    .Example {
+        justify-content: center;
     }
 
     .DataEntry {
@@ -19,7 +24,6 @@
         max-width: 100%;
 
         .Line {
-            display: inline;
             flex-direction: row;
             align-items: baseline;
             line-height: 120%;
