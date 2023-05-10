@@ -1,0 +1,44 @@
+@import "./mixins";
+
+main {
+    padding: 12em 0;
+    display: flex;
+    position: relative;
+
+    * {
+        display: flex;
+        position: relative;
+    }
+
+    h1 {
+        font-size: 5em;
+        font-weight: 200;
+    }
+
+    .TagsWrapper {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5em 1.5em;
+        width: 100%;
+        padding: 0.5em 0.75em;
+        margin: 0.25em 0;
+        border-top: 0.1em dashed var(--black);
+        
+        p {
+            @include LinkHover(var(--yellow), var(--black), 0.1em);
+            font-size: 1.4em;
+            font-family: var(--franklin);
+            font-weight: 300;
+        }
+    }
+
+    .ProjectsWrapper {
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 4em 0;
+        gap: 1.5em 3em;
+
+        @include PortfolioCard();
+    }
+}

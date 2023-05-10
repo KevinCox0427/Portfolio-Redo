@@ -324,6 +324,91 @@
     }
 }
 
+@mixin PortfolioCard() {
+    .Project {
+        text-decoration: none;
+        gap: 0.75em;
+        flex-basis: 25em;
+        flex-grow: 1;
+        max-width: 32em;
+
+        a {
+            text-decoration: none;
+        }
+
+        .ImageWrapper {
+            height: 17.5em;
+            width: 100%;
+            overflow: hidden;
+            
+            img {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+                transition: transform 0.15s ease-in-out, filter 0.15s ease-in-out;
+            }
+
+            &:hover {
+                img {
+                    transform: scale(1.1);
+                    filter: blur(4px) brightness(0.9);
+                }
+            }
+        }
+
+        h2 {
+            @include LinkHover(var(--blue), var(--white), 0.1em);
+            padding: 0.3em 0.1em 0.15em 0.1em;
+            line-height: 80%;
+            font-size: 1.75em;
+            font-weight: 300;
+            text-decoration: none;
+        }
+
+        .Description {
+            padding-top: 0.5em;
+            flex-direction: row;
+            gap: 1em;
+
+            .Left {
+                justify-content: center;
+                padding: 1em 1em 1em 0;
+                border-right: 0.1em dashed var(--black);
+                flex-basis: 5em;
+                flex-grow: 1;
+                font-family: var(--franklin);
+                font-weight: 200;
+                font-size: 1.25em;
+            }
+
+            .Right {
+                justify-content: center;
+                flex-direction: column;
+                gap: 1em;
+
+                .Tag {
+                    font-family: var(--franklin);
+                    background-color: var(--yellow);
+                    width: fit-content;
+                    padding: 0.25em 0.7em 0.2em 0.7em;
+                    border-radius: 10em;
+                    font-size: 1.1em;
+                }
+
+                .Skills {
+                    gap: 0.5em;
+
+                    p {
+
+                    }
+                }
+            }
+        }   
+    }
+}
+
+
+
 @keyframes DiffuseIn {
     from {
         filter: blur(20px);

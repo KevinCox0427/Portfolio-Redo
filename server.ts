@@ -20,7 +20,7 @@ app.set('trust proxy', true);
  */
 declare global { 
     type ServerPropsType = Partial<{
-        portfolioConfig: PortfolioConfig
+        portfolioConfig: PortfolioConfig[]
     }>
 }
 export type { ServerPropsType };
@@ -30,8 +30,10 @@ export type { ServerPropsType };
  * Declare your routes
  */
 import index from './routes/index';
+import portfolio from './routes/portfolio';
 
 app.use('/', index);
+app.use('/portfolio', portfolio);
 
 
 /**

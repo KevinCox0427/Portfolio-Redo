@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 
 type Props = {
-    portfolioConfig: PortfolioConfig
+    portfolioConfig: PortfolioConfig[]
 }
 
 const Footer:FunctionComponent<Props> = (props) => {

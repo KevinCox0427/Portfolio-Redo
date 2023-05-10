@@ -6,21 +6,23 @@ declare global {
         problem: string,
         solution: string,
         logo: string,
+        tag: string,
         skills: string[],
         link: string,
         gallery: string[]
-    }[]
+    }
 }
 
-const portfolioConfig: PortfolioConfig = [
+const portfolioConfig: PortfolioConfig[] = [
     {
         name: "New York Land Quest",
         route: "/portfolio/newyorklandquest",
-        description: "",
+        description: "Blah Blah Blah",
         logo: "https://placehold.co/600x400",
         problem: "",
         solution: "",
-        skills: [],
+        skills: ['WordPress', 'PHP'],
+        tag: "Web Development",
         link: "",
         gallery: []
     },
@@ -32,6 +34,7 @@ const portfolioConfig: PortfolioConfig = [
         problem: "",
         solution: "",
         skills: [],
+        tag: "",
         link: "",
         gallery: []
     },
@@ -43,6 +46,7 @@ const portfolioConfig: PortfolioConfig = [
         problem: "",
         solution: "",
         skills: [],
+        tag: "",
         link: "",
         gallery: []
     },
@@ -54,6 +58,7 @@ const portfolioConfig: PortfolioConfig = [
         problem: "",
         solution: "",
         skills: [],
+        tag: "",
         link: "",
         gallery: []
     },
@@ -65,6 +70,7 @@ const portfolioConfig: PortfolioConfig = [
         problem: "",
         solution: "",
         skills: [],
+        tag: "",
         link: "",
         gallery: []
     }
