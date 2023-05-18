@@ -9,7 +9,9 @@ const route404 = express.Router();
 route404.route('*')
     .get(async ( req, res ) => {
         const serverProps: ServerPropsType = {
-            portfolioConfig: portfolioConfig
+            page404Props: {
+                portfolioConfig: portfolioConfig
+            }
         }
 
         res.status(404).send(serveHTML(<Page404 ServerProps={serverProps}/>, 'Page404', serverProps)); 

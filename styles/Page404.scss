@@ -1,9 +1,17 @@
-body {
+main {
     justify-content: center;
     align-items: center;
+    padding: 20em 0 17em 0;
+    display: flex;
+    position: relative;
+
+    * {
+        display: flex;
+        position: relative;
+    }
 
     h1 {
-        font-size: 3em;
-        font-weight: 400;
+        font-size: 5em;
+        font-weight: 200;
     }
 }

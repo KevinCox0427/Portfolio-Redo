@@ -14,6 +14,12 @@ import UISection from './Home/UISection/UISection';
 import WebSection from './Home/WebSection/WebSection';
 import WebsiteSlider from './Home/WebsitesSliders';
 
+declare global {
+    type HomePageProps = {
+        portfolioConfig: PortfolioConfig[]
+    }
+}
+
 export type { SectionContent, AllSectionContent }
 
 type SectionContent = {
@@ -36,6 +42,8 @@ type Props = {
 }
 
 const Home:FunctionComponent<Props> = (props) => {
+    if(typeof props.ServerProps.homePageProps === 'undefined') return <></>;
+
     const [cacheHasLoaded, setCacheHasLoaded] = useState(false)
     const windowCache = useRef(new WindowCache(setCacheHasLoaded));
 
@@ -233,12 +241,12 @@ const Home:FunctionComponent<Props> = (props) => {
                 <UISection sectionContent={sectionContent.ui} allSectionContent={sectionContent} setSectionContent={setSectionContent} defaultSectionContent={sectionDefaults} cacheHasLoaded={cacheHasLoaded} style={{
                     order: sectionContent.ui.order
                 }}></UISection>
-                <WebSection sectionContent={sectionContent.web} portfolioConfig={props.ServerProps.portfolioConfig ? props.ServerProps.portfolioConfig : []} style={{
+                <WebSection sectionContent={sectionContent.web} portfolioConfig={props.ServerProps.homePageProps.portfolioConfig} style={{
                     order: sectionContent.web.order
                 }}></WebSection>
             </div>
         </div>
-        <Footer portfolioConfig={props.ServerProps.portfolioConfig ? props.ServerProps.portfolioConfig : []}></Footer>
+        <Footer portfolioConfig={props.ServerProps.homePageProps.portfolioConfig}></Footer>
     </>
 }
 

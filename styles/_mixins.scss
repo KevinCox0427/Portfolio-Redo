@@ -1,6 +1,6 @@
 @mixin LinkHover($color, $hoverColor, $startingAmount) {
     color: var(--black);
-    padding: 0.25em 0.3em 0.2em 0.25em;
+    padding: 0.25em 0.1em 0.2em 0.1em;
     background: linear-gradient(to bottom, $color 0%, $color 100%);
     background-position: 0 100%;
     background-repeat: repeat-x;
@@ -327,19 +327,29 @@
 @mixin PortfolioCard() {
     .Project {
         text-decoration: none;
-        gap: 0.75em;
-        flex-basis: 25em;
+        flex-direction: row;
+        flex-wrap: wrap;
         flex-grow: 1;
-        max-width: 32em;
+        flex-basis: 32em;
+        max-width: 55em;
+        gap: 1.25em 0;
 
         a {
             text-decoration: none;
+            width: fit-content;
         }
 
         .ImageWrapper {
-            height: 17.5em;
+            flex-basis: 17em;
+            flex-grow: 1;
+            height: 20em;
             width: 100%;
             overflow: hidden;
+            border-radius: 0.25em;
+            box-shadow: -0.1em 0.1em 0.3em 0 rgba(0,0,0, 0.07);
+            margin-right: -2em;
+            max-width: 100%;
+            transition: transform 0.15s ease-in-out;
             
             img {
                 height: 100%;
@@ -355,55 +365,79 @@
                 }
             }
         }
-
-        h2 {
-            @include LinkHover(var(--blue), var(--white), 0.1em);
-            padding: 0.3em 0.1em 0.15em 0.1em;
-            line-height: 80%;
-            font-size: 1.75em;
-            font-weight: 300;
-            text-decoration: none;
-        }
-
-        .Description {
-            padding-top: 0.5em;
-            flex-direction: row;
-            gap: 1em;
-
-            .Left {
-                justify-content: center;
-                padding: 1em 1em 1em 0;
-                border-right: 0.1em dashed var(--black);
-                flex-basis: 5em;
+        
+        .Card {
+            background-color: var(--ecommerceWhite);
+            flex-basis: 13em;
+            flex-grow: 3.5;
+            padding: 1em 1.25em;
+            align-self: center;
+            min-height: 16em;
+            border-radius: 0.25em;
+            box-shadow: -0.1em 0.1em 0.3em 0 rgba(0,0,0, 0.07);
+            transition: transform 0.15s ease-in-out;
+    
+            h2 {
+                @include LinkHover(var(--yellow), var(--black), 0.1em);
+                padding: 0.3em 0.1em 0.15em 0.1em;
+                line-height: 80%;
+                font-size: 1.75em;
+                font-weight: 300;
+                text-decoration: none;
+            }
+    
+            .Description {
                 flex-grow: 1;
                 font-family: var(--franklin);
                 font-weight: 200;
-                font-size: 1.25em;
-            }
-
-            .Right {
+                font-size: 1.3em;
+                margin: 0.5em 0;
                 justify-content: center;
-                flex-direction: column;
-                gap: 1em;
-
+            }
+    
+            .Tags {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0.75em 1.5em;
+                border-top: 0.1em dashed var(--black);
+                padding-top: 0.5em;
+    
                 .Tag {
+                    @include LinkHover(var(--lightPurple), var(--white), 0.125em);
+                    padding: 0.25em;
                     font-family: var(--franklin);
-                    background-color: var(--yellow);
+                    text-align: center;
                     width: fit-content;
-                    padding: 0.25em 0.7em 0.2em 0.7em;
-                    border-radius: 10em;
-                    font-size: 1.1em;
+                    font-size: 1.15em;
+                    white-space: nowrap;
+                    font-weight: 300;
                 }
-
+    
                 .Skills {
+                    flex-direction: row;
+                    flex-wrap: wrap;
                     gap: 0.5em;
-
-                    p {
-
+                    list-style-position: inside;
+    
+                    li {
+                        display: list-item;
+                        font-size: 1.15em;
+                        font-weight: 300;
                     }
                 }
             }
-        }   
+        }
+
+        &:hover {
+            .ImageWrapper {
+                transform: translateX(-1.75em);
+            }
+            .Card {
+                transform: translateX(1.25em);
+            }
+        }
     }
 }
 

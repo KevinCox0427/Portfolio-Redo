@@ -15,7 +15,9 @@ const index = express.Router();
 index.route('/')
     .get(async (req, res) => {
         const serverProps:ServerPropsType = {
-            portfolioConfig: portfolioConfig
+            homePageProps: {
+                portfolioConfig: portfolioConfig
+            }
         }
 
         res.status(200).send(serveHTML(<Home ServerProps={serverProps}/>, 'Home', serverProps));

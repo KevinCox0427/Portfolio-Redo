@@ -1,7 +1,7 @@
 @import "./mixins";
 
 main {
-    padding: 12em 0;
+    padding: 15em 0 12em 0;
     display: flex;
     position: relative;
 
@@ -19,13 +19,14 @@ main {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 0.5em 1.5em;
-        width: 100%;
+        width: calc(100% - 1.5em);
         padding: 0.5em 0.75em;
         margin: 0.25em 0;
-        border-top: 0.1em dashed var(--black);
+        border-top: 0.125em dashed var(--black);
         
         p {
-            @include LinkHover(var(--yellow), var(--black), 0.1em);
+            @include LinkHover(var(--lightPurple), var(--white), 0.1em);
+            padding: 0.25em;
             font-size: 1.4em;
             font-family: var(--franklin);
             font-weight: 300;
@@ -37,8 +38,12 @@ main {
         flex-direction: row;
         flex-wrap: wrap;
         padding: 4em 0;
-        gap: 1.5em 3em;
+        gap: 4em;
 
         @include PortfolioCard();
+
+        .Project {
+            opacity: 0;
+        }
     }
 }

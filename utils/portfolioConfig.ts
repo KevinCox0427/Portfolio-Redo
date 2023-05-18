@@ -16,7 +16,7 @@ declare global {
 const portfolioConfig: PortfolioConfig[] = [
     {
         name: "New York Land Quest",
-        route: "/portfolio/newyorklandquest",
+        route: "newyorklandquest",
         description: "Blah Blah Blah",
         logo: "https://placehold.co/600x400",
         problem: "",
@@ -28,7 +28,7 @@ const portfolioConfig: PortfolioConfig[] = [
     },
     {
         name: "Red Barn HPC",
-        route: "/portfolio/redbarnhpc",
+        route: "redbarnhpc",
         description: "",
         logo: "https://placehold.co/600x400",
         problem: "",
@@ -40,7 +40,7 @@ const portfolioConfig: PortfolioConfig[] = [
     },
     {
         name: "Long Island Exclusive",
-        route: "/portfolio/longislandexclusive",
+        route: "longislandexclusive",
         description: "",
         logo: "https://placehold.co/600x400",
         problem: "",
@@ -52,7 +52,7 @@ const portfolioConfig: PortfolioConfig[] = [
     },
     {
         name: "Beck Automotive",
-        route: "/portfolio/beck",
+        route: "beck",
         description: "",
         logo: "https://placehold.co/600x400",
         problem: "",
@@ -64,7 +64,7 @@ const portfolioConfig: PortfolioConfig[] = [
     },
     {
         name: "Little Venice",
-        route: "/portfolio/littlevenice",
+        route: "littlevenice",
         description: "",
         logo: "https://placehold.co/600x400",
         problem: "",

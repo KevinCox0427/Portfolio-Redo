@@ -20,7 +20,12 @@ app.set('trust proxy', true);
  */
 declare global { 
     type ServerPropsType = Partial<{
-        portfolioConfig: PortfolioConfig[]
+        homePageProps: HomePageProps,
+        portfolioPageProps: PortfolioPageProps,
+        page404Props: Page404Props,
+        projectPageProps: ProjectPageProps,
+        contactPageProps: ContactPageProps,
+        aboutPageProps: AboutPageProps
     }>
 }
 export type { ServerPropsType };
@@ -31,9 +36,13 @@ export type { ServerPropsType };
  */
 import index from './routes/index';
 import portfolio from './routes/portfolio';
+import contact from './routes/contact';
+import about from './routes/about';
 
 app.use('/', index);
 app.use('/portfolio', portfolio);
+app.use('/contact', contact);
+app.use('/about', about);
 
 
 /**

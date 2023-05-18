@@ -1,0 +1,14 @@
+@import './mixins';
+
+main {
+    padding: 15em 0 12em 0;
+    display: flex;
+    position: relative;
+
+    * {
+        display: flex;
+        position: relative;
+    }
+
+
+}

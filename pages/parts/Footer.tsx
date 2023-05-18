@@ -64,7 +64,7 @@ const Footer:FunctionComponent<Props> = (props) => {
                     </a>
                     <div className='SubLinks'>
                         {props.portfolioConfig.map((porfolio, i) => {
-                            return <a key={i} href={porfolio.route}>
+                            return <a key={i} href={`/portfolio/${porfolio.route}`}>
                                 <p>{porfolio.name}</p>
                                 <i className="fa-solid fa-angle-right"></i>
                             </a>
@@ -91,12 +91,12 @@ const Footer:FunctionComponent<Props> = (props) => {
                         <p>Contact</p>
                     </a>
                     <div className='SubLinks'>
-                        <a href="/contact/#inquiry">
-                            <p>Inquiry Form</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
                         <a href="/contact/#general">
                             <p>General Contact Form</p>
+                            <i className="fa-solid fa-angle-right"></i>
+                        </a>
+                        <a href="/contact/#inquiry">
+                            <p>Inquiry Form</p>
                             <i className="fa-solid fa-angle-right"></i>
                         </a>
                     </div>

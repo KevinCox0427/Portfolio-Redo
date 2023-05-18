@@ -3,17 +3,25 @@ import { hydrateRoot } from "react-dom/client";
 import Footer from "./parts/Footer";
 import Header from "./parts/Header";
 
+declare global {
+    type Page404Props = {
+        portfolioConfig: PortfolioConfig[]
+    }
+}
+
 type Props = {
     ServerProps: ServerPropsType
 }
 
 const Page404:FunctionComponent<Props> = (props) => {
+    if(typeof props.ServerProps.page404Props === 'undefined') return <></>
+
     return <>
         <Header></Header>
         <main className="contain">
             <h1>Error: Page Not Found</h1>
         </main>
-        <Footer portfolioConfig={props.ServerProps.portfolioConfig ? props.ServerProps.portfolioConfig : []}></Footer>
+        <Footer portfolioConfig={props.ServerProps.page404Props.portfolioConfig}></Footer>
     </>
 }
 
