@@ -134,7 +134,8 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
             <div className="InputWrapper">
                 <i className="fa-solid fa-rotate-left Reset" onClick={() => {
                     setSearchData(oldSearchData => {
-                        return {...oldSearchData,
+                        return {
+                            searchBar: '',
                             searchResults: [],
                             searchRecommendations: []
                         }

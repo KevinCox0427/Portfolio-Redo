@@ -52,7 +52,7 @@
             }
 
             .Submit {
-                @include RoundButton();
+                @include RoundButton(var(--black));
             }
         }
 

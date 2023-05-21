@@ -34,7 +34,7 @@
                     @include ResetButton();
                     display: inline;
                     position: relative;
-                    font-size: 0.55em;
+                    font-size: 0.5em;
                     width: fit-content;
                 }
             }
@@ -42,107 +42,122 @@
     }
 
     .UserData {
-        flex-direction: row;
-        flex-wrap: wrap;
 
-        .MapWrapper {
-            border-radius: 1.25em;
-            flex-basis: 250px;
+        .DataWrapper {
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+            background-color: var(--black);
+            box-shadow: 0.25em 0.3em 0 0 rgba(0,0,0, 0.05);
+            border-radius: 1em;
+            overflow: hidden;
 
-            #map {
-                filter: brightness(0.971) hue-rotate(-45deg);
-                display: block;
-                height: 300px;
-                width: 250px;
-                border-radius: inherit;
-
-                * {
-                    display: block;
-                }
-
-                .leaflet-control {
-                    border: none;
-                    border-radius: 2px;
-                    margin-left: 1.25em;
-                    margin-top: 1.25em;
-
-                    a {
-                        background-color: #f4edec;
-                        font-size: 1.5em;
-                        height: fit-content;
-                        width: fit-content;
-                        padding: 0.45em 0.4em 0.25em 0.35em;
-                        transition: transform 0.1s linear;
-                        border: 1.5px solid var(--black);
-
-                        &:last-child {
-                            margin-top: -1px;
-                        }
-
-                        span {
-                            font-family: var(--arima);
-                            line-height: 70%;
-                            font-weight: 300;
-                        }
-
-                        &:hover {
-                            z-index: 9999;
-                            transform: scale(1.15);
-                        }
-                    }
-
-                    * {
-                        color: var(--black);
-                    }
-                }
-
-                .leaflet-marker-icon {
-                    filter: brightness(1.1) hue-rotate(30deg)
-                }
-            }
-
-            .Feather {
-                position: absolute;
-                border-radius: inherit;
-                height: 100%;
-                width: 100%;
-                box-shadow: 0 0 0.125em 0.125em var(--white) inset;
-                pointer-events: none;
-            }
-        }
-
-        .Location {
-            gap: 0.8em;
-            flex-grow: 1;
-            flex-basis: 15em;
-
-            p {
+            .MapWrapper {
                 flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                gap: 1em;
-                font-size: 1.15em;
-                font-weight: 300;
-                border-bottom: 0.125em dashed var(--black);
-                padding-bottom: 0.6em;
-
-                &:last-child {
-                    border-bottom: none;
+                flex-grow: 1;
+                flex-basis: 225px;
+    
+                #map {
+                    filter: hue-rotate(-25deg);
+                    display: block;
+                    flex-grow: 1;
+                    height: 275px;
+                    width: 225px;
+                    border-radius: inherit;
+    
+                    * {
+                        display: block;
+                    }
+    
+                    .leaflet-control {
+                        border: none;
+                        border-radius: 2px;
+                        margin-left: 1.25em;
+                        margin-top: 1.25em;
+    
+                        a {
+                            background-color: var(--brightWhite);
+                            font-size: 1.5em;
+                            height: fit-content;
+                            width: fit-content;
+                            padding: 0.45em 0.4em 0.25em 0.35em;
+                            transition: transform 0.1s linear;
+                            border: 1.5px solid var(--black);
+    
+                            &:last-child {
+                                margin-top: -1px;
+                            }
+    
+                            span {
+                                font-family: var(--arima);
+                                line-height: 70%;
+                                font-weight: 300;
+                            }
+    
+                            &:hover {
+                                z-index: 9999;
+                                transform: scale(1.15);
+                            }
+                        }
+    
+                        * {
+                            color: var(--black);
+                        }
+                    }
+    
+                    .leaflet-marker-icon {
+                        filter: brightness(1.1) hue-rotate(30deg)
+                    }
                 }
-
-                span {
-                    font-size: 1.1em;
-                    font-family: var(--franklin);
-                    font-weight: 200;
-                    text-align: end;
+    
+                .Feather {
+                    position: absolute;
+                    border-radius: inherit;
+                    height: 100%;
+                    width: 100%;
+                    box-shadow: 0 0 0.125em 0.125em var(--white) inset;
+                    pointer-events: none;
                 }
             }
-
-            .Error {
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
+    
+            .Location {
+                gap: 0.8em;
+                flex-grow: 100;
+                flex-basis: 15em;
+                padding: 1.75em;
+    
+                p {
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 1em;
+                    font-size: 1.2em;
+                    font-weight: 300;
+                    border-bottom: 0.08em dashed var(--white);
+                    padding-bottom: 0.6em;
+                    color: var(--green);
+    
+                    &:last-child {
+                        border-bottom: none;
+                        padding-bottom: 0em;
+                    }
+    
+                    span {
+                        font-size: 0.95em;
+                        font-family: var(--franklin);
+                        font-weight: 100;
+                        text-align: end;
+                        color: var(--yellow);
+                    }
+                }
+    
+                .Error {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                }
             }
         }
     }

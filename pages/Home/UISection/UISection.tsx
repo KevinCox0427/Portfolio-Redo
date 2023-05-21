@@ -65,7 +65,7 @@ const UISection: FunctionComponent<Props> = (props) => {
 
                 return {...oldContentEditors,
                     [sectionName]: {...oldContentEditors[sectionName as keyof AllSectionContent],
-                        height: element ? (oldContentEditors[sectionName as keyof AllSectionContent].isCollapsed ? element.children[0].clientHeight - 1 : element.children[0].clientHeight + element.children[1].clientHeight + 15) : 0
+                        height: element ? (oldContentEditors[sectionName as keyof AllSectionContent].isCollapsed ? element.children[0].clientHeight - 1 : element.children[0].clientHeight + element.children[1].clientHeight) : 0
                     }
                 }
             })

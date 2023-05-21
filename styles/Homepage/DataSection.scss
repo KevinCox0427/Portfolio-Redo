@@ -22,6 +22,7 @@
         gap: 0.5em;
         overflow: hidden;
         max-width: 100%;
+        box-shadow:  0.2em 0.2em 0em 0em rgba(0,0,0,0.05);
 
         .Line {
             flex-direction: row;
@@ -123,15 +124,15 @@
     }
 
     .DataResult {
-        background-color: var(--ecommerceWhite);
+        background-color: var(--brightWhite);
         border-radius: 0.5em;
         padding: 1.5em 1.5em 0.75em 1.5em;
         flex-grow: 1;
         flex-basis: 15em;
         max-width: 30em;
-        filter: drop-shadow(2px 1px 4px rgba(0,0,0, 0.05));
         overflow: hidden;
         height: fit-content;
+        box-shadow:  0.2em 0.2em 0em 0em rgba(0,0,0,0.04);
 
         .Gallery {
             height: 17.5em;
@@ -194,7 +195,7 @@
                 height: 0.75em;
                 width: 2em;
                 border-radius: 0.1em;
-                background-color: var(--ecommerceGrey);
+                background-color: var(--lightGrey);
                 transition: background-color 0.1s linear;
 
                 &:hover {
@@ -209,8 +210,8 @@
             font-weight: 400;
             font-size: 2em;
             padding: 0.5em 0;
-            border-top: 0.05em solid var(--ecommerceGrey);
-            border-bottom: 0.05em solid var(--ecommerceGrey);
+            border-top: 0.05em solid var(--lightGrey);
+            border-bottom: 0.05em solid var(--lightGrey);
         }
 
         .SubContent {
@@ -290,7 +291,7 @@
             .Divider {
                 align-self: stretch;
                 width: 0.1em;
-                background-color: var(--ecommerceGrey);
+                background-color: var(--lightGrey);
                 height: none;
             }
 

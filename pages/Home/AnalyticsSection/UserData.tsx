@@ -108,19 +108,21 @@ const UserData:FunctionComponent<Props> = (props) => {
                 getUserData();
             }}></i>
         </h3>
-        <div className="Location">
-            {props.analytics ? <>
-                <p>Ip Address: <span>{props.analytics.userData.location.ip}</span></p>
-                <p>City: <span>{props.analytics.userData.location.city}</span></p>
-                <p>Browser: <span>{props.analytics.userData.agent.browser}</span></p>
-                <p>Operating System: <span>{props.analytics.userData.agent.os}</span></p>
-            </> :
-                <p className="Error">No location data was found.</p>
-            }
-        </div>
-        <div className="MapWrapper">
-            <div id="map"></div>
-            <div className="Feather"></div>
+        <div className="DataWrapper">
+            <div className="Location">
+                {props.analytics ? <>
+                    <p>Ip Address: <span>{props.analytics.userData.location.ip}</span></p>
+                    <p>City: <span>{props.analytics.userData.location.city}</span></p>
+                    <p>Browser: <span>{props.analytics.userData.agent.browser}</span></p>
+                    <p>Operating System: <span>{props.analytics.userData.agent.os}</span></p>
+                </> :
+                    <p className="Error">No location data was found.</p>
+                }
+            </div>
+            <div className="MapWrapper">
+                <div id="map"></div>
+                <div className="Feather"></div>
+            </div>
         </div>
     </div>
 }

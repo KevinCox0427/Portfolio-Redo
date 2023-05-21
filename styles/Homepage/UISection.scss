@@ -15,11 +15,9 @@
             .SectionContent {
                 display: flex;
                 flex-direction: column;
-                background-color: var(--ecommerceWhite);
+                background-color: var(--brightWhite);
                 border-radius: 0.5em;
-                padding: 10px 1em 12px 1em;
-                gap: 15px;
-                box-shadow: 2px 1px 2px 0px rgba(0, 0, 0, 0.07);
+                box-shadow: 0.2em 0.15em 0 0 rgba(0, 0, 0, 0.04);
                 overflow: hidden;
                 z-index: 1;
                 transition: opacity 0.15s linear, height 0.4s ease-in-out, transform 0.15s ease-in-out;
@@ -29,6 +27,8 @@
                     align-items: center;
                     gap: 1em;
                     display: flex;
+                    padding: 10px 1em 12px 1em;
+
                     * {
                         display: flex;
                     }
@@ -57,7 +57,7 @@
         
                         &:hover {
                             background-color: var(--black);
-                            color: var(--ecommerceWhite);
+                            color: var(--brightWhite);
                             transform: scale(1.1);
                             cursor: pointer;
                             z-index: 1;
@@ -75,13 +75,13 @@
                     .InputWrapper {
                         @include Input();
                         user-select: none;
+                        box-shadow: none;
     
                         input {
                             font-size: 1.5em;
                         }
     
                         label {
-                            font-weight: 400;
                             pointer-events: none;
                             user-select: none;
                         }
@@ -99,6 +99,14 @@
                         }
     
                         @include QuillStyleAdjustments();
+
+                        .ql-toolbar {
+                            margin-top: 0.25em;
+                        }
+
+                        .ql-container {
+                            padding: 1.5em 2.25em;
+                        }
                     }
                 }
             }

@@ -18,8 +18,16 @@ const About: FunctionComponent<Props> = (props) => {
     
     return <>
         <Header></Header>
-        <main>
-
+        <main className="Contain">
+            <h1>About</h1>
+            <div className="AboutMe">
+                <img src="/assets/headshot.jpg"></img>
+                <div className="Description">
+                    <p>Hey! My name is Kevin Cox, and I'm a full-stack developer and graphic designer from New York.</p>
+                    <p>I enjoy eating ass</p>
+                </div>
+            </div>
+            <div></div>
         </main>
         <Footer portfolioConfig={props.ServerProps.aboutPageProps.portfolioConfig}></Footer>
     </>

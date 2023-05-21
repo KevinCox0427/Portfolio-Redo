@@ -10,5 +10,24 @@ main {
         position: relative;
     }
 
+    h2 {
+        font-size: clamp(3.5em, 5vw, 5em);
+        font-weight: 200;
+        border-bottom: 0.035em dashed var(--black);
+    }
 
+    form {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2em;
+        padding: 2em 0 12em 0;
+
+        .InputWrapper {
+            @include Input();
+        }
+
+        .TextareaWrapper {
+            @include Textarea();
+        }
+    }
 }

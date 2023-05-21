@@ -2,6 +2,7 @@
 
 main {
     padding: 15em 0 12em 0;
+    gap: 2em;
     display: flex;
     position: relative;
 
@@ -10,5 +11,38 @@ main {
         position: relative;
     }
 
+    h1 {
+        font-size: clamp(3.5em, 5vw, 5em);
+        font-weight: 200;
+        border-bottom: 0.035em dashed var(--black);
+    }
 
+    .AboutMe {
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 3em;
+
+        img {
+            width: 22.5em;
+            height: auto;
+            border-radius: 3.5em;
+            filter: brightness(1.1);
+        }
+
+        .Description {
+            gap: 1em;
+            flex-basis: 20em;
+            flex-grow: 1;
+            font-family: var(--franklin);
+            font-size: 1.6em;
+            font-weight: 200;
+            line-height: 140%;
+
+            p {
+                line-height: inherit;
+            }
+        }
+    }
 }

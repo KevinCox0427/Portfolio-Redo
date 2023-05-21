@@ -30,22 +30,23 @@
     }
 }
 
-@mixin RoundButton() {
+@mixin RoundButton($color) {
     font-size: 1.5em;
-    font-weight: 300;
-    font-family: var(--rubik);
-    padding: 0.2em 1.25em;
-    box-shadow: 0 0 0 0.075em var(--black);
+    font-weight: 200;
+    font-family: var(--franklin);
+    padding: 0.3em 1.5em;
+    box-shadow: 0.11em 0.1em 0em 0em rgba(0, 0, 0, 0.03);
     border-radius: 10em;
     color: var(--black);
-    background-color: var(--white);
+    background-color: var(--brightWhite);
     text-decoration: none;
     text-align: center;
     width: fit-content;
     transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
 
-    &:hover {
-        background-color: var(--black);
+    &:hover, &.Activated {
+        font-weight: 400;
+        background-color: $color;
         color: var(--white);
         transform: scale(1.05);
         cursor: pointer;
@@ -53,6 +54,8 @@
 }
 
 @mixin Input() {
+    //background-color: var(--brightWhite);
+    //box-shadow: 0.15em 0.15em 0em 0em rgba(0, 0, 0, 0.03);
     flex-direction: row-reverse;
     flex-grow: 1;
     max-width: 100%;
@@ -60,8 +63,9 @@
     align-items: flex-end;
     justify-content: flex-end;
     gap: 0em;
+    border-radius: 0.35em 0.35em 0 0;
 
-    input, textarea {
+    input {
         background: none;
         flex-basis: 5em;
         flex-grow: 1;
@@ -72,6 +76,7 @@
         transition: border-color 0.1s linear;
         outline: none;
         border: none;
+        align-self: stretch;
 
         &:not(:placeholder-shown), &:not(:placeholder-shown) ~ label {
             border-color: var(--green);
@@ -84,7 +89,7 @@
     }
 
     input {
-        padding: 0.005em 0.2em;
+        padding: 0.15em 0.2em 0.05em 0.2em;
         border-bottom: 2px solid var(--lightRed);
     }
 
@@ -103,10 +108,11 @@
         font-family: var(--cairo);
         letter-spacing: 0.02em;
         transition: border-color 0.1s linear;
-        padding: 0.25em 0.2em;
-        height: fit-content;
+        padding: 0.25em 0.2em 0.25em 0.4em;
         border-bottom: 2px solid var(--lightRed);
         text-align: center;
+        align-self: stretch;
+        justify-content: center;
 
         &:hover, &:hover~input {
             border-bottom: 2px solid var(--yellow);
@@ -115,13 +121,60 @@
     }
 }
 
+@mixin Textarea() {
+    flex-grow: 1;
+    flex-basis: 100%;
+    max-width: 100%;
+    min-width: 2em;
+    gap: 0.25em;
+    border-radius: 0.35em 0.35em 0 0;
+
+    textarea {
+        padding: 0.3em;
+        min-height: 1em;
+        outline: none;
+        border: 2px solid var(--lightRed);
+        border-radius: 0.2em;
+        line-height: 120%;
+        resize: none;
+        background: none;
+        flex-basis: 5em;
+        flex-grow: 1;
+        font-size: 1.8em;
+        font-family: var(--franklin);
+        font-weight: 100;
+        min-width: 2em;
+        transition: border-color 0.1s linear;
+        align-self: stretch;
+
+        &:not(:placeholder-shown), &:not(:placeholder-shown) {
+            border-color: var(--green);
+        }
+
+        &:hover {
+            border-color: var(--yellow);
+            cursor:text;
+        }
+    }
+
+    label {
+        font-size: 1.3em;
+        font-weight: 300;
+        font-family: var(--cairo);
+        letter-spacing: 0.02em;
+        transition: border-color 0.1s linear;
+    }
+}
+
 @mixin ResetButton() {
     position: absolute;
     top: 0em;
     right: -0.1em;
-    font-size: 1.5em;
+    font-size: 1.3em;
     padding: 0.35em;
     border-radius: 10em;
+    background-color: var(--brightWhite);
+    box-shadow: 0.1em 0.1em 0em 0em rgba(0, 0, 0, 0.03);
     transition: background-color 0.1s linear, color 0.1s linear, transform 0.25s ease-in-out;
 
     &:hover {
@@ -144,7 +197,6 @@
         gap: 0.25em 1em;
         background-color: var(--grey);
         border: 0.1em solid var(--grey);
-        border-radius: 0.5em 0.5em 0 0;
 
         .ql-formats {
             margin: 0 auto;
@@ -182,13 +234,13 @@
             }
 
             .ql-picker, .ql-picker-label, button, svg {
-                color: var(--ecommerceWhite);
+                color: var(--brightWhite);
 
                 .ql-stroke {
-                    stroke: var(--ecommerceWhite);
+                    stroke: var(--brightWhite);
                 }
                 .ql-fill {
-                    fill: var(--ecommerceWhite);
+                    fill: var(--brightWhite);
                 }
 
                 &.ql-active {
@@ -236,7 +288,7 @@
                     right: 0px;
 
                     .ql-stroke {
-                        stroke: var(--ecommerceWhite);
+                        stroke: var(--brightWhite);
                     }
                 }
 
@@ -296,12 +348,11 @@
     }
 
     .ql-container {
-        border: 0.1em dashed var(--black);
-        border-top: none;
-        padding: 0.25em 0.5em;
-        border-radius: 0 0 0.5em 0.5em;
+        border: none;
 
         .ql-editor {
+            padding: 0;
+
             .ql-color-yellow {
                 color: var(--yellow);
             }
@@ -346,7 +397,7 @@
             width: 100%;
             overflow: hidden;
             border-radius: 0.25em;
-            box-shadow: -0.1em 0.1em 0.3em 0 rgba(0,0,0, 0.07);
+            box-shadow: 0.15em 0.2em 0em 0 rgba(0,0,0, 0.05);
             margin-right: -2em;
             max-width: 100%;
             transition: transform 0.15s ease-in-out;
@@ -367,14 +418,14 @@
         }
         
         .Card {
-            background-color: var(--ecommerceWhite);
+            background-color: var(--brightWhite);
             flex-basis: 13em;
             flex-grow: 3.5;
             padding: 1em 1.25em;
             align-self: center;
             min-height: 16em;
             border-radius: 0.25em;
-            box-shadow: -0.1em 0.1em 0.3em 0 rgba(0,0,0, 0.07);
+            box-shadow: 0.15em 0.2em 0em 0 rgba(0,0,0, 0.03);
             transition: transform 0.15s ease-in-out;
     
             h2 {
@@ -435,7 +486,7 @@
                 transform: translateX(-1.75em);
             }
             .Card {
-                transform: translateX(1.25em);
+                transform: translateX(1em);
             }
         }
     }

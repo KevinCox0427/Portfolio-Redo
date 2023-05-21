@@ -29,10 +29,13 @@ const Portfolio: FunctionComponent<Props> = (props) => {
         ) {
             window.history.pushState({}, '', `/portfolio${selectedTag === 'all' ? '' : '?tag=' + selectedTag}`);
         }
-
-        setProjects(props.ServerProps.portfolioPageProps!.portfolioConfig.filter(project => {
-            return project.tag.split(' ').join('') === selectedTag || selectedTag === 'all';
-        }))
+        
+        setProjects([]);
+        setTimeout(() => {
+            setProjects(props.ServerProps.portfolioPageProps!.portfolioConfig.filter(project => {
+                return project.tag.split(' ').join('') === selectedTag || selectedTag === 'all';
+            }));
+        }, 10);
     }, [selectedTag]);
     
     return <>

@@ -7,9 +7,10 @@ type Props = {
 }
 
 const Heatmap:FunctionComponent<Props> = (props) => {
-    const [heatMapSize, setHeatmapSize] = useState({
+    const [heatMap, setHeatmap] = useState({
         height: 0,
-        width: 0
+        width: 0,
+        image: ''
     });
 
     const resizeBuffer = useRef<NodeJS.Timeout | null>(null);
@@ -20,7 +21,8 @@ const Heatmap:FunctionComponent<Props> = (props) => {
         if(!root || !wrapper) return;
 
         root.addEventListener('click', e => {
-            const coordinate = [Math.round((e.clientX / window.innerWidth)*10000)/100, Math.round(((e.clientY + root.scrollTop) / root.scrollHeight)*10000)/100];
+            const coordinate = [Math.round((e.clientX / window.innerWidth)*10000)/100, Math.round(((e.clientY + document.documentElement.scrollTop) / document.documentElement.scrollHeight)*10000)/100];
+
             props.setAnalytics(oldAnalytics => {
                 return {...oldAnalytics,
                     heatMap: [...oldAnalytics.heatMap, coordinate]
@@ -28,14 +30,17 @@ const Heatmap:FunctionComponent<Props> = (props) => {
             })
         });
 
-        setHeatmapSize({
+        setHeatmap({
+            image: `/assets/self${Math.ceil(window.innerWidth/100)*100}.png`,
             height: Math.ceil(wrapper.clientWidth * (root.scrollHeight / window.innerWidth)),
             width: Math.ceil(wrapper.clientWidth)
         });
+
         window.addEventListener('resize', () => {
             if(resizeBuffer.current) clearTimeout(resizeBuffer.current);
             resizeBuffer.current = setTimeout(() => {
-                setHeatmapSize({
+                setHeatmap({
+                    image: `/assets/self${Math.ceil(window.innerWidth/100)*100}.png`,
                     height: Math.ceil(wrapper.clientWidth * (root.scrollHeight / window.innerWidth)),
                     width: Math.ceil(wrapper.clientWidth)
                 });
@@ -56,10 +61,10 @@ const Heatmap:FunctionComponent<Props> = (props) => {
         </h3>
         <div className="HeatmapScroll">
             <div className="HeatmapWrapper">
-                <img src={`/assets/self${typeof window !== 'undefined' ? Math.ceil(window.innerWidth/100)*100 : 1600}.png`}></img>
+                <img src={heatMap.image}></img>
                 <div className="Gradient" style={{
-                    width: heatMapSize.width,
-                    height: heatMapSize.height
+                    width: heatMap.width,
+                    height: heatMap.height
                 }}>
                     {props.analytics.heatMap.map((value, i) => {
                         return <div className="Circle" key={i} style={{

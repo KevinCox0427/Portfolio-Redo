@@ -109,17 +109,17 @@
                 
                 a {
                     color: var(--black);
+                    background-color: var(--brightWhite);
                     text-decoration: none;
-                    font-size: clamp(0.9em, 1vw, 1.1em);
+                    font-size: clamp(0.9em, 1.1vw, 1.1em);
                     font-family: var(--workSans);
-                    padding: clamp(0.3em, 0.5vw, 0.5em) 1.25em;
-                    box-shadow: 0 0 0 0.075em var(--black);
+                    padding: clamp(0.4em, 0.55vw, 0.55em) 1.25em;
+                    box-shadow: 0.15em 0.14em 0em 0em rgba(0,0,0,0.05);
                     border-radius: 100em;
                     text-transform: uppercase;
                     transition: color 0.1s linear, font-weight 0.1s linear, box-shadow 0.1s linear;
     
                     &:hover {
-                        box-shadow: 0 0 0 0em var(--black);
                         color: var(--white);
                         font-weight: 500;
                         animation: 0.4s linear 0s forwards ColorJump !important;
@@ -146,12 +146,12 @@
                 .FakeBrowser {
                     flex-direction: row;
                     height: fit-content;
-                    width: calc(100% - 1.65em);
+                    width: calc(100% - 1.5em);
                     gap: 0.5em;
                     padding: 0.4em 0.75em;
-                    border: 0.1em solid var(--black);
+                    border-bottom: 0.1em solid var(--black);
                     border-radius: 0.5em 0.5em 0 0;
-                    background-color: var(--ecommerceWhite);
+                    background-color: var(--brightWhite);
 
                     div {
                         border-radius: 10em;
@@ -177,8 +177,6 @@
                     outline: none;
                     border-radius: 0 0 0.5em 0.5em;
                     overflow-y: scroll;
-                    border: 0.1em solid var(--black);
-                    margin-top: -0.1em;
 
                     img {
                         width: 100%;
@@ -214,7 +212,7 @@
         font-family: var(--arima);
         font-weight: 300;
         gap: 0.35em;
-        color: var(--grey);
+        color: var(--black);
         align-self: center;
         margin: 3.25em 0;
         opacity: 0;
