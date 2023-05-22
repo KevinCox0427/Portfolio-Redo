@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import Header from "./parts/Header";
 import Footer from "./parts/Footer";
@@ -17,7 +17,10 @@ const Contact: FunctionComponent<Props> = (props) => {
     if(typeof props.ServerProps.contactPageProps === 'undefined') return <></>;
 
     const [contactForm, setContactForm] = useState({
-        error: '',
+        error: {
+            success: false,
+            message: ''
+        },
         isLoading: false,
         data: {
             name: '',
@@ -26,22 +29,135 @@ const Contact: FunctionComponent<Props> = (props) => {
         }
     });
 
-    const [inquiryForm, setInquiryForm] = useState({
-        error: '',
+    const [inquiryForm, setInquiryForm] = useState<{
+        error: {
+            success: boolean,
+            message: string
+        },
+        isLoading: boolean,
+        data: {
+            name: string,
+            email: string,
+            phone: string,
+            startDate: string,
+            endDate: string,
+            needs: string[],
+            message: string
+        }
+    }>({
+        error: {
+            success: false,
+            message: ''
+        },
         isLoading: false,
         data: {
             name: '',
             email: '',
             phone: '',
+            startDate: '',
+            endDate: '',
+            needs: [],
             message: ''
         }
     });
+
+    function updateNeeds(need: string) {
+        if(!inquiryForm.data.needs.includes(need)) {
+            setInquiryForm(oldInquiryForm => {
+                return {...oldInquiryForm,
+                    data: {...oldInquiryForm.data,
+                        needs: [...oldInquiryForm.data.needs, need]
+                    },
+                    error: {
+                        success: false,
+                        message: ''
+                    }
+                }
+            })
+        }
+        else {
+            setInquiryForm(oldInquiryForm => {
+                const newNeeds = [...oldInquiryForm.data.needs];
+                newNeeds.splice(newNeeds.indexOf(need), 1);
+
+                return {...oldInquiryForm,
+                    data: {...oldInquiryForm.data,
+                        needs: newNeeds
+                    },
+                    error: {
+                        success: false,
+                        message: ''
+                    }
+                }
+            })
+        }
+    }
+
+    useEffect(() => {
+        const textareas = Array.from(document.getElementsByTagName('textarea')) as HTMLTextAreaElement[];
+        textareas.forEach(elmnt => {
+            elmnt.style.height = `0px`;
+            elmnt.style.height = `${elmnt.scrollHeight - 20}px`;
+        })
+    }, []);
+
+    async function generalSubmit(e:React.MouseEvent) {
+        e.preventDefault();
+
+        setContactForm(oldContactForm => {
+            return {...oldContactForm,
+                isLoading: true
+            }
+        });
+
+        const response = await (await fetch('/contact/general', {
+            method: 'POST',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(contactForm.data)
+        })).json();
+
+        setContactForm(oldContactForm => {
+            return {...oldContactForm,
+                isLoading: false,
+                error: response
+            }
+        });
+    }
+    
+    async function inquirySubmit(e:React.MouseEvent) { 
+        e.preventDefault();
+
+        setInquiryForm(oldInquiry => {
+            return {...oldInquiry,
+                isLoading: true
+            }
+        });
+
+        const response = await (await fetch('/contact/inquiry', {
+            method: 'POST',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(inquiryForm.data)
+        })).json();
+
+        setInquiryForm(oldInquiry => {
+            return {...oldInquiry,
+                isLoading: false,
+                error: response
+            }
+        });
+    }
 
     return <>
         <Header></Header>
         <main className="Contain">
             <h2>General Contact Form</h2>
-            <form>
+            <form id="general">
                 <div className="InputWrapper">
                     <input placeholder=" " id="generalName" value={contactForm.data.name} onChange={e => {
                         setContactForm(oldContact => {
@@ -49,7 +165,10 @@ const Contact: FunctionComponent<Props> = (props) => {
                                 data: {...oldContact.data,
                                     name: e.target.value
                                 },
-                                error: ''
+                                error: {
+                                    success: false,
+                                    message: ''
+                                }
                             }
                         });
                     }}></input>
@@ -62,7 +181,10 @@ const Contact: FunctionComponent<Props> = (props) => {
                                 data: {...oldContact.data,
                                     email: e.target.value
                                 },
-                                error: ''
+                                error: {
+                                    success: false,
+                                    message: ''
+                                }
                             }
                         });
                     }}></input>
@@ -76,15 +198,189 @@ const Contact: FunctionComponent<Props> = (props) => {
                                 data: {...oldContact.data,
                                     message: e.target.value
                                 },
-                                error: ''
+                                error: {
+                                    success: false,
+                                    message: ''
+                                }
                             }
                         });
+                        e.target.style.height = `0px`;
+                        e.target.style.height = `${e.target.scrollHeight - 20}px`;
                     }}></textarea>
                 </div>
+                {contactForm.isLoading ? <div className="Loading">
+                    <i className="fa-solid fa-arrows-rotate"></i>
+                </div> : <p className="ErrorMessage" style={{
+                    color: contactForm.error.success ? 'var(--green)' : 'var(--lightRed)'
+                }}>{contactForm.error.message}</p>}
+                <button className="Submit" onClick={generalSubmit}>Submit</button>
             </form>
             <h2>Inquiry Form</h2>
-            <form>
-
+            <form id="inquiry">
+                <div className="InputWrapper">
+                    <input placeholder=" " id="inquiryName" value={inquiryForm.data.name} onChange={e => {
+                        setInquiryForm(oldInquiry => {
+                            return {...oldInquiry,
+                                data: {...oldInquiry.data,
+                                    name: e.target.value
+                                },
+                                error: {
+                                    success: false,
+                                    message: ''
+                                }
+                            }
+                        });
+                    }}></input>
+                    <label htmlFor="inquiryName">Name:</label>
+                </div>
+                <div className="InputWrapper">
+                    <input placeholder=" " id="inquiryEmail" type="email" value={inquiryForm.data.email} onChange={e => {
+                        setInquiryForm(oldInquiry => {
+                            return {...oldInquiry,
+                                data: {...oldInquiry.data,
+                                    email: e.target.value
+                                },
+                                error: {
+                                    success: false,
+                                    message: ''
+                                }
+                            }
+                        });
+                    }}></input>
+                    <label htmlFor="inquiryEmail">Email:</label>
+                </div>
+                <div className="InputWrapper">
+                    <input placeholder=" " id="inquiryPhone" type="phone" value={inquiryForm.data.phone} onChange={e => {
+                        setInquiryForm(oldInquiry => {
+                            return {...oldInquiry,
+                                data: {...oldInquiry.data,
+                                    phone: e.target.value
+                                },
+                                error: {
+                                    success: false,
+                                    message: ''
+                                }
+                            }
+                        });
+                    }}></input>
+                    <label htmlFor="inquiryPhone">Phone:</label>
+                </div>
+                <div className="SubSection">
+                    <h3>Project Needs:</h3>
+                    <div className="ListWrapper">
+                        <div className="Option">
+                            <label htmlFor="inquiryNeedsGraphicDesign">Graphic Design</label>
+                            <input type="checkbox" id="inquiryNeedsGraphicDesign" checked={inquiryForm.data.needs.includes("Graphic Design")} onChange={e => {
+                                updateNeeds("Graphic Design");
+                            }}></input>
+                        </div>
+                        <div className="Option">
+                            <label htmlFor="inquiryNeedsForms">Form Submission</label>
+                            <input type="checkbox" id="inquiryNeedsForms" checked={inquiryForm.data.needs.includes("Forms")} onChange={e => {
+                                updateNeeds("Forms");
+                            }}></input>
+                        </div>
+                        <div className="Option">
+                            <label htmlFor="inquiryNeedsDataEntry">Data Entry</label>
+                            <input type="checkbox" id="inquiryNeedsDataEntry" checked={inquiryForm.data.needs.includes("Data Entry")} onChange={e => {
+                                updateNeeds("Data Entry");
+                            }}></input>
+                        </div>
+                        <div className="Option">
+                            <label htmlFor="inquiryNeedsUserAccounts">User Accounts</label>
+                            <input type="checkbox" id="inquiryNeedsUserAccounts" checked={inquiryForm.data.needs.includes("Users")} onChange={e => {
+                                updateNeeds("Users");
+                            }}></input>
+                        </div>
+                        <div className="Option">
+                            <label htmlFor="inquiryNeedsEcommerce">Ecommerce</label>
+                            <input type="checkbox" id="inquiryNeedsEcommerce" checked={inquiryForm.data.needs.includes("Ecommerce")} onChange={e => {
+                                updateNeeds("Ecommerce");
+                            }}></input>
+                        </div>
+                        <div className="Option">
+                            <label htmlFor="inquiryNeedsContentPublishing">Content Publishing</label>
+                            <input type="checkbox" id="inquiryNeedsContentPublishing" checked={inquiryForm.data.needs.includes("Content Publishing")} onChange={e => {
+                                updateNeeds("Content Publishing");
+                            }}></input>
+                        </div>
+                        <div className="Option">
+                            <label htmlFor="inquiryNeedsIntegrations">3rd Party Integrations</label>
+                            <input type="checkbox" id="inquiryNeedsIntegrations" checked={inquiryForm.data.needs.includes("Integrations")} onChange={e => {
+                                updateNeeds("Integrations");
+                            }}></input>
+                        </div>
+                    </div>
+                </div>
+                <div className="SubSection">
+                    <h3>Time Frame:</h3>
+                    <div className="DateWrapper">
+                        <input id="inquiryStartDate" value={inquiryForm.data.startDate} type="date" onFocus={e => {
+                            e.target.showPicker();
+                        }} onChange={e => {
+                            setInquiryForm(oldInquiry => {
+                                return {...oldInquiry,
+                                    data: {...oldInquiry.data,
+                                        startDate: e.target.value
+                                    },
+                                    error: {
+                                        success: false,
+                                        message: ''
+                                    }
+                                }
+                            });
+                        }}></input>
+                        <p className="Label">From:</p>
+                        <div className="Display">
+                            <label htmlFor="inquiryStartDate"><i className="fa-regular fa-calendar"></i></label>
+                            <p placeholder=" ">{inquiryForm.data.startDate}</p>
+                        </div>
+                    </div>
+                    <div className="DateWrapper">
+                        <input id="inquiryEndDate" value={inquiryForm.data.endDate} type="date" onFocus={e => {
+                            e.target.showPicker();
+                        }} onChange={e => {
+                            setInquiryForm(oldInquiry => {
+                                return {...oldInquiry,
+                                    data: {...oldInquiry.data,
+                                        endDate: e.target.value
+                                    },
+                                    error: {
+                                        success: false,
+                                        message: ''
+                                    }
+                                }
+                            });
+                        }}></input>
+                        <p className="Label">To:</p>
+                        <div className="Display">
+                            <label htmlFor="inquiryEndDate"><i className="fa-regular fa-calendar"></i></label>
+                            <p placeholder=" ">{inquiryForm.data.endDate}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="TextareaWrapper">
+                    <label htmlFor="inquiryMessage">Message:</label>
+                    <textarea placeholder=" " id="inquiryMessage" value={inquiryForm.data.message} onChange={e => {
+                        setInquiryForm(oldInquiry => {
+                            return {...oldInquiry,
+                                data: {...oldInquiry.data,
+                                    message: e.target.value
+                                },
+                                error: {
+                                    success: false,
+                                    message: ''
+                                }
+                            }
+                        });
+                        e.target.style.height = `0px`;
+                        e.target.style.height = `${e.target.scrollHeight - 20}px`;
+                    }}></textarea>
+                </div>
+                {inquiryForm.isLoading ? <div className="Loading">
+                    <i className="fa-solid fa-arrows-rotate"></i>
+                </div> : <p className="ErrorMessage">{inquiryForm.error.message}</p>}
+                <button className="Submit" onClick={inquirySubmit}>Submit</button>
             </form>
         </main>
         <Footer portfolioConfig={props.ServerProps.contactPageProps.portfolioConfig}></Footer>

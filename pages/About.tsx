@@ -24,10 +24,19 @@ const About: FunctionComponent<Props> = (props) => {
                 <img src="/assets/headshot.jpg"></img>
                 <div className="Description">
                     <p>Hey! My name is Kevin Cox, and I'm a full-stack developer and graphic designer from New York.</p>
-                    <p>I enjoy eating ass</p>
+                    <p></p>
                 </div>
             </div>
-            <div></div>
+            <div className="Grid">
+                <div className="Left"></div>
+                <div className="Right">
+                    <div className="Github"></div>
+                    <div className="LinkedIn">
+                        <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
+                        <div className="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="vertical" data-theme="dark" data-vanity="kevincox0427"><a className="LI-simple-link" href='https://www.linkedin.com/in/kevincox0427?trk=profile-badge'>Kevin Cox</a></div>
+                    </div>
+                </div>
+            </div>
         </main>
         <Footer portfolioConfig={props.ServerProps.aboutPageProps.portfolioConfig}></Footer>
     </>

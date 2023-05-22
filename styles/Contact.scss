@@ -19,15 +19,68 @@ main {
     form {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 2em;
-        padding: 2em 0 12em 0;
+        align-items: center;
+        gap: 3em 4em;
+        padding: 3em 0 10em 0;
 
         .InputWrapper {
             @include Input();
         }
 
+        .DateWrapper {
+            @include DateInput();
+        }
+
         .TextareaWrapper {
             @include Textarea();
+        }
+
+        .ListWrapper {
+            @include List();
+        }
+
+        .SubSection {
+            flex-direction: row;
+            flex-wrap: wrap;
+            flex-basis: 25em;
+            flex-grow: 1;
+            gap: 0.75em 2em;
+            margin: 1em 0;
+
+            h3 {
+                flex-basis: 100%;
+                font-size: clamp(2em, 3vw, 3em);
+                font-weight: 200;
+            }
+
+        }
+
+        .Loading {
+            flex-basis: 100%;
+            justify-content: center;
+            align-items: center;
+
+            i { 
+                font-size: 2em;
+                animation: 1s ease-in-out 0s infinite Spin;
+            }
+        }
+
+        .ErrorMessage {
+            flex-basis: 100%;
+            text-align: center;
+            font-size: 1.75em;
+            font-weight: 300;
+            font-style: italic;
+            margin-top: -0.25em;
+            margin-bottom: -0.25em;
+            color: var(--lightRed);
+        }
+
+        .Submit {
+            @include RoundButton(var(--black));
+            align-self: center;
+            margin: 0 auto;
         }
     }
 }

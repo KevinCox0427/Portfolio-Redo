@@ -54,12 +54,12 @@
 }
 
 @mixin Input() {
-    //background-color: var(--brightWhite);
-    //box-shadow: 0.15em 0.15em 0em 0em rgba(0, 0, 0, 0.03);
     flex-direction: row-reverse;
+    flex-basis: 25em;
     flex-grow: 1;
     max-width: 100%;
     min-width: 2em;
+    height: fit-content;
     align-items: flex-end;
     justify-content: flex-end;
     gap: 0em;
@@ -77,6 +77,8 @@
         outline: none;
         border: none;
         align-self: stretch;
+        padding: 0.15em 0.2em 0.05em 0.2em;
+        border-bottom: 2px solid var(--lightRed);
 
         &:not(:placeholder-shown), &:not(:placeholder-shown) ~ label {
             border-color: var(--green);
@@ -86,20 +88,6 @@
             border-color: var(--yellow);
             cursor:text;
         }
-    }
-
-    input {
-        padding: 0.15em 0.2em 0.05em 0.2em;
-        border-bottom: 2px solid var(--lightRed);
-    }
-
-    textarea {
-        padding: 0.3em;
-        min-height: 1em;
-        border: 2px solid var(--lightRed);
-        border-radius: 0.2em;
-        line-height: 120%;
-        resize: none;
     }
 
     label {
@@ -121,31 +109,115 @@
     }
 }
 
+@mixin DateInput() {
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: fit-content;
+    align-items: center;
+    max-width: 100%;
+    min-width: 2em;
+    gap: 0.25em 0.5em;
+    border-radius: 0.35em 0.35em 0 0;
+
+    input {
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        
+        &:focus ~ .Display {
+            p {
+                border-color: var(--yellow);
+            }
+        }
+    }
+
+    .Display {
+
+        p {
+            font-family: var(--franklin);
+            font-weight: 200;
+            font-size: 1.5em;
+            min-height: 1.25em;
+            justify-content: center;
+            width: 6.5em;
+            padding-right: 1.5em;
+            padding-left: 0.5em;
+            border-bottom: 2px solid var(--lightRed);
+            pointer-events: none;
+            transition: border-color 0.1s linear;
+    
+            &:not(:empty){
+                border-color: var(--green);
+            }
+        }
+        
+        label {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            justify-content: flex-end;
+            z-index: 1;
+
+            i {
+                position: absolute;
+                bottom: 0.1em;
+                right: 0em;
+                font-size: 1.05em;
+                padding: 0.45em 0.5em;
+                border-radius: 10em;
+                font-size: 1.1em;
+                font-family: "Font Awesome 6 Free";
+                transition: 0.1s linear color, 0.1s linear background-color, 0.1s linear transform;
+
+                &:hover {
+                    color: var(--brightWhite);
+                    background-color: var(--black);
+                    transform: scale(1.1);
+                    cursor: pointer;
+                }
+            }  
+            
+            &:hover {
+                cursor:pointer;
+            }
+
+            &:hover ~ p {
+                border-color: var(--yellow);
+            }
+        }
+    }
+
+    .Label {
+        font-size: 1.25em;
+        font-weight: 300;
+        font-family: var(--cairo);
+        letter-spacing: 0.02em;
+    }
+}
+
 @mixin Textarea() {
     flex-grow: 1;
     flex-basis: 100%;
     max-width: 100%;
     min-width: 2em;
-    gap: 0.25em;
-    border-radius: 0.35em 0.35em 0 0;
 
     textarea {
-        padding: 0.3em;
-        min-height: 1em;
         outline: none;
-        border: 2px solid var(--lightRed);
-        border-radius: 0.2em;
-        line-height: 120%;
         resize: none;
         background: none;
-        flex-basis: 5em;
-        flex-grow: 1;
-        font-size: 1.8em;
+        font-size: 1.6em;
         font-family: var(--franklin);
         font-weight: 100;
+        border: 2px solid var(--lightRed);
+        border-radius: 0.2em;
+        padding: 10px 12px;
+        min-height: 3em;
         min-width: 2em;
+        width: calc(100% - 24px);
+        line-height: 140%;
         transition: border-color 0.1s linear;
-        align-self: stretch;
 
         &:not(:placeholder-shown), &:not(:placeholder-shown) {
             border-color: var(--green);
@@ -162,7 +234,59 @@
         font-weight: 300;
         font-family: var(--cairo);
         letter-spacing: 0.02em;
+        padding: 0 0.1em 0.3em 0.1em;
         transition: border-color 0.1s linear;
+    }
+}
+
+@mixin List() {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: fit-content;
+    gap: 1em 2em;
+
+    .Option {
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: row-reverse;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        input {
+            height: 1.75em;
+            width: 1.75em;
+            background-color: var(--brightWhite);
+            border: 0.1em solid var(--black);
+            box-shadow: 0 0 0 0.3em var(--brightWhite) inset;
+            border-radius: 10em;
+            transition: background-color 0.1s linear, transform 0.1s linear;
+    
+            &:checked {
+                background-color: var(--blue);
+            }
+    
+            &:hover {
+                transform: scale(1.2);
+                cursor: pointer;
+            }
+        }
+    
+        label {
+            font-size: 1.3em;
+            font-family: var(--franklin);
+            font-weight: 300;
+            padding-left: 0.4em;
+
+            &:hover ~ input {
+                transform: scale(1.2);
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
 }
 
@@ -587,4 +711,13 @@
 @keyframes SlideIn {
     from { transform: translateX(15vw) rotate(10deg) }
     to {transform: translateX(0vw) rotate(0deg) }
+}
+
+@keyframes Spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
