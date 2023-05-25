@@ -1,7 +1,15 @@
 @import './mixins';
 
+:root {
+    --githubBlue: #2d82f7;
+    --githubWhite: #f0f6fc;
+    --githubBlack: #0d1118;
+    --githubGrey: #1a2028;
+    --githubLightGrey: #7e8490;
+}
+
 main {
-    padding: 15em 0 12em 0;
+    padding: 10em 0 10em 0;
     gap: 2em;
     display: flex;
     position: relative;
@@ -11,14 +19,15 @@ main {
         position: relative;
     }
 
-    h1 {
+    .Title {
+        width: 100%;
         font-size: clamp(3.5em, 5vw, 5em);
         font-weight: 200;
         border-bottom: 0.035em dashed var(--black);
     }
 
     .AboutMe {
-        flex-direction: row-reverse;
+        flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
@@ -42,6 +51,401 @@ main {
 
             p {
                 line-height: inherit;
+            }
+        }
+    }
+
+    .Grid {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 7em;
+        margin-top: 7em;
+
+        .Left {
+            flex-basis: 50em;
+            flex-grow: 2;
+            gap: 3em;
+            align-items: center;
+
+            .Resume {
+                flex-direction: row-reverse;
+                flex-wrap: wrap;
+                max-width: 62em;
+                background-color: var(--black);
+                border-radius: 0.5em;
+                overflow: hidden;
+                gap: 1.5px;
+                box-shadow: 0.2em 0.2em 0em 0 rgba(0,0,0, 0.04);
+
+                .Column {
+                    gap: 1.5px;
+
+                    &:last-child {
+                        flex-basis: 24em;
+                        flex-grow: 1;
+                    }
+                    &:first-child {
+                        flex-basis: 30em;
+                        flex-grow: 10;
+                    }
+
+                    .Section {
+                        padding: 3em 3em;
+                        height: fit-content;
+                        background-color: var(--brightWhite);
+
+                        &:last-child {
+                            flex-grow: 1;
+                        }
+                    }
+
+                    .Info {
+                        gap: 1.5em;
+                        align-items: center;
+
+                        .ImageWrapper {
+                            height: fit-content;
+                            width: fit-content;
+
+                            .Outline {
+                                position: absolute;
+                                height: 100%;
+                                width: 100%;
+                                border: 1.5px solid var(--black);
+                                transform: translate(-0.5em, -0.4em);
+                            }
+    
+                            img {
+                                width: 12.5em;
+                                height: auto;
+                                border: 1.5px solid var(--black);
+                            }
+                        }
+
+                        .InfoWrapper {
+                            flex-direction: row;
+                            flex-wrap: wrap;
+                            gap: 1.25em 1em;
+                            justify-content: center;
+                            
+                            .Link {
+
+                                h3 {
+                                    font-family: var(--rubik);
+                                    font-size: 0.9em;
+                                    text-transform: uppercase;
+                                    font-weight: 600;
+                                }
+
+                                a, p {
+                                    font-family: var(--franklin);
+                                    font-weight: 400;
+                                    font-size: 1.3em;
+                                }
+
+                                &:nth-child(1) {
+                                    h3 {
+                                        color: var(--lightRed);
+                                    }
+
+                                    a {
+                                        @include LinkHover(var(--lightRed), var(--brightWhite), 0.125em);
+                                    }
+                                }
+                                &:nth-child(2) {
+                                    h3 {
+                                        color: var(--yellow);
+                                    }
+
+                                    a {
+                                        @include LinkHover(var(--yellow), var(--brightWhite), 0.125em);
+                                    }
+                                }
+                                &:nth-child(3) {
+                                    h3 {
+                                        color: var(--green);
+                                    }
+
+                                    a {
+                                        @include LinkHover(var(--green), var(--brightWhite), 0.125em);
+                                    }
+                                }
+
+                                &:nth-child(4) {
+                                    h3 {
+                                        color: var(--blue);
+                                    }
+
+                                    p {
+                                        border-bottom: 0.125em solid var(--blue);
+                                        padding: 0.25em 0.1em 0.075em 0.1em;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .Skills {
+                        gap: 2.5em;
+
+                        .SkillsWrapper {
+                            gap: 1.25em;
+
+                            .Skill {
+                                gap: 0.25em;
+
+                                h4 {
+                                    font-family: var(--franklin);
+                                    font-weight: 500;
+                                    font-size: 1.4em;
+                                    padding-bottom: 0.1em;
+                                    border-bottom: 0.1em dashed var(--black);
+                                }
+                                
+                                p {
+                                    font-family: var(--franklin);
+                                    font-weight: 400;
+                                    font-size: 1.1em;
+                                    line-height: 130%;
+                                }
+                            }
+                        }
+                    }
+
+                    .Description {
+                        gap: 1.5em;
+                        
+                        .HighligherWrapper {
+                            width: fit-content;
+                            height: fit-content;
+
+                            h2 {
+                                width: fit-content;
+                                font-weight: 300;
+                                font-size: 3.5em;
+                                filter: drop-shadow(0.05em 0.05em 0 var(--brightWhite));
+                            }
+
+                            svg {
+                                position: absolute;
+                                width: 115%;
+                                top: 42.5%;
+                                left: 52.5%;
+                                transform: translate(-50%, -50%);
+                            }
+                        }
+
+                        p {
+                            font-family: var(--franklin);
+                            font-weight: 400;
+                            font-size: 1.2em;
+                            line-height: 150%;
+                            margin-top: -0.25em;
+                        }
+                    }
+
+                    .Education {
+                        flex-direction: row;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        justify-content: space-between;
+                        gap: 2em;
+
+                        .Degree {
+                            gap: 0.25em;
+
+                            h4 {
+                                font-weight: 300;
+                                font-size: 2.25em;
+                                border-bottom: 0.065em dashed var(--black);
+                            }
+
+                            p {
+                                font-size: 1.1em;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+
+                    .Experience {
+                        gap: 2.5em;
+
+                        .Job {
+                            h4 {
+                                font-weight: 300;
+                                font-size: 2.25em;
+                                border-bottom: 0.065em dashed var(--black);
+                            }
+
+                            span {
+                                font-size: 1.1em;
+                                font-weight: 600;
+                                margin-top: 0.25em;
+                            }
+
+                            p {
+                                font-family: var(--franklin);
+                                font-weight: 400;
+                                font-size: 1.2em;
+                                line-height: 140%;
+                                margin-top: 1em;
+                            }
+                        }
+                    }
+
+                    .Heading {
+                        font-family: var(--rubik);
+                        font-weight: 600;
+                        font-size: 1.1em;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                    }
+                }
+            }
+        }
+
+        .Right {
+            flex-basis: 25em;
+            flex-grow: 1;
+            gap: 3em;
+
+            .Github {
+                border-radius: 0.5em;
+                background-color: var(--githubBlack);
+                overflow: hidden;
+                box-shadow: 0.2em 0.2em 0em 0 rgba(0,0,0, 0.04);
+
+                a {
+                    text-decoration-color: var(--githubBlue);
+                    text-decoration-thickness: 0.1em;
+                    transition: opacity 0.1s linear;
+                    width: fit-content;
+                    
+                    &:hover {
+                        opacity: 0.6;
+                    }
+                }
+                
+                .TopRow {
+                    background-color: var(--githubGrey);
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 1em;
+                    height: 4em;
+                    padding: 0.5em 1em;
+                    max-width: calc(100vw - 6em);
+                    overflow: hidden;
+
+                    .Logo {
+                        flex-direction: row;
+                        align-items: center;
+                        gap: 0.5em;
+                        height: 70%;
+                        width: fit-content;
+                        margin-right: auto;
+                        text-decoration-color: var(--githubWhite);
+
+                        h3 {
+                            color: var(--githubWhite);
+                            font-family: var(--franklin);
+                            font-weight: 500;
+                            font-size: 1.5em;
+                        }
+
+                        svg {
+                            fill: var(--githubWhite);
+                            height: 100%;
+                            width: auto;
+                        }
+                    }
+
+                    img {
+                        height: 100%;
+                        width: auto;
+                        border-radius: 10em;
+                    }
+
+                    h2 {
+                        color: var(--githubBlue);
+                        font-family: var(--franklin);
+                        font-weight: 600;
+                    }
+                }
+
+                .Repos {
+                    flex-direction: column;
+                    padding: 1em 2em;
+                    max-height: 50em;
+                    overflow-y: scroll;
+
+                    .Repo {
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        gap: 0.75em 2em;
+                        padding: 1.5em 0;
+                        border-bottom: 0.25em solid var(--githubGrey);
+
+                        &:last-child {
+                            border-bottom: none;
+                        }
+
+                        .RepoLeft {
+                            flex-basis: 15em;
+                            flex-grow: 10;
+                            gap: 0.5em;
+
+                            h3 {
+                                font-size: 1.5em;
+                                font-family: var(--franklin);
+                                font-weight: 600;
+                                color: var(--githubBlue);
+                                line-height: 120%;
+                            }
+
+                            .Description {
+                                font-size: 1.2em;
+                                line-height: 140%;
+                                font-family: var(--franklin);
+                                font-weight: 400;
+                                color: var(--githubLightGrey);
+                            }
+
+                            .Topics {
+                                flex-direction: row;
+                                flex-wrap: wrap;
+                                align-items: center;
+                                gap: 0.4em 0.5em;
+                                margin-top: 0.25em;
+
+                                p {
+                                    font-weight: 500;
+                                    font-size: 1.1em;
+                                    padding: 0.25em 0.75em;
+                                    color: var(--githubBlue);
+                                    border-radius: 10em;
+                                    background-color: var(--githubGrey);
+                                }
+                            }
+                        }
+
+                        .RepoRight {
+                            flex-basis: 10em;
+                            flex-grow: 1;
+                            gap: 1em;
+
+                            p {
+                                gap: 0.25em;
+                                font-size: 1.1em;
+
+                                span {
+                                    color: var(--githubLightGrey);
+                                    font-family: var(--franklin);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
