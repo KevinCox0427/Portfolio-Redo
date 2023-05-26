@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { AllSectionContent, SectionContent } from "../../Home";
 import TextEditor from "./TextEditor";
 import Title from "../Title";
 

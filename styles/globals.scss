@@ -182,25 +182,27 @@ button, input, select, option {
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
-        gap: 4em;
+        gap: 6em;
         padding: 8em 0;
         border-top: 0.15em dashed var(--black);
 
         .Left {
 
             .DreamStateWrapper {
+                gap: 0.25em;
 
                 h1 {
                     font-weight: 200;
-                    font-size: 6em;
-                    white-space: nowrap;
+                    font-size: clamp(4em, 6vw, 6em);
+                    line-height: 80%;
                 }
         
                 p {
                     font-family: var(--franklin);
                     font-weight: 200;
-                    font-size: 1.77em;
-                    white-space: nowrap;
+                    font-size: clamp(1.4em, 1.7vw, 1.7em);
+                    line-height: 120%;
+                    font-style: italic;
                 }
             }
         }

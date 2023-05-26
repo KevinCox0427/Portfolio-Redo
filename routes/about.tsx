@@ -54,4 +54,9 @@ about.route('/')
         res.status(202).send(serveHTML(<About ServerProps={serverProps}></About>, 'About', serverProps));
     })
 
+about.route('/resume')
+    .get(async (req, res) => {
+        res.download('dist/public/assets/Resume_Kevin_Cox.pdf');
+    });
+
 export default about;

@@ -5,7 +5,7 @@ type Props = {
 }
 
 const WebsiteSlider: FunctionComponent<Props> = (props) => {
-    const revealDelay = 4.75;
+    const revealDelay = 3.5;
 
     let sliderUrls = props.sliderUrls;
     for(let i = 0; i < Math.ceil(10/props.sliderUrls.length) - 1; i++) {
@@ -20,7 +20,7 @@ const WebsiteSlider: FunctionComponent<Props> = (props) => {
         }}>
             {sliderUrls.map((url, i) => {
                 return <div className='BrowserWrapper' key={i} style={{
-                    animation: `0.3s ease-out ${revealDelay + (i*0.15)}s forwards SlideDown`
+                    animation: `0.3s ease-out ${ revealDelay + (0.15*sliderUrls.length - i*0.15)}s forwards SlideDown`
                 }}>
                     <div className='FakeBrowser'>
                         <div></div>

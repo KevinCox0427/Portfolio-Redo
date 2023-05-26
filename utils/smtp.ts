@@ -17,25 +17,34 @@ async function sendEmail(args: {
     /**
      * Sending the email data to the SMTP Service
      */
-    const response = (await axios.post('https://api.smtp2go.com/v3/email/send', {
-        "api_key": process.env.SMTPAPIKEY,
-        "to": args.to.map(to => {
-            return `${to.name} <${to.email}>`
-        }),
-        "sender": `${args.fromName} <webalerts@thinkredbarn.com>`,
-        "subject": args.subject,
-        "html_body": args.body
-    }, {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-    })).data;
+    try {
+        const response = (await axios.post('https://api.smtp2go.com/v3/email/send', {
+            "api_key": process.env.SMTPAPIKEY,
+            "to": args.to.map(to => {
+                return `${to.name} <${to.email}>`
+            }),
+            "sender": `${args.fromName} <kevin@dreamstate.graphics>`,
+            "subject": args.subject,
+            "html_body": args.body
+        }, {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+        })).data;
 
+        /**
+         * Returning whether is was successful based on the syntax of SMTP2GO's responses.
+         */
+        return response.data.succeeded == 1;
+    }
     /**
-     * Returning whether is was successful based on the syntax of SMTP2GO's responses.
+     * If axios throws an error, return false.
      */
-    return response.data.succeeded == 1;
+    catch(e) {
+        console.log(e);
+        return false;
+    }
 }
 
 export default sendEmail;

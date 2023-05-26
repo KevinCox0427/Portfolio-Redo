@@ -9,8 +9,7 @@
 }
 
 main {
-    padding: 10em 0 10em 0;
-    gap: 2em;
+    padding: 14em 0 10em 0;
     display: flex;
     position: relative;
 
@@ -23,7 +22,20 @@ main {
         width: 100%;
         font-size: clamp(3.5em, 5vw, 5em);
         font-weight: 200;
-        border-bottom: 0.035em dashed var(--black);
+        border-bottom: 0.03em dashed var(--black);
+        justify-content: space-between;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0em 0.5em;
+        line-height: 70%;
+
+        a {
+            @include RoundButton(var(--black));
+            font-size: clamp(22px, 0.4em, 0.4em);
+            height: fit-content;
+            margin: 0.5em 0;
+        }
     }
 
     .AboutMe {
@@ -31,13 +43,14 @@ main {
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        gap: 3em;
+        padding-top: 2.5em;
+        gap: 2em 5em;
 
         img {
-            width: 22.5em;
-            height: auto;
-            border-radius: 3.5em;
-            filter: brightness(1.1);
+            width: auto;
+            height: 22.5em;
+            border-radius: 1em;
+            box-shadow: 0.2em 0.2em 0 0 rgba(0,0,0, 0.05);
         }
 
         .Description {
@@ -45,9 +58,10 @@ main {
             flex-basis: 20em;
             flex-grow: 1;
             font-family: var(--franklin);
-            font-size: 1.6em;
-            font-weight: 200;
+            font-size: clamp(1.5em, 2vw, 1.75em);
+            font-weight: 100;
             line-height: 140%;
+            letter-spacing: 0.01em;
 
             p {
                 line-height: inherit;
@@ -59,7 +73,11 @@ main {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 7em;
-        margin-top: 7em;
+        margin-top: 9em;
+
+        .Title {
+            font-size: clamp(3em, 4vw, 4em);
+        }
 
         .Left {
             flex-basis: 50em;
@@ -117,6 +135,7 @@ main {
     
                             img {
                                 width: 12.5em;
+                                max-width: 100%;
                                 height: auto;
                                 border: 1.5px solid var(--black);
                             }
@@ -141,6 +160,7 @@ main {
                                     font-family: var(--franklin);
                                     font-weight: 400;
                                     font-size: 1.3em;
+                                    word-break: break-all;
                                 }
 
                                 &:nth-child(1) {
@@ -228,7 +248,7 @@ main {
 
                             svg {
                                 position: absolute;
-                                width: 115%;
+                                height: 102%;
                                 top: 42.5%;
                                 left: 52.5%;
                                 transform: translate(-50%, -50%);
@@ -308,12 +328,14 @@ main {
             flex-basis: 25em;
             flex-grow: 1;
             gap: 3em;
+            align-items: center;
 
             .Github {
                 border-radius: 0.5em;
                 background-color: var(--githubBlack);
                 overflow: hidden;
-                box-shadow: 0.2em 0.2em 0em 0 rgba(0,0,0, 0.04);
+                max-width: 55em;
+                box-shadow: 0.25em 0.25em 0 0 rgba(0,0,0, 0.05);
 
                 a {
                     text-decoration-color: var(--githubBlue);
@@ -443,6 +465,83 @@ main {
                                     font-family: var(--franklin);
                                 }
                             }
+                        }
+                    }
+                }
+            }
+
+            .LinkedIn {
+                max-width: 40em;
+                background-color: #000000;
+                border-radius: 0.5em;
+                overflow: hidden;
+                font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+                box-shadow: 0.25em 0.25em 0 0 rgba(0,0,0, 0.05);
+
+                .Top {
+                    background-color: #38434f;
+                    padding: 1em 1.25em;
+                    height: 2em;
+
+                    svg {
+                        height: 100%;
+                        width: auto;
+                    }
+                }
+
+                .Bottom {
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    padding: 1em 1.25em;
+                    gap: 1em;
+                    align-items: center;
+
+                    img {
+                        width: 5em;
+                        height: auto;
+                        border-radius: 10em;
+                    }
+
+                    h3, h4, a {
+                        font-family: inherit;
+                        color: white;
+                    }
+
+                    h3 {
+                        font-size: 1.75em;
+                    }
+
+                    h4 {
+                        font-size: 1.5em;
+                        font-weight: 400;
+                        line-height: 120%;
+                    }
+
+                    a {
+                        width: 100%;
+                        text-decoration: none;
+                        
+                        h4 {
+                            font-size: 1.25em;
+                        }
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    .Button {
+                        font-size: 1.3em;
+                        font-weight: 600;
+                        width: fit-content;
+                        margin: 0.5em auto;
+                        padding: 0.5em 1em;
+                        border-radius: 10em;
+                        box-shadow: 0 0 0 0.05em white inset;
+                        transition: 0.1s linear box-shadow;
+
+                        &:hover {
+                            box-shadow: 0 0 0 0.1em white inset;
                         }
                     }
                 }

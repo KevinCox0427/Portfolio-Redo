@@ -1,5 +1,4 @@
 import React, { Fragment, FunctionComponent } from "react";
-import { SectionContent } from "../../Home";
 import Title from "../Title";
 import PortfolioCard from "../../parts/PortfolioCard";
 

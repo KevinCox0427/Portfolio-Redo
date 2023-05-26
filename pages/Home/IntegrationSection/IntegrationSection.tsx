@@ -1,7 +1,6 @@
 import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from "react";
 import Track from "./Track";
 import WindowCache from "../../parts/windowCache";
-import { SectionContent } from "../../Home";
 import Title from "../Title";
 
 type SearchResponse = {

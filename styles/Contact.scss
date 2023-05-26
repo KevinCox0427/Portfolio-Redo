@@ -1,7 +1,7 @@
 @import './mixins';
 
 main {
-    padding: 15em 0 12em 0;
+    padding: 10em 0;
     display: flex;
     position: relative;
 
@@ -10,18 +10,32 @@ main {
         position: relative;
     }
 
-    h2 {
-        font-size: clamp(3.5em, 5vw, 5em);
-        font-weight: 200;
-        border-bottom: 0.035em dashed var(--black);
-    }
-
     form {
         flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
         gap: 3em 4em;
-        padding: 3em 0 10em 0;
+        padding: 5em 0;
+
+        &:last-child {
+            border-bottom: none
+        }
+
+        h2 {
+            font-size: clamp(3.5em, 5vw, 5em);
+            font-weight: 200;
+            flex-basis: 100%;
+            border-bottom: 0.03em dashed var(--black);
+        }
+
+        .Description {
+            flex-basis: 100%;
+            font-family: var(--franklin);
+            font-size: 1.75em;
+            font-weight: 100;
+            line-height: 120%;
+            margin-top: -1.5em;
+        }
 
         .InputWrapper {
             @include Input();
@@ -42,15 +56,24 @@ main {
         .SubSection {
             flex-direction: row;
             flex-wrap: wrap;
-            flex-basis: 25em;
+            align-items: baseline;
+            flex-basis: 45em;
             flex-grow: 1;
             gap: 0.75em 2em;
             margin: 1em 0;
 
             h3 {
-                flex-basis: 100%;
                 font-size: clamp(2em, 3vw, 3em);
                 font-weight: 200;
+                border-bottom: 0.05em dashed var(--black);
+                margin-bottom: 0.25em;
+                width: fit-content;
+            }
+
+            .Dates {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.75em 2em;
             }
 
         }

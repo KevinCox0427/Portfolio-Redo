@@ -2,7 +2,6 @@ import React, { FunctionComponent, useState } from "react";
 import WindowCache from "../../parts/windowCache";
 import JsonInput from "./JsonInput";
 import Result from "./Result";
-import { SectionContent } from "../../Home";
 import Title from "../Title";
 
 export type { CurrentData }

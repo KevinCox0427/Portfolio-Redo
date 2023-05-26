@@ -31,7 +31,7 @@ class RegexTester {
      * @param regexTestObject This is mostly to be able to call this function recursively. If you're calling this funciton outside of "regexTester.ts", you don't need to worry about this.
      * @returns A string error message if a regex test fails, or the parsed data set if all regex tests pass.
      */
-    runTest(data: object, regexTestObject?: RegexTestInputs): string | object {
+    runTest(data: object, regexTestObject?: RegexTestInputs): string | {[key: string]: any} {
         let returnData = {};
         if(!regexTestObject) {
             regexTestObject = {};

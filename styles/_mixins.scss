@@ -35,16 +35,17 @@
     font-weight: 200;
     font-family: var(--franklin);
     padding: 0.3em 1.5em;
-    box-shadow: 0.11em 0.1em 0em 0em rgba(0, 0, 0, 0.03);
+    background: none;
+    box-shadow: 0 0 0 0.06em var(--black);
     border-radius: 10em;
     color: var(--black);
-    background-color: var(--brightWhite);
     text-decoration: none;
     text-align: center;
     width: fit-content;
-    transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
+    transition: box-shadow 0.1s linear, background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
 
     &:hover, &.Activated {
+        box-shadow: 0 0 0 0.06em $color;
         font-weight: 400;
         background-color: $color;
         color: var(--white);
@@ -198,8 +199,8 @@
 }
 
 @mixin Textarea() {
+    flex-basis: 45em;
     flex-grow: 1;
-    flex-basis: 100%;
     max-width: 100%;
     min-width: 2em;
 
@@ -257,18 +258,19 @@
         input {
             height: 1.75em;
             width: 1.75em;
-            background-color: var(--brightWhite);
             border: 0.1em solid var(--black);
-            box-shadow: 0 0 0 0.3em var(--brightWhite) inset;
+            box-shadow: 0 0 0 0.3em var(--white) inset;
             border-radius: 10em;
-            transition: background-color 0.1s linear, transform 0.1s linear;
+            transition: background-color 0.1s linear, transform 0.1s linear, box-shadow 0.1s linear;
     
             &:checked {
-                background-color: var(--blue);
+                background-color: var(--black) !important;
             }
     
             &:hover {
-                transform: scale(1.2);
+                transform: scale(1.05);
+                background-color: var(--brightWhite);
+                box-shadow: 0 0 0 0.3em var(--brightWhite) inset;
                 cursor: pointer;
             }
         }
@@ -280,7 +282,10 @@
             padding-left: 0.4em;
 
             &:hover ~ input {
-                transform: scale(1.2);
+                transform: scale(1.05);
+                background-color: var(--brightWhite);
+                box-shadow: 0 0 0 0.3em var(--brightWhite) inset;
+                cursor: pointer;
             }
 
             &:hover {

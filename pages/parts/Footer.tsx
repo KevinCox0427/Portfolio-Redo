@@ -16,7 +16,7 @@ const Footer:FunctionComponent<Props> = (props) => {
             <div className='Left'>
                 <div className='DreamStateWrapper'>
                     <h1>Dream State</h1>
-                    <p>Your bridge between dreams and reality</p>
+                    <p>"Your bridge between dreams and reality"</p>
                 </div>
             </div>
             <div className='Right'>

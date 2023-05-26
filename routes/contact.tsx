@@ -8,11 +8,11 @@ import EmailGenerator from '../utils/emailGenerator';
 import sendEmail from '../utils/smtp';
 
 const htmlgen = new EmailGenerator({
-    color: '#000',
-    image: 'https://dreamstate.graphics/logo.png',
+    image: 'https://www.dreamstate.graphics/logo.png',
     name: 'Dream State',
-    message: 'You bridge between dreams and reality.',
-    websiteURL: 'https://dreamstate.graphics'
+    subtitle: '"Your bridge between dreams and reality"',
+    message: 'Thank you for reaching out! I\'ll get back to you as quickly as I can.<br>- Kevin',
+    websiteURL: 'https://www.dreamstate.graphics'
 })
 
 const contact = express.Router();
@@ -29,9 +29,9 @@ contact.route('/')
     })
 
 const generalFormTest = new RegexTester({
-    name: /^[\w\s]{1,300}/g,
-    email: /^[a-zA-Z0-9+_.-]{1,200}@[\w]{1,10}.[a-z]{1,6}/g,
-    message: /^[\d\w\s\-!@#$%^&*()_+-=\\\/?<>.,;:'"]{1,4000}/g
+    Name: /^[\w\s]{1,300}/g,
+    Email: /^[a-zA-Z0-9+_.-]{1,200}@[\w]{1,10}.[a-z]{1,6}/g,
+    Message: /^[\d\w\s\-!@#$%^&*()_+-=\\\/?<>.,;:'"]{1,4000}/g
 })
 
 contact.route('/general')
@@ -46,33 +46,37 @@ contact.route('/general')
             return;
         }
 
-        const email = htmlgen.generateHTMLEmail('A new Dream State general form has just been submitted!', result);
+        const email = htmlgen.generateHTMLEmail('Your submission has been received, here\'s what we got:', result);
 
-        // await sendEmail({
-        //     to: [{
-        //         name: 'Kevin Cox',
-        //         email: 'kevincox0427@yahoo.com'
-        //     }],
-        //     fromName: 'Dreamstate Bot',
-        //     subject: 'A new Dream State general form has just been submitted!',
-        //     body: email
-        // })
+        const emailResult = await sendEmail({
+            to: [{
+                name: result.Name,
+                email: result.Email
+            }],
+            fromName: 'Dream State Graphics',
+            subject: 'Your Dream State contact submission has been received',
+            body: email
+        });
 
-        res.status(200).send({
+        res.status(200).send(emailResult ? {
             success: true,
-            message: 'Success! Please allow 3-5 days for me to get back to you.'
+            message: 'Success! Check your email for a confirmation.'
+        } : {
+            success: false,
+            message: 'Error: Email could not be sent. Contact server admin at kevin@dreamstate.graphics.'
         });
     })
 
 const inquiryFormTest = new RegexTester({
-    name: /^[\w\s]{1,300}/g,
-    email: /^[a-zA-Z0-9+_.-]{1,200}@[\w]{1,10}.[a-z]{1,6}/g,
-    phone: /^[\d-()]{1,15}/g,
-    message: /^[\d\w\s\-!@#$%^&*()_+-=\\\/?<>.,;:'"]{1,4000}/g
+    Name: /^[\w\s]{1,300}/g,
+    Email: /^[a-zA-Z0-9+_.-]{1,200}@[\w]{1,10}.[a-z]{1,6}/g,
+    Phone: /^[\d-()]{1,15}/g,
+    Availability: /^[\d\w\s\-!@#$%^&*()_+-=\\\/?<>.,;:'"]{1,1000}/g,
 }, {
-    needs: /^(Graphic Design|Forms|Data Entry|Users|Ecommerce|Content Publishing|Integrations)/g,
-    startDate: /^[\d]{4}-[\d]{2}-[\d]{2}/g,
-    endDate: /^[\d]{4}-[\d]{2}-[\d]{2}/g,
+    "Needs": /^(Graphic Design|Forms|Data Entry|Users|Ecommerce|Content Publishing|Integrations)/g,
+    "Start Date": /^[\d]{4}-[\d]{2}-[\d]{2}/g,
+    "End Date": /^[\d]{4}-[\d]{2}-[\d]{2}/g,
+    "Additional Notes": /^[\d\w\s\-!@#$%^&*()_+-=\\\/?<>.,;:'"]{1,4000}/g
 });
 
 contact.route('/inquiry')
@@ -87,21 +91,24 @@ contact.route('/inquiry')
             return;
         }
 
-        const email = htmlgen.generateHTMLEmail('A new Dream State inquiry has just been submitted!', result);
+        const email = htmlgen.generateHTMLEmail('Your submission has been received, here\'s what we got:', result);
 
-        // await sendEmail({
-        //     to: [{
-        //         name: 'Kevin Cox',
-        //         email: 'kevincox0427@yahoo.com'
-        //     }],
-        //     fromName: 'Dreamstate Bot',
-        //     subject: 'A new Dream State inquiry has just been submitted!',
-        //     body: email
-        // })
+        const emailResult = await sendEmail({
+            to: [{
+                name: result.Name,
+                email: result.Email
+            }],
+            fromName: 'Dream State Graphics',
+            subject: 'Your Dream State inquiry has been received',
+            body: email
+        });
 
-        res.status(200).send({
+        res.status(200).send(emailResult ? {
             success: true,
-            message: 'Success! Please allow 3-5 days for me to get back to you.'
+            message: 'Success! Check your email for a confirmation.'
+        } : {
+            success: false,
+            message: 'Error: Email could not be sent. Contact server admin at kevin@dreamstate.graphics.'
         });
     });
 

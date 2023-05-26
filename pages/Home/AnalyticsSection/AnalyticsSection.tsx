@@ -3,7 +3,6 @@ import WindowCache from "../../parts/windowCache";
 import WatchTime from "./WatchTime";
 import UserData from "./UserData";
 import Heatmap from "./HeatMap";
-import { SectionContent } from "../../Home";
 import Title from "../Title";
 
 export type { Analytics }

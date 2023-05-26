@@ -18,23 +18,21 @@ declare global {
     type HomePageProps = {
         portfolioConfig: PortfolioConfig[]
     }
-}
 
-export type { SectionContent, AllSectionContent }
-
-type SectionContent = {
-    order: number,
-    navName: string,
-    content: string
-}
-
-type AllSectionContent = {
-    data: SectionContent,
-    authentication: SectionContent,
-    integration: SectionContent,
-    analytics: SectionContent,
-    ui: SectionContent,
-    web: SectionContent
+    type SectionContent = {
+        order: number,
+        navName: string,
+        content: string
+    }
+    
+    type AllSectionContent = {
+        data: SectionContent,
+        authentication: SectionContent,
+        integration: SectionContent,
+        analytics: SectionContent,
+        ui: SectionContent,
+        web: SectionContent
+    }
 }
 
 type Props = {

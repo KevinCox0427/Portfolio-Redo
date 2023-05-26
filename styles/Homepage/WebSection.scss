@@ -18,7 +18,7 @@
             justify-content: center;
 
             a {
-                @include RoundButton(var(--yellow));
+                @include RoundButton(var(--black));
                 padding: 0.4em 1.5em;
                 margin: 3em auto 0em auto;
             }

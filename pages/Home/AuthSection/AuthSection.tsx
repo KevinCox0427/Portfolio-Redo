@@ -2,7 +2,6 @@ import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import WindowCache from "../../parts/windowCache";
 import Register from "./Register";
 import Login from "./Login";
-import { SectionContent } from "../../Home";
 import Title from "../Title";
 
 export type { UserData }

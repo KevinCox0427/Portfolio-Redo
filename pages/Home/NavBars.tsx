@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useRef, useState } from "react";
-import { SectionContent } from "../Home";
 
 type Props = {
     sectionContent: {
