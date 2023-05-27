@@ -200,6 +200,14 @@
                     }
                 }
             }
+
+            .None {
+                font-family: var(--franklin);
+                font-size: 2em;
+                font-weight: 100;
+                font-style: italic;
+                opacity: 0.5;
+            }
         }
 
         .SpotifyResults {

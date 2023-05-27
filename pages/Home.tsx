@@ -16,7 +16,9 @@ import WebsiteSlider from './Home/WebsitesSliders';
 
 declare global {
     type HomePageProps = {
-        portfolioConfig: PortfolioConfig[]
+        portfolioConfig: PortfolioConfig[],
+        sliderUrls: string[]
+        domain: string
     }
 
     type SectionContent = {
@@ -129,8 +131,6 @@ const Home:FunctionComponent<Props> = (props) => {
     }
     const [sectionContent, setSectionContent] = useState(sectionDefaults);
     windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
-    
-    const sliderUrls = ['/assets/Well_Tank_Goodness.jpg','/assets/Red_Barn_HPC.jpg','/assets/New_York_Land_Quest.jpg', '/assets/Little_Venice_Restaurant.jpg', '/assets/Beck_Speedster.jpg', '/assets/Peggys_Gems.jpg'];
 
 
     function resetWatchTime() {
@@ -215,8 +215,11 @@ const Home:FunctionComponent<Props> = (props) => {
                     </div>
                 </div>
             </div>
-            <WebsiteSlider sliderUrls={sliderUrls}></WebsiteSlider>
-            <p className='ScrollDown'>Scroll down to see how I do it!<i className="fa-solid fa-angles-down"></i></p>
+            <WebsiteSlider sliderUrls={props.ServerProps.homePageProps.sliderUrls}></WebsiteSlider>
+            <p className='ScrollDown'>
+                Scroll down to see how I do it!
+                <i className="fa-solid fa-angles-down"></i>
+            </p>
             <svg id="RightCover" viewBox="0 0 1000 2000" xmlns="http://www.w3.org/2000/svg"><path d="M 0 0 L 0 1590 L 250 1750 L 475 1750 L 675 2000 L 2000 2000 L 2000 0 Z" fill="#eee5e4"/></svg>
             <FloralSVG></FloralSVG>
             <HandSVG></HandSVG>
@@ -233,7 +236,7 @@ const Home:FunctionComponent<Props> = (props) => {
                 <IntegrationSection windowCache={windowCache.current} sectionContent={sectionContent.integration} style={{
                     order: sectionContent.integration.order
                 }}></IntegrationSection>
-                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} resetWatchTime={resetWatchTime} sectionContent={sectionContent.analytics} style={{
+                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} portfolioConfig={props.ServerProps.homePageProps.portfolioConfig} resetWatchTime={resetWatchTime} sectionContent={sectionContent.analytics} domain={props.ServerProps.homePageProps.domain} style={{
                     order: sectionContent.analytics.order
                 }}></AnalyticsSection>
                 <UISection sectionContent={sectionContent.ui} allSectionContent={sectionContent} setSectionContent={setSectionContent} defaultSectionContent={sectionDefaults} cacheHasLoaded={cacheHasLoaded} style={{

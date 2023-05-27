@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
-import { Analytics } from "./AnalyticsSection";
 
 type Props = {
     analytics: Analytics,

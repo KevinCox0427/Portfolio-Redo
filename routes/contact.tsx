@@ -46,7 +46,7 @@ contact.route('/general')
             return;
         }
 
-        const email = htmlgen.generateHTMLEmail('Your submission has been received, here\'s what we got:', result);
+        const email = htmlgen.generateHTMLEmail('Your submission has been received! Here\'s what we got:', result);
 
         const emailResult = await sendEmail({
             to: [{
@@ -54,7 +54,7 @@ contact.route('/general')
                 email: result.Email
             }],
             fromName: 'Dream State Graphics',
-            subject: 'Your Dream State contact submission has been received',
+            subject: 'Your Dream State Contact Submission Has Been Received!',
             body: email
         });
 
@@ -91,7 +91,7 @@ contact.route('/inquiry')
             return;
         }
 
-        const email = htmlgen.generateHTMLEmail('Your submission has been received, here\'s what we got:', result);
+        const email = htmlgen.generateHTMLEmail('Your submission has been received! Here\'s what we got:', result);
 
         const emailResult = await sendEmail({
             to: [{
@@ -99,7 +99,7 @@ contact.route('/inquiry')
                 email: result.Email
             }],
             fromName: 'Dream State Graphics',
-            subject: 'Your Dream State inquiry has been received',
+            subject: 'Your Dream State Inquiry Has Been Received!',
             body: email
         });
 

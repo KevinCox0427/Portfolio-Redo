@@ -104,6 +104,8 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
 
     function resizeResults() {
         const wrapper = document.getElementsByClassName('ResultsWrapper')[0] as HTMLDivElement;
+        if(!wrapper) return;
+
         const count = window.innerWidth >= 1600 ? 4 : window.innerWidth < 1600 && window.innerWidth >= 1000 ? 3 : window.innerWidth < 1000 && window.innerWidth >= 650 ? 2 : 1;
         const newTranslateAmount = searchData.searchResults.length != 0 ? (100/searchData.searchResults.length) * count : 0;
 
@@ -162,27 +164,33 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
                 <div className="SliderWrapper">
                     {isSearching.search ? 
                         <i className="fa-solid fa-arrows-rotate"></i>
-                    : <>
-                        {searchData.searchResults.length > 0 ? <button onClick={() => {
-                            if(results.searchSlider != 0) setResults({...results,
-                                searchSlider: results.searchSlider-1
-                            });
-                        }}><i className="fa-solid fa-arrow-left"></i></button> : <></>}
-                        <div className="ResultsWrapper">
-                            <div className="ResultsSlider" style={{
-                                transform: `translateX(calc(-${translateAmount * results.searchSlider}% - ${Math.round(24*((translateAmount * results.searchSlider)/100))}px))`
+                    : 
+                        searchData.searchResults.length > 0 ? <>
+                            <button onClick={() => {
+                                if(results.searchSlider != 0) setResults({...results,
+                                    searchSlider: results.searchSlider-1
+                                });
                             }}>
-                                {searchData.searchResults.map((searchResult, i) => {
-                                    return <Fragment key={i}><Track searchResult={searchResult} width={results.amount} isRecommend={false} search={search}></Track></Fragment>
-                                })}
+                                <i className="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <div className="ResultsWrapper">
+                                <div className="ResultsSlider" style={{
+                                    transform: `translateX(calc(-${translateAmount * results.searchSlider}% - ${Math.round(24*((translateAmount * results.searchSlider)/100))}px))`
+                                }}>
+                                    {searchData.searchResults.map((searchResult, i) => {
+                                        return <Fragment key={i}><Track searchResult={searchResult} width={results.amount} isRecommend={false} search={search}></Track></Fragment>
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                        {searchData.searchResults.length > 0 ? <button onClick={() => {
-                            if((translateAmount * (results.searchSlider+1)) < 100) setResults({...results,
-                                searchSlider: results.searchSlider+1
-                            });
-                        }}><i className="fa-solid fa-arrow-right"></i></button> : <></>}
-                    </>}
+                            <button onClick={() => {
+                                if((translateAmount * (results.searchSlider+1)) < 100) setResults({...results,
+                                    searchSlider: results.searchSlider+1
+                                });
+                            }}>
+                                <i className="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </> : <p className="None">No Results Found.</p>
+                    }
                 </div>
             </div>
             <div className="SpotifyResults Recommendation">
@@ -193,27 +201,34 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
                 <div className="SliderWrapper">
                     {isSearching.recommendations ? 
                         <i className="fa-solid fa-arrows-rotate"></i>
-                    :<>
-                        {searchData.searchRecommendations.length > 0 ? <button onClick={() => {
-                            if(results.recommendSlider != 0) setResults({...results,
-                                recommendSlider: results.recommendSlider-1
-                            })
-                        }}><i className="fa-solid fa-arrow-left"></i></button> : <></>}
-                        <div className="ResultsWrapper">
-                            <div className="ResultsSlider" style={{
-                                transform: `translateX(calc(-${translateAmount * results.recommendSlider}% - ${Math.round(24*((translateAmount * results.recommendSlider)/100))}px))`
+                    :
+                        searchData.searchRecommendations.length > 0 ? <>
+                            <button onClick={() => {
+                                if(results.recommendSlider != 0) setResults({...results,
+                                    recommendSlider: results.recommendSlider-1
+                                })
                             }}>
-                                {searchData.searchRecommendations.map((searchRecommendation, i) => {
-                                    return <Fragment key={i}><Track searchResult={searchRecommendation} width={results.amount} isRecommend={true} search={search}></Track></Fragment>
-                                })}
+                                <i className="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <div className="ResultsWrapper">
+                                <div className="ResultsSlider" style={{
+                                    transform: `translateX(calc(-${translateAmount * results.recommendSlider}% - ${Math.round(24*((translateAmount * results.recommendSlider)/100))}px))`
+                                }}>
+                                    {searchData.searchRecommendations.map((searchRecommendation, i) => {
+                                        return <Fragment key={i}><Track searchResult={searchRecommendation} width={results.amount} isRecommend={true} search={search}></Track></Fragment>
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                        {searchData.searchRecommendations.length > 0 ? <button onClick={() => {
-                            if((translateAmount * (results.recommendSlider+1)) < 100) setResults({...results,
-                                recommendSlider: results.recommendSlider+1
-                            });
-                        }}><i className="fa-solid fa-arrow-right"></i></button> : <></>}
-                    </>}
+                            <button onClick={() => {
+                                if((translateAmount * (results.recommendSlider+1)) < 100) setResults({...results,
+                                    recommendSlider: results.recommendSlider+1
+                                });
+                            }}>
+                                <i className="fa-solid fa-arrow-right"></i>
+                            </button> 
+                        </> : 
+                            <p className="None">No Results Found.</p>
+                    }
                 </div>
             </div>
         </div>

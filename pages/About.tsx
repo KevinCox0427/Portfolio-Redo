@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import { hydrateRoot } from "react-dom/client";
 import Header from "./parts/Header";
 import Footer from "./parts/Footer";
+import AddPageView from "./parts/AddPageView";
 
 declare global {
     type AboutPageProps = {
@@ -29,6 +30,7 @@ const About: FunctionComponent<Props> = (props) => {
     if(typeof props.ServerProps.aboutPageProps === 'undefined') return <></>;
     
     return <>
+        <AddPageView portfolioConfig={props.ServerProps.aboutPageProps.portfolioConfig} pageName="about"></AddPageView>
         <Header></Header>
         <main className="Contain">
             <h1 className="Title">About Me</h1>

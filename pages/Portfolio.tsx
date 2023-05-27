@@ -3,6 +3,7 @@ import { hydrateRoot } from "react-dom/client";
 import Header from "./parts/Header";
 import Footer from "./parts/Footer";
 import PortfolioCard from "./parts/PortfolioCard";
+import AddPageView from "./parts/AddPageView";
 
 declare global {
     type PortfolioPageProps = {
@@ -39,6 +40,7 @@ const Portfolio: FunctionComponent<Props> = (props) => {
     }, [selectedTag]);
     
     return <>
+        <AddPageView portfolioConfig={props.ServerProps.portfolioPageProps.portfolioConfig} pageName="portfolio"></AddPageView>
         <Header></Header>
         <main className="Contain">
             <h1>Portfolio Projects</h1>

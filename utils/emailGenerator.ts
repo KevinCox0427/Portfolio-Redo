@@ -39,7 +39,27 @@ class EmailGenerator {
         /**
          * Returns an HTML document based on the paramters.
          */
-        return `<!DOCTYPE html><html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head></head><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="format-detection" content="telephone=no, date=no, address=no, email=no"><meta name="x-apple-disable-message-reformatting"><title>${this.name} Confirmation Email</title></head><body style="background-color:#eee5e4 !important; color:#47484d !important; font-family:'Libre Franklin', sans-serif;"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Arima:wght@200&family=Libre+Franklin:ital,wght@0,200;0,400;1,200&display=swap" rel="stylesheet"><table border="0" cellpadding="0" cellspacing="0" width="600px" style="border-collapse: collapse; margin-left: auto; margin-right: auto; font-size: 16px;max-width: 100% !important;"><tbody><tr style="border-bottom:2px dashed #47484d;"><th colspan="2" style="font-size:18px;padding-top:10px;padding-bottom:10px;font-weight:200;font-style:italic;"><h1 style="font-weight:200;font-size:36px;line-height:38px;margin-bottom:0px;font-family:'Arima',serif;font-style:normal;">${this.name}</h1>${this.subtitle}</th></tr><tr><td colspan="2" style="font-size:24px;line-height:26px;text-align:center;padding-top:35px;padding-bottom:30px;font-family:'Arima',serif;font-weight:200;">${subject}</td></tr>${typeof data === 'string' ? `<tr><td colspan="2" style="font-size:18px;font-weight:200;padding-top:25px;padding-bottom:25px;">${data}</td></tr>` : createTableRows(data, 0)}<tr><td colspan="2" style="font-size:18px;text-align:center;padding-top:40px;padding-bottom:45px;font-style:italic;font-weight:200;">${this.message}</td></tr></tbody></table></body></html>`;
+        return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://w=
+        ww.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns=3D"https://www.w3.org/1999/xhtml" xmlns:v=3D"urn:schemas-micr=osoft-com:vml"><head><meta https-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"=/><meta https-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge" /><meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D=1.0"><meta name=3D"x-apple-disable-message-reformatting" /><title>${subject}</title><style type=3D"text/css">
+        @font-face {
+            font-family: 'Libre Franklin';
+            src: url('https://fonts.gstatic.com/s/librefranklin/v13/jizDREVItHgc8qDIbSTKq4XkRiUf2zcZiVbJ.woff2') format('woff2');
+            font-weight: 200;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Libre Franklin';
+            src: url('https://fonts.gstatic.com/s/librefranklin/v13/jizBREVItHgc8qDIbSTKq4XkRiUa6zUTjnTLgNs.woff2') format('woff2');
+            font-weight: 200;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: 'Arima';
+            src: url('https://fonts.gstatic.com/s/arima/v5/neIFzCqmt4Aup9CI_oCsNKEy.woff2') format('woff2');
+            font-weight: 200;
+            font-style: italic;
+        }
+        </style></head><body style="background-color:#eee5e4 !important; color:#47484d !important; font-family: 'Libre Franklin', sans-serif;"><table border="0" cellpadding="0" cellspacing="0" width="600px" style="border-collapse: collapse; margin-left: auto; margin-right: auto; font-size: 16px;max-width: 100% !important;"><tbody><tr style="border-bottom:2px dashed #47484d;"><th colspan="2" style="font-size:18px;padding-top:10px;padding-bottom:10px;font-weight:200;font-style:italic;"><h1 style="font-weight:200;font-size:36px;line-height:38px;margin-bottom:0px;font-family:'Arima',serif;font-style:normal;">${this.name}</h1>${this.subtitle}</th></tr><tr><td colspan="2" style="font-size:24px;line-height:26px;text-align:center;padding-top:35px;padding-bottom:30px;font-family:'Arima',serif;font-weight:200;">${subject}</td></tr>${typeof data === 'string' ? `<tr><td colspan="2" style="font-size:18px;font-weight:200;padding-top:25px;padding-bottom:25px;">${data}</td></tr>` : createTableRows(data, 0)}<tr><td colspan="2" style="font-size:18px;text-align:center;padding-top:40px;padding-bottom:45px;font-style:italic;font-weight:200;">${this.message}</td></tr></tbody></table></body></html>`;
 
         /**
          * Creating each data field as a table row.

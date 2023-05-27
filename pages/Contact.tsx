@@ -2,6 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import Header from "./parts/Header";
 import Footer from "./parts/Footer";
+import AddPageView from "./parts/AddPageView";
 
 declare global {
     type ContactPageProps = {
@@ -156,6 +157,7 @@ const Contact: FunctionComponent<Props> = (props) => {
     }
 
     return <>
+        <AddPageView portfolioConfig={props.ServerProps.contactPageProps.portfolioConfig} pageName="contact"></AddPageView>
         <Header></Header>
         <main className="Contain">
             <form id="general">

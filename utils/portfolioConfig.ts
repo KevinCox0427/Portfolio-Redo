@@ -8,7 +8,7 @@ declare global {
         logo: string,
         tag: string,
         skills: string[],
-        link: string,
+        link?: string,
         gallery: string[]
     }
 }
@@ -18,13 +18,13 @@ const portfolioConfig: PortfolioConfig[] = [
         name: "New York Land Quest",
         route: "newyorklandquest",
         description: "Blah Blah Blah",
-        logo: "https://placehold.co/600x400",
+        logo: "https://nylandquest.com/wp-content/uploads/sites/12/2023/01/nylq_logo.png",
         problem: "",
         solution: "",
         skills: ['WordPress', 'PHP'],
         tag: "Web Development",
-        link: "",
-        gallery: []
+        link: "https://nylandquest.com",
+        gallery: ["/assets/New_York_Land_Quest.jpg"]
     },
     {
         name: "Red Barn HPC",

@@ -16,7 +16,16 @@ index.route('/')
     .get(async (req, res) => {
         const serverProps:ServerPropsType = {
             homePageProps: {
-                portfolioConfig: portfolioConfig
+                portfolioConfig: portfolioConfig,
+                domain: req.get('host') || '',
+                sliderUrls: [
+                    '/assets/Well_Tank_Goodness.jpg',
+                    '/assets/Red_Barn_HPC.jpg',
+                    '/assets/New_York_Land_Quest.jpg',
+                    '/assets/Little_Venice_Restaurant.jpg',
+                    '/assets/Beck_Speedster.jpg',
+                    '/assets/Peggys_Gems.jpg'
+                ]
             }
         }
 

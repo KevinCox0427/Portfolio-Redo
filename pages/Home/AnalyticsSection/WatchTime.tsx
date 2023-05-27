@@ -33,13 +33,13 @@ const WatchTime:FunctionComponent<Props> = (props) => {
             <i className="fa-solid fa-rotate-left Reset" onClick={props.resetWatchTime}></i>
         </h3>
         <div className="AxisWrapper" style={{
-            gridTemplateColumns: `4.5em ${'3.5em '.repeat(XAxisLabels.length)}`
+            gridTemplateColumns: `clamp(0.1px, 4.5em, ${100/(XAxisLabels.length+3)}vw) ${`clamp(0.1px, 3.5em, ${100/(XAxisLabels.length+3)}vw) `.repeat(XAxisLabels.length)}`
         }}>
             <div className="Column">
                 <div className="YLabels">
-                    {[1,2,3,4].map((value, i) => {
+                    {[1,2,3].map((value, i) => {
                         return <p key={i}>{
-                            createTimeString(largestTimestamp*((4-i)/4))
+                            createTimeString(largestTimestamp*((3-i)/3))
                         }</p>
                     })}
                     <p>0s</p>
