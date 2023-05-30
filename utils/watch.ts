@@ -11,19 +11,22 @@ function watchScript() {
         execSync('tsc');
         execSync('sass styles:dist/public/css');
         execSync('webpack');
-        copyPublicFiles();
     } catch (e:any) {
-        console.log(
-            e.output
-                .filter((err:any) => err instanceof Buffer)
-                .map((buffer:Buffer) => {
-                    return `Error:\n\n${buffer.toString()}`
-                })
-                .filter((errStr:string) => errStr.length > 'Error:\n\n '.length)
-                .join('\n')
-        );
+        if(Array.isArray(e.output)) {
+            console.log(
+                e.output
+                    .filter((err:any) => err instanceof Buffer)
+                    .map((buffer:Buffer) => {
+                        return `Error:\n\n${buffer.toString()}`
+                    })
+                    .filter((errStr:string) => errStr.length > 'Error:\n\n '.length)
+                    .join('\n')
+            );
+        }
         return;
     }
+
+    copyPublicFiles('public');
 
     let compileTimestamp = Date.now();
     let node = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
@@ -38,7 +41,7 @@ function watchScript() {
         watch(`${folder}/${pointer}`, (x, file) => {
             if(!existsSync(`${folder}/${pointer}/${file}`)) return;
             
-            if((pointer === 'public' || folder.includes('public')) && !folder.includes('dist')) copyPublicFiles();
+            if((pointer === 'public' || folder.includes('public')) && !folder.includes('dist')) copyPublicFiles('public');
 
             if((pointer == 'pages' || folder.includes('pages'))) runProcess('Webpack', file);
 
@@ -113,16 +116,19 @@ function watchScript() {
         });
     }
 
-    function copyPublicFiles() {
-        ['js', 'css', 'assets'].forEach(assetType => {
-            if(existsSync(`./public/${assetType}`)) {
-                if(!existsSync(`./dist/public/${assetType}`)) mkdirSync(`./dist/public/${assetType}`);
-                readdirSync(`./public/${assetType}`).forEach(file => {
-                    if(!existsSync(`./dist/public/${assetType}/${file}`)) {
-                        writeFileSync(`./dist/public/${assetType}/${file}`, readFileSync(`./public/${assetType}/${file}`));
-                    }
-                });
+    function copyPublicFiles(dirName:string) {
+        if(!existsSync(`./${dirName}`)) return;
+
+        if(!existsSync(`./dist/${dirName}`)) mkdirSync(`./dist/${dirName}`);
+
+        readdirSync(`./${dirName}`).forEach(file => {
+            if(!file.includes('.')) {
+                copyPublicFiles(`${dirName}/${file}`);
+                return;
             }
-        })
+
+            if(existsSync(`./dist/${dirName}/${file}`)) return;
+            writeFileSync(`./dist/${dirName}/${file}`, readFileSync(`./${dirName}/${file}`));
+        });
     }   
 }

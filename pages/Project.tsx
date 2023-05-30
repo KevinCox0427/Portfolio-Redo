@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { Fragment, FunctionComponent } from "react";
 import { hydrateRoot } from "react-dom/client";
 import Header from "./parts/Header";
 import Footer from "./parts/Footer";
@@ -47,6 +47,15 @@ const Project: FunctionComponent<Props> = (props) => {
                 </div>
             </div>
             <div className="Body">
+                <div className="Left">
+                    <h2 className="Title">The Client</h2>
+                    {project.description.map((text, i) => <p key={i}>{text}</p>)}
+                    <h2 className="Title">The Project</h2>
+                    {project.problem.map((text, i) => <p key={i}>{text}</p>)}
+                    <h2 className="Title">The Solution</h2>
+                    {project.solution.map((text, i) => <p key={i}>{text}</p>)}
+                    {project.link ? <a href={project.link} target="_blank">View their website</a> : <></>}
+                </div>
                 <div className="Right">
                     <div className="BrowserWrapper">
                         <div className='FakeBrowser'>
@@ -59,37 +68,33 @@ const Project: FunctionComponent<Props> = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="Left">
-                    <h2 className="Title">The Client</h2>
-                    <p>{project.description}</p>
-                    <h2 className="Title">The Project</h2>
-                    <p>{project.problem}</p>
-                    <h2 className="Title">The Solution</h2>
-                    <p>{project.solution}</p>
-                    {project.link ? <a href={project.link} target="_blank">View their website</a> : <></>}
-                </div>
             </div>
             <div className="Gallery">
-                <h2 className="Title">Gallery</h2>
-                {project.gallery.map((url, i) => <div key={i} className="BrowserWrapper">
-                    <div className='FakeBrowser'>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                {project.gallery.map((url, i) => {
+                    // if(i === 0) return <Fragment key={i}></Fragment>
+                    return <div key={i} className="BrowserWrapper">
+                        <div className='FakeBrowser'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div className="MainImage">
+                            <img src={url}></img>
+                        </div>
                     </div>
-                    <div className="MainImage">
-                        <img src={url}></img>
-                    </div>
-                </div>)}
+                })}
             </div>
             <div className="Suggestions">
-                <h2 className="Title">Suggestions</h2>
                 <div className="Suggestion">
-                    <a className="SuggestLink" href={`/portfolio/${previousProject.route}`}>Previous</a>
+                    <div className="SuggestLink">
+                        <a href={`/portfolio/${previousProject.route}`}>Previous</a>
+                    </div>
                     <PortfolioCard project={previousProject}></PortfolioCard>
                 </div>
                 <div className="Suggestion">
-                    <a className="SuggestLink" href={`/portfolio/${nextProject.route}`}>Next</a>
+                    <div className="SuggestLink">
+                        <a href={`/portfolio/${nextProject.route}`}>Next</a>
+                    </div>
                     <PortfolioCard project={nextProject}></PortfolioCard>
                 </div>
             </div>

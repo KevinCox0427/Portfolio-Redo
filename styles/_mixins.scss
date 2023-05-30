@@ -506,29 +506,36 @@
 
 @mixin PortfolioCard() {
     .Project {
-        text-decoration: none;
         flex-direction: row;
         flex-wrap: wrap;
+        text-decoration: none;
+        justify-content: center;
         flex-grow: 1;
-        flex-basis: 32em;
-        max-width: 55em;
-        gap: 1.25em 0;
+        flex-basis: 30em;
+        max-width: 45em;
+        gap: 0.5em 0;
+        padding-right: 2em;
 
         a {
             text-decoration: none;
             width: fit-content;
         }
 
+        &:hover .Card h2 {
+            background-size: 0.05em 100%;
+            cursor: pointer;
+            border-radius: 0.1em;
+        }
+
         .ImageWrapper {
-            flex-basis: 16em;
-            flex-grow: 1;
-            height: 19em;
-            width: 100%;
             overflow: hidden;
             border-radius: 0.25em;
             box-shadow: 0 0 0.3em 0.05em rgba(0,0,0, 0.05) inset, 0.2em 0.2em 0 0 rgba(0,0,0, 0.04);
-            margin-right: -2em;
-            max-width: 100%;
+            flex-basis: 13em;
+            flex-grow: 1;
+            width: calc(100% - 2em);
+            margin: 1em -2em 1em 0;
+            max-width: 16em;
             background-color: rgba(255,255,255, 0.3);
             padding: 1em;
             transition: transform 0.15s ease-in-out;
@@ -550,8 +557,10 @@
         
         .Card {
             background-color: var(--brightWhite);
-            flex-basis: 13em;
+            color: var(--black);
+            flex-basis: 20em;
             flex-grow: 3.5;
+            margin-right: -2em;
             padding: 1em 1.25em;
             align-self: center;
             min-height: 16em;
@@ -560,20 +569,28 @@
             transition: transform 0.15s ease-in-out;
     
             h2 {
-                @include LinkHover(var(--yellow), var(--black), 0.1em);
-                padding: 0.3em 0.1em 0.15em 0.1em;
-                line-height: 80%;
-                font-size: 1.75em;
+                font-size: clamp(1.5em, 2.5vw, 1.75em);
+                width: fit-content;
                 font-weight: 300;
+                font-family: var(--franklin);
                 text-decoration: none;
+                background: linear-gradient(to bottom, var(--yellow) 0%, var(--yellow) 100%);
+                padding: 0.1em;
+                background-position: 0 100%;
+                background-repeat: repeat-x;
+                background-size: 0.05em 0.1em;
+                border-radius: 0em;
+                text-decoration: none;
+                transition: background-size 0.15s ease-in-out, color 0.1s linear, border-radius 0.15s ease-in-out;
             }
     
             .Description {
                 flex-grow: 1;
                 font-family: var(--franklin);
                 font-weight: 200;
+                line-height: 140%;
                 font-size: 1.3em;
-                margin: 0.5em 0;
+                margin: 1em 0;
                 justify-content: center;
             }
     
@@ -583,24 +600,25 @@
                 justify-content: space-between;
                 align-items: center;
                 gap: 0.75em 1.5em;
-                border-top: 0.1em dashed var(--black);
-                padding-top: 0.5em;
+                border-top: 1.5px dashed var(--black);
+                padding-top: 1em;
     
                 .Tag {
                     @include LinkHover(var(--lightPurple), var(--white), 0.125em);
-                    padding: 0.25em;
-                    font-family: var(--franklin);
                     text-align: center;
                     width: fit-content;
-                    font-size: 1.15em;
+                    font-size: 1.3em;
                     white-space: nowrap;
                     font-weight: 300;
+                    margin-top: -0.25em;
                 }
     
                 .Skills {
+                    flex-basis: 10em;
+                    flex-grow: 1;
                     flex-direction: row;
                     flex-wrap: wrap;
-                    gap: 0.5em;
+                    gap: 0.5em 0.75em;
                     list-style-position: inside;
     
                     li {
@@ -612,31 +630,37 @@
             }
         }
 
-        &:hover {
-            .ImageWrapper {
-                transform: translateX(-1.75em);
-            }
-            .Card {
-                transform: translateX(1em);
+        @media (min-width: 650px) {
+            &:hover {
+                .ImageWrapper {
+                    transform: translateX(-1.75em);
+                }
+                .Card {
+                    transform: translateX(1em);
+                }
             }
         }
     }
 }
 
 @mixin FakeBrowser() {
+    flex-direction: column-reverse;
     opacity: 0;
     flex-shrink: 0;
+    border-radius: 0.5em;
     overflow: hidden;
 
     .FakeBrowser {
         flex-direction: row;
+        align-items: center;
         height: fit-content;
         width: calc(100% - 1.5em);
         gap: 0.5em;
         padding: 0.4em 0.75em;
-        border-bottom: 0.1em solid var(--black);
-        border-radius: 0.5em 0.5em 0 0;
         background-color: var(--brightWhite);
+        box-shadow: 0 0 0.25em 0 rgba(0,0,0, 0.2);
+        z-index: 1;
+        overflow: hidden;
 
         div {
             border-radius: 10em;
@@ -651,6 +675,28 @@
             }
             &:nth-child(3) {
                 background-color: var(--green);
+                margin-right: -3.25em;
+            }
+        }
+
+        a {
+            color: var(--black);
+            margin: auto;
+            font-size: 1em;
+            padding: 0.1em;
+            margin-top: -0.05em;
+            background: linear-gradient(to bottom, var(--yellow) 0%, var(--yellow) 100%);
+            background-position: 0 100%;
+            background-repeat: repeat-x;
+            background-size: 0.05em 0.15em;
+            border-radius: 0em;
+            text-decoration: none;
+            transition: background-size 0.15s ease-in-out, color 0.1s linear, border-radius 0.15s ease-in-out, font-weight 0.1s linear;
+
+            &:hover {
+                background-size: 0.05em 100%;
+                cursor: pointer;
+                border-radius: 0.1em;
             }
         }
     }
@@ -660,12 +706,22 @@
         width: clamp(22em, 32vw, 32em);
         border: none;
         outline: none;
-        border-radius: 0 0 0.5em 0.5em;
         overflow-y: scroll;
+        transition: 0.1s linear filter;
 
         img {
             width: 100%;
             height: auto;
+        }
+
+        &:hover {
+            filter: brightness(0.8);
+        }
+
+        &:hover ~ .FakeBrowser a {
+            background-size: 0.05em 100%;
+            cursor: pointer;
+            border-radius: 0.1em;
         }
     }
 }

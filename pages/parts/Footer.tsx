@@ -73,15 +73,19 @@ const Footer:FunctionComponent<Props> = (props) => {
                 </div>
                 <div className='Row'>
                     <a className="Link" href="/about" target='_self'>
-                        <p>About</p>
+                        <p>Resume</p>
                     </a>
                     <div className='SubLinks'>
-                        <a href="/resume">
-                            <p>My Resume</p>
+                        <a href="/about/resume">
+                            <p>Download (PDF)</p>
                             <i className="fa-solid fa-angle-right"></i>
                         </a>
                         <a href="https://github.com/KevinCox0427">
                             <p>My Github Account</p>
+                            <i className="fa-solid fa-angle-right"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/kevincox0427/">
+                            <p>My Linked In Account</p>
                             <i className="fa-solid fa-angle-right"></i>
                         </a>
                     </div>

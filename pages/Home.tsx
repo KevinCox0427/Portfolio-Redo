@@ -16,8 +16,7 @@ import WebsiteSlider from './Home/WebsitesSliders';
 
 declare global {
     type HomePageProps = {
-        portfolioConfig: PortfolioConfig[],
-        sliderUrls: string[]
+        portfolioConfig: PortfolioConfig[]
         domain: string
     }
 
@@ -103,20 +102,20 @@ const Home:FunctionComponent<Props> = (props) => {
             navName: 'Optimized Data',
             content: '<h3>It always starts with the data...</h3><p>Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.</p><p><em>Let\'s fill in a data structure to create some new products together!</em></p>'
         },
-        authentication: {
-            order: 2,
-            navName: 'Secure authentication',
-            content: '<h3>In order to have users, you need secure authentication...</h3><p>Authentication on the web has given us many of the things we tend to take for granted: ecommerce, cloud storage, social media. I can give you the peace of mind by securely implementing many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.</p><p><em>Let\'s create you a user from stratch together!</em></p>'
-        },
         integration: {
-            order: 3,
+            order: 2,
             navName: 'Seamless integrations',
-            content: '<h3>Integrations give more power to your applications...</h3><p>Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource managment software. I can assess and integrate any software that your technology stack needs, whether it uses an SDK, an API, or an RPC.</p><p><em>Let\'s use an integration with Spotify together to find you some new music!</em></p>'
+            content: '<h3>Integrations give more power to your applications...</h3><p>Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource management software. I can assess and integrate any software your technology stack needs, whether it uses an SDK, an API, or an RPC.</p><p><em>Let\'s use an integration with Spotify together to find you some new music!</em></p>'
+        },
+        authentication: {
+            order: 3,
+            navName: 'Secure authentication',
+            content: '<h3>In order to have users, you need secure authentication...</h3><p>Authentication on the web has given us many functionalities we tend to take for granted: ecommerce, cloud storage, social media. I can give you peace of mind through secure implementations of many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.</p><p><em>Let\'s create you a user from scratch together!</em></p>'
         },
         analytics: {
             order: 4,
             navName: 'Detailed analytics',
-            content: '<h3>The more detailed the analytics, the more detailed the strategy...</h3><p>Data collect is an invaluable resource for growing, adapting, and focusing your business operations.<p><em>Here\'s some examples of your activity on this page!<small>Don\'t worry, none of this is stored or sent to my server, you can check the network calls :)</small></em></p>'
+            content: '<h3>The more detailed the analytics, the more detailed the strategy...</h3><p>Data collection is an invaluable resource for growing, adapting, and focusing your business operations. Whether it\s analysizing page views, what\'s being viewed, or down to every user interaction, I can create, measure, and store any type of data analysis your business needs to succeed.<p><em>Here\'s some examples of your activity on this page! (Don\'t worry, none of this is stored or sent, you can check the network calls)</em></p><p></p>'
         },
         ui: {
             order: 5,
@@ -215,7 +214,7 @@ const Home:FunctionComponent<Props> = (props) => {
                     </div>
                 </div>
             </div>
-            <WebsiteSlider sliderUrls={props.ServerProps.homePageProps.sliderUrls}></WebsiteSlider>
+            <WebsiteSlider portfolioConfig={props.ServerProps.homePageProps.portfolioConfig}></WebsiteSlider>
             <p className='ScrollDown'>
                 Scroll down to see how I do it!
                 <i className="fa-solid fa-angles-down"></i>

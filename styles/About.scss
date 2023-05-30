@@ -9,7 +9,7 @@
 }
 
 main {
-    padding: 14em 0 10em 0;
+    padding: 12em 0 8em 0;
     display: flex;
     position: relative;
 
@@ -45,6 +45,7 @@ main {
         justify-content: center;
         padding-top: 2.5em;
         gap: 2em 5em;
+        margin-bottom: 9em;
 
         img {
             width: auto;
@@ -73,7 +74,6 @@ main {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 7em;
-        margin-top: 9em;
 
         .Title {
             font-size: clamp(3em, 4vw, 4em);

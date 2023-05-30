@@ -60,7 +60,8 @@ const Portfolio: FunctionComponent<Props> = (props) => {
                     return <Fragment key={i}>
                         <PortfolioCard project={project} style={{
                             animation: `0.5s ease-in-out ${i*0.25}s forwards SlideDown`
-                        }} tagCallback={() => {
+                        }} tagCallback={(e: React.MouseEvent) => {
+                            e.preventDefault();
                             setSelectedTag(project.tag.split(' ').join(''));
                         }}></PortfolioCard>
                     </Fragment>

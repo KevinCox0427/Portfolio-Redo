@@ -33,14 +33,14 @@ const About: FunctionComponent<Props> = (props) => {
         <AddPageView portfolioConfig={props.ServerProps.aboutPageProps.portfolioConfig} pageName="about"></AddPageView>
         <Header></Header>
         <main className="Contain">
-            <h1 className="Title">About Me</h1>
+            {/* <h1 className="Title">About Me</h1>
             <div className="AboutMe">
                 <img src="/assets/profile.jpg"></img>
                 <div className="Description">
                     <p>Hey! My name is Kevin Cox, and I'm a full-stack developer and graphic designer from New York.</p>
                     <p></p>
                 </div>
-            </div>
+            </div> */}
             <div className="Grid">
                 <div className="Left">
                     <h2 className="Title">

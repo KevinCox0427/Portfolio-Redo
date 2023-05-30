@@ -8,21 +8,18 @@ type Props = {
 
 const PortfolioCard: FunctionComponent<Props> = (props) => {
     
-    return <div className="Project" style={props.style ? props.style : {}}>
-        <a href={`/portfolio/${props.project.route}`} className="ImageWrapper">
+    return <a className="Project"  href={`/portfolio/${props.project.route}`} style={props.style ? props.style : {}}>
+        <div className="ImageWrapper">
             <img src={props.project.logo}></img>
-        </a>
+        </div>
         <div className="Card">
-            <a href={`/portfolio/${props.project.route}`}>
-                <h2>{props.project.name}</h2>
-            </a>
-            <p className="Description">{props.project.description}</p>
+            <h2>{props.project.name}</h2>
+            <p className="Description">{props.project.description[0].length > 200 ? props.project.description[0].substring(0,197) + '...' : props.project.description[0]}</p>
             <div className="Tags">
-                {props.tagCallback ? 
-                    <p className="Tag" onClick={props.tagCallback}>{props.project.tag}</p>
-                :
-                    <a href={`/portfolio?tag=${props.project.tag.split(' ').join('')}`} className="Tag">{props.project.tag}</a>
-                }
+                <p className="Tag" onClick={props.tagCallback ? props.tagCallback : e => {
+                    e.preventDefault();
+                    window.location.href = `/portfolio?tag=${props.project.tag.split(' ').join('')}`;
+                }}>{props.project.tag}</p>
                 <ul className="Skills">
                     {props.project.skills.map((skill, i) => {
                         return <li key={i}>{skill}</li>
@@ -30,7 +27,7 @@ const PortfolioCard: FunctionComponent<Props> = (props) => {
                 </ul>
             </div>
         </div>
-    </div>
+    </a>
 }
 
 export default PortfolioCard;

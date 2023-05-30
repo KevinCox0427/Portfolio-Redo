@@ -20,7 +20,7 @@ const Header:FunctionComponent = () => {
             <div className='Links'>
                 <a href='/#MyServices'>Services</a>
                 <a href='/portfolio'>Portfolio</a>
-                <a href='/about'>About</a>
+                <a href='/about'>Resume</a>
                 <a href='/contact'>Contact</a>
             </div>
         </header>

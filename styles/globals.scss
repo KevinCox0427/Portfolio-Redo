@@ -158,7 +158,7 @@ button, input, select, option {
                 background-color: var(--yellow);
             }
             &:nth-child(2):hover {
-                background-color: var(--blue);
+                background-color: var(--lightRed);
             }
             &:nth-child(3):hover {
                 background-color: var(--green);
@@ -224,7 +224,7 @@ button, input, select, option {
 
                 &:nth-child(2) {
                     a {
-                        @include LinkHover(var(--blue), var(--white), 0.1em);
+                        @include LinkHover(var(--lightRed), var(--white), 0.1em);
                     }
                 }
 
