@@ -22,6 +22,7 @@ function createTimeString(time: number) {
 
 const WatchTime:FunctionComponent<Props> = (props) => {
     let largestTimestamp = 0;
+    
     Object.keys(props.watchTime.timeStamps).forEach(timeStampKey => {
         const value = props.watchTime.timeStamps[timeStampKey as keyof typeof props.watchTime.timeStamps];
         if(value > largestTimestamp) largestTimestamp = value;

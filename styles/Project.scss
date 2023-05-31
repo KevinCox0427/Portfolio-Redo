@@ -1,6 +1,6 @@
 @import './mixins';
 
-main {
+article {
     padding: 11em 0;
     display: flex;
     position: relative;
@@ -54,7 +54,7 @@ main {
         .Logo {
             height: fit-content;
             max-width: calc(100vw - 12em);
-            max-height: 15em;
+            height: 15em;
             flex-basis: 20em;
             flex-grow: 1;
             padding: 1.5em;

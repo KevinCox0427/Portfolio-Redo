@@ -5,7 +5,8 @@
   "main": "public/server.js",
   "scripts": {
     "build": "tsc && sass styles:dist/public/css && webpack && node dist/server.js",
-    "start": "tsc utils/watch.ts --outDir dist/utils && node dist/utils/watch.js"
+    "start": "tsc utils/watch.ts --outDir dist/utils && node dist/utils/watch.js",
+    "deploy": "node utils/deploy.js"
   },
   "author": "Kevin Cox",
   "license": "ISC",

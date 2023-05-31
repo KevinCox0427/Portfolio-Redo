@@ -28,15 +28,15 @@ const Project: FunctionComponent<Props> = (props) => {
     return <>
         <AddPageView portfolioConfig={props.ServerProps.projectPageProps.portfolioConfig} pageName={`portfolio/${project.route}`}></AddPageView>
         <Header></Header>
-        <main className="Contain">
+        <article className="Contain">
             <div className="Headline">
                 {project.link ? 
-                    <a href={project.link} target="_blank" className="Logo">
-                        <img src={project.logo}></img>
+                    <a href={project.link} target="_blank" className="Logo" rel="nofollow">
+                        <img src={project.logo} alt={`${project.name} logo`}></img>
                     </a>
                 : 
                     <div className="Logo">
-                        <img src={project.logo}></img>
+                        <img src={project.logo} alt={`${project.name} logo`} rel="nofollow"></img>
                     </div>
                 }
                 <div className="TitleWrapper">
@@ -54,7 +54,7 @@ const Project: FunctionComponent<Props> = (props) => {
                     {project.problem.map((text, i) => <p key={i}>{text}</p>)}
                     <h2 className="Title">The Solution</h2>
                     {project.solution.map((text, i) => <p key={i}>{text}</p>)}
-                    {project.link ? <a href={project.link} target="_blank">View their website</a> : <></>}
+                    {project.link ? <a href={project.link} target="_blank" rel="nofollow">View their website</a> : <></>}
                 </div>
                 <div className="Right">
                     <div className="BrowserWrapper">
@@ -64,7 +64,7 @@ const Project: FunctionComponent<Props> = (props) => {
                             <div></div>
                         </div>
                         <div className="MainImage">
-                            <img src={project.gallery[0]}></img>
+                            <img src={project.gallery[0]} alt={`${project.name} website image`}></img>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@ const Project: FunctionComponent<Props> = (props) => {
                             <div></div>
                         </div>
                         <div className="MainImage">
-                            <img src={url}></img>
+                            <img src={url} alt={`${project.name} gallery photo #${i+1}`}></img>
                         </div>
                     </div>
                 })}
@@ -98,7 +98,7 @@ const Project: FunctionComponent<Props> = (props) => {
                     <PortfolioCard project={nextProject}></PortfolioCard>
                 </div>
             </div>
-        </main>
+        </article>
         <Footer portfolioConfig={props.ServerProps.projectPageProps.portfolioConfig}></Footer>
     </>
 }

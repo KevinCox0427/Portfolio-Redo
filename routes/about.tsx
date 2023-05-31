@@ -51,7 +51,13 @@ about.route('/')
             }
         }
 
-        res.status(202).send(serveHTML(<About ServerProps={serverProps}></About>, 'About', serverProps));
+        res.status(202).send(serveHTML(<About ServerProps={serverProps}></About>, 'About', serverProps, {
+            title: 'Dream State - About',
+            name: 'Dream State',
+            description: 'About page for Kevin Cox. A holistic, ideas-driven developer that uses a diverse skill-set to supply any technical or graphical need.',
+            url: 'https://www.dreamstate.graphics/about',
+            image: 'https://www.dreamstate.graphics/favicon.png'
+        }));
     })
 
 about.route('/resume')

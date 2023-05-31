@@ -18,7 +18,13 @@ portfolio.route('/')
             }
         }
 
-        res.status(200).send(serveHTML(<Portfolio ServerProps={serverProps}/>, 'Portfolio', serverProps));
+        res.status(200).send(serveHTML(<Portfolio ServerProps={serverProps}/>, 'Portfolio', serverProps, {
+            title: 'Dream State - Portfolio',
+            name: 'Dream State',
+            description: 'A portfolio page of projects by the web developer and graphic designer Kevin Cox. Take a look, and see what I can do!',
+            url: 'https://www.dreamstate.graphics/portfolio',
+            image: 'https://www.dreamstate.graphics/favicon.png'
+        }));
     })
 
 portfolio.route('/:projectName')
@@ -28,17 +34,25 @@ portfolio.route('/:projectName')
             return;
         }
 
+        const portfolioIndex = portfolioConfig.reduce((previousIndex, currentProject, index) => {
+            if(currentProject.route === req.params.projectName) return index;
+            else return previousIndex;
+        }, -1)
+
         const serverProps:ServerPropsType = {
             projectPageProps: {
                 portfolioConfig: portfolioConfig,
-                projectIndex: portfolioConfig.reduce((previousIndex, currentProject, index) => {
-                    if(currentProject.route === req.params.projectName) return index;
-                    else return previousIndex;
-                }, -1)
+                projectIndex: portfolioIndex
             }
         }
 
-        res.status(200).send(serveHTML(<Project ServerProps={serverProps}/>, 'Project', serverProps));
+        res.status(200).send(serveHTML(<Project ServerProps={serverProps}/>, 'Project', serverProps, {
+            title: `Dream State - Project: ${portfolioConfig[portfolioIndex].name}`,
+            name: 'Dream State',
+            description: `A project for ${portfolioConfig[portfolioIndex].name} by the web developer and graphic designer Kevin Cox.`,
+            url: `https://www.dreamstate.graphics/portfolio/${req.params.projectName}`,
+            image: 'https://www.dreamstate.graphics/favicon.png'
+        }));
     })
 
 

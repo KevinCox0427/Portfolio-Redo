@@ -17,7 +17,12 @@ import WebsiteSlider from './Home/WebsitesSliders';
 declare global {
     type HomePageProps = {
         portfolioConfig: PortfolioConfig[]
-        domain: string
+        domain: string,
+        locationData: {
+            ip: string,
+            city: string,
+            ll: number[]
+        }
     }
 
     type SectionContent = {
@@ -94,7 +99,7 @@ const Home:FunctionComponent<Props> = (props) => {
             footer: 0
         }
     });
-    windowCache.current.registerCache('DreamStateWatchTime', watchTime, setWatchTime);
+    windowCache.current.registerCache('watchTime', watchTime, setWatchTime);
 
     const sectionDefaults = {
         data: {
@@ -105,7 +110,7 @@ const Home:FunctionComponent<Props> = (props) => {
         integration: {
             order: 2,
             navName: 'Seamless integrations',
-            content: '<h3>Integrations give more power to your applications...</h3><p>Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource management software. I can assess and integrate any software your technology stack needs, whether it uses an SDK, an API, or an RPC.</p><p><em>Let\'s use an integration with Spotify together to find you some new music!</em></p>'
+            content: '<h3>Integrations give more power to your applications...</h3><p>Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource management software. I can assess and integrate any software your technology stack needs, whether it uses an SDK, an API, webhooks, or an RPC.</p><p><em>Let\'s use an integration with Spotify together to find you some new music!</em></p>'
         },
         authentication: {
             order: 3,
@@ -120,14 +125,15 @@ const Home:FunctionComponent<Props> = (props) => {
         ui: {
             order: 5,
             navName: 'User interfaces to control it all',
-            content: '<h3>Powerful user interfaces give you the greatest control...</h3><p><em>Let\'s use a user interface to screw up all my hard work!</em></p>'
+            content: '<h3>Powerful user interfaces give you the greatest control...</h3><p>UIs are the primary way users interact with any software. This enables users to enter large datasets, change important functionalities, or customize the look down to the smallest of details. So, the better the implementation, the better the user experience. I can create, adjust, and expand your website\'s UIs to enable you and your teams with powerful tools that best suit you.</p><p><em>Let\'s use a UI to screw up all my hard work!</em></p>'
         },
         web: {
             order: 6,
             navName: 'Beautiful websites to show it all',
-            content: '<h3>Beautiful websites give your messages the widest reach...</h3><p></p><p><em></em></p>'
+            content: '<h3>Beautiful websites give your messages the widest reach...</h3><p>In an age where the majority of customers\' first encounters with an organization takes place online, it becomes vitally important to provide not only unique experiences, but effective ones. These serve to strengthen the perception of the organization, trickling into their products or services. I can create, plan, design, and mockup any graphical materials to fit, further strengthen, or form your brand.</p><p><em>Check out my portfolio to see some of my work!</em></p>'
         }
     }
+    
     const [sectionContent, setSectionContent] = useState(sectionDefaults);
     windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
 
@@ -199,6 +205,9 @@ const Home:FunctionComponent<Props> = (props) => {
 
     return <>
         <Header></Header>
+        <h1 style={{
+            display: 'none'
+        }}>Dream State</h1>
         <div id='home' className='SplashImage'>
             <div className='MainCopy'>
                 <h3>Your bridge between</h3>
@@ -227,22 +236,28 @@ const Home:FunctionComponent<Props> = (props) => {
             <NavBars contentWrapper={contentWrapper} currentSection={currentSection} sectionContent={sectionContent}></NavBars>
             <div className='Content' ref={contentWrapper}>
                 <DataSection windowCache={windowCache.current} sectionContent={sectionContent.data} style={{
-                    order: sectionContent.data.order
+                    order: sectionContent.data.order,
+                    zIndex: Object.keys(sectionContent).length - sectionContent.data.order
                 }}></DataSection>
                 <AuthSection windowCache={windowCache.current} sectionContent={sectionContent.authentication} style={{
-                    order: sectionContent.authentication.order
+                    order: sectionContent.authentication.order,
+                    zIndex: Object.keys(sectionContent).length - sectionContent.authentication.order
                 }}></AuthSection>
                 <IntegrationSection windowCache={windowCache.current} sectionContent={sectionContent.integration} style={{
-                    order: sectionContent.integration.order
+                    order: sectionContent.integration.order,
+                    zIndex: Object.keys(sectionContent).length - sectionContent.integration.order
                 }}></IntegrationSection>
-                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} portfolioConfig={props.ServerProps.homePageProps.portfolioConfig} resetWatchTime={resetWatchTime} sectionContent={sectionContent.analytics} domain={props.ServerProps.homePageProps.domain} style={{
-                    order: sectionContent.analytics.order
+                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} portfolioConfig={props.ServerProps.homePageProps.portfolioConfig} resetWatchTime={resetWatchTime} sectionContent={sectionContent.analytics} domain={props.ServerProps.homePageProps.domain} locationData={props.ServerProps.homePageProps.locationData} style={{
+                    order: sectionContent.analytics.order,
+                    zIndex: Object.keys(sectionContent).length - sectionContent.analytics.order
                 }}></AnalyticsSection>
                 <UISection sectionContent={sectionContent.ui} allSectionContent={sectionContent} setSectionContent={setSectionContent} defaultSectionContent={sectionDefaults} cacheHasLoaded={cacheHasLoaded} style={{
-                    order: sectionContent.ui.order
+                    order: sectionContent.ui.order,
+                    zIndex: Object.keys(sectionContent).length - sectionContent.ui.order
                 }}></UISection>
                 <WebSection sectionContent={sectionContent.web} portfolioConfig={props.ServerProps.homePageProps.portfolioConfig} style={{
-                    order: sectionContent.web.order
+                    order: sectionContent.web.order,
+                    zIndex: Object.keys(sectionContent).length - sectionContent.web.order
                 }}></WebSection>
             </div>
         </div>

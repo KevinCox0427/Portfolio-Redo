@@ -39,7 +39,7 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
         searchResults: [],
         searchRecommendations: []
     });
-    props.windowCache.registerCache('DreamStateSearchData', searchData, setSearchData);
+    props.windowCache.registerCache('searchData', searchData, setSearchData);
 
 
     const [isSearching, setIsSearching] = useState({

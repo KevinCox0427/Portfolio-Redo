@@ -5,15 +5,13 @@ class WindowCache {
     defaultValues: {
         [itemName:string]: any
     } = {};
-    previousValues: {
-        [itemName:string]: any
-    } | null = null;
     cachedValues: {
         [itemName:string]: {
             value: any, 
-            setState: React.Dispatch<React.SetStateAction<any>>
+            setState: React.Dispatch<React.SetStateAction<any>> | null
         }
     } = {};
+    hasWindowLoaded:boolean = false;
     isLoaded: {
         [itemName:string]: boolean
     } = {};
@@ -22,26 +20,40 @@ class WindowCache {
 
     constructor(setHasLoaded: React.Dispatch<React.SetStateAction<boolean>>) {
         this.setHasLoaded = setHasLoaded;
-        if(typeof window != 'undefined') window.addEventListener('load', () => {
+
+        useEffect(() => {
             const previousValuesStringified = localStorage.getItem('DreamStateCachedValues');
 
-            if(previousValuesStringified && typeof JSON.parse(previousValuesStringified) != 'undefined') {
-                this.previousValues = JSON.parse(previousValuesStringified);
+            if(previousValuesStringified && typeof JSON.parse(previousValuesStringified) !== 'undefined') {
+                const previousValues = JSON.parse(previousValuesStringified);
+
+                Object.keys(previousValues).forEach(itemName => {
+                    if(this.cachedValues[itemName]) return;
+
+                    this.cachedValues = {...this.cachedValues,
+                        [itemName]: {
+                            value: previousValues[itemName],
+                            setState: null
+                        }
+                    }
+                })
+
                 Object.keys(this.cachedValues).map(itemName => {
-                    if(typeof this.previousValues![itemName] !== 'undefined' && !deepEquals(this.previousValues![itemName], this.cachedValues[itemName].value)) {
-                        this.cachedValues[itemName].value = this.previousValues![itemName];
-                        this.cachedValues[itemName].setState((previousState:any) => {
-                            return this.previousValues![itemName]
+                    if(typeof previousValues![itemName] !== 'undefined' && !deepEquals(previousValues![itemName], this.cachedValues[itemName].value)) {
+                        this.cachedValues[itemName].value = previousValues![itemName];
+                        if(this.cachedValues[itemName].setState) this.cachedValues[itemName].setState!((previousState:any) => {
+                            return previousValues![itemName]
                         });
                     }
                     else this.updateLoad(itemName);
                 });
             }
             else {
-                this.previousValues = this.defaultValues;
                 localStorage.setItem('DreamStateCachedValues', JSON.stringify(this.defaultValues));
             }
-        });
+
+            this.hasWindowLoaded = true;
+        }, []);
     }
 
 
@@ -63,7 +75,10 @@ class WindowCache {
 
         useEffect(() => {
             if(!this.hasLoaded()) {
-                if(deepEquals(this.cachedValues[itemName].value, stateVariable) && this.previousValues) {
+                if(!deepEquals(this.cachedValues[itemName].value, stateVariable)) {
+                    this.cachedValues[itemName].value = stateVariable;
+                }
+                if(this.hasWindowLoaded /* && this.previousValues */) {
                     this.updateLoad(itemName);
                 }
             }
@@ -81,9 +96,9 @@ class WindowCache {
                 [cacheItemName]: this.cachedValues[cacheItemName].value
             }
         });
+        
         localStorage.setItem('DreamStateCachedValues', JSON.stringify(parsedCachedValues));
     }
-
 
     updateLoad(itemName:string) {
         this.isLoaded[itemName] = true;
@@ -93,6 +108,11 @@ class WindowCache {
 
     
     hasLoaded() {
+        // console.log(Object.keys(this.isLoaded).map((key) => {
+        //     return {
+        //         [key]: this.isLoaded[key as keyof typeof this.isLoaded]
+        //     }
+        // }))
         return Object.keys(this.isLoaded).every(key => this.isLoaded[key as keyof typeof this.isLoaded]);
     }
 }

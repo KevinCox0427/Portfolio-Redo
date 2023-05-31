@@ -1,16 +1,12 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 
 type Props = {
-    analytics: Analytics,
-    setAnalytics: React.Dispatch<React.SetStateAction<Analytics>>
+    heatMap: number[][],
+    setHeatMap: React.Dispatch<React.SetStateAction<number[][]>>
 }
 
 const Heatmap:FunctionComponent<Props> = (props) => {
-    const [heatMap, setHeatmap] = useState({
-        height: 0,
-        width: 0,
-        image: ''
-    });
+    const [heatMapImage, setHeatmapImage] = useState('');
 
     const resizeBuffer = useRef<NodeJS.Timeout | null>(null);
 
@@ -22,27 +18,22 @@ const Heatmap:FunctionComponent<Props> = (props) => {
         root.addEventListener('click', e => {
             const coordinate = [Math.round((e.clientX / window.innerWidth)*10000)/100, Math.round(((e.clientY + document.documentElement.scrollTop) / document.documentElement.scrollHeight)*10000)/100];
 
-            props.setAnalytics(oldAnalytics => {
-                return {...oldAnalytics,
-                    heatMap: [...oldAnalytics.heatMap, coordinate]
-                };
+            props.setHeatMap(oldHeatMap => {
+                return [...oldHeatMap, coordinate];
             })
         });
 
-        setHeatmap({
-            image: `/assets/self${Math.ceil(window.innerWidth/100)*100}.png`,
-            height: Math.ceil(wrapper.clientWidth * (root.scrollHeight / window.innerWidth)),
-            width: Math.ceil(wrapper.clientWidth)
-        });
+        setHeatmapImage(`https://dreamstateospublic.s3.us-east-2.amazonaws.com/self/self${Math.ceil(window.innerWidth/100)*100}.jpg`);
 
         window.addEventListener('resize', () => {
             if(resizeBuffer.current) clearTimeout(resizeBuffer.current);
+
+            let imageSize = Math.ceil(window.innerWidth/100)*100;
+            if(imageSize > 2300) imageSize = 2300;
+            if(imageSize < 500) imageSize = 500;
+
             resizeBuffer.current = setTimeout(() => {
-                setHeatmap({
-                    image: `/assets/self${Math.ceil(window.innerWidth/100)*100}.png`,
-                    height: Math.ceil(wrapper.clientWidth * (root.scrollHeight / window.innerWidth)),
-                    width: Math.ceil(wrapper.clientWidth)
-                });
+                setHeatmapImage(`https://dreamstateospublic.s3.us-east-2.amazonaws.com/self/self${imageSize}.jpg`);
             }, 100);
         });
     }, []);
@@ -51,8 +42,8 @@ const Heatmap:FunctionComponent<Props> = (props) => {
         <h3>
             Interaction Heatmap:
             <i className="fa-solid fa-rotate-left Reset" onClick={() => {
-                props.setAnalytics(oldAnalytics => {
-                    return {...oldAnalytics,
+                props.setHeatMap(oldHeatMap => {
+                    return {...oldHeatMap,
                         heatMap: []
                     }
                 });
@@ -60,12 +51,9 @@ const Heatmap:FunctionComponent<Props> = (props) => {
         </h3>
         <div className="HeatmapScroll">
             <div className="HeatmapWrapper">
-                <img src={heatMap.image}></img>
-                <div className="Gradient" style={{
-                    width: heatMap.width,
-                    height: heatMap.height
-                }}>
-                    {props.analytics.heatMap.map((value, i) => {
+                <img src={heatMapImage} alt={`Website screen ${heatMapImage.split('self')[1]} pixels`}></img>
+                <div className="Gradient">
+                    {props.heatMap.map((value, i) => {
                         return <div className="Circle" key={i} style={{
                             left: `${value[0]}%`,
                             top: `${value[1]}%`

@@ -1,116 +1,65 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 
 type Props = {
     portfolioConfig: PortfolioConfig[]
 }
 
 const Footer:FunctionComponent<Props> = (props) => {
-    const [contactForm, setContactForm] = useState({
-        name: '',
-        email: '',
-        message: ''
-    })
 
     return <footer id="footer">
         <div className='Contain'>
             <div className='Left'>
-                <div className='DreamStateWrapper'>
-                    <h1>Dream State</h1>
-                    <p>"Your bridge between dreams and reality"</p>
-                </div>
+                <a className='DreamStateWrapper' href="/">
+                    <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/logo.png" alt='Dream State Logo'></img>
+                    <div>
+                        <h2>Dream State</h2>
+                        <p>"Your bridge between dreams and reality"</p>
+                    </div>
+                </a>
             </div>
             <div className='Right'>
-                
+
             </div>
             <div className='Links'>
                 <div className='Row'>
-                    <a className="Link" href="/" target='_self'>
-                        <p>Home</p>
-                    </a>
+                    <a className="Link" href="/">Home</a>
                     <div className='SubLinks'>
-                        <a href="/#MyServices" target='_self'>
-                            <p>My Services</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
-                        <a href="/#data" target='_self'>
-                            <p>Optimized Data</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
-                        <a href="/#authentication" target='_self'>
-                            <p>Secure Authentication</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
-                        <a href="/#integration" target='_self'>
-                            <p>Seamless Integrations</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
-                        <a href="/#anayltics" target='_self'>
-                            <p>Detailed Analytics</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
-                        <a href="/#ui" target='_self'>
-                            <p>User Interfaces</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
-                        <a href="/#web" target='_self'>
-                            <p>Beautiful Websites</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
+                        <a href="/#MyServices">My Services</a>
+                        <a href="/#data">Optimized Data</a>
+                        <a href="/#authentication">Secure Authentication</a>
+                        <a href="/#integration">Seamless Integrations</a>
+                        <a href="/#anayltics">Detailed Analytics</a>
+                        <a href="/#ui">User Interfaces</a>
+                        <a href="/#web">Beautiful Websites</a>
                     </div>
                 </div>
                 <div className='Row'>
-                    <a className="Link" href="/portfolio" target='_self'>
-                        <p>Portfolio</p>
-                    </a>
-                    <div className='SubLinks'>
-                        {props.portfolioConfig.map((porfolio, i) => {
-                            return <a key={i} href={`/portfolio/${porfolio.route}`}>
-                                <p>{porfolio.name}</p>
-                                <i className="fa-solid fa-angle-right"></i>
-                            </a>
+                    <a className="Link" href="/portfolio">Portfolio</a>
+                    <div className='SubLinks'>{
+                        props.portfolioConfig.map((porfolio, i) => {
+                            return <a key={i} href={`/portfolio/${porfolio.route}`}>{porfolio.name}</a>
                         })}
                     </div>
                 </div>
                 <div className='Row'>
-                    <a className="Link" href="/about" target='_self'>
-                        <p>Resume</p>
-                    </a>
+                    <a className="Link" href="/about">Resume</a>
                     <div className='SubLinks'>
-                        <a href="/about/resume">
-                            <p>Download (PDF)</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
-                        <a href="https://github.com/KevinCox0427">
-                            <p>My Github Account</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/kevincox0427/">
-                            <p>My Linked In Account</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
+                        <a href="/about/resume">Download (PDF)</a>
+                        <a href="https://github.com/KevinCox0427" rel="nofollow" target='_blank'>My Github Account</a>
+                        <a href="https://www.linkedin.com/in/kevincox0427/" rel="nofollow" target='_blank'>My Linked In Account</a>
                     </div>
                 </div>
                 <div className='Row'>
-                    <a className="Link" href="/contact" target='_self'>
-                        <p>Contact</p>
-                    </a>
+                    <a className="Link" href="/contact">Contact</a>
                     <div className='SubLinks'>
-                        <a href="/contact/#general">
-                            <p>General Contact Form</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
-                        <a href="/contact/#inquiry">
-                            <p>Inquiry Form</p>
-                            <i className="fa-solid fa-angle-right"></i>
-                        </a>
+                        <a href="/contact/#general">General Contact Form</a>
+                        <a href="/contact/#inquiry">Inquiry Form</a>
                     </div>
                 </div>
                 <div className='Row' style={{
                     display: 'none'
                 }}>
-                    <a className="Link" href="/account">
-                        <p>Dream State Account</p>
-                    </a>
+                    <a className="Link" href="/account">Dream State Account</a>
                 </div>
             </div>
         </div>

@@ -38,11 +38,11 @@ const AuthSection:FunctionComponent<Props> = (props) => {
             expires: 0
         }
     });
-    props.windowCache.registerCache('DreamStateUserRegister', userData, setUserData);
+    props.windowCache.registerCache('userRegister', userData, setUserData);
 
     const sessionCounterAmount = 20;
     const [sessionCounter, setSessionCounter] = useState(0);
-    props.windowCache.registerCache('DreamStateSessionCounter', sessionCounter, setSessionCounter);
+    props.windowCache.registerCache('sessionCounter', sessionCounter, setSessionCounter);
 
     return <div id="authentication" className="Section" style={props.style}>
         <Title content={props.sectionContent.content}></Title>

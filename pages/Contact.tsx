@@ -160,10 +160,13 @@ const Contact: FunctionComponent<Props> = (props) => {
         <AddPageView portfolioConfig={props.ServerProps.contactPageProps.portfolioConfig} pageName="contact"></AddPageView>
         <Header></Header>
         <main className="Contain">
+            <h1 style={{
+                display: 'none'
+            }}>Contact</h1>
             <form id="general">
                 <h2>General Contact Form</h2>
                 <p className="Description">
-                    HI
+                    Got any questions or just saying hello? Fill out this contact form, and I'll get back to you via email as quickly as possible!
                 </p>
                 <div className="InputWrapper">
                     <input placeholder=" " id="generalName" value={contactForm.data.Name} onChange={e => {
@@ -228,6 +231,9 @@ const Contact: FunctionComponent<Props> = (props) => {
             </form>
             <form id="inquiry">
                 <h2>Inquiry Form</h2>
+                <p className="Description">
+                    Looking to start a new web project? Fill out some prelimenary details so I can assess, plan, and reach out for a follow up meeting so we can make your dreams a reality!
+                </p>
                 <div className="InputWrapper">
                     <input placeholder=" " id="inquiryName" value={inquiryForm.data.Name} onChange={e => {
                         setInquiryForm(oldInquiry => {

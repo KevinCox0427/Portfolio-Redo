@@ -10,7 +10,7 @@ const PortfolioCard: FunctionComponent<Props> = (props) => {
     
     return <a className="Project"  href={`/portfolio/${props.project.route}`} style={props.style ? props.style : {}}>
         <div className="ImageWrapper">
-            <img src={props.project.logo}></img>
+            <img src={props.project.logo} alt={`${props.project.name} logo`}></img>
         </div>
         <div className="Card">
             <h2>{props.project.name}</h2>

@@ -3,7 +3,7 @@ import React from "react";
 import Home from "../pages/Home";
 import serveHTML from "../utils/serveHTML";
 import { pbkdf2Sync, randomBytes } from 'crypto';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import portfolioConfig from "../utils/portfolioConfig";
@@ -14,14 +14,42 @@ const index = express.Router();
 
 index.route('/')
     .get(async (req, res) => {
+        const ip = ((req.headers['x-forwarded-for'] || req.ip) as string).split('::ffff:').join('');
+
+        let locationData = {
+            ip: '',
+            city: '',
+            ll: [0,0]
+        }
+
+        try {
+            const response = (await axios.get(`https://ipinfo.io/${ip}?token=${process.env.IPToken}`)).data;
+
+            if(response.city) locationData = {
+                ip: response.ip,
+                city: `${response.city}, ${response.region}, ${response.country}`,
+                ll: response.loc.split(',')
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+
         const serverProps:ServerPropsType = {
             homePageProps: {
                 portfolioConfig: portfolioConfig,
-                domain: req.get('host') || ''
+                domain: req.get('host') || '',
+                locationData: locationData
             }
         }
 
-        res.status(200).send(serveHTML(<Home ServerProps={serverProps}/>, 'Home', serverProps));
+        res.status(200).send(serveHTML(<Home ServerProps={serverProps}/>, 'Home', serverProps, {
+            title: 'Dream State',
+            name: 'Dream State',
+            description: 'Your bridge between dreams and reality. A full stack web development and graphic design agency made by Kevin Cox. Take a look, and see what I can do!',
+            url: 'https://www.dreamstate.graphics/',
+            image: 'https://www.dreamstate.graphics/favicon.png'
+        }));
     });
 
 index.route('/encrypt')
@@ -161,6 +189,8 @@ index.route('/spotify')
     })
 
 function readSpotifyBearerToken() {
+    if(!existsSync('./db')) mkdirSync('./db');
+
     try {
         const result = JSON.parse(readFileSync('./db/spotifyBearerToken.json').toString());
         if(typeof result != 'undefined' && typeof result.token === 'string' && typeof result.timestamp === 'number') {

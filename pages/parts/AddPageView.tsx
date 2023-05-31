@@ -7,13 +7,13 @@ type Props = {
 }
 
 const AddPageView: FunctionComponent<Props> = (props) => {
-    const [cacheHasLoaded, setCacheHasLoaded] = useState(false)
+    const [cacheHasLoaded, setCacheHasLoaded] = useState(false);
     const windowCache = useRef(new WindowCache(setCacheHasLoaded));
 
     let defaultPageViews = {
         "": 0,
         portfolio: 0,
-        about: 0,
+        resume: 0,
         contact: 0
     };
 
@@ -30,6 +30,7 @@ const AddPageView: FunctionComponent<Props> = (props) => {
     windowCache.current.registerCache('pageLoads', pageViews, setPageViews);
 
     useEffect(() => {
+        if(!cacheHasLoaded) return;
         setPageViews(oldPageViews => {
             return {...oldPageViews,
                 [props.pageName]: oldPageViews[props.pageName] + 1

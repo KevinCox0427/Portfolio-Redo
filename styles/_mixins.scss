@@ -4,7 +4,7 @@
     background: linear-gradient(to bottom, $color 0%, $color 100%);
     background-position: 0 100%;
     background-repeat: repeat-x;
-    background-size: 0.05em $startingAmount;
+    background-size: 0.1em $startingAmount;
     border-radius: 0em;
     text-decoration: none;
     width: fit-content;
@@ -67,6 +67,7 @@
     border-radius: 0.35em 0.35em 0 0;
 
     input {
+        border-radius: 0px;
         background: none;
         flex-basis: 5em;
         flex-grow: 1;

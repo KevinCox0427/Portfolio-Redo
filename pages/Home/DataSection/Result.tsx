@@ -33,7 +33,7 @@ const Result: FunctionComponent<Props> = (props) => {
                 props.currentData.imageUrls.map((url, i) => {
                     return <div key={i} className="ImageWrapper" style={{
                         width: `${100/props.currentData.imageUrls.length}%`
-                    }}><img src={url}></img></div>
+                    }}><img src={url} alt={`Fake product gallery image #${i+1}`}></img></div>
                 })
             }</div>
             {props.currentData.categories.length > 0 ? <div className="CategoryWrapper">

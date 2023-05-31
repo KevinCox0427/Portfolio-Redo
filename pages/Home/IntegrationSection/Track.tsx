@@ -31,9 +31,9 @@ const Track:FunctionComponent<Props> = (props) => {
         width: `${props.width}px`
     }}>
         {props.isRecommend ? 
-            <a className="AlbumCover" href={props.searchResult.url} target="_blank">
+            <a className="AlbumCover" href={props.searchResult.url} target="_blank" rel="nofollow">
                 <RecordSVG></RecordSVG>
-                <img src={props.searchResult.image} style={{
+                <img src={props.searchResult.image} alt="Spofity album cover" style={{
                     width: `${props.width}px`,
                     height: `${props.width}px`
                 }}></img>
@@ -43,7 +43,7 @@ const Track:FunctionComponent<Props> = (props) => {
                 props.search(props.searchResult.id, true);
             }}>
                 <RecordSVG></RecordSVG>
-                <img src={props.searchResult.image} style={{
+                <img src={props.searchResult.image} alt="Spofity album cover" style={{
                     width: `${props.width}px`,
                     height: `${props.width}px`
                 }}></img>
@@ -51,7 +51,7 @@ const Track:FunctionComponent<Props> = (props) => {
             </div>
         }
         <div className="Details">
-            <a className="Title" href={props.searchResult.url} target='_blank'>
+            <a className="Title" href={props.searchResult.url} target='_blank' rel="nofollow">
                 {props.searchResult.name}
                 <i className="fa-solid fa-arrow-up-right-from-square"></i>
             </a>
@@ -60,7 +60,7 @@ const Track:FunctionComponent<Props> = (props) => {
                 <span>
                     {props.searchResult.artists.map((artist, j) => {
                     return j < 3 ? 
-                        <a key={j} className="Link" href={artist.url} target='_blank'>
+                        <a key={j} className="Link" href={artist.url} target='_blank' rel="nofollow">
                             {artist.name}
                             <i className="fa-solid fa-arrow-up-right-from-square"></i>
                         </a> 
@@ -72,7 +72,7 @@ const Track:FunctionComponent<Props> = (props) => {
             <p className="Album" data-html2canvas-ignore={true}>
                 Album: 
                 <span>
-                    <a className="Link" href={props.searchResult.album.url} target='_blank'>
+                    <a className="Link" href={props.searchResult.album.url} target='_blank' rel="nofollow">
                         {props.searchResult.album.name}
                         <i className="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>

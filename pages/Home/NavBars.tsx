@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef, useState } from "react";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 
 type Props = {
     sectionContent: {
@@ -16,15 +16,13 @@ const NavBars:FunctionComponent<Props> = (props) => {
     const [isNavBarStatic, setIsNavBarStatic] = useState(false);
     const [navBarStaticLimit, setNavBarStaticLimit] = useState(0);
 
-    if(typeof window != 'undefined') {
-        window.addEventListener('load', () =>{
-            setTimeout(testNavBars, 50);
-            document.addEventListener('scroll', testNavBars);
-            window.addEventListener('resize', testNavBars);
-        })
-    }
+    useEffect(() => {
+        setTimeout(testNavBars, 50);
+        document.addEventListener('scroll', testNavBars);
+        window.addEventListener('resize', testNavBars);
+    }, [testNavBars]);
 
-    function testNavBars () {
+    function testNavBars() {
         if(!props.contentWrapper.current || !navBarTop.current || !navBarBottom.current || !navBarStatic.current) return;
         const contentBox = props.contentWrapper.current.getBoundingClientRect();
         const navBarTopBox = navBarTop.current.getBoundingClientRect();

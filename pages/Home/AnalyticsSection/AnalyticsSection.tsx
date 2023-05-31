@@ -6,23 +6,6 @@ import Heatmap from "./HeatMap";
 import Title from "../Title";
 import PageViews from "./PageViews";
 
-declare global {
-    type Analytics = {
-        userData: {
-            location: {
-                ip: string,
-                city: string,
-                ll: [number, number]
-            },
-            agent: {
-                os: string,
-                browser: string
-            }
-        },
-        heatMap: number[][],
-    }
-}
-
 type Props = {
     windowCache: WindowCache,
     sectionContent: SectionContent,
@@ -37,30 +20,22 @@ type Props = {
     currentSection: string,
     cacheHasLoaded: boolean,
     style: React.CSSProperties,
-    domain: string
+    domain: string,
+    locationData: {
+        ip: string,
+        city: string,
+        ll: number[]
+    }
 }
 
 const AnalyticsSection:FunctionComponent<Props> = (props) => {
-    const [analytics, setAnalytics] = useState<Analytics>({
-        userData: {
-            location: {
-                ip: '',
-                city: '',
-                ll: [0,0]
-            },
-            agent: {
-                os: '',
-                browser: ''
-            }
-        },
-        heatMap: []
-    });
-    props.windowCache.registerCache('DreamStateAnalytics', analytics, setAnalytics);
+    const [heatmap, setHeatMap] = useState<number[][]>([]);
+    props.windowCache.registerCache('heatmap', heatmap, setHeatMap);
 
     let defaultPageViews = {
         "": 0,
         portfolio: 0,
-        about: 0,
+        resume: 0,
         contact: 0
     };
 
@@ -77,6 +52,7 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
     props.windowCache.registerCache('pageLoads', pageViews, setPageViews);
 
     useEffect(() => {
+        if(!props.cacheHasLoaded) return;
         setPageViews(oldPageViews => {
             return {...oldPageViews,
                 "": oldPageViews[""] + 1
@@ -91,9 +67,9 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
     return <div id="analytics" className='Section' style={props.style}>
         <Title content={props.sectionContent.content}></Title>
         <div className="GraphWrapper">
-            <UserData analytics={analytics} setAnalytics={setAnalytics} cacheHasLoaded={props.cacheHasLoaded}></UserData>
+            <UserData locationData={props.locationData} cacheHasLoaded={props.cacheHasLoaded}></UserData>
             <WatchTime watchTime={props.watchTime} currentSection={props.currentSection} resetWatchTime={props.resetWatchTime}></WatchTime>
-            <Heatmap analytics={analytics} setAnalytics={setAnalytics}></Heatmap>
+            <Heatmap heatMap={heatmap} setHeatMap={setHeatMap}></Heatmap>
             <PageViews pageViews={pageViews} resetPageViews={resetPageViews} domain={props.domain}></PageViews>
         </div>
     </div>

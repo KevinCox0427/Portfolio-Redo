@@ -9,7 +9,8 @@
     .Example {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 4em 3em;
+        gap: 2em 3em;
+        justify-content: center;
 
         @include PortfolioCard();
 

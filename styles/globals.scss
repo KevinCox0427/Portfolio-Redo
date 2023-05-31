@@ -41,6 +41,10 @@ body {
     background-color: var(--white);
     height: fit-content;
 
+    @media (pointer:none), (pointer:coarse) {
+        font-size: 0.75em;
+    }
+
     style, script, link {
         display: none !important;
     }
@@ -118,7 +122,7 @@ button, input, select, option {
 
         svg {
             height: auto;
-            width: 75px;
+            width: 4em;
         }
     }
 
@@ -182,27 +186,51 @@ button, input, select, option {
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
-        gap: 6em;
+        gap: 3em 6em;
         padding: 8em 0;
         border-top: 0.15em dashed var(--black);
 
         .Left {
 
             .DreamStateWrapper {
-                gap: 0.25em;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: 1.5em;
+                opacity: 1;
+                transition: opacity 0.1s linear;
+                text-decoration: none;
 
-                h1 {
-                    font-weight: 200;
-                    font-size: clamp(4em, 6vw, 6em);
-                    line-height: 80%;
+                &:hover {
+                    opacity: 0.5;
                 }
-        
-                p {
-                    font-family: var(--franklin);
-                    font-weight: 200;
-                    font-size: clamp(1.4em, 1.7vw, 1.7em);
-                    line-height: 120%;
-                    font-style: italic;
+
+                img {
+                    margin-top: -0.9em;
+                    width: 7.5em;
+                    height: auto;
+                }
+
+                div {
+                    justify-content: center;
+                    align-items: center;
+                    gap: 0.25em;
+                    color: var(--black);
+
+                    h2 {
+                        font-weight: 200;
+                        font-size: clamp(4em, 6vw, 6em);
+                        line-height: 80%;
+                    }
+            
+                    p {
+                        font-family: var(--franklin);
+                        font-weight: 200;
+                        font-size: clamp(1.4em, 1.7vw, 1.7em);
+                        line-height: 120%;
+                        font-style: italic;
+                    }
                 }
             }
         }

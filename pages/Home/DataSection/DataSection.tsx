@@ -42,7 +42,7 @@ const DataSection:FunctionComponent<Props> = (props) => {
         imageUrls: [],
         sales: []
     });
-    props.windowCache.registerCache('DreamStateDataEntry', currentData, setCurrentData);
+    props.windowCache.registerCache('dataEntry', currentData, setCurrentData);
 
     return <div id="data" className='Section' style={props.style}>
         <Title content={props.sectionContent.content}></Title>

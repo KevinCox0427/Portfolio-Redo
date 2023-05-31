@@ -30,12 +30,12 @@ const About: FunctionComponent<Props> = (props) => {
     if(typeof props.ServerProps.aboutPageProps === 'undefined') return <></>;
     
     return <>
-        <AddPageView portfolioConfig={props.ServerProps.aboutPageProps.portfolioConfig} pageName="about"></AddPageView>
+        <AddPageView portfolioConfig={props.ServerProps.aboutPageProps.portfolioConfig} pageName="resume"></AddPageView>
         <Header></Header>
         <main className="Contain">
             {/* <h1 className="Title">About Me</h1>
             <div className="AboutMe">
-                <img src="/assets/profile.jpg"></img>
+                <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/profile.jpg"></img>
                 <div className="Description">
                     <p>Hey! My name is Kevin Cox, and I'm a full-stack developer and graphic designer from New York.</p>
                     <p></p>
@@ -43,10 +43,10 @@ const About: FunctionComponent<Props> = (props) => {
             </div> */}
             <div className="Grid">
                 <div className="Left">
-                    <h2 className="Title">
+                    <h1 className="Title">
                         My Resume
                         <a href="/about/resume">Download PDF</a>
-                    </h2>
+                    </h1>
                     <div className="Resume">
                         <div className="Column">
                             <div className="Section Description">
@@ -87,7 +87,7 @@ const About: FunctionComponent<Props> = (props) => {
                             <div className="Section Info">
                                 <div className="ImageWrapper">
                                     <div className="Outline"></div>
-                                    <img src="/assets/headshotBW.jpeg"></img>
+                                    <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/headshotBW.jpeg"></img>
                                 </div>
                                 <div className="InfoWrapper">
                                     <div className="Link">
@@ -155,7 +155,7 @@ const About: FunctionComponent<Props> = (props) => {
                             </svg>
                         </div>
                         <div className="Bottom">
-                            <img src="/assets/headshot.jpg"></img>
+                            <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/headshot.jpg"></img>
                             <h3>Kevin Cox</h3>
                             <h4>Full-Stack Web Developer & Graphic Designer</h4>
                             <a href="https://www.linkedin.com/school/binghamton-university/?trk=public-profile-badge-profile-badge_school-name" target="_blank">

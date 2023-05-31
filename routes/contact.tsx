@@ -25,7 +25,13 @@ contact.route('/')
             }
         }
 
-        res.status(202).send(serveHTML(<Contact ServerProps={serverProps}></Contact>, 'Contact', serverProps));
+        res.status(202).send(serveHTML(<Contact ServerProps={serverProps}></Contact>, 'Contact', serverProps, {
+            title: 'Dream State - Contact',
+            name: 'Dream State',
+            description: 'Contact forms to reach out to Dream State for general questions or product inquiries.',
+            url: 'https://www.dreamstate.graphics/contact',
+            image: 'https://www.dreamstate.graphics/favicon.png'
+        }));
     })
 
 const generalFormTest = new RegexTester({

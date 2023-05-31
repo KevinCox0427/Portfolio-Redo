@@ -20,7 +20,13 @@ const Portfolio: FunctionComponent<Props> = (props) => {
     if(!props.ServerProps.portfolioPageProps) return <></>;
 
     const [projects, setProjects] = useState(props.ServerProps.portfolioPageProps.portfolioConfig);
-    const [selectedTag, setSelectedTag] = useState(props.ServerProps.portfolioPageProps.currentTag);
+
+    const tags:string[] = [];
+    projects.forEach(project => {
+        if(!tags.includes(project.tag)) tags.push(project.tag);
+    })
+
+    const [selectedTag, setSelectedTag] = useState(tags.every(tag => tag.replace(" ", "") !== props.ServerProps.portfolioPageProps!.currentTag) ? 'all' : props.ServerProps.portfolioPageProps.currentTag);
 
     useEffect(() => {
         const urlTag = window.location.href.split('/portfolio')[1];
@@ -48,18 +54,17 @@ const Portfolio: FunctionComponent<Props> = (props) => {
                 <p className={selectedTag === 'all' ? 'Activated' : ' '} onClick={() => {
                     setSelectedTag('all');
                 }}>All</p>
-                <p className={selectedTag === 'WebDevelopment' ? 'Activated' : ' '} onClick={() => {
-                    setSelectedTag('WebDevelopment');
-                }}>Web Development</p>
-                <p className={selectedTag === 'GraphicDesign' ? 'Activated' : ' '} onClick={() => {
-                    setSelectedTag('GraphicDesign');
-                }}>Graphic Design</p>
+                {tags.map((tag, i) => {
+                    return <p className={selectedTag === tag.replace(' ', '') ? 'Activated' : ' '} key={i} onClick={() => {
+                        setSelectedTag(tag.replace(' ', ''));
+                    }}>{tag}</p>
+                })}
             </div>
             <div className="ProjectsWrapper">
                 {projects.map((project, i) => {
                     return <Fragment key={i}>
                         <PortfolioCard project={project} style={{
-                            animation: `0.5s ease-in-out ${i*0.25}s forwards SlideDown`
+                            animation: `0.5s ease-in-out ${i*0.15}s forwards SlideDown`
                         }} tagCallback={(e: React.MouseEvent) => {
                             e.preventDefault();
                             setSelectedTag(project.tag.split(' ').join(''));

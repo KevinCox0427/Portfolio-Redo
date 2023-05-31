@@ -20,26 +20,46 @@ declare global {
  * @param reactComponent The JSX component to be rendered.
  * @param fileName The name of the CSS and JS files to be sent to the client (should be the same).
  * @param ServerProps (Optional) Allows us to pass any properties from the server to the client. This is done by parsing it into a JSON string and attaching it to the client's window. This is a technique used by full-stack frameworks like Next.js or Remix.js.
+ * @param seoOptions (Optional) Decides how to render the meta tags in the header for SEO purposes.
  */
-function serveHTML(reactComponent:ReactElement<any>, fileName:string, inputServerProps?:ServerPropsType | {}){
-    /**
-     * Loading default Server Props if none provided.
-     */
-    if(!inputServerProps) inputServerProps = {};
+function serveHTML(reactComponent:ReactElement<any>, fileName:string, inputServerProps:ServerPropsType = {}, seoOptions: {
+    title: string,
+    url: string,
+    description: string,
+    name: string,
+    image: string
+} = {
+    title: '',
+    url: '',
+    description: '',
+    name: '',
+    image: ''
+}){
 
     return `
         <!DOCTYPE html>
         <html lang="en">
         <head>
-            <link rel="icon" href="#" />
-            <title>Dream State - ${fileName}</title>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>${seoOptions.title}</title>
+            <meta property="og:title" content="${seoOptions.title}">
+            <meta name="description" content="${seoOptions.description}">
+            <meta property="og:description" content="${seoOptions.description}">
+            <meta property="og:site_name" content="${seoOptions.name}">
+            <meta property="og:url" content="${seoOptions.url}">
+            <meta property="og:image" content="${seoOptions.image}">
+            <link rel="canonical" href="${seoOptions.url}">
+            <link rel="icon" href="https://dreamstateospublic.s3.us-east-2.amazonaws.com/favicon.png" />
             <link rel="stylesheet" type="text/css" href="/css/${fileName}.css">
             <link rel="stylesheet" type="text/css" href="/css/globals.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <script>window.ServerProps=${JSON.stringify(inputServerProps)}</script>
             ${fileName === 'Home' ? `
-                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossOrigin=""/>
-                <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossOrigin=""></script>
+                <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet-src.min.js" integrity="sha512-3/WyQrhTdqSVmSifQS62akgtNBhZha2lS44TnoN9Jk3J01FvsKK4suVmz6t5FtccGb5iJw58GoFhBjPE5EPc8Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"></link>
             ` : ''}
