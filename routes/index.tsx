@@ -1,6 +1,6 @@
 import express from "express";
 import React from "react";
-import Home from "../pages/Home";
+import Home from "../pages/Home/Home";
 import serveHTML from "../utils/serveHTML";
 import { pbkdf2Sync, randomBytes } from 'crypto';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';

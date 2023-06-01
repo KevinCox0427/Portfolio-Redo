@@ -16,7 +16,7 @@ const WebsiteSlider: FunctionComponent<Props> = (props) => {
     sliderProjects = [offset, ...sliderProjects];
 
     for(let i = 0; i < Math.ceil(10/sliderProjects.length) - 1; i++) {
-        sliderProjects = [...sliderProjects, ...props.portfolioConfig];
+        sliderProjects = [...sliderProjects, ...sliderProjects];
     }
 
     const sliderRate = sliderProjects.length * 8;

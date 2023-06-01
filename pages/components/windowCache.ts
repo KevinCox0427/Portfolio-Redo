@@ -1,5 +1,13 @@
 import { useEffect } from "react";
 
+function deepEquals(a:any, b:any): boolean {
+    if((typeof a !== 'object' || !a) && (typeof b !== 'object' || !b)) return a === b;
+    if(Object.keys(a).length !== Object.keys(b).length) return false;
+    return Object.keys(a).every(aKey => {
+        if(typeof b[aKey] === 'undefined') return false;
+        else return deepEquals(a[aKey], b[aKey]);
+    });
+}
 
 class WindowCache {
     defaultValues: {
@@ -22,6 +30,8 @@ class WindowCache {
         this.setHasLoaded = setHasLoaded;
 
         useEffect(() => {
+            this.hasWindowLoaded = true;
+
             const previousValuesStringified = localStorage.getItem('DreamStateCachedValues');
 
             if(previousValuesStringified && typeof JSON.parse(previousValuesStringified) !== 'undefined') {
@@ -50,9 +60,8 @@ class WindowCache {
             }
             else {
                 localStorage.setItem('DreamStateCachedValues', JSON.stringify(this.defaultValues));
+                setHasLoaded(true);
             }
-
-            this.hasWindowLoaded = true;
         }, []);
     }
 
@@ -78,7 +87,7 @@ class WindowCache {
                 if(!deepEquals(this.cachedValues[itemName].value, stateVariable)) {
                     this.cachedValues[itemName].value = stateVariable;
                 }
-                if(this.hasWindowLoaded /* && this.previousValues */) {
+                if(this.hasWindowLoaded) {
                     this.updateLoad(itemName);
                 }
             }
@@ -108,24 +117,9 @@ class WindowCache {
 
     
     hasLoaded() {
-        // console.log(Object.keys(this.isLoaded).map((key) => {
-        //     return {
-        //         [key]: this.isLoaded[key as keyof typeof this.isLoaded]
-        //     }
-        // }))
         return Object.keys(this.isLoaded).every(key => this.isLoaded[key as keyof typeof this.isLoaded]);
     }
 }
 
 
 export default WindowCache;
-
-
-function deepEquals(a:any, b:any): boolean {
-    if((typeof a !== 'object' || !a) && (typeof b !== 'object' || !b)) return a === b;
-    if(Object.keys(a).length !== Object.keys(b).length) return false;
-    return Object.keys(a).every(aKey => {
-        if(typeof b[aKey] === 'undefined') return false;
-        else return deepEquals(a[aKey], b[aKey]);
-    });
-}

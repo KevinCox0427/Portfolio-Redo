@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { hydrateRoot } from "react-dom/client";
-import Footer from "./parts/Footer";
-import Header from "./parts/Header";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
 
 declare global {
     type Page404Props = {

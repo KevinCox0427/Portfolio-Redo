@@ -1,6 +1,6 @@
 import React, { Fragment, FunctionComponent } from "react";
-import Title from "../Title";
-import PortfolioCard from "../../parts/PortfolioCard";
+import Title from "../components/Title";
+import PortfolioCard from "../../components/PortfolioCard";
 
 type Props = {
     sectionContent: SectionContent,

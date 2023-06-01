@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
-import WindowCache from "../../parts/windowCache";
+import WindowCache from "../../components/windowCache";
 import WatchTime from "./WatchTime";
 import UserData from "./UserData";
 import Heatmap from "./HeatMap";
-import Title from "../Title";
+import Title from "../components/Title";
 import PageViews from "./PageViews";
 
 type Props = {
@@ -35,7 +35,7 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
     let defaultPageViews = {
         "": 0,
         portfolio: 0,
-        resume: 0,
+        about: 0,
         contact: 0
     };
 

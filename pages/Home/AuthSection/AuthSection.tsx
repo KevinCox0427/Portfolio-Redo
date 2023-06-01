@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
-import WindowCache from "../../parts/windowCache";
+import WindowCache from "../../components/windowCache";
 import Register from "./Register";
 import Login from "./Login";
-import Title from "../Title";
+import Title from "../components/Title";
 
 export type { UserData }
 

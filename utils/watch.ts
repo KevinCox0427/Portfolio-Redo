@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { spawn, execSync, ChildProcess } from 'child_process';
-import { readdirSync, watch, existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { readdirSync, watch, existsSync, readFileSync, writeFileSync, mkdirSync, lstatSync } from 'fs';
 
 watchScript();
 
@@ -40,6 +40,8 @@ function watchScript() {
 
         watch(`${folder}/${pointer}`, (x, file) => {
             if(!existsSync(`${folder}/${pointer}/${file}`)) return;
+
+            if(lstatSync(`${folder}/${pointer}/${file}`).isDirectory()) return watchDirectory(`${folder}/${pointer}`, file);
             
             if((pointer === 'public' || folder.includes('public')) && !folder.includes('dist')) copyPublicFiles('public');
 
@@ -48,14 +50,12 @@ function watchScript() {
             if(file.endsWith('.scss')) runProcess('Sass', file);
 
             if(file.endsWith('.ts') || file.endsWith('tsx')) runProcess('Typescript', file);
-
-            if(!file.includes('.') || file.split('.')[1].length == 0) watchDirectory(`${folder}/${pointer}`, file);
         });
     }
 
     function readDirectorys(folder:string) {
         readdirSync(folder).forEach(pointer => {
-            if(pointer.includes('.') || pointer == 'node_modules' || pointer == 'dist') return;
+            if(!lstatSync(`${folder}/${pointer}`).isDirectory() || pointer == 'node_modules' || pointer == 'dist') return;
 
             watchDirectory(folder, pointer);
             readDirectorys(`${folder}/${pointer}`);

@@ -1,9 +1,9 @@
 import React, { Fragment, FunctionComponent, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
-import Header from "./parts/Header";
-import Footer from "./parts/Footer";
-import PortfolioCard from "./parts/PortfolioCard";
-import AddPageView from "./parts/AddPageView";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import PortfolioCard from "./components/PortfolioCard";
+import AddPageView from "./components/AddPageView";
 
 declare global {
     type PortfolioPageProps = {

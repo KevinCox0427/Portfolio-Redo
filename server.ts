@@ -9,7 +9,7 @@ dotenv.config();
  * Initializing our express server.
  */
 import express from "express";
-export const app = express();
+const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.set('trust proxy', true);

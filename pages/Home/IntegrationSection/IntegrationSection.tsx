@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from "react";
 import Track from "./Track";
-import WindowCache from "../../parts/windowCache";
-import Title from "../Title";
+import WindowCache from "../../components/windowCache";
+import Title from "../components/Title";
 
 type SearchResponse = {
     type: string,

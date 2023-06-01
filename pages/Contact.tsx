@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
-import Header from "./parts/Header";
-import Footer from "./parts/Footer";
-import AddPageView from "./parts/AddPageView";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import AddPageView from "./components/AddPageView";
 
 declare global {
     type ContactPageProps = {

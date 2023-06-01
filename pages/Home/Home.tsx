@@ -1,18 +1,18 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import Header from './parts/Header';
-import Footer from './parts/Footer';
-import FloralSVG from './Home/FloralSVG';
-import HandSVG from './Home/HandSVG';
-import DataSection from './Home/DataSection/DataSection';
-import NavBars from './Home/NavBars';
-import AuthSection from './Home/AuthSection/AuthSection';
-import IntegrationSection from './Home/IntegrationSection/IntegrationSection';
-import AnalyticsSection from './Home/AnalyticsSection/AnalyticsSection';
-import WindowCache from './parts/windowCache';
-import UISection from './Home/UISection/UISection';
-import WebSection from './Home/WebSection/WebSection';
-import WebsiteSlider from './Home/WebsitesSliders';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import FloralSVG from './components/FloralSVG';
+import HandSVG from './components/HandSVG';
+import DataSection from './DataSection/DataSection';
+import NavBars from './components/NavBars';
+import AuthSection from './AuthSection/AuthSection';
+import IntegrationSection from './IntegrationSection/IntegrationSection';
+import AnalyticsSection from './AnalyticsSection/AnalyticsSection';
+import WindowCache from '../components/windowCache';
+import UISection from './UISection/UISection';
+import WebSection from './WebSection/WebSection';
+import WebsiteSlider from './components/WebsitesSliders';
 
 declare global {
     type HomePageProps = {
@@ -48,7 +48,8 @@ type Props = {
 const Home:FunctionComponent<Props> = (props) => {
     if(typeof props.ServerProps.homePageProps === 'undefined') return <></>;
 
-    const [cacheHasLoaded, setCacheHasLoaded] = useState(false)
+    const [cacheHasLoaded, setCacheHasLoaded] = useState(false);
+    useEffect(() => console.log(cacheHasLoaded), [cacheHasLoaded])
     const windowCache = useRef(new WindowCache(setCacheHasLoaded));
 
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);

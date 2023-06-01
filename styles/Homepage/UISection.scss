@@ -110,6 +110,28 @@
                     }
                 }
             }
+
+            &.Activated {
+                .SectionContent {
+                    opacity: 0.5;
+                    transform: translate(15px);
+                    user-select: none;
+                }
+
+                &:hover {
+                    cursor: pointer;
+
+                    .SectionContent {
+                        transform: translate(0px);
+                        opacity: 1;
+                        pointer-events: none;
+                    }
+                }
+
+                .MovingIndicator {
+                    opacity: 1;
+                }
+            }
     
             .MovingIndicator {
                 position: absolute;
@@ -120,6 +142,7 @@
                 width: 0.2em;
                 border-radius: 10em;
                 transform: translateY(-50%);
+                opacity: 0;
             }
         }
     }
