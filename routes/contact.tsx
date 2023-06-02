@@ -60,7 +60,15 @@ contact.route('/general')
                 email: result.Email
             }],
             fromName: 'Dream State Graphics',
-            subject: 'Your Dream State Contact Submission Has Been Received!',
+            subject: 'Your Dream State Submission Has Been Received!',
+            body: email
+        }) && await sendEmail({
+            to: [{
+                name: 'Kevin Cox',
+                email: 'kevin@dreamstate.graphics'
+            }],
+            fromName: 'Dream State Graphics',
+            subject: 'You\'ve just recieved a new submission!',
             body: email
         });
 
@@ -106,6 +114,14 @@ contact.route('/inquiry')
             }],
             fromName: 'Dream State Graphics',
             subject: 'Your Dream State Inquiry Has Been Received!',
+            body: email
+        }) && await sendEmail({
+            to: [{
+                name: 'Kevin Cox',
+                email: 'kevin@dreamstate.graphics'
+            }],
+            fromName: 'Dream State Graphics',
+            subject: 'You\'ve just recieved a new inquiry!',
             body: email
         });
 

@@ -103,6 +103,7 @@ main {
 
         .Submit {
             @include RoundButton(var(--black));
+            font-size: clamp(1.5em, 1.75vw, 1.75em);
             align-self: center;
             margin: 0 auto;
         }

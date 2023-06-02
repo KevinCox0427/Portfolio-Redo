@@ -39,7 +39,7 @@ const Track:FunctionComponent<Props> = (props) => {
                 }}></img>
             </a>
         :
-            <div className="AlbumCover" onClick={() => {
+            <a className="AlbumCover" href="/#SpotifyRecommendations" onClick={() => {
                 props.search(props.searchResult.id, true);
             }}>
                 <RecordSVG></RecordSVG>
@@ -48,7 +48,7 @@ const Track:FunctionComponent<Props> = (props) => {
                     height: `${props.width}px`
                 }}></img>
                 <p className="Button">Recommend</p>
-            </div>
+            </a>
         }
         <div className="Details">
             <a className="Title" href={props.searchResult.url} target='_blank' rel="nofollow">

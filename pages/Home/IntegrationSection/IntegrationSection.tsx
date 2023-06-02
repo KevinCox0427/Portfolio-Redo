@@ -41,7 +41,6 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
     });
     props.windowCache.registerCache('searchData', searchData, setSearchData);
 
-
     const [isSearching, setIsSearching] = useState({
         search: false,
         recommendations: false
@@ -94,6 +93,7 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
     });
     
     const timeoutBuffer = useRef<NodeJS.Timeout | null>(null);
+
     useEffect(() => {
         setTimeout(resizeResults, 100);
         window.addEventListener('resize', () => {
@@ -156,7 +156,7 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
                 }}></input>
                 <label htmlFor="spotifySearch">Search your favorite song:</label>
             </div>
-            <div className="SpotifyResults Search">
+            <div className="SpotifyResults Search" id="SpotifySearch">
                 <h3>
                     Search Results:
                     <span>{`${searchData.searchResults.length > 0 ? results.searchSlider+1 : 0} / ${Math.ceil(searchData.searchResults.length / results.count)}`}</span>
@@ -193,7 +193,7 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
                     }
                 </div>
             </div>
-            <div className="SpotifyResults Recommendation">
+            <div className="SpotifyResults Recommendation" id="SpotifyRecommendations">
                 <h3>
                     Recommendation Results:
                     <span>{`${searchData.searchRecommendations.length > 0 ? results.recommendSlider+1 : 0} / ${Math.ceil(searchData.searchRecommendations.length / results.count)}`}</span>

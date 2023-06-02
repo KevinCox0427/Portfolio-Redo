@@ -330,7 +330,7 @@ const Contact: FunctionComponent<Props> = (props) => {
                     </div>
                 </div>
                 <div className="SubSection">
-                    <h3>Time Frame:</h3>
+                    <h3>Estimated Time Frame:</h3>
                     <div className="Dates">
                         <div className="DateWrapper">
                             <input id="inquiryStartDate" value={inquiryForm.data["Start Date"]} type="date" onFocus={e => {
@@ -379,7 +379,7 @@ const Contact: FunctionComponent<Props> = (props) => {
                     </div>
                 </div>
                 <div className="TextareaWrapper">
-                    <label htmlFor="inquiryAvailability">Availability:</label>
+                    <label htmlFor="inquiryAvailability">Meeting Availability:</label>
                     <textarea placeholder=" " id="inquiryAvailability" value={inquiryForm.data["Availability"]} onChange={e => {
                         setInquiryForm(oldInquiry => {
                             return {...oldInquiry,
