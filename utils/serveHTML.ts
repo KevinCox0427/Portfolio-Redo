@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
 
 /**
- * Declaration merging the Server Props to the Window object.
+ * Declaration merging the Server Props to the Window object to retain typing in our React files.
  */
 declare global {
     interface Window {
@@ -12,14 +12,14 @@ declare global {
 
 /**
  * This is our HTML document that will be rendered.
- * First we are setting an appropriate document head to fetch the CSS and JS files.
+ * First we are setting an appropriate document head for SEO optimizations.
  * Then, we are using React's renderToString() to render our React element inside the "root" div.
  * Finally, using webpack, we hydrate the "root" div by sending the client a bundled JS file via the document head.
- * This is the exact process that Create-React-App does, but instead we're doing it on our own Node server.
+ * This is the exact process that Next.js does, but instead we're doing it on our own Node server.
  * 
  * @param reactComponent The JSX component to be rendered.
  * @param fileName The name of the CSS and JS files to be sent to the client (should be the same).
- * @param ServerProps (Optional) Allows us to pass any properties from the server to the client. This is done by parsing it into a JSON string and attaching it to the client's window. This is a technique used by full-stack frameworks like Next.js or Remix.js.
+ * @param ServerProps (Optional) Allows us to pass any properties from the server to the client. This is done by parsing it into a JSON string and attaching it to the client's window.
  * @param seoOptions (Optional) Decides how to render the meta tags in the header for SEO purposes.
  */
 function serveHTML(reactComponent:ReactElement<any>, fileName:string, inputServerProps:ServerPropsType = {}, seoOptions: {

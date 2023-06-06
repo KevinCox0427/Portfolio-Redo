@@ -7,6 +7,10 @@ import RegexTester from '../utils/regexTester';
 import EmailGenerator from '../utils/emailGenerator';
 import sendEmail from '../utils/smtp';
 
+/**
+ * Intiating a utility class to generate the HTML for an email.
+ * See utils/emailGenerator.ts for more details.
+ */
 const htmlgen = new EmailGenerator({
     image: 'https://www.dreamstate.graphics/logo.png',
     name: 'Dream State',
@@ -18,14 +22,24 @@ const htmlgen = new EmailGenerator({
 const contact = express.Router();
 
 contact.route('/')
+    /**
+     * A basic GET route for our contact page.
+     */
     .get((req, res) => {
+        /**
+         * Loading the server properties to be passed to the client side
+         */
         const serverProps: ServerPropsType = {
             contactPageProps: {
                 portfolioConfig: portfolioConfig
             }
         }
 
-        res.status(202).send(serveHTML(<Contact ServerProps={serverProps}></Contact>, 'Contact', serverProps, {
+        /**
+         * Rendering and serving the react file.
+         * See utils/serveHtml.ts for more details.
+         */
+        res.status(200).send(serveHTML(<Contact ServerProps={serverProps}></Contact>, 'Contact', serverProps, {
             title: 'Dream State - Contact',
             name: 'Dream State',
             description: 'Contact forms to reach out to Dream State for general questions or product inquiries.',
@@ -34,6 +48,10 @@ contact.route('/')
         }));
     })
 
+/**
+ * Intiating a utility class to test incoming request bodies against a series of regex tests.
+ * See utils/regexTester.ts for more details.
+ */
 const generalFormTest = new RegexTester({
     Name: /^[\w\s]{1,300}/g,
     Email: /^[a-zA-Z0-9+_.-]{1,200}@[\w]{1,10}.[a-z]{1,6}/g,
@@ -41,9 +59,18 @@ const generalFormTest = new RegexTester({
 })
 
 contact.route('/general')
+    /**
+     * The POST endpoint for the general contact form.
+     */
     .post(async (req, res) => {
+        /**
+         * Running the regex test.
+         */
         const result = generalFormTest.runTest(req.body);
 
+        /**
+         * If the return type is a string, that means it's an error message.
+         */
         if(typeof result === 'string') {
             res.status(400).send({
                 success: false,
@@ -52,8 +79,16 @@ contact.route('/general')
             return;
         }
 
+        /**
+         * Otherwise if it's a success, we'll generate an email with the valid data from the request body.
+         */
         const email = htmlgen.generateHTMLEmail('Your submission has been received! Here\'s what we got:', result);
 
+        /**
+         * Sending 2 emails via SMTP2GO.
+         * One for the confirmation email, and one sent to me.
+         * See utils/stmp.ts for more details.
+         */
         const emailResult = await sendEmail({
             to: [{
                 name: result.Name,
@@ -65,13 +100,16 @@ contact.route('/general')
         }) && await sendEmail({
             to: [{
                 name: 'Kevin Cox',
-                email: 'kevin@dreamstate.graphics'
+                email: process.env.MyEmail || ''
             }],
             fromName: 'Dream State Graphics',
             subject: 'You\'ve just recieved a new submission!',
             body: email
         });
 
+        /**
+         * Sending a response based on whether the emails successfully sent or not.
+         */
         res.status(200).send(emailResult ? {
             success: true,
             message: 'Success! Check your email for a confirmation.'
@@ -81,6 +119,10 @@ contact.route('/general')
         });
     })
 
+/**
+ * Intiating another utility class to test incoming request bodies against a series of regex tests.
+ * See utils/regexTester.ts for more details.
+ */
 const inquiryFormTest = new RegexTester({
     Name: /^[\w\s]{1,300}/g,
     Email: /^[a-zA-Z0-9+_.-]{1,200}@[\w]{1,10}.[a-z]{1,6}/g,
@@ -94,9 +136,18 @@ const inquiryFormTest = new RegexTester({
 });
 
 contact.route('/inquiry')
+    /**
+     * The POST endpoint for the inquiry form.
+     */
     .post(async (req, res) => {
+        /**
+         * Running the regex test.
+         */
         const result = inquiryFormTest.runTest(req.body);
 
+        /**
+         * If the return type is a string, that means it's an error message.
+         */
         if(typeof result === 'string') {
             res.status(400).send({
                 success: false,
@@ -105,8 +156,16 @@ contact.route('/inquiry')
             return;
         }
 
+        /**
+         * Otherwise if it's a success, we'll generate an email with the valid data from the request body.
+         */
         const email = htmlgen.generateHTMLEmail('Your submission has been received! Here\'s what we got:', result);
 
+        /**
+         * Sending 2 emails via SMTP2GO.
+         * One for the confirmation email, and one sent to me.
+         * See utils/stmp.ts for more details.
+         */
         const emailResult = await sendEmail({
             to: [{
                 name: result.Name,
@@ -118,13 +177,16 @@ contact.route('/inquiry')
         }) && await sendEmail({
             to: [{
                 name: 'Kevin Cox',
-                email: 'kevin@dreamstate.graphics'
+                email: process.env.MyEmail || ''
             }],
             fromName: 'Dream State Graphics',
             subject: 'You\'ve just recieved a new inquiry!',
             body: email
         });
 
+        /**
+         * Sending a response based on whether the emails successfully sent or not.
+         */
         res.status(200).send(emailResult ? {
             success: true,
             message: 'Success! Check your email for a confirmation.'

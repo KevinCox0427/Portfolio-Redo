@@ -8,8 +8,8 @@ interface RegexTestInputs {
 /**
  * A utility class to test a given syntax of data against some regular expressions.
  * This is mostly intended to regulate what is valid information on a form to avoid bot spam.
- * You can also nest the data's syntax, as long as it does not contain arrays.
- * Will be adding arrays to this as I've already done so in the PHP builds, just have to convert to JS.
+ * You can nest your regex tests like a JSON object.
+ * If a tested value is an array, then it will run the regex test on each index.
  */
 class RegexTester {
     requiredRegexTests: RegexTestInputs;
@@ -33,6 +33,7 @@ class RegexTester {
      */
     runTest(data: object, regexTestObject?: RegexTestInputs): string | {[key: string]: any} {
         let returnData = {};
+        
         if(!regexTestObject) {
             regexTestObject = {};
             Object.assign(regexTestObject, this.requiredRegexTests);

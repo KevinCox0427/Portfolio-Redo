@@ -49,7 +49,6 @@ fs.writeFileSync(resolve('./dist/package.json'), JSON.stringify(packageJson));
 /**
  * Adding the Procfile.
  */
-console.log('\nAdding environmental variables...');
 fs.writeFileSync('./dist/Procfile', 'web: node server.js');
 
 /**
@@ -69,6 +68,7 @@ function cleanDirectory(dirname) {
             fs.rmSync(resolve(`${dirname}/${fileName}`));
             return;
         }
+
         /**
          * Removing .map files.
          */
@@ -76,6 +76,7 @@ function cleanDirectory(dirname) {
         //     fs.rmSync(resolve(`${dirname}/${fileName}`));
         //     return;
         // }
+
         /**
          * Removing 'dist/' from js files.
          */
@@ -83,6 +84,7 @@ function cleanDirectory(dirname) {
             fs.writeFileSync(resolve(`${dirname}/${fileName}`), fs.readFileSync(resolve(`${dirname}/${fileName}`)).toString().split('dist/').join(''));
             return;
         }
+        
         /**
          * Recursively calling it for folders.
          */

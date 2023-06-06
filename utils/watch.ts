@@ -2,8 +2,14 @@ import { resolve } from 'path';
 import { spawn, execSync, ChildProcess } from 'child_process';
 import { readdirSync, watch, existsSync, readFileSync, writeFileSync, mkdirSync, lstatSync } from 'fs';
 
+/**
+ * Montoring all of our .TS, .TSX, and .SCSS files to be compiled automatically when saved. 
+ */
 watchScript();
 
+/**
+ * 
+ */
 function watchScript() {
     console.log('Compiling...\n');
 
