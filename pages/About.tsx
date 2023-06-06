@@ -113,7 +113,7 @@ const About: FunctionComponent<Props> = (props) => {
                                 <div className="SkillsWrapper">
                                     <div className="Skill">
                                         <h4>Front-end Development</h4>
-                                        <p>HTML, CSS, SASS, JavaScript, JQuery, TypeScript, React.JS, Angular.JS, JS Libraries (ex. Leaflet.JS, Quill.JS)</p>
+                                        <p>HTML, CSS, SASS, JavaScript, JQuery, TypeScript, React.JS, Angular.JS, Unit Testing, Jest.JS</p>
                                     </div>
                                     <div className="Skill">
                                         <h4>Back-end Development</h4>

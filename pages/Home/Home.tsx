@@ -49,7 +49,6 @@ const Home:FunctionComponent<Props> = (props) => {
     if(typeof props.ServerProps.homePageProps === 'undefined') return <></>;
 
     const [cacheHasLoaded, setCacheHasLoaded] = useState(false);
-    useEffect(() => console.log(cacheHasLoaded), [cacheHasLoaded])
     const windowCache = useRef(new WindowCache(setCacheHasLoaded));
 
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);

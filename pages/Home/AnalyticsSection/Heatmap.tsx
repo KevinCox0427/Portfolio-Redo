@@ -23,30 +23,27 @@ const Heatmap:FunctionComponent<Props> = (props) => {
             })
         });
 
-        setHeatmapImage(`https://dreamstateospublic.s3.us-east-2.amazonaws.com/self/self${Math.ceil(window.innerWidth/100)*100}.jpg`);
+        resizeHeatMap();
 
         window.addEventListener('resize', () => {
             if(resizeBuffer.current) clearTimeout(resizeBuffer.current);
-
-            let imageSize = Math.ceil(window.innerWidth/100)*100;
-            if(imageSize > 2300) imageSize = 2300;
-            if(imageSize < 500) imageSize = 500;
-
-            resizeBuffer.current = setTimeout(() => {
-                setHeatmapImage(`https://dreamstateospublic.s3.us-east-2.amazonaws.com/self/self${imageSize}.jpg`);
-            }, 100);
+            resizeBuffer.current = setTimeout(resizeHeatMap, 100);
         });
     }, []);
+
+    function resizeHeatMap() {
+        let imageSize = Math.ceil(window.innerWidth/100)*100;
+        if(imageSize > 2300) imageSize = 2300;
+        if(imageSize < 500) imageSize = 500;
+
+        setHeatmapImage(`https://dreamstateospublic.s3.us-east-2.amazonaws.com/self/self${imageSize}.jpg`);
+    }
 
     return <div className="Graph Heatmap">
         <h3>
             Interaction Heatmap:
             <i className="fa-solid fa-rotate-left Reset" onClick={() => {
-                props.setHeatMap(oldHeatMap => {
-                    return {...oldHeatMap,
-                        heatMap: []
-                    }
-                });
+                props.setHeatMap([]);
             }}></i>
         </h3>
         <div className="HeatmapScroll">

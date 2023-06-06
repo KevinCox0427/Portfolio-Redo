@@ -2,6 +2,7 @@
 
 .SplashImage {
     width: 100vw;
+    min-height: 90vh;
     display: flex;
     overflow: hidden;
     * {
@@ -344,6 +345,7 @@
             padding-top: 17em;
             padding-bottom: 0.25em;
             margin-top: -5em;
+            overflow-x: hidden;
 
             &:first-child {
                 margin-top: 0em;
