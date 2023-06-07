@@ -96,14 +96,9 @@ const JsonInput:FunctionComponent<Props> = (props) => {
         {props.currentData.categories.map((category, i) => {
             return <div key={i} className='Line' style={{marginLeft: '2.5em'}}>
                 <input value={category} onChange={e => {
-                    const newCategories = JSON.parse(JSON.stringify(props.currentData.categories));
-
-                    newCategories[i] = e.target.value;
-
                     props.setCurrentData(oldData => {
-                        return {...oldData,
-                            categories: newCategories
-                        }
+                        oldData.categories[i] = e.target.value;
+                        return oldData;
                     });
                 }}></input>
                 <i className="fa-regular fa-trash-can DeleteButton" onClick={() => {

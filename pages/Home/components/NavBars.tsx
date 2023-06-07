@@ -53,7 +53,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
                 })}
             </div>
         </div>
-        <div className='NavBar Bottom' ref={navBarBottom} data-html2canvas-ignore={true} style={{
+        <div className='NavBar Bottom' ref={navBarBottom} style={{
             opacity: isNavBarStatic ? 0 : 1
         }}>
             <h2>I can create:</h2>
@@ -70,7 +70,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
                 })}
             </div>
         </div>
-        <div className='NavBar Static' ref={navBarStatic} data-html2canvas-ignore={true} style={navBarStaticLimit < 0 ? {
+        <div className='NavBar Static' ref={navBarStatic} style={navBarStaticLimit < 0 ? {
             opacity: isNavBarStatic ? 1 : 0,
             top: navBarStaticLimit
         } : {

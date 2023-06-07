@@ -1,15 +1,66 @@
 import React, { FunctionComponent } from "react";
-import { UserData } from "./AuthSection";
+import { UserAuthData } from "./AuthSection";
 
 type Props = {
-    userData: UserData,
-    setUserData: React.Dispatch<React.SetStateAction<UserData>>,
-    setSessionCounter: React.Dispatch<React.SetStateAction<number>>
+    userData: UserAuthData,
+    setUserData: React.Dispatch<React.SetStateAction<UserAuthData>>
 }
 
+/**
+ * A component in the Authenication section for the homepage to render the registration form and to display the encrypted password.
+ * 
+ * @param userData The state variable reprenting the forms' data and the session's data.
+ * @param setUserData The set state function for the userData variable.
+ */
 const Register: FunctionComponent<Props> = (props) => {
+    /**
+     * A function to update the registration form's username.
+     * Also removes any user sessions since the credentials will become invalid.
+     */
+    function handleUsernameInput(e:React.ChangeEvent<HTMLInputElement>) {
+        props.setUserData(oldUserData => {
+            return {...oldUserData,
+                registerUsername: e.target.value,
+                session: {
+                    key: '',
+                    expires: 0
+                }
+            }
+        });
+    }
 
-    async function encryptPassword() {
+    /**
+     * A function to update the registration form's password.
+     * Also removes any user sessions since the credentials will become invalid.
+     */
+    function handlePasswordInput(e:React.ChangeEvent<HTMLInputElement>) {
+        props.setUserData(oldUserData => {
+            return {...oldUserData,
+                registerPassword: e.target.value,
+                hash: '',
+                salt: '',
+                session: {
+                    key: '',
+                    expires: 0
+                }
+            }
+        });
+    }
+
+    /**
+     * A function to submit the registration form.
+     * This is mostly to encrypt the password via the server.
+     */
+    async function submit(e: React.MouseEvent) {
+        /**
+         * Preventing default so the form doesn't reload the page.
+         */
+        e.preventDefault();
+
+        /**
+         * Sending the password to the server to encrypt it.
+         * I'm sure there's a client-side library to do this, I just couldn't find one and node's crypto library is easy.
+         */
         const response = await (await fetch('/encrypt', {
             method: 'POST',
             headers: {
@@ -19,7 +70,11 @@ const Register: FunctionComponent<Props> = (props) => {
             body: JSON.stringify({
                 password: props.userData.registerPassword
             })
-        })).json()
+        })).json();
+
+        /**
+         * Setting the encrypted password based on the response.
+         */
         props.setUserData(oldUserData => {
             return {...oldUserData,
                 hash: response.hash,
@@ -27,59 +82,39 @@ const Register: FunctionComponent<Props> = (props) => {
             }
         });
     }
+
+    /**
+     * A function to reset the registration form's values and the session.
+     */
+    function reset() {
+        props.setUserData(oldUserData => {
+            return {...oldUserData,
+                registerUsername: '',
+                registerPassword: '',
+                hash: '',
+                salt: '',
+                session: {
+                    key: '',
+                    expires: 0
+                }
+            }
+        });
+    }
     
     return <>
-        <div className="Form">
+        <form className="Form">
             <h4>Register</h4>
-            <i className="fa-solid fa-arrow-rotate-left Reset" onClick={() => {
-                props.setUserData(oldUserData => {
-                    return {...oldUserData,
-                        registerUsername: '',
-                        registerPassword: '',
-                        hash: '',
-                        salt: '',
-                        session: {
-                            key: '',
-                            expires: 0
-                        }
-                    }
-                });
-                props.setSessionCounter(0);
-            }}></i>
+            <i className="fa-solid fa-arrow-rotate-left Reset" onClick={reset}></i>
             <div className="InputWrapper">
-                <input placeholder=" " id="userCreateUsername" value={props.userData.registerUsername} onChange={e => {
-                    props.setUserData(oldUserData => {
-                        return {...oldUserData,
-                            registerUsername: e.target.value,
-                            session: {
-                                key: '',
-                                expires: 0
-                            }
-                        }
-                    });
-                    props.setSessionCounter(0);
-                }}></input>
+                <input placeholder=" " id="userCreateUsername" value={props.userData.registerUsername} onChange={handleUsernameInput}></input>
                 <label htmlFor="userCreateUsername">Username:</label>
             </div>
             <div className="InputWrapper">
-                <input placeholder=" " id="userCreatePassword" type="password" value={props.userData.registerPassword} onChange={e => {
-                    props.setUserData(oldUserData => {
-                        return {...oldUserData,
-                            registerPassword: e.target.value,
-                            hash: '',
-                            salt: '',
-                            session: {
-                                key: '',
-                                expires: 0
-                            }
-                        }
-                    });
-                    props.setSessionCounter(0);
-                }}></input>
+                <input placeholder=" " id="userCreatePassword" type="password" value={props.userData.registerPassword} onChange={handlePasswordInput}></input>
                 <label htmlFor="userCreatePassword">Password:</label>
             </div>
-            <button className="Submit" onClick={encryptPassword}>Submit</button>
-        </div>
+            <button className="Submit" onClick={submit}>Submit</button>
+        </form>
         <div className="EncryptionWrapper">
             <h4>Your encrypted password:</h4>
             {props.userData.salt && props.userData.hash ? <p className="EncryptedPassword">

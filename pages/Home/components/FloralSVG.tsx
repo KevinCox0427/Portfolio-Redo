@@ -1,6 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { FunctionComponent } from "react";
 
+/**
+ * A massive SVG for the floral pattern. So pretty.
+ */
 const FloralSVG:FunctionComponent = () => {
     return <svg id="FloralPatternSVG" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 1603.06 1229.42">
         <defs>

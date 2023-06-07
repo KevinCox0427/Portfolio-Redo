@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import WindowCache from "../../components/windowCache";
 import WatchTime from "./WatchTime";
 import UserData from "./UserData";
@@ -8,17 +8,17 @@ import PageViews from "./PageViews";
 
 type Props = {
     windowCache: WindowCache,
+    cacheHasLoaded: boolean,
     sectionContent: SectionContent,
+    currentSection: string,
     watchTime: {
         start: number,
         timeStamps: {
             [sectionName: string]: number
         }
     },
-    portfolioConfig: PortfolioConfig[],
     resetWatchTime: () => void,
-    currentSection: string,
-    cacheHasLoaded: boolean,
+    portfolioConfig: PortfolioConfig[],
     style: React.CSSProperties,
     domain: string,
     locationData: {
@@ -28,49 +28,28 @@ type Props = {
     }
 }
 
+/**
+ * A component for the analytics section of the homepage.
+ * 
+ * @param windowCache The utility class to save state variables to local storage upon state changes.
+ * @param cacheHasLoaded The state variable representing whether the window cache has loaded all it's values from local storage.
+ * @param sectionContent The titles and descriptions of each seciton on the homepage. This can be changed by the UI section.
+ * @param currentSection The key at which this sections content can be found in sectionContent.
+ * @param watchTime The watchtime of each section recorded by the home page. This will be displayed in a bar graph
+ * @param resetWatchTime A function to reset of all the watch times to 0s.
+ * @param portfolioConfig The configuration of all the porfolio projects. This is so we can 
+ * @param style Any additional stylings to the wrapper div.
+ * @param domain The domain that this build is currently running on. This is to display proper urls when show the page views for each route.
+ * @param locationData The data collected on the user via their IP. This is to display this information along with a map of their location.
+ */
 const AnalyticsSection:FunctionComponent<Props> = (props) => {
-    const [heatmap, setHeatMap] = useState<number[][]>([]);
-    props.windowCache.registerCache('heatmap', heatmap, setHeatMap);
-
-    let defaultPageViews = {
-        "": 0,
-        portfolio: 0,
-        about: 0,
-        contact: 0
-    };
-
-    props.portfolioConfig.forEach(project => {
-        defaultPageViews = {...defaultPageViews,
-            [`portfolio/${project.route}`]: 0
-        }
-    });
-
-    const [pageViews, setPageViews] = useState<{
-        [pageName: string]: number
-    }>(defaultPageViews);
-    
-    props.windowCache.registerCache('pageLoads', pageViews, setPageViews);
-
-    useEffect(() => {
-        if(!props.cacheHasLoaded) return;
-        setPageViews(oldPageViews => {
-            return {...oldPageViews,
-                "": oldPageViews[""] + 1
-            }
-        })
-    }, [props.cacheHasLoaded]);
-
-    function resetPageViews() {
-        setPageViews(defaultPageViews);
-    }
-
     return <div id="analytics" className='Section' style={props.style}>
         <Title content={props.sectionContent.content}></Title>
         <div className="GraphWrapper">
-            <UserData locationData={props.locationData} cacheHasLoaded={props.cacheHasLoaded}></UserData>
+            <UserData locationData={props.locationData}></UserData>
             <WatchTime watchTime={props.watchTime} currentSection={props.currentSection} resetWatchTime={props.resetWatchTime}></WatchTime>
-            <Heatmap heatMap={heatmap} setHeatMap={setHeatMap}></Heatmap>
-            <PageViews pageViews={pageViews} resetPageViews={resetPageViews} domain={props.domain}></PageViews>
+            <Heatmap windowCache={props.windowCache}></Heatmap>
+            <PageViews portfolioConfig={props.portfolioConfig} windowCache={props.windowCache} cacheHasLoaded={props.cacheHasLoaded} domain={props.domain}></PageViews>
         </div>
     </div>
 }

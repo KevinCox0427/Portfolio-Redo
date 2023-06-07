@@ -239,7 +239,7 @@ const Home:FunctionComponent<Props> = (props) => {
                     order: sectionContent.data.order,
                     zIndex: Object.keys(sectionContent).length - sectionContent.data.order
                 }}></DataSection>
-                <AuthSection windowCache={windowCache.current} sectionContent={sectionContent.authentication} style={{
+                <AuthSection windowCache={windowCache.current} cachedHadLoaded={cacheHasLoaded} sectionContent={sectionContent.authentication} style={{
                     order: sectionContent.authentication.order,
                     zIndex: Object.keys(sectionContent).length - sectionContent.authentication.order
                 }}></AuthSection>
