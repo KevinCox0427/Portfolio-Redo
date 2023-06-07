@@ -4,8 +4,11 @@ type Props = {
     portfolioConfig: PortfolioConfig[]
 }
 
+/**
+ * A simple footer component to be used in all our pages.
+ * @param portfolioConfig the portfolio configuration so we can link to all the projects.
+ */
 const Footer:FunctionComponent<Props> = (props) => {
-
     return <footer id="footer">
         <div className='Contain'>
             <div className='Left'>

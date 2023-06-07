@@ -1,140 +1,158 @@
 import { resolve } from 'path';
-import { spawn, execSync, ChildProcess } from 'child_process';
-import { readdirSync, watch, existsSync, readFileSync, writeFileSync, mkdirSync, lstatSync } from 'fs';
+import { spawn, execSync } from 'child_process';
+import { readdirSync, watch, existsSync, readFileSync, writeFileSync, lstatSync } from 'fs';
 
 /**
- * Montoring all of our .TS, .TSX, and .SCSS files to be compiled automatically when saved. 
+ * Keeping track of when the node server started and is running.
  */
-watchScript();
+let currentCompileTimestamp = Date.now();
+let currentNodeProcess = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
 
-/**
- * 
- */
-function watchScript() {
+try {
     console.log('Compiling...\n');
-
-    try {
-        execSync('tsc');
-        execSync('sass styles:dist/public/css');
-        execSync('webpack');
-    } catch (e:any) {
-        if(Array.isArray(e.output)) {
-            console.log(
-                e.output
-                    .filter((err:any) => err instanceof Buffer)
-                    .map((buffer:Buffer) => {
-                        return `Error:\n\n${buffer.toString()}`
-                    })
-                    .filter((errStr:string) => errStr.length > 'Error:\n\n '.length)
-                    .join('\n')
-            );
-        }
-        return;
-    }
-
-    copyPublicFiles('public');
-
-    let compileTimestamp = Date.now();
-    let node = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
-
-    watchDirectory('.', '');
-    readDirectorys('.');
+    /**
+     * Running the typescript, webpack and sass CLI commands to start the build.
+     */
+    execSync('tsc');
+    execSync('sass styles:dist/public/css');
+    execSync('webpack');
+    /**
+     * Recursively watching each folder for changes.
+     */
+    watchDirectory();
     console.log('Watching!\n');
-
-    function watchDirectory(folder:string, pointer:string) {
-        if(!existsSync(`${folder}/${pointer}`)) return;
-
-        watch(`${folder}/${pointer}`, (x, file) => {
-            if(!existsSync(`${folder}/${pointer}/${file}`)) return;
-
-            if(lstatSync(`${folder}/${pointer}/${file}`).isDirectory()) return watchDirectory(`${folder}/${pointer}`, file);
-            
-            if((pointer === 'public' || folder.includes('public')) && !folder.includes('dist')) copyPublicFiles('public');
-
-            if((pointer == 'pages' || folder.includes('pages'))) runProcess('Webpack', file);
-
-            if(file.endsWith('.scss')) runProcess('Sass', file);
-
-            if(file.endsWith('.ts') || file.endsWith('tsx')) runProcess('Typescript', file);
-        });
+} catch (e:any) {
+    /**
+     * If there are errors from the intial commands, log them.
+     * The filtering is for cleaning up the error messages.
+     */
+    if(Array.isArray(e.output)) {
+        console.log(
+            e.output
+                .filter((err:any) => err instanceof Buffer)
+                .map((buffer:Buffer) => {
+                    return `Error:\n\n${buffer.toString()}`
+                })
+                .filter((errStr:string) => errStr.length > 'Error:\n\n '.length)
+                .join('\n')
+        );
     }
+}
 
-    function readDirectorys(folder:string) {
-        readdirSync(folder).forEach(pointer => {
-            if(!lstatSync(`${folder}/${pointer}`).isDirectory() || pointer == 'node_modules' || pointer == 'dist') return;
-
-            watchDirectory(folder, pointer);
-            readDirectorys(`${folder}/${pointer}`);
-        }); 
-    }
-
-    function runProcess(command: string, fileName: string) {
-        if(Date.now() - compileTimestamp < 200) return;
-
-        node.kill('SIGTERM');
-
-        const processTimestamp = Date.now();
-
-        compileTimestamp = processTimestamp;
-        console.log(`\nCompiling: ${fileName} (${command})`);
-        
-        let compiler:ChildProcess | null = null;
-        
-        switch(command){
-            case 'Webpack':
-                compiler = spawn('tsc', {shell: true});
-                compiler = spawn('webpack', {shell: true});
-                break;
-            case 'Sass':
-                compiler = spawn('sass', ['styles:dist/public/css'], {shell: true});
-                break;
-            case 'Typescript':
-                compiler = spawn('tsc', {shell: true});
-                break;
+/**
+ * A function that recursively reads directories and sets event listeners to run CLI commands when a user saves.
+ * @param folder The root folder to start with. If none provided, starts at the root folder.
+ */
+function watchDirectory(folder:string = '.') {
+    /**
+     * Recursive callback for sub-folders.
+     */
+    readdirSync(folder).forEach(file => {
+        if(lstatSync(`${folder}/${file}`).isDirectory() && folder !== 'node_modues') {
+            watchDirectory(`${folder}/${file}`);
         }
+    });
+    /**
+     * Adding an event to fire when a user saves anything in this directory with fs's watch()
+     */
+    watch(folder === '.' ? './' : folder, (_, file) => {
+        /**
+         * If it's in the public folder, that means it's an asset and we'll copy + paste it.
+         */
+        if(folder.startsWith('./public')) {
+            writeFileSync(`${folder}/${file}`, readFileSync(`${folder}/${file}`));
+        }
+        /**
+         * If it's in the 'pages' directory, then it's a React file and it needs to be bundled.
+         */
+        if(folder.startsWith('./pages')) {
+            console.log(folder)
+            runProcess('webpack', file);
+        }
+        /**
+         * For Sass.
+         */
+        if(file.endsWith('.scss')) {
+            runProcess('sass styles:dist/public/css', file);
+        }
+        /**
+         * For Typescript.
+         */
+        if(file.endsWith('.ts') || file.endsWith('tsx')) {
+            runProcess('tsc', file);
+        }
+    });
+}
 
-        if(!compiler) return;
+/**
+ * A function to run a CLI command. If it succeeds, it'll restart the node server.
+ * @param command The CLI command to run
+ * @param fileName The file name to print.
+ */
+function runProcess(command: string, fileName: string) {
+    /**
+     * Since fs's watch event is called several times when a file is saved, we'll apply a 200ms buffer to each time this is called.
+     */
+    if(Date.now() - currentCompileTimestamp < 200) return;
+    console.log(`\nCompiling: ${fileName} (${command})`);
 
-        let compilerMessage = '';
+    /**
+     * Kills the current node process to run the CLI .
+     */
+    currentNodeProcess.kill('SIGTERM');
+    
+    /**
+     * Running the command.
+     */
+    let compiler = spawn(command, {shell: true});
+    let compilerMessage = '';
 
-        if(compiler.stderr) compiler.stderr.on('data', (data) => {
-            compilerMessage = data.toString();
-        })
-        if(compiler.stdout) compiler.stdout.on('data', (data) => {
-            compilerMessage = data.toString();
-        })
+    /**
+     * Setting event listeners to store outgoing messages
+     */
+    if(compiler.stderr) compiler.stderr.on('data', data => {
+        compilerMessage = data.toString();
+    });
+    if(compiler.stdout) compiler.stdout.on('data', data => {
+        compilerMessage = data.toString();
+    });
 
-        compiler.on('exit', code => {
-            if(processTimestamp != compileTimestamp) return;
+    /**
+     * Recording this process's start timestamp.
+     * Then we'll assign it to the global variable to compare it when it's finished.
+     */
+    const processTimestamp = Date.now();
+    currentCompileTimestamp = processTimestamp;
 
-            if(code !== 0 && compilerMessage) {
-                if(command === 'Webpack') {
-                    const errorArray = compilerMessage.split('ERROR');
-                    errorArray.splice(0, 1);
-                    compilerMessage = 'ERROR' + errorArray.join('\n\nERROR').split('\nwebpack ')[0];
-                }
-                console.log(`\nError:\n\n${compilerMessage}\n\nWaiting for changes...\n`);
-                return;
+    /**
+     * Callback function to check the success of the process when it finishes.
+     */
+    compiler.on('exit', code => {
+        /**
+         * If the global timestamp is different than this one, then that means this process is stale.
+         */
+        if(processTimestamp != currentCompileTimestamp) return;
+
+        /**
+         * If fails, then print it's error message and return.
+         */
+        if(code !== 0 && compilerMessage) {
+            /**
+             * Since Webpack error messages are ugly.
+             */
+            if(command === 'Webpack') {
+                const errorArray = compilerMessage.split('ERROR');
+                errorArray.splice(0, 1);
+                compilerMessage = 'ERROR' + errorArray.join('\n\nERROR').split('\nwebpack ')[0];
             }
-            
-            console.log('Done!\n');
-            node = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
-        });
-    }
-
-    function copyPublicFiles(dirName:string) {
-        if(!existsSync(`./${dirName}`)) return;
-
-        if(!existsSync(`./dist/${dirName}`)) mkdirSync(`./dist/${dirName}`);
-
-        readdirSync(`./${dirName}`).forEach(file => {
-            if(!file.includes('.')) {
-                copyPublicFiles(`${dirName}/${file}`);
-                return;
-            }
-
-            if(existsSync(`./dist/${dirName}/${file}`)) return;
-            writeFileSync(`./dist/${dirName}/${file}`, readFileSync(`./${dirName}/${file}`));
-        });
-    }   
+            console.log(`\nError:\n\n${compilerMessage}\n\nWaiting for changes...\n`);
+            return;
+        }
+        
+        /**
+         * Otherwise if sucessful, start a new node process.
+         */
+        console.log('Done!\n');
+        currentNodeProcess = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
+    });
 }

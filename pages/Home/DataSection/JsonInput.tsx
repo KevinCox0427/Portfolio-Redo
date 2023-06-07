@@ -8,7 +8,7 @@ type Props = {
     setCurrentData: React.Dispatch<React.SetStateAction<CurrentData>>
 }
 
-const JsonInput: FunctionComponent<Props> = (props) => {
+const JsonInput:FunctionComponent<Props> = (props) => {
     function isPrice(price:string) {
         if(price == '') return true;
         if(typeof price.split('.')[1] != 'undefined' && price.split('.')[1].length > 2) return false;
@@ -40,7 +40,9 @@ const JsonInput: FunctionComponent<Props> = (props) => {
             }}></input>,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Green'>"price"</span>:<input style={{marginLeft: '1.25em'}} value={props.currentData.price ? props.currentData.price : ''} onChange={e => {
+            <span className='Green'>"price"</span>
+            :
+            <input style={{marginLeft: '1.25em'}} value={props.currentData.price ? props.currentData.price : ''} onChange={e => {
                 if(!isPrice(e.target.value)) return;
                 props.setCurrentData(oldData => {
                     return {...oldData,
@@ -50,7 +52,9 @@ const JsonInput: FunctionComponent<Props> = (props) => {
             }}></input>,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Green'>"decription"</span>:<input style={{marginLeft: '1.25em'}} value={props.currentData.description} onChange={e => {
+            <span className='Green'>"decription"</span>
+            :
+            <input style={{marginLeft: '1.25em'}} value={props.currentData.description} onChange={e => {
                 props.setCurrentData(oldData => {
                     return {...oldData,
                         description: e.target.value
@@ -59,7 +63,9 @@ const JsonInput: FunctionComponent<Props> = (props) => {
             }}></input>,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Green'>"minimumQuantity"</span>:<input style={{marginLeft: '1.25em'}} value={props.currentData.minQuantity ? props.currentData.minQuantity : ''} onChange={e => {
+            <span className='Green'>"minimumQuantity"</span>
+            :
+            <input style={{marginLeft: '1.25em'}} value={props.currentData.minQuantity ? props.currentData.minQuantity : ''} onChange={e => {
                 const newMinQuantity = parseInt(e.target.value);
 
                 if(e.target.value && Number.isNaN(newMinQuantity)) return;

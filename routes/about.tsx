@@ -46,7 +46,7 @@ about.route('/')
         /**
          * Loading the server properties to be passed to the client side.
          */
-        const serverProps: ServerPropsType = {
+        const serverProps:ServerPropsType = {
             aboutPageProps: {
                 portfolioConfig: portfolioConfig,
                 github: {

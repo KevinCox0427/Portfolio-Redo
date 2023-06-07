@@ -49,7 +49,7 @@ contact.route('/')
     })
 
 /**
- * Intiating a utility class to test incoming request bodies against a series of regex tests.
+ * Creating an instance of a utility class to test incoming request bodies against a series of regex tests.
  * See utils/regexTester.ts for more details.
  */
 const generalFormTest = new RegexTester({

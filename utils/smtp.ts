@@ -4,6 +4,7 @@ dotenv.config();
 
 /**
  * A simple funciton to take parameters and parse them into a POST call to the SMTP2GO service.
+ * @returns Wether the email was successful or not.
  */
 async function sendEmail(args: {
     to: {

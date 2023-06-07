@@ -14,8 +14,15 @@ const index = express.Router();
 
 index.route('/')
     .get(async (req, res) => {
+        /**
+         * Getting the ip from the request. Ik this can be easily spoofed, but it's is just a demo.
+         * Also converts from IPv6 to IPv4.
+         */
         const ip = ((req.headers['x-forwarded-for'] || req.ip) as string).split('::ffff:').join('');
 
+        /**
+         * Storing default location data if IP not found.
+         */
         let locationData = {
             ip: '',
             city: '',
@@ -23,17 +30,24 @@ index.route('/')
         }
 
         try {
+            /**
+             * Making a request to ipinfo.io. This is an API service that can give us stored information on the location of it.
+             */
             const response = (await axios.get(`https://ipinfo.io/${ip}?token=${process.env.IPToken}`)).data;
 
+            /**
+             * If it has a city, then the response was a success, and overwrite the location data.
+             */
             if(response.city) locationData = {
                 ip: response.ip,
                 city: `${response.city}, ${response.region}, ${response.country}`,
                 ll: response.loc.split(',')
             }
         }
-        catch (e) {
-            console.log(e);
-        }
+        /**
+         * If axios request failed do nothing.
+         */
+        catch (e) {}
 
         const serverProps:ServerPropsType = {
             homePageProps: {
@@ -62,28 +76,30 @@ index.route('/encrypt')
     })
 
 
-let bearerToken: {
-    token: string,
-    timestamp: number
-};
-readSpotifyBearerToken();
-
-type AlbumType = {
-    artists: ArtistType[],
-    external_urls: {
-        spotify: string
+type SongType = {
+    album: {
+        artists: {
+            name: string,
+            external_urls: {
+                spotify: string
+            }
+        }[],
+        external_urls: {
+            spotify: string
+        },
+        images: {
+            url: string
+        }[],
+        name: string,
+        release_date: string,
+        total_tracks: number
     },
-    images: {
-        url: string
+    artists: {
+        name: string,
+        external_urls: {
+            spotify: string
+        }
     }[],
-    name: string,
-    release_date: string,
-    total_tracks: number
-}
-
-type TrackType = {
-    album: AlbumType,
-    artists: ArtistType[],
     disc_number: number,
     duration_ms: number,
     external_urls: {
@@ -94,12 +110,54 @@ type TrackType = {
     track_number: number,
 }
 
-type ArtistType = {
-    external_urls: {
-        spotify: string
-    },
-    name: string
+function readSpotifyBearerToken() {
+    if(!existsSync('./db')) mkdirSync('./db');
+
+    try {
+        const result = JSON.parse(readFileSync('./db/spotifyBearerToken.json').toString());
+
+        if(typeof result != 'undefined' && typeof result.token === 'string' && typeof result.timestamp === 'number') {
+            bearerToken = result;
+            return true;
+        }
+        else {
+            throw new Error("Invalid Data Type");
+        }
+    } catch (e) {
+        bearerToken = {
+            token: '',
+            timestamp: 0
+        }
+        writeFileSync('./db/spotifyBearerToken.json', JSON.stringify(bearerToken));
+        return false;
+    }
 }
+
+async function getSpotifyBearerToken() {
+    const url = `https://accounts.spotify.com/api/token?grant_type=client_credentials&client_id=${process.env.SpotifyClientID}&client_secret=${process.env.SpotifyClientSecret}`;
+
+    const result = await axios.post(url, {}, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    });
+
+    if(typeof result !== 'undefined' && typeof result.data === 'object' && typeof result.data.access_token === 'string') {
+        bearerToken = {
+            token: result.data.access_token,
+            timestamp: Date.now()
+        }
+        writeFileSync('./db/spotifyBearerToken.json', JSON.stringify(bearerToken));
+        return true;
+    }
+    else return false;
+}
+
+let bearerToken: {
+    token: string,
+    timestamp: number
+};
+readSpotifyBearerToken();
 
 index.route('/spotify')
     .post(async (req, res) => {
@@ -133,30 +191,10 @@ index.route('/spotify')
                 }
             });
 
-            const tracks = req.body.search ? result.data.tracks.items as TrackType[] : result.data.tracks as TrackType[];
+            const tracks = (req.body.search ? result.data.tracks.items : result.data.tracks) as SongType[];
 
-            const parsedResponse:{
-                type: string,
-                id: string,
-                name: string,
-                url: string,
-                image: string,
-                length: number,
-                release: string,
-                artists: {
-                    name: string,
-                    url:string
-                }[],
-                album: {
-                    name: string,
-                    url:string,
-                    length: number,
-                    discNumber: number
-                }
-            }[] = [];
-
-            tracks.forEach((track, i) => {
-                parsedResponse.push({
+            const parsedResponse = tracks.map(track => {
+                 return {
                     type: 'track',
                     name: track.name,
                     id: track.id,
@@ -176,8 +214,8 @@ index.route('/spotify')
                         discNumber: track.track_number,
                         length: track.album.total_tracks
                     }
-                })
-            })
+                }
+            });
 
             res.status(200).send(parsedResponse);
         } catch (e:any) {
@@ -187,45 +225,5 @@ index.route('/spotify')
             });
         }
     })
-
-function readSpotifyBearerToken() {
-    if(!existsSync('./db')) mkdirSync('./db');
-
-    try {
-        const result = JSON.parse(readFileSync('./db/spotifyBearerToken.json').toString());
-        if(typeof result != 'undefined' && typeof result.token === 'string' && typeof result.timestamp === 'number') {
-            bearerToken = result;
-            return true;
-        }
-        else throw new Error("Invalid Data Type");
-    } catch (e) {
-        bearerToken = {
-            token: '',
-            timestamp: 0
-        }
-        writeFileSync('./db/spotifyBearerToken.json', JSON.stringify(bearerToken));
-        return false;
-    }
-}
-
-async function getSpotifyBearerToken() {
-    const url = `https://accounts.spotify.com/api/token?grant_type=client_credentials&client_id=${process.env.SpotifyClientID}&client_secret=${process.env.SpotifyClientSecret}`;
-
-    const result = await axios.post(url, {}, {
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    });
-
-    if(typeof result != 'undefined' && typeof result.data == 'object' && typeof result.data.access_token == 'string') {
-        bearerToken = {
-            token: result.data.access_token,
-            timestamp: Date.now()
-        }
-        writeFileSync('./db/spotifyBearerToken.json', JSON.stringify(bearerToken));
-        return true;
-    }
-    else return false;
-}
 
 export default index;
