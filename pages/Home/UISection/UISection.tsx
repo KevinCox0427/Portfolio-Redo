@@ -52,7 +52,12 @@ const UISection: FunctionComponent<Props> = (props) => {
 
                 return {...oldEditorHeights,
                     [sectionName]: {...oldEditorHeights[sectionName as keyof AllSectionContent],
-                        height: element ? (oldEditorHeights[sectionName as keyof AllSectionContent].isCollapsed ? element.children[0].clientHeight - 1 : element.children[0].clientHeight + element.children[1].clientHeight) : 0
+                        height: element ? (
+                            oldEditorHeights[sectionName as keyof AllSectionContent].isCollapsed ? 
+                                element.children[0].clientHeight - 1 
+                                : element.children[0].clientHeight + element.children[1].clientHeight
+                        ) 
+                        : 0
                     }
                 }
             })

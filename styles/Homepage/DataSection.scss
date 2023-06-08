@@ -11,7 +11,8 @@
     }
 
     .DataEntry {
-        width: fit-content;
+        flex-direction: row;
+        flex-wrap: wrap;
         flex-basis: 15em;
         flex-grow: 1;
         font-size: 1.25em;
@@ -26,17 +27,21 @@
 
         .Line {
             flex-direction: row;
+            flex-basis: 100%;
+            min-width: 1px;
             align-items: baseline;
             line-height: 120%;
+            gap: 0 0.2em;
 
             span {
-                display: inline;
+                
             }
 
             input, select {
-                display: inline;
-                min-width: 25px;
-                max-width: 50%;
+                flex-basis: 10em;
+                min-width: 1px;
+                flex-grow: 1;
+                border-radius: 0;
                 margin-right: 0.25em;
                 background-color: var(--black);
                 border-bottom: 0.075em dashed var(--white);
@@ -90,8 +95,8 @@
 
             .DeleteButton {
                 font-size: 1em;
+                margin-left: -1.25em;
                 color: var(--lightRed);
-                margin-left: 0.25em;
                 padding: 0.25em;
                 border-radius: 0.25em;
                 width: fit-content;

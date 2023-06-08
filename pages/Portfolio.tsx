@@ -17,16 +17,17 @@ type Props = {
 }
 
 const Portfolio: FunctionComponent<Props> = (props) => {
-    if(!props.ServerProps.portfolioPageProps) return <></>;
+    const pageProps = props.ServerProps.portfolioPageProps;
+    if(!pageProps) return <></>;
 
-    const [projects, setProjects] = useState(props.ServerProps.portfolioPageProps.portfolioConfig);
+    const [projects, setProjects] = useState(pageProps.portfolioConfig);
 
     const tags:string[] = [];
     projects.forEach(project => {
         if(!tags.includes(project.tag)) tags.push(project.tag);
     })
 
-    const [selectedTag, setSelectedTag] = useState(tags.every(tag => tag.replace(" ", "") !== props.ServerProps.portfolioPageProps!.currentTag) ? 'all' : props.ServerProps.portfolioPageProps.currentTag);
+    const [selectedTag, setSelectedTag] = useState(tags.every(tag => tag.replace(" ", "") !== pageProps!.currentTag) ? 'all' : pageProps.currentTag);
 
     useEffect(() => {
         const urlTag = window.location.href.split('/portfolio')[1];
@@ -39,14 +40,14 @@ const Portfolio: FunctionComponent<Props> = (props) => {
         
         setProjects([]);
         setTimeout(() => {
-            setProjects(props.ServerProps.portfolioPageProps!.portfolioConfig.filter(project => {
+            setProjects(pageProps!.portfolioConfig.filter(project => {
                 return project.tag.split(' ').join('') === selectedTag || selectedTag === 'all';
             }));
         }, 10);
     }, [selectedTag]);
     
     return <>
-        <AddPageView portfolioConfig={props.ServerProps.portfolioPageProps.portfolioConfig} pageName="portfolio"></AddPageView>
+        <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName="portfolio"></AddPageView>
         <Header></Header>
         <main className="Contain">
             <h1>Portfolio Projects</h1>
@@ -73,7 +74,7 @@ const Portfolio: FunctionComponent<Props> = (props) => {
                 })}
             </div>
         </main>
-        <Footer portfolioConfig={props.ServerProps.portfolioPageProps.portfolioConfig}></Footer>
+        <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>
     </>
 }
 

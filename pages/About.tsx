@@ -27,10 +27,11 @@ type Props = {
 }
 
 const About: FunctionComponent<Props> = (props) => {
-    if(typeof props.ServerProps.aboutPageProps === 'undefined') return <></>;
+    const pageProps = props.ServerProps.aboutPageProps;
+    if(typeof pageProps === 'undefined') return <></>;
     
     return <>
-        <AddPageView portfolioConfig={props.ServerProps.aboutPageProps.portfolioConfig} pageName="about"></AddPageView>
+        <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName="about"></AddPageView>
         <Header></Header>
         <main className="Contain">
             {/* <h1 className="Title">About Me</h1>
@@ -172,14 +173,14 @@ const About: FunctionComponent<Props> = (props) => {
                                 </svg>
                                 <h3>Github</h3>
                             </a>
-                            <a href={`https://github.com/${props.ServerProps.aboutPageProps.github.owner}`} target="_blank"><h2>{props.ServerProps.aboutPageProps.github.owner}</h2></a>
-                            <img src={props.ServerProps.aboutPageProps.github.avatar}></img>
+                            <a href={`https://github.com/${pageProps.github.owner}`} target="_blank"><h2>{pageProps.github.owner}</h2></a>
+                            <img src={pageProps.github.avatar}></img>
                         </div>
                         <div className="Repos">{
-                            props.ServerProps.aboutPageProps.github.repos.map((repo, i) => {
+                            pageProps.github.repos.map((repo, i) => {
                                 return <div key={i} className="Repo">
                                     <div className="RepoLeft">
-                                        <a href={`https://github.com/${props.ServerProps.aboutPageProps!.github.owner}/${repo.name}`}>
+                                        <a href={`https://github.com/${pageProps!.github.owner}/${repo.name}`}>
                                             <h3>{repo.name}</h3>
                                         </a>
                                         <p className="Description">{repo.description}</p>
@@ -200,7 +201,7 @@ const About: FunctionComponent<Props> = (props) => {
                 </div>
             </div>
         </main>
-        <Footer portfolioConfig={props.ServerProps.aboutPageProps.portfolioConfig}></Footer>
+        <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>
     </>
 }
 

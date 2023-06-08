@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 
 type Props = {
     watchTime: {
@@ -7,7 +7,7 @@ type Props = {
             [sectionName: string]: number
         }
     },
-    resetWatchTime: () => void,
+    setWatchTime: React.Dispatch<React.SetStateAction<Props["watchTime"]>>,
     currentSection: string
 }
 
@@ -43,17 +43,56 @@ const WatchTime:FunctionComponent<Props> = (props) => {
         return value > largestTimestamp ? value : largestTimestamp;
     }, 0);
 
+    /**
+     * A function to reset all the watch times back to 0.
+     */
+    function reset() {
+        props.setWatchTime({
+            start: Date.now(),
+            timeStamps: {
+                home: 0,
+                data: 0,
+                authentication: 0,
+                integration: 0,
+                analytics: 0,
+                ui: 0,
+                web: 0,
+                footer: 0
+            }
+        });
+    }
+
+    /**
+     * A useeffect callback to start a 1 second interval when the user is viewing the analytics section.
+     * This is so that the analytics watch time ticks up when the user is looking at the bar graph.
+     */
+    useEffect(() => {
+        if(props.currentSection === 'analytics') {
+            const interval = setInterval(() => {
+                props.setWatchTime(previousWatchTime => {
+                    return {...previousWatchTime,
+                        start: previousWatchTime.start + 1000,
+                        timeStamps: {...previousWatchTime.timeStamps,
+                            analytics: previousWatchTime.timeStamps.analytics + 1000
+                        }
+                    }
+                })
+            }, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [props.currentSection]);
+
     return <div className="Graph WatchTime">
         <h3>
             Watch Time:
-            <i className="fa-solid fa-rotate-left Reset" onClick={props.resetWatchTime}></i>
+            <i className="fa-solid fa-rotate-left Reset" onClick={reset}></i>
         </h3>
         <div className="AxisWrapper" style={{
             gridTemplateColumns: `clamp(0.1px, 4.5em, ${100/(XAxisLabels.length+3)}vw) ${`clamp(0.1px, 3.5em, ${100/(XAxisLabels.length+3)}vw) `.repeat(XAxisLabels.length)}`
         }}>
             <div className="Column">
                 <div className="YLabels">
-                    {Array.from(''.repeat(3)).map((_, i) => {
+                    {Array.from(Array(3)).map((_, i) => {
                         return <p key={i}>{
                             createTimeString(largestTimestamp*((3-i)/3))
                         }</p>

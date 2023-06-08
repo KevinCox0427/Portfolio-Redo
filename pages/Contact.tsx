@@ -15,7 +15,8 @@ type Props = {
 }
 
 const Contact: FunctionComponent<Props> = (props) => {
-    if(typeof props.ServerProps.contactPageProps === 'undefined') return <></>;
+    const pageProps = props.ServerProps.contactPageProps;
+    if(typeof pageProps === 'undefined') return <></>;
 
     const [contactForm, setContactForm] = useState({
         error: {
@@ -157,7 +158,7 @@ const Contact: FunctionComponent<Props> = (props) => {
     }
 
     return <>
-        <AddPageView portfolioConfig={props.ServerProps.contactPageProps.portfolioConfig} pageName="contact"></AddPageView>
+        <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName="contact"></AddPageView>
         <Header></Header>
         <main className="Contain">
             <h1 style={{
@@ -426,7 +427,7 @@ const Contact: FunctionComponent<Props> = (props) => {
                 <button className="Submit" onClick={inquirySubmit}>Submit</button>
             </form>
         </main>
-        <Footer portfolioConfig={props.ServerProps.contactPageProps.portfolioConfig}></Footer>
+        <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>
     </>
 }
 

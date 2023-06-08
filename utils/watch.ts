@@ -66,7 +66,7 @@ function watchDirectory(folder:string = '.') {
          * If it's in the 'pages' directory, then it's a React file and it needs to be bundled.
          */
         if(folder.startsWith('./pages')) {
-            runProcess('webpack', file);
+            runProcess('tsc && webpack', file);
         }
         /**
          * For Sass.

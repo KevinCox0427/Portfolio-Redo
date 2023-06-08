@@ -17,16 +17,17 @@ type Props = {
 }
 
 const Project: FunctionComponent<Props> = (props) => {
-    if(typeof props.ServerProps.projectPageProps === 'undefined') return <></>;
+    const pageProps = props.ServerProps.projectPageProps;
+    if(typeof pageProps === 'undefined') return <></>;
 
-    const project = props.ServerProps.projectPageProps.portfolioConfig[props.ServerProps.projectPageProps.projectIndex];
+    const project = pageProps.portfolioConfig[pageProps.projectIndex];
 
-    const nextProject = props.ServerProps.projectPageProps.portfolioConfig[props.ServerProps.projectPageProps.projectIndex + 1 < props.ServerProps.projectPageProps.portfolioConfig.length ? props.ServerProps.projectPageProps.projectIndex + 1 : 0];
+    const nextProject = pageProps.portfolioConfig[pageProps.projectIndex + 1 < pageProps.portfolioConfig.length ? pageProps.projectIndex + 1 : 0];
 
-    const previousProject = props.ServerProps.projectPageProps.portfolioConfig[props.ServerProps.projectPageProps.projectIndex - 1 < 0 ? props.ServerProps.projectPageProps.portfolioConfig.length - 1 : props.ServerProps.projectPageProps.projectIndex - 1];
+    const previousProject = pageProps.portfolioConfig[pageProps.projectIndex - 1 < 0 ? pageProps.portfolioConfig.length - 1 : pageProps.projectIndex - 1];
     
     return <>
-        <AddPageView portfolioConfig={props.ServerProps.projectPageProps.portfolioConfig} pageName={`portfolio/${project.route}`}></AddPageView>
+        <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName={`portfolio/${project.route}`}></AddPageView>
         <Header></Header>
         <article className="Contain">
             <div className="Headline">
@@ -71,7 +72,6 @@ const Project: FunctionComponent<Props> = (props) => {
             </div>
             <div className="Gallery">
                 {project.gallery.map((url, i) => {
-                    // if(i === 0) return <Fragment key={i}></Fragment>
                     return <div key={i} className="BrowserWrapper">
                         <div className='FakeBrowser'>
                             <div></div>
@@ -99,7 +99,7 @@ const Project: FunctionComponent<Props> = (props) => {
                 </div>
             </div>
         </article>
-        <Footer portfolioConfig={props.ServerProps.projectPageProps.portfolioConfig}></Footer>
+        <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>
     </>
 }
 

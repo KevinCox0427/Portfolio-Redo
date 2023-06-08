@@ -31,7 +31,18 @@ type Props = {
     style: React.CSSProperties
 }
 
+/**
+ * The component for the Data section for the homepage.
+ * 
+ * @param windowCache The utility class that saves state variables into local storage upon state change.
+ * @param sectionContent The title and description for this section. Can be changed.
+ * @param style Any additional styling for the wrapper div.
+ */
 const DataSection:FunctionComponent<Props> = (props) => {
+    /**
+     * The state variable to control the data of the fake product.
+     * Also saving it to local storage upon state change.
+     */
     const [currentData, setCurrentData] = useState<CurrentData>({
         name: '',
         price: '',

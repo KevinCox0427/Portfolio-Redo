@@ -14,14 +14,15 @@ type Props = {
 }
 
 const Page404:FunctionComponent<Props> = (props) => {
-    if(typeof props.ServerProps.page404Props === 'undefined') return <></>
+    const pageProps = props.ServerProps.contactPageProps;
+    if(typeof pageProps === 'undefined') return <></>
 
     return <>
         <Header></Header>
         <main className="contain">
             <h1>Error: Page Not Found</h1>
         </main>
-        <Footer portfolioConfig={props.ServerProps.page404Props.portfolioConfig}></Footer>
+        <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>
     </>
 }
 

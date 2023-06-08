@@ -4,21 +4,43 @@ type Props = {
     portfolioConfig: PortfolioConfig[]
 }
 
-const WebsiteSlider: FunctionComponent<Props> = (props) => {
+/**
+ * A component to create an infinite sliding gallery of websites for each portfolio project.
+ * We'll create two duplicate sliders to mimic it being infinite, with one ontop of the other.
+ * The second slider will be offset horizontally for half of the gallery.
+ * After a full rotation, the first one will then revert back to it's original position, and then you have an infinite slider!
+ * 
+ * @param portfolioConfig The configuration of the portfolio. 
+ */
+const WebsiteSlider:FunctionComponent<Props> = (props) => {
+    /**
+     * Guard clause to make sure we have slides.
+     */
+    if(props.portfolioConfig.length === 0) return <></>;
+    
+    /**
+     * Because there are load animations on the homepage, we want to stagger when the content is revealed.
+     * useState() and useEffect() are being used since the delay will changed based on if we have a mobile device or not, and we can't test for it on the server.
+     */
     const [revealDelay, setRevealDelay] = useState(3.5);
     useEffect(() => {
         setRevealDelay(window.innerWidth < 800 ? 0.5 : 3.5);
     }, [])
 
+    /**
+     * Because there's a delay in revealing at the slides, we'll move the last index to the first position so it still seems like it's in order.
+     * Then we'll duplicate the array until there are at least 10 slides to avoid the gallery being empty.
+     */
     let sliderProjects = [...props.portfolioConfig];
-    
-    const offset = sliderProjects.splice(sliderProjects.length-1, 1)[0];
-    sliderProjects = [offset, ...sliderProjects];
+    sliderProjects.unshift(sliderProjects.pop()!);
 
-    for(let i = 0; i < Math.ceil(10/sliderProjects.length) - 1; i++) {
-        sliderProjects = [...sliderProjects, ...sliderProjects];
+    for(let i = 0; i < (Math.floor(10/props.portfolioConfig.length) * 6); i++) {
+        sliderProjects.push(sliderProjects[i % props.portfolioConfig.length])
     }
 
+    /**
+     * Creating the rate in seconds of how long it takes for a full rotation.
+     */
     const sliderRate = sliderProjects.length * 8;
     
     return <div className='SliderWrapper'>

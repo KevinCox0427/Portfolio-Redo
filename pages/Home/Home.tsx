@@ -46,7 +46,8 @@ type Props = {
 }
 
 const Home:FunctionComponent<Props> = (props) => {
-    if(typeof props.ServerProps.homePageProps === 'undefined') return <></>;
+    const pageProps = props.ServerProps.homePageProps;
+    if(typeof pageProps === 'undefined') return <></>;
 
     const [cacheHasLoaded, setCacheHasLoaded] = useState(false);
     const windowCache = useRef(new WindowCache(setCacheHasLoaded));
@@ -54,22 +55,6 @@ const Home:FunctionComponent<Props> = (props) => {
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
     const contentWrapper = useRef<HTMLDivElement>(null);
     const [currentSection, setCurrentSection] = useState('');
-
-    useEffect(() => {
-        if(currentSection === 'analytics') {
-            const interval = setInterval(() => {
-                setWatchTime(previousWatchTime => {
-                    return {...previousWatchTime,
-                        start: previousWatchTime.start + 1000,
-                        timeStamps: {...previousWatchTime.timeStamps,
-                            analytics: previousWatchTime.timeStamps.analytics + 1000
-                        }
-                    }
-                })
-            }, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [currentSection]);
 
     useEffect(() => {
         if(!cacheHasLoaded) return;
@@ -86,7 +71,12 @@ const Home:FunctionComponent<Props> = (props) => {
         });
     }, [cacheHasLoaded, currentSection, setCurrentSection]);
 
-    const [watchTime, setWatchTime] = useState({
+    const [watchTime, setWatchTime] = useState<{
+        start: number,
+        timeStamps: {
+            [sectionName:string]: number
+        }
+    }>({
         start: Date.now(),
         timeStamps: {
             home: 0,
@@ -136,23 +126,6 @@ const Home:FunctionComponent<Props> = (props) => {
     
     const [sectionContent, setSectionContent] = useState(sectionDefaults);
     windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
-
-
-    function resetWatchTime() {
-        setWatchTime({
-            start: Date.now(),
-            timeStamps: {
-                home: 0,
-                data: 0,
-                authentication: 0,
-                integration: 0,
-                analytics: 0,
-                ui: 0,
-                web: 0,
-                footer: 0
-            }
-        });
-    }
 
     function checkSections() {
         const clamp = (num:number, min:number, max:number) => Math.min(Math.max(num, min), max);
@@ -223,7 +196,7 @@ const Home:FunctionComponent<Props> = (props) => {
                     </div>
                 </div>
             </div>
-            <WebsiteSlider portfolioConfig={props.ServerProps.homePageProps.portfolioConfig}></WebsiteSlider>
+            <WebsiteSlider portfolioConfig={pageProps.portfolioConfig}></WebsiteSlider>
             <p className='ScrollDown'>
                 Scroll down to see how I do it!
                 <i className="fa-solid fa-angles-down"></i>
@@ -247,7 +220,7 @@ const Home:FunctionComponent<Props> = (props) => {
                     order: sectionContent.integration.order,
                     zIndex: Object.keys(sectionContent).length - sectionContent.integration.order
                 }}></IntegrationSection>
-                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} portfolioConfig={props.ServerProps.homePageProps.portfolioConfig} resetWatchTime={resetWatchTime} sectionContent={sectionContent.analytics} domain={props.ServerProps.homePageProps.domain} locationData={props.ServerProps.homePageProps.locationData} style={{
+                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} portfolioConfig={pageProps.portfolioConfig} setWatchTime={setWatchTime} sectionContent={sectionContent.analytics} domain={pageProps.domain} locationData={pageProps.locationData} style={{
                     order: sectionContent.analytics.order,
                     zIndex: Object.keys(sectionContent).length - sectionContent.analytics.order
                 }}></AnalyticsSection>
@@ -255,13 +228,13 @@ const Home:FunctionComponent<Props> = (props) => {
                     order: sectionContent.ui.order,
                     zIndex: Object.keys(sectionContent).length - sectionContent.ui.order
                 }}></UISection>
-                <WebSection sectionContent={sectionContent.web} portfolioConfig={props.ServerProps.homePageProps.portfolioConfig} style={{
+                <WebSection sectionContent={sectionContent.web} portfolioConfig={pageProps.portfolioConfig} style={{
                     order: sectionContent.web.order,
                     zIndex: Object.keys(sectionContent).length - sectionContent.web.order
                 }}></WebSection>
             </div>
         </div>
-        <Footer portfolioConfig={props.ServerProps.homePageProps.portfolioConfig}></Footer>
+        <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>
     </>
 }
 

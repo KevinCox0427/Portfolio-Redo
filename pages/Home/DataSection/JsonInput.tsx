@@ -1,301 +1,212 @@
-import React, { Fragment, FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import { CurrentData } from "./DataSection";
-
-const date = new Date();
+import SaleJsonInput from "./SalesJsonInput";
 
 type Props = {
     currentData: CurrentData,
     setCurrentData: React.Dispatch<React.SetStateAction<CurrentData>>
 }
 
+/**
+ * A component that renders the "JSON" data structure to input values for a fake product.
+ * 
+ * @param currentData The state variable that stores the information for the fake product.
+ * @param setCurrentData The setter function to edit the information of the fake product.
+ */
 const JsonInput:FunctionComponent<Props> = (props) => {
-    function isPrice(price:string) {
-        if(price == '') return true;
-        if(typeof price.split('.')[1] != 'undefined' && price.split('.')[1].length > 2) return false;
-        return price.match(/^[\d.]+$/);
+    /**
+     * A function to reset the currentData to empty values.
+     */
+    function reset() {
+        props.setCurrentData({
+            name: '',
+            price: '',
+            description: '',
+            minQuantity: null,
+            maxQuantity: null,
+            categories:[],
+            imageUrls: [],
+            sales: []
+        });
+    }
+
+    /**
+     * A function to overwrite string values on top level keys.
+     * 
+     * @param key The top-level key who's value is being overwritten.
+     * @param value The new value to overwrite with.
+     */
+    function setString(key:string, value:string) {
+        props.setCurrentData(oldData => {
+            return {...oldData,
+                [key]: value
+            }
+        });
+    }
+
+    /**
+     * A function to overwrite price string values on top level keys.
+     * Uses a regex test to ensure valid format.
+     * 
+     * @param key The top-level key who's value is being overwritten.
+     * @param value The new value to overwrite with.
+     */
+    function setPrice(key:string, value:string) {
+        if(value && !value.match(/^[\d]+.?([\d]{1,2})?$/)) return;
+
+        props.setCurrentData(oldData => {
+            return {...oldData,
+                [key]: value
+            }
+        });
+    }
+
+    /**
+     * A function to overwrite integer values on top level keys.
+     * 
+     * @param key The top-level key who's value is being overwritten.
+     * @param value The new value to overwrite with.
+     */
+    function setInteger(key:string, value:string) {
+        const newMinQuantity = parseInt(value);
+        if(value && Number.isNaN(newMinQuantity)) return;
+
+        props.setCurrentData(oldData => {
+            return {...oldData,
+                [key]: Number.isNaN(newMinQuantity) ? null : newMinQuantity
+            }
+        });
+    }
+
+    /**
+     * A function to push an empty string into a string array.
+     * 
+     * @param key The top-level key who's array is being pushed to.
+     */
+    function addToStringArray(key:string) {
+        props.setCurrentData(oldData => {
+            return {...oldData,
+                [key]: [...oldData.categories, '']
+            }
+        });
+    }
+
+    /**
+     * A function to overwrite a string value for a given index in a string array.
+     * 
+     * @param key The top-level key who's array is being editted.
+     * @param value The new value to overwrite with.
+     * @param index The index of the value been overwritten.
+     */
+    function editStringArray(key:string, value:string, index:number) {
+        const newArray = [...(props.currentData[key as keyof typeof props.currentData] as string[])];
+        newArray[index] = value;
+
+        props.setCurrentData(oldData => {
+            return {...oldData,
+                [key]: newArray
+            }
+        });
+    }
+
+    /**
+     * A function to remove an index on a string array for a top-level key.
+     * 
+     * @param key The top-level key who's array is being editted.
+     * @param index The index of the value been removed.
+     */
+    function deleteFromArray(key:string, index:number) {
+        const newArray = [...(props.currentData[key as keyof typeof props.currentData] as string[])];
+        newArray.splice(index, 1);
+
+        props.setCurrentData(oldData => {
+            return {...oldData,
+                [key]: newArray
+            }
+        });
     }
     
     return <div className='DataEntry'>
         <div className='Line'>
-            <span className='Green'>"shopItems"</span>: <span className='Purple'>&#91;</span> <span className='Yellow'>&#123;</span><i className="fa-solid fa-arrow-rotate-left Reset" onClick={() => {
-                props.setCurrentData({
-                    name: '',
-                    price: '',
-                    description: '',
-                    minQuantity: null,
-                    maxQuantity: null,
-                    categories:[],
-                    imageUrls: [],
-                    sales: []
-                });
-            }}></i>
+            <span className='Green'>"shopItems"</span>
+            :
+            <span className='Purple'>&#91;</span>
+            <span className='Yellow'>&#123;</span>
+            <i className="fa-solid fa-arrow-rotate-left Reset" onClick={reset}></i>
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Green'>"name"</span>:<input style={{marginLeft: '1.25em'}} value={props.currentData.name} onChange={e => {
-                props.setCurrentData(oldData => {
-                    return {...oldData,
-                        name: e.target.value
-                    }
-                });
-            }}></input>,
+            <span className='Green'>"name"</span>
+            :
+            <input style={{marginLeft: '0.5em'}} value={props.currentData.name} onChange={e => {setString('name', e.target.value)}}></input>,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
             <span className='Green'>"price"</span>
             :
-            <input style={{marginLeft: '1.25em'}} value={props.currentData.price ? props.currentData.price : ''} onChange={e => {
-                if(!isPrice(e.target.value)) return;
-                props.setCurrentData(oldData => {
-                    return {...oldData,
-                        price: e.target.value
-                    }
-                });
-            }}></input>,
+            <input style={{marginLeft: '0.5em'}} value={props.currentData.price ? props.currentData.price : ''} onChange={e => {setPrice('price', e.target.value)}}></input>,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Green'>"decription"</span>
+            <span className='Green'>"description"</span>
             :
-            <input style={{marginLeft: '1.25em'}} value={props.currentData.description} onChange={e => {
-                props.setCurrentData(oldData => {
-                    return {...oldData,
-                        description: e.target.value
-                    }
-                });
-            }}></input>,
+            <input style={{marginLeft: '0.5em'}} value={props.currentData.description} onChange={e => {setString('description', e.target.value)}}></input>,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
             <span className='Green'>"minimumQuantity"</span>
             :
-            <input style={{marginLeft: '1.25em'}} value={props.currentData.minQuantity ? props.currentData.minQuantity : ''} onChange={e => {
-                const newMinQuantity = parseInt(e.target.value);
-
-                if(e.target.value && Number.isNaN(newMinQuantity)) return;
-
-                props.setCurrentData(oldData => {
-                    return {...oldData,
-                        minQuantity: Number.isNaN(newMinQuantity) ? null : newMinQuantity
-                    }
-                });
-            }}></input>,
+            <input style={{marginLeft: '0.5em'}} value={props.currentData.minQuantity ? props.currentData.minQuantity : ''} onChange={e => {setInteger('minQuantity', e.target.value)}}></input>,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Green'>"maximumQuantity"</span>:<input style={{marginLeft: '1.25em'}} value={props.currentData.maxQuantity ? props.currentData.maxQuantity : ''} onChange={e => {
-                const newMaxQuantity = parseInt(e.target.value);
-
-                if(e.target.value && Number.isNaN(newMaxQuantity)) return;
-
-                props.setCurrentData(oldData => {
-                    return {...oldData,
-                        maxQuantity: Number.isNaN(newMaxQuantity) ? null : newMaxQuantity
-                    }
-                });
-            }}></input>,
+            <span className='Green'>"maximumQuantity"</span>
+            :
+            <input style={{marginLeft: '0.5em'}} value={props.currentData.maxQuantity ? props.currentData.maxQuantity : ''} onChange={e => {setInteger('maxQuantity', e.target.value)}}></input>,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Green'>"categories"</span>: <span className='Purple'>&#91;</span>
+            <span className='Green'>"categories"</span>
+            :
+            <span className='Purple'>&#91;</span>
         </div>
         {props.currentData.categories.map((category, i) => {
             return <div key={i} className='Line' style={{marginLeft: '2.5em'}}>
-                <input value={category} onChange={e => {
-                    props.setCurrentData(oldData => {
-                        oldData.categories[i] = e.target.value;
-                        return oldData;
-                    });
-                }}></input>
-                <i className="fa-regular fa-trash-can DeleteButton" onClick={() => {
-                    const newCategories = JSON.parse(JSON.stringify(props.currentData.categories));
-
-                    newCategories.splice(i, 1);
-
-                    props.setCurrentData(oldData => {
-                        return {...oldData,
-                            categories: newCategories
-                        }
-                    });
-                }}></i>
+                <i className="fa-regular fa-trash-can DeleteButton" onClick={e => {deleteFromArray('categories', i)}}></i>
+                <input value={category} onChange={e => {editStringArray('categories', e.target.value, i)}}></input>
             </div>
         })}
         <div className='Line' style={{marginLeft: '2.5em'}}>
-            <i className="fa-regular fa-plus AddButton" onClick={() => {
-                props.setCurrentData(oldData => {
-                    return {...oldData,
-                        categories: [...oldData.categories, '']
-                    }
-                });
-            }}></i>
+            <i className="fa-regular fa-plus AddButton" onClick={e => {addToStringArray('categories')}}></i>
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Purple'>&#93;</span> ,
+            <span className='Purple'>&#93;</span>
+            ,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Green'>"imageUrls"</span>: <span className='Purple'>&#91;</span>
+            <span className='Green'>"imageUrls"</span>
+            :
+            <span className='Purple'>&#91;</span>
         </div>
         {props.currentData.imageUrls.map((url, i) => {
             return <div key={i} className='Line' style={{marginLeft: '2.5em'}}>
-                <input value={url} onChange={e => {
-                    const newImageUrls = JSON.parse(JSON.stringify(props.currentData.imageUrls));
-
-                    newImageUrls[i] = e.target.value;
-
-                    props.setCurrentData(oldData => {
-                        return {...oldData,
-                            imageUrls: newImageUrls
-                        }
-                    });
-                }}></input>
-                <i className="fa-regular fa-trash-can DeleteButton" onClick={() => {
-                    const newImageUrls = JSON.parse(JSON.stringify(props.currentData.imageUrls));
-
-                    newImageUrls.splice(i, 1);
-
-                    props.setCurrentData(oldData => {
-                        return {...oldData,
-                            imageUrls: newImageUrls
-                        }
-                    });
-                }}></i>
+                <i className="fa-regular fa-trash-can DeleteButton" onClick={e => {deleteFromArray('imageUrls', i)}}></i>
+                <input value={url} onChange={e => {editStringArray('imageUrls', e.target.value, i)}}></input>
             </div>
         })}
         <div className='Line' style={{marginLeft: '2.5em'}}>
-            <i className="fa-regular fa-plus AddButton" onClick={() => {
-                props.setCurrentData(oldData => {
-                    return {...oldData,
-                        imageUrls: [...oldData.imageUrls, '']
-                    }
-                });
-            }}></i>
+            <i className="fa-regular fa-plus AddButton" onClick={e => {addToStringArray('imageUrls')}}></i>
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Purple'>&#93;</span> ,
+            <span className='Purple'>&#93;</span>
+            ,
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
-            <span className='Green'>"sales"</span>: <span className='Purple'>&#91;</span>
+            <span className='Green'>"sales"</span>
+            :
+            <span className='Purple'>&#91;</span>
         </div>
-        {props.currentData.sales.map((sale, i) => {
-            return <Fragment key={i}>
-                <div className='Line' style={{marginLeft: '2.5em'}}>
-                    <span className='Yellow'>&#123;</span>
-                </div>
-                <div className='Line' style={{marginLeft: '3.75em'}}>
-                    <span className='Green'>"type"</span>: <select style={{marginLeft: '1.25em'}} value={sale.type} onChange={e => {
-                        const newSales = JSON.parse(JSON.stringify(props.currentData.sales));
-
-                        newSales[i].type = e.target.value;
-
-                        props.setCurrentData(oldData => {
-                            return {...oldData,
-                                sales: newSales
-                            }
-                        });
-                    }}>
-                        <option value="fixed">fixed</option>
-                        <option value="percent">percent</option>
-                    </select>,
-                </div>
-                <div className='Line' style={{marginLeft: '3.75em'}}>
-                    <span className='Green'>"reducedAmount"</span>: <input style={{marginLeft: '1.25em'}} value={sale.amount ? sale.amount : ''} onChange={e => {
-                        if(!isPrice(e.target.value)) return;
-
-                        const newSales = JSON.parse(JSON.stringify(props.currentData.sales));
-                        newSales[i].amount = e.target.value;
-                        
-                        props.setCurrentData(oldData => {
-                            return {...oldData,
-                                sales: newSales
-                            }
-                        });
-                    }}></input>,
-                </div>
-                <div className='Line' style={{marginLeft: '3.75em'}}>
-                    <span className='Green'>"expires"</span>: <span className='Yellow'>&#123;</span>
-                </div>
-                <div className='Line' style={{marginLeft: '5em'}}>
-                    <span className='Green'>"day"</span>: <input style={{marginLeft: '1.25em'}} value={sale.expires.day ? sale.expires.day : ''} onChange={e => {
-                        const newSales = JSON.parse(JSON.stringify(props.currentData.sales));
-                        const newDay = parseInt(e.target.value);
-
-                        if(e.target.value && Number.isNaN(newDay)) return;
-
-                        newSales[i].expires.day = Number.isNaN(newDay) ? null : newDay;
-
-                        props.setCurrentData(oldData => {
-                            return {...oldData,
-                                sales: newSales
-                            }
-                        });
-                    }}></input>,
-                </div>
-                <div className='Line' style={{marginLeft: '5em'}}>
-                    <span className='Green'>"month"</span>: <input style={{marginLeft: '1.25em'}} value={sale.expires.month ? sale.expires.month : ''} onChange={e => {
-                        const newSales = JSON.parse(JSON.stringify(props.currentData.sales));
-                        const newMonth = parseInt(e.target.value);
-
-                        if(e.target.value && Number.isNaN(newMonth)) return;
-
-                        newSales[i].expires.month = Number.isNaN(newMonth) ? null : newMonth;
-
-                        props.setCurrentData(oldData => {
-                            return {...oldData,
-                                sales: newSales
-                            }
-                        });
-                    }}></input>,
-                </div>
-                <div className='Line' style={{marginLeft: '5em'}}>
-                    <span className='Green'>"year"</span>: <input style={{marginLeft: '1.25em'}} value={sale.expires.year ? sale.expires.year : ''} onChange={e => {
-                        const newSales = JSON.parse(JSON.stringify(props.currentData.sales));
-                        const newYear = parseInt(e.target.value);
-
-                        if(e.target.value && Number.isNaN(newYear)) return;
-
-                        newSales[i].expires.year = Number.isNaN(newYear) ? null : newYear;
-
-                        props.setCurrentData(oldData => {
-                            return {...oldData,
-                                sales: newSales
-                            }
-                        });
-                    }}></input>,
-                </div>
-                <div className='Line' style={{marginLeft: '3.75em'}}>
-                    <span className='Yellow'>&#125;</span>,
-                </div>
-                <div className='Line' style={{marginLeft: '2.5em'}}>
-                    <span className='Yellow'>&#125;</span>{i != props.currentData.sales.length-1 ? ',' : ''} <i className="fa-regular fa-trash-can DeleteButton" onClick={() => {
-                        const newSales = JSON.parse(JSON.stringify(props.currentData.sales));
-
-                        newSales.splice(i, 1);
-
-                        props.setCurrentData(oldData => {
-                            return {...oldData,
-                                sales: newSales
-                            }
-                        });
-                    }}></i>
-                </div>
-            </Fragment>
-        })}
-        <div className='Line' style={{marginLeft: '2.5em'}}>
-        <i className="fa-regular fa-plus AddButton" onClick={() => {
-                props.setCurrentData(oldData => {
-                    return {...oldData,
-                        sales: [...oldData.sales, {
-                            type: 'flat',
-                            amount: '',
-                            expires: {
-                                day: date.getDate() + 1,
-                                month: date.getMonth() + 1,
-                                year: date.getFullYear()
-                            }
-                        }]
-                    }
-                });
-            }}></i>
-        </div>
+        <SaleJsonInput currentData={props.currentData} setCurrentData={props.setCurrentData}></SaleJsonInput>
         <div className='Line' style={{marginLeft: '1.25em'}}>
             <span className='Purple'>&#93;</span>
         </div>
         <div className='Line'>
-            <span className='Yellow'>&#125;</span> <span className='Purple'>&#93;</span>
+            <span className='Yellow'>&#125;</span>
+            <span className='Purple'>&#93;</span>
         </div>
     </div>
 }

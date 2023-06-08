@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent } from "react";
 import WindowCache from "../../components/windowCache";
 import WatchTime from "./WatchTime";
 import UserData from "./UserData";
@@ -17,7 +17,7 @@ type Props = {
             [sectionName: string]: number
         }
     },
-    resetWatchTime: () => void,
+    setWatchTime: React.Dispatch<React.SetStateAction<Props["watchTime"]>>,
     portfolioConfig: PortfolioConfig[],
     style: React.CSSProperties,
     domain: string,
@@ -37,7 +37,7 @@ type Props = {
  * @param currentSection The key at which this sections content can be found in sectionContent.
  * @param watchTime The watchtime of each section recorded by the home page. This will be displayed in a bar graph
  * @param resetWatchTime A function to reset of all the watch times to 0s.
- * @param portfolioConfig The configuration of all the porfolio projects. This is so we can 
+ * @param portfolioConfig The configuration of all the porfolio projects. This is to display the site map.
  * @param style Any additional stylings to the wrapper div.
  * @param domain The domain that this build is currently running on. This is to display proper urls when show the page views for each route.
  * @param locationData The data collected on the user via their IP. This is to display this information along with a map of their location.
@@ -47,7 +47,7 @@ const AnalyticsSection:FunctionComponent<Props> = (props) => {
         <Title content={props.sectionContent.content}></Title>
         <div className="GraphWrapper">
             <UserData locationData={props.locationData}></UserData>
-            <WatchTime watchTime={props.watchTime} currentSection={props.currentSection} resetWatchTime={props.resetWatchTime}></WatchTime>
+            <WatchTime watchTime={props.watchTime} currentSection={props.currentSection} setWatchTime={props.setWatchTime}></WatchTime>
             <Heatmap windowCache={props.windowCache}></Heatmap>
             <PageViews portfolioConfig={props.portfolioConfig} windowCache={props.windowCache} cacheHasLoaded={props.cacheHasLoaded} domain={props.domain}></PageViews>
         </div>
