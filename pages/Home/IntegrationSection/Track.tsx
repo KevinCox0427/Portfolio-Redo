@@ -1,26 +1,9 @@
 import React, { Fragment, FunctionComponent } from "react";
 import RecordSVG from "./RecordSVG";
+import { SpotifyResponseSong } from "./IntegrationSection";
 
 type Props = {
-    searchResult: {
-        type: string,
-        id: string,
-        name: string,
-        url: string,
-        image: string,
-        length: number,
-        release: string,
-        artists: {
-            name: string,
-            url:string
-        }[],
-        album: {
-            name: string,
-            url:string,
-            length: number,
-            discNumber: number
-        }
-    }
+    searchResult: SpotifyResponseSong
     width: number,
     isRecommend: boolean,
     search: (title:string, isRecommend: boolean) => Promise<void>
@@ -33,17 +16,17 @@ const Track:FunctionComponent<Props> = (props) => {
         {props.isRecommend ? 
             <a className="AlbumCover" href={props.searchResult.url} target="_blank" rel="nofollow">
                 <RecordSVG></RecordSVG>
-                <img src={props.searchResult.image} alt="Spofity album cover" style={{
+                <img src={props.searchResult.image} alt="Spofity album cover" loading="lazy" style={{
                     width: `${props.width}px`,
                     height: `${props.width}px`
                 }}></img>
             </a>
         :
-            <a className="AlbumCover" href="/#SpotifyRecommendations" onClick={() => {
+            <a className="AlbumCover" href="/#SpotifyRecommendation" onClick={() => {
                 props.search(props.searchResult.id, true);
             }}>
                 <RecordSVG></RecordSVG>
-                <img src={props.searchResult.image} alt="Spofity album cover" style={{
+                <img src={props.searchResult.image} alt="Spofity album cover" loading="lazy" style={{
                     width: `${props.width}px`,
                     height: `${props.width}px`
                 }}></img>

@@ -1,33 +1,53 @@
 import { resolve } from 'path';
-import { spawn, execSync } from 'child_process';
-import { readdirSync, watch, existsSync, readFileSync, writeFileSync, lstatSync } from 'fs';
+import { spawn, execSync, ChildProcess } from 'child_process';
+import { readdirSync, watch, readFileSync, writeFileSync, lstatSync } from 'fs';
 
 /**
  * Keeping track of when the node server started and is running.
  */
 let currentCompileTimestamp = Date.now();
-let currentNodeProcess = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
+let currentNodeProcess:ChildProcess | null = null;
 
 try {
-    console.log('Compiling...\n');
     /**
      * Running the typescript, webpack and sass CLI commands to start the build.
      */
+    process.stdout.write(`${redText('Compiling...')}  ${redText('X')} Typescript ${redText('X')} Sass ${redText('X')} Webpack`);
+
     execSync('tsc');
+    process.stdout.clearLine(0);
+    process.stdout.cursorTo(0);
+    process.stdout.write(`${redText('Compiling...')}  ${greenText('\u2713')} Typescript ${redText('X')} Sass ${redText('X')} Webpack`);
+
     execSync('sass styles:dist/public/css');
+    process.stdout.clearLine(0);
+    process.stdout.cursorTo(0);
+    process.stdout.write(`${redText('Compiling...')}  ${greenText('\u2713')} Typescript ${greenText('\u2713')} Sass ${redText('X')} Webpack`);
+
     execSync('webpack');
+    process.stdout.clearLine(0);
+    process.stdout.cursorTo(0);
+    process.stdout.write(`${redText('Compiling...')}  ${greenText('\u2713')} Typescript ${greenText('\u2713')} Sass ${greenText('\u2713')} Webpack`);
+
     /**
      * Recursively watching each folder for changes.
      */
     watchDirectory();
-    console.log('Watching!\n');
+    process.stdout.clearLine(0);
+    process.stdout.cursorTo(0);
+    process.stdout.write(`${greenText('Watching!')}  ${greenText('\u2713')} Typescript ${greenText('\u2713')} Sass ${greenText('\u2713')} Webpack\n`);
+
+    /**
+     * Starting node process
+     */
+    currentNodeProcess = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
 } catch (e:any) {
     /**
      * If there are errors from the intial commands, log them.
      * The filtering is for cleaning up the error messages.
      */
     if(Array.isArray(e.output)) {
-        console.log(
+        process.stdout.write(
             e.output
                 .filter((err:any) => err instanceof Buffer)
                 .map((buffer:Buffer) => {
@@ -35,13 +55,16 @@ try {
                 })
                 .filter((errStr:string) => errStr.length > 'Error:\n\n '.length)
                 .join('\n')
+            + '\n'
         );
     }
+
+    process.kill(0);
 }
 
 /**
  * A function that recursively reads directories and sets event listeners to run CLI commands when a user saves.
- * @param folder The root folder to start with. If none provided, starts at the root folder.
+ * @param folder The root folder to start with. Default is the root folder.
  */
 function watchDirectory(folder:string = '.') {
     /**
@@ -91,14 +114,15 @@ function watchDirectory(folder:string = '.') {
 function runProcess(command: string, fileName: string) {
     /**
      * Since fs's watch event is called several times when a file is saved, we'll apply a 200ms buffer to each time this is called.
+     * Also adding some fun styling.
      */
     if(Date.now() - currentCompileTimestamp < 200) return;
-    console.log(`\nCompiling: ${fileName} (${command})`);
+    process.stdout.write(`\n${redText('Compiling:')} ${yellowHighlight(fileName)}  ${italic(`> ${command}`)}`);
 
     /**
      * Kills the current node process to run the CLI .
      */
-    currentNodeProcess.kill('SIGTERM');
+    if(currentNodeProcess) currentNodeProcess.kill('SIGTERM');
     
     /**
      * Running the command.
@@ -144,14 +168,40 @@ function runProcess(command: string, fileName: string) {
                 errorArray.splice(0, 1);
                 compilerMessage = 'ERROR' + errorArray.join('\n\nERROR').split('\nwebpack ')[0];
             }
-            console.log(`\nError:\n\n${compilerMessage}\n\nWaiting for changes...\n`);
+            process.stdout.write(`\n\n${redHighlight('Error')}\n\n${compilerMessage}\n${greenText('Waiting for changes...')}\n`);
             return;
         }
         
         /**
          * Otherwise if sucessful, start a new node process.
          */
-        console.log('Done!\n');
+        process.stdout.clearLine(0);
+        process.stdout.cursorTo(0);
+        process.stdout.write(`${greenText('Done!')} ${yellowHighlight(fileName)}  ${italic(`> ${command}`)}\n`);
         currentNodeProcess = spawn('node', [resolve('dist/server.js')], {stdio: 'inherit'});
     });
+}
+
+/**
+ * Styling functions
+ */
+
+function redText(text:string) {
+    return `\x1b[95m\x1b[1m${text}\x1b[0m`;
+}
+
+function greenText(text:string) {
+    return `\x1b[92m\x1b[1m${text}\x1b[0m`;
+}
+
+function redHighlight(text:string) {
+    return `\n\x1b[41m\x1b[30m\x1b[1m ${text} \x1b[0m`
+}
+
+function yellowHighlight(text:string) {
+    return `\x1b[43m\x1b[1m\x1b[30m ${text} \x1b[0m`
+}
+
+function italic(text:string) {
+    return `\x1b[3m\x1b[2m${text}\x1b[0m`
 }

@@ -36,7 +36,7 @@ const About: FunctionComponent<Props> = (props) => {
         <main className="Contain">
             {/* <h1 className="Title">About Me</h1>
             <div className="AboutMe">
-                <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/profile.jpg"></img>
+                <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/profile.jpg" loading="lazy"></img>
                 <div className="Description">
                     <p>Hey! My name is Kevin Cox, and I'm a full-stack developer and graphic designer from New York.</p>
                     <p></p>
@@ -88,7 +88,7 @@ const About: FunctionComponent<Props> = (props) => {
                             <div className="Section Info">
                                 <div className="ImageWrapper">
                                     <div className="Outline"></div>
-                                    <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/headshotBW.jpeg"></img>
+                                    <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/headshotBW.jpeg" loading="lazy"></img>
                                 </div>
                                 <div className="InfoWrapper">
                                     <div className="Link">
@@ -156,7 +156,7 @@ const About: FunctionComponent<Props> = (props) => {
                             </svg>
                         </div>
                         <div className="Bottom">
-                            <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/headshot.jpg"></img>
+                            <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/headshot.jpg" loading="lazy"></img>
                             <h3>Kevin Cox</h3>
                             <h4>Full-Stack Web Developer & Graphic Designer</h4>
                             <a href="https://www.linkedin.com/school/binghamton-university/?trk=public-profile-badge-profile-badge_school-name" target="_blank">
@@ -174,7 +174,7 @@ const About: FunctionComponent<Props> = (props) => {
                                 <h3>Github</h3>
                             </a>
                             <a href={`https://github.com/${pageProps.github.owner}`} target="_blank"><h2>{pageProps.github.owner}</h2></a>
-                            <img src={pageProps.github.avatar}></img>
+                            <img src={pageProps.github.avatar} loading="lazy"></img>
                         </div>
                         <div className="Repos">{
                             pageProps.github.repos.map((repo, i) => {

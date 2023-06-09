@@ -33,11 +33,11 @@ const Project: FunctionComponent<Props> = (props) => {
             <div className="Headline">
                 {project.link ? 
                     <a href={project.link} target="_blank" className="Logo" rel="nofollow">
-                        <img src={project.logo} alt={`${project.name} logo`}></img>
+                        <img src={project.logo} alt={`${project.name} logo`} loading="lazy"></img>
                     </a>
                 : 
                     <div className="Logo">
-                        <img src={project.logo} alt={`${project.name} logo`} rel="nofollow"></img>
+                        <img src={project.logo} alt={`${project.name} logo`} rel="nofollow" loading="lazy"></img>
                     </div>
                 }
                 <div className="TitleWrapper">
@@ -65,7 +65,7 @@ const Project: FunctionComponent<Props> = (props) => {
                             <div></div>
                         </div>
                         <div className="MainImage">
-                            <img src={project.gallery[0]} alt={`${project.name} website image`}></img>
+                            <img src={project.gallery[0]} alt={`${project.name} website image`} loading="lazy"></img>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@ const Project: FunctionComponent<Props> = (props) => {
                             <div></div>
                         </div>
                         <div className="MainImage">
-                            <img src={url} alt={`${project.name} gallery photo #${i+1}`}></img>
+                            <img src={url} alt={`${project.name} gallery photo #${i+1}`} loading="lazy"></img>
                         </div>
                     </div>
                 })}

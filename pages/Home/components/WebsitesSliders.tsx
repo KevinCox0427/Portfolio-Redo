@@ -74,7 +74,7 @@ const WebsiteSlider:FunctionComponent<Props> = (props) => {
                     animation: `0.3s ease-out ${(offsetAmount*0.15) + revealDelay + (i*0.15)}s forwards SlideDown`
                 }}>
                     <a className='WebsiteWrapper' href={`/portfolio/${sliderProjects[offset].route}`}>
-                        <img src={sliderProjects[offset].gallery[0]} alt={`${project.name} website screenshot`}></img>
+                        <img src={sliderProjects[offset].gallery[0]} alt={`${project.name} website screenshot`} loading="lazy"></img>
                     </a>
                     <div className='FakeBrowser'>
                         <div></div>
