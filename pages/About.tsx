@@ -4,6 +4,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AddPageView from "./components/AddPageView";
 
+/**
+ * Declaring globally what properties this page should inherited from the server under "AboutPageProps".
+ */
 declare global {
     type AboutPageProps = {
         portfolioConfig: PortfolioConfig[],
@@ -26,7 +29,16 @@ type Props = {
     ServerProps: ServerPropsType
 }
 
+/**
+ * A React page that will render the about page. This is being rendered on the server and hydrated on the client.
+ * 
+ * @param portfolioConfig The configuration of the portfolio to render its content appropriately.
+ * @param github Data collected on my github account to properly render my most recent repositories.
+ */
 const About: FunctionComponent<Props> = (props) => {
+    /**
+     * Making sure we inherit the properties from the server.
+     */
     const pageProps = props.ServerProps.aboutPageProps;
     if(typeof pageProps === 'undefined') return <></>;
     
@@ -70,7 +82,7 @@ const About: FunctionComponent<Props> = (props) => {
                                 <div className="Job">
                                     <h4>Lead Developer</h4>
                                     <span>Red Barn Technology Group  |  Binghamton, NY  |  Jun. 2022 - Jun. 2023</span>
-                                    <p>Designed, developed, and managed a team of 5 to serve and maintain 7 on-going clients. Led and developed a middleware server to integrate a new open-source ERP software for their internal departments into web  portals. Maintained, supported and repaired previous clients’ projects.</p>
+                                    <p>Designed, developed, and managed a team of 5 to serve and maintain 7 on-going clients. Led and developed a middleware server to integrate a new open-source ERP software for their internal departments into web  portals. Maintained, supported and repaired previous clients' projects.</p>
                                 </div>
                                 <div className="Job">
                                     <h4>Web Developer Intern</h4>
@@ -173,7 +185,9 @@ const About: FunctionComponent<Props> = (props) => {
                                 </svg>
                                 <h3>Github</h3>
                             </a>
-                            <a href={`https://github.com/${pageProps.github.owner}`} target="_blank"><h2>{pageProps.github.owner}</h2></a>
+                            <a href={`https://github.com/${pageProps.github.owner}`} target="_blank">
+                                <h2>{pageProps.github.owner}</h2>
+                            </a>
                             <img src={pageProps.github.avatar} loading="lazy"></img>
                         </div>
                         <div className="Repos">{

@@ -195,7 +195,7 @@
         }
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 900px) {
         .MainCopy {
             // padding-top: calc(25em - 20vw);
             // width: 80vw;
@@ -217,21 +217,21 @@
         }
 
         #FloralPatternSVG {
-            display: none;
+            opacity: 0;
             // width: 43em;
             // right: 0.5em;
             // top: -8em;
         }
 
         #HandSVG {
-            display: none;
+            opacity: 0;
             // width: 17em;
             // right: -12.5em;
             // top: 19.9em;
         }
 
         #RightCover {
-            display: none;
+            opacity: 0;
         }
 
         .SliderWrapper {

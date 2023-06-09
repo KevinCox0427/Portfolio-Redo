@@ -14,6 +14,9 @@ import UISection from './UISection/UISection';
 import WebSection from './WebSection/WebSection';
 import WebsiteSlider from './components/WebsitesSliders';
 
+/**
+ * Declaring globally what properties this page should inherited from the server under "HomePageProps".
+ */
 declare global {
     type HomePageProps = {
         portfolioConfig: PortfolioConfig[]
@@ -45,32 +48,115 @@ type Props = {
     ServerProps: ServerPropsType
 }
 
+/**
+ * A React page that will render the homepage. This is being rendered on the server and hydrated on the client.
+ * 
+ * @param portfolioConfig The configuration of the portfolio to render its content appropriately.
+ * @param domain The name of the domain being used. This is mostly to properly render a site map in the "Analytics" section.
+ * @param locationData Data collected from the user's IP address. This is for the "Analytics" section.
+ */
 const Home:FunctionComponent<Props> = (props) => {
+    /**
+     * Guard clause to make sure we recieved the properties from the server.
+     */
     const pageProps = props.ServerProps.homePageProps;
     if(typeof pageProps === 'undefined') return <></>;
 
+    /**
+     * Creating a utility class to save and load state variables in local storage.
+     * This will be used throughout the homepage to retain statefulness across user sessions.
+     * See utils/windowCache.ts for more details.
+     */
     const [cacheHasLoaded, setCacheHasLoaded] = useState(false);
     const windowCache = useRef(new WindowCache(setCacheHasLoaded));
 
-    const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
+    /**
+     * Keeping track of what section the user has currently scrolled to.
+     */
     const contentWrapper = useRef<HTMLDivElement>(null);
     const [currentSection, setCurrentSection] = useState('');
 
+    /**
+     * Setting a scroll event on page load to test for what section the user is currently on.
+     * This is buffered such that the callback function will only fire if a user has stopped scrolling for 100ms.
+     */
+    const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
     useEffect(() => {
-        if(!cacheHasLoaded) return;
-
-        setWatchTime(oldWatchTime => {
-            return {...oldWatchTime,
-                start: Date.now()
-            }
-        });
-        
         document.addEventListener('scroll', e => {
             if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
-            scrollTimeoutBuffer.current = setTimeout(checkSections, 100);
+            scrollTimeoutBuffer.current = setTimeout(() => {
+                checkSections();
+            }, 100);
         });
-    }, [cacheHasLoaded, currentSection, setCurrentSection]);
+    }, [checkSections]);
 
+    /**
+     * A function to determine what section the user is on based on scroll position.
+     */
+    function checkSections() {
+        /**
+         * Helper function to clamp a number between minimum and maximum bounds.
+         * 
+         * @param num The number being clamped.
+         * @param min The minimum bound.
+         * @param max The maximum bound.
+         * @returns The number inside the minimum and maximum bounds.
+         */
+        function clamp(num:number, min:number, max:number) {
+            return Math.min(Math.max(num, min), max);
+        }
+
+        /**
+         * Helper function to get the amount of space the element takes up on screen.
+         * @param el The element being tested for.
+         * @returns The amount of screen real-estate it takes up in pixels.
+         */
+        function getArea(el: HTMLElement) {
+            const sectionTop = el.getBoundingClientRect().top;
+            const sectionBottom = el.getBoundingClientRect().bottom;
+            return clamp(sectionBottom, 0, window.innerHeight) - clamp(sectionTop, 0, window.innerHeight);
+        }
+
+        /**
+         * Getting references to each section on the homepage.
+         */
+        const elementArray = [
+            document.getElementById('home') as HTMLDivElement,
+            ...Array.from(document.getElementsByClassName('Section')) as HTMLDivElement[],
+            document.getElementById('footer') as HTMLDivElement
+        ];
+
+        /**
+         * Reducing the elements into the one that takes up the most screen real-estate.
+         */
+        const newSection = elementArray.reduce((previousElement, currentElement) => {
+            const currentArea = getArea(currentElement);
+            const previousArea = getArea(previousElement);
+            return currentArea > previousArea ? currentElement : previousElement;
+        });
+
+        /**
+         * If the section on screen changes, then we'll update the current section and the watch time of the previous section.
+         */
+        if(newSection.id !== currentSection) {
+            setWatchTime(previousWatchTime => {
+                return {...previousWatchTime,
+                    start: Date.now(),
+                    timeStamps: {...previousWatchTime.timeStamps,
+                        [currentSection]: previousWatchTime.timeStamps[currentSection as keyof typeof previousWatchTime.timeStamps] + (Date.now() - previousWatchTime.start)
+                    }
+                }
+            });
+            setCurrentSection(newSection.id);
+        }
+    }
+
+    /**
+     * A state variable keeping track of how much time the user has spent on each section when they've switched sections.
+     * "Start" represents the starting timestamp of a new seciton.
+     * This will then be subtracted from the current time once a user has scrolled past it, and will stored in the "timeStamps" for the appropriate section.
+     * This is also being saved to local storage upon state change.
+     */
     const [watchTime, setWatchTime] = useState<{
         start: number,
         timeStamps: {
@@ -91,6 +177,22 @@ const Home:FunctionComponent<Props> = (props) => {
     });
     windowCache.current.registerCache('watchTime', watchTime, setWatchTime);
 
+    /**
+     * A callback function to start the time for the user session on page load.
+     */
+    useEffect(() => {
+        if(!cacheHasLoaded) return;
+
+        setWatchTime(oldWatchTime => {
+            return {...oldWatchTime,
+                start: Date.now()
+            }
+        });
+    }, [cacheHasLoaded, currentSection]);
+
+    /**
+     * Setting the default order and HTML content for each section.
+     */
     const sectionDefaults = {
         data: {
             order: 1,
@@ -124,63 +226,16 @@ const Home:FunctionComponent<Props> = (props) => {
         }
     }
     
+    /**
+     * Assigning a state variable to keep track of the order and HTML content for each section.
+     * This will be stored in local storage upon state change.
+     */
     const [sectionContent, setSectionContent] = useState(sectionDefaults);
     windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
 
-    function checkSections() {
-        const clamp = (num:number, min:number, max:number) => Math.min(Math.max(num, min), max);
-
-        const elementArray = [
-            document.getElementById('home') as HTMLDivElement,
-            ...Array.from(document.getElementsByClassName('Section')) as HTMLDivElement[],
-            document.getElementById('footer') as HTMLDivElement
-        ];
-
-        let sections: {
-            [sectionName: string]: {
-                el: HTMLDivElement,
-                screenArea: number
-            }
-        } = {};
-        
-        elementArray.forEach(section => {
-            const sectionTop = section.getBoundingClientRect().top;
-            const sectionBottom = section.getBoundingClientRect().bottom;
-
-            sections = {...sections,
-                [section.id]: {
-                    el: section,
-                    screenArea: clamp(sectionBottom, 0, window.innerHeight) - clamp(sectionTop, 0, window.innerHeight)
-                }
-            }
-        });
-
-        const newSection = Object.keys(sections).reduce((previousSectionName, currentSectionName, i) => {
-            const currentArea = sections[currentSectionName].screenArea;
-            const previousArea = sections[previousSectionName] ? sections[previousSectionName].screenArea : 0;
-
-            if(currentArea < window.innerHeight/3) return previousSectionName;
-            else return currentArea > previousArea ? currentSectionName : previousSectionName;
-        }, '');
-
-        if(newSection !== currentSection) {
-            if(currentSection !== '') setWatchTime(previousWatchTime => {
-                return {...previousWatchTime,
-                    start: Date.now(),
-                    timeStamps: {...previousWatchTime.timeStamps,
-                        [currentSection]: previousWatchTime.timeStamps[currentSection as keyof typeof previousWatchTime.timeStamps] + (Date.now() - previousWatchTime.start)
-                    }
-                }
-            });
-            setCurrentSection(newSection);
-        }
-    }
-
     return <>
         <Header></Header>
-        <h1 style={{
-            display: 'none'
-        }}>Dream State</h1>
+        <h1 style={{ display: 'none' }}>Dream State</h1>
         <div id='home' className='SplashImage'>
             <div className='MainCopy'>
                 <h3>Your bridge between</h3>
@@ -208,30 +263,17 @@ const Home:FunctionComponent<Props> = (props) => {
         <div id="MyServices" className='Contain'>
             <NavBars contentWrapper={contentWrapper} currentSection={currentSection} sectionContent={sectionContent}></NavBars>
             <div className='Content' ref={contentWrapper}>
-                <DataSection windowCache={windowCache.current} sectionContent={sectionContent.data} style={{
-                    order: sectionContent.data.order,
-                    zIndex: Object.keys(sectionContent).length - sectionContent.data.order
-                }}></DataSection>
-                <AuthSection windowCache={windowCache.current} cachedHadLoaded={cacheHasLoaded} sectionContent={sectionContent.authentication} style={{
-                    order: sectionContent.authentication.order,
-                    zIndex: Object.keys(sectionContent).length - sectionContent.authentication.order
-                }}></AuthSection>
-                <IntegrationSection windowCache={windowCache.current} sectionContent={sectionContent.integration} style={{
-                    order: sectionContent.integration.order,
-                    zIndex: Object.keys(sectionContent).length - sectionContent.integration.order
-                }}></IntegrationSection>
-                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} portfolioConfig={pageProps.portfolioConfig} setWatchTime={setWatchTime} sectionContent={sectionContent.analytics} domain={pageProps.domain} locationData={pageProps.locationData} style={{
-                    order: sectionContent.analytics.order,
-                    zIndex: Object.keys(sectionContent).length - sectionContent.analytics.order
-                }}></AnalyticsSection>
-                <UISection sectionContent={sectionContent.ui} allSectionContent={sectionContent} setSectionContent={setSectionContent} defaultSectionContent={sectionDefaults} cacheHasLoaded={cacheHasLoaded} style={{
-                    order: sectionContent.ui.order,
-                    zIndex: Object.keys(sectionContent).length - sectionContent.ui.order
-                }}></UISection>
-                <WebSection sectionContent={sectionContent.web} portfolioConfig={pageProps.portfolioConfig} style={{
-                    order: sectionContent.web.order,
-                    zIndex: Object.keys(sectionContent).length - sectionContent.web.order
-                }}></WebSection>
+                <DataSection windowCache={windowCache.current} sectionContent={sectionContent.data}></DataSection>
+                
+                <AuthSection windowCache={windowCache.current} cachedHadLoaded={cacheHasLoaded} sectionContent={sectionContent.authentication}></AuthSection>
+                
+                <IntegrationSection windowCache={windowCache.current} sectionContent={sectionContent.integration}></IntegrationSection>
+                
+                <AnalyticsSection windowCache={windowCache.current} watchTime={watchTime} currentSection={currentSection} cacheHasLoaded={cacheHasLoaded} portfolioConfig={pageProps.portfolioConfig} setWatchTime={setWatchTime} sectionContent={sectionContent.analytics} domain={pageProps.domain} locationData={pageProps.locationData}></AnalyticsSection>
+
+                <UISection sectionContent={sectionContent.ui} allSectionContent={sectionContent} setSectionContent={setSectionContent} defaultSectionContent={sectionDefaults} cacheHasLoaded={cacheHasLoaded}></UISection>
+
+                <WebSection sectionContent={sectionContent.web} portfolioConfig={pageProps.portfolioConfig}></WebSection>
             </div>
         </div>
         <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>

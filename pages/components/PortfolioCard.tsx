@@ -30,7 +30,7 @@ const PortfolioCard: FunctionComponent<Props> = (props) => {
          */
         else {
             e.preventDefault();
-            window.location.href = `/portfolio?tag=${props.project.tag.split(' ').join('')}`;
+            window.location.href = `/portfolio?tag=${encodeURIComponent(props.project.tag)}`;
         }
     }
 

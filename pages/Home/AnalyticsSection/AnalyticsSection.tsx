@@ -19,7 +19,6 @@ type Props = {
     },
     setWatchTime: React.Dispatch<React.SetStateAction<Props["watchTime"]>>,
     portfolioConfig: PortfolioConfig[],
-    style: React.CSSProperties,
     domain: string,
     locationData: {
         ip: string,
@@ -38,12 +37,14 @@ type Props = {
  * @param watchTime The watchtime of each section recorded by the home page. This will be displayed in a bar graph
  * @param resetWatchTime A function to reset of all the watch times to 0s.
  * @param portfolioConfig The configuration of all the porfolio projects. This is to display the site map.
- * @param style Any additional stylings to the wrapper div.
  * @param domain The domain that this build is currently running on. This is to display proper urls when show the page views for each route.
  * @param locationData The data collected on the user via their IP. This is to display this information along with a map of their location.
  */
 const AnalyticsSection:FunctionComponent<Props> = (props) => {
-    return <div id="analytics" className='Section' style={props.style}>
+    return <div id="analytics" className='Section' style={{
+        order: props.sectionContent.order,
+        zIndex: 6 - props.sectionContent.order
+    }}>
         <Title content={props.sectionContent.content}></Title>
         <div className="GraphWrapper">
             <UserData locationData={props.locationData}></UserData>

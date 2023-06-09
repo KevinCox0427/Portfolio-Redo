@@ -27,8 +27,7 @@ type CurrentData = {
 
 type Props = {
     windowCache: WindowCache,
-    sectionContent: SectionContent,
-    style: React.CSSProperties
+    sectionContent: SectionContent
 }
 
 /**
@@ -36,7 +35,6 @@ type Props = {
  * 
  * @param windowCache The utility class that saves state variables into local storage upon state change.
  * @param sectionContent The title and description for this section. Can be changed.
- * @param style Any additional styling for the wrapper div.
  */
 const DataSection:FunctionComponent<Props> = (props) => {
     /**
@@ -55,7 +53,10 @@ const DataSection:FunctionComponent<Props> = (props) => {
     });
     props.windowCache.registerCache('dataEntry', currentData, setCurrentData);
 
-    return <div id="data" className='Section' style={props.style}>
+    return <div id="data" className='Section'  style={{
+        order: props.sectionContent.order,
+        zIndex: 6 - props.sectionContent.order
+    }}>
         <Title content={props.sectionContent.content}></Title>
         <div className='Example'>
             <JsonInput currentData={currentData} setCurrentData={setCurrentData}></JsonInput>

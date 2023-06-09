@@ -28,8 +28,7 @@ type UserAuthData = {
 type Props = {
     windowCache: WindowCache,
     cachedHadLoaded: boolean,
-    sectionContent: SectionContent,
-    style: React.CSSProperties
+    sectionContent: SectionContent
 }
 
 /**
@@ -37,7 +36,6 @@ type Props = {
  * 
  * @param windowCache The utility class that saves state variables into local storage upon state change.
  * @param sectionContent The title and description for this section. Can be changed.
- * @param style Any additional styling for the wrapper div.
  */
 const AuthSection:FunctionComponent<Props> = (props) => {
     /**
@@ -89,7 +87,10 @@ const AuthSection:FunctionComponent<Props> = (props) => {
         return validLogin;
     }
 
-    return <div id="authentication" className="Section" style={props.style}>
+    return <div id="authentication" className="Section"  style={{
+        order: props.sectionContent.order,
+        zIndex: 6 - props.sectionContent.order
+    }}>
         <Title content={props.sectionContent.content}></Title>
         <div className='Example'>
             <Register userData={userData} setUserData={setUserData}></Register>

@@ -5,6 +5,9 @@ import Footer from "./components/Footer";
 import PortfolioCard from "./components/PortfolioCard";
 import AddPageView from "./components/AddPageView";
 
+/**
+ * Declaring globally what properties this page should inherited from the server under "Page404Props".
+ */
 declare global {
     type PortfolioPageProps = {
         portfolioConfig: PortfolioConfig[],
@@ -16,6 +19,12 @@ type Props = {
     ServerProps: ServerPropsType
 }
 
+/**
+ * A React page that will render the portfolio page. This is being rendered on the server and hydrated on the client.
+ * 
+ * @param portfolioConfig The configuration of the portfolio to render its content appropriately.
+ * @param currentTag The starting tag to filter projects with.
+ */
 const Portfolio: FunctionComponent<Props> = (props) => {
     const pageProps = props.ServerProps.portfolioPageProps;
     if(!pageProps) return <></>;
@@ -27,24 +36,32 @@ const Portfolio: FunctionComponent<Props> = (props) => {
         if(!tags.includes(project.tag)) tags.push(project.tag);
     })
 
-    const [selectedTag, setSelectedTag] = useState(tags.every(tag => tag.replace(" ", "") !== pageProps!.currentTag) ? 'all' : pageProps.currentTag);
+    const [selectedTag, setSelectedTag] = useState(tags.every(tag => tag !== decodeURIComponent(pageProps!.currentTag)) ? 'all' : decodeURIComponent(pageProps.currentTag));
 
+    /**
+     * Callback function such that when a tag is changed, the appropriate projects are displayed.
+     */
     useEffect(() => {
         const urlTag = window.location.href.split('/portfolio')[1];
         if(
             (urlTag !== '' && selectedTag === 'all') ||
             (urlTag !== `?tag=${selectedTag}` && selectedTag !== 'all')
         ) {
-            window.history.pushState({}, '', `/portfolio${selectedTag === 'all' ? '' : '?tag=' + selectedTag}`);
+            window.history.pushState({}, '', `/portfolio${selectedTag === 'all' ? '' : '?tag=' + encodeURIComponent(selectedTag)}`);
         }
         
+        /**
+         * Forcing a re-render for project elements so the animation will fire.
+         */
         setProjects([]);
         setTimeout(() => {
             setProjects(pageProps!.portfolioConfig.filter(project => {
-                return project.tag.split(' ').join('') === selectedTag || selectedTag === 'all';
+                return project.tag === selectedTag || selectedTag === 'all';
             }));
         }, 10);
     }, [selectedTag]);
+
+    console.log(selectedTag)
     
     return <>
         <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName="portfolio"></AddPageView>
@@ -52,13 +69,9 @@ const Portfolio: FunctionComponent<Props> = (props) => {
         <main className="Contain">
             <h1>Portfolio Projects</h1>
             <div className="TagsWrapper">
-                <p className={selectedTag === 'all' ? 'Activated' : ' '} onClick={() => {
-                    setSelectedTag('all');
-                }}>All</p>
+                <p className={selectedTag === 'all' ? 'Activated' : ' '} onClick={() => {setSelectedTag('all')}}>All</p>
                 {tags.map((tag, i) => {
-                    return <p className={selectedTag === tag.replace(' ', '') ? 'Activated' : ' '} key={i} onClick={() => {
-                        setSelectedTag(tag.replace(' ', ''));
-                    }}>{tag}</p>
+                    return <p className={selectedTag === tag ? 'Activated' : ' '} key={i} onClick={() => {setSelectedTag(tag)}}>{tag}</p>
                 })}
             </div>
             <div className="ProjectsWrapper">
@@ -68,7 +81,7 @@ const Portfolio: FunctionComponent<Props> = (props) => {
                             animation: `0.5s ease-in-out ${i*0.15}s forwards SlideDown`
                         }} tagCallback={(e: React.MouseEvent) => {
                             e.preventDefault();
-                            setSelectedTag(project.tag.split(' ').join(''));
+                            setSelectedTag(project.tag);
                         }}></PortfolioCard>
                     </Fragment>
                 })}
