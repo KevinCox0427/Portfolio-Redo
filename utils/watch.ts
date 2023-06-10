@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { spawn, execSync, ChildProcess } from 'child_process';
-import { readdirSync, watch, readFileSync, writeFileSync, lstatSync } from 'fs';
+import { readdirSync, watch, readFileSync, writeFileSync, lstatSync, existsSync, mkdirSync } from 'fs';
 
 /**
  * Keeping track of when the node server started and is running.
@@ -28,6 +28,11 @@ try {
     process.stdout.clearLine(0);
     process.stdout.cursorTo(0);
     process.stdout.write(`${redText('Compiling...')}  ${greenText('\u2713')} Typescript ${greenText('\u2713')} Sass ${greenText('\u2713')} Webpack`);
+
+    /**
+     * Copying assets from the public directory.
+     */
+    copyPublicFiles('public/assets');
 
     /**
      * Recursively watching each folder for changes.
@@ -183,7 +188,38 @@ function runProcess(command: string, fileName: string) {
 }
 
 /**
- * Styling functions
+ * A function that recursively copys a directory into the distributable directory.
+ * 
+ * @param startingDir The directory that the recursion starts at.
+ */
+function copyPublicFiles(startingDir: string) {
+    /**
+     * Making a directory in the distributable directory to copy + paste into if it doesn't already exist.
+     */
+    if(!existsSync(`./dist/${startingDir}`)) {
+        mkdirSync(`./dist/${startingDir}`);
+    }
+
+    readdirSync(startingDir).forEach(pointer => {
+        if(!existsSync(`./${startingDir}/${pointer}`)) return;
+
+        /**
+         * If it's a folder, then call this function recusively.
+         */
+        if(lstatSync(`${startingDir}/${pointer}`).isDirectory()) {
+            copyPublicFiles(`${startingDir}/${pointer}`);
+        }
+        /**
+         * Otherwise, copy + paste the file into the distrabutable directory.
+         */
+        else {
+            writeFileSync(`./dist/${startingDir}/${pointer}`, readFileSync(`./${startingDir}/${pointer}`));
+        }
+    })
+} 
+
+/**
+ * Styling functions for console logs.
  */
 
 function redText(text:string) {

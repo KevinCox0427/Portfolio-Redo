@@ -84,7 +84,7 @@ about.route('/')
  */
 about.route('/resume')
     .get(async (_, res) => {
-        res.download('dist/public/assets/Resume Kevin Cox.pdf');
+        res.download('./dist/public/assets/Kevin Cox Resume.pdf');
     });
 
 export default about;

@@ -27,6 +27,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
      * State variable to determine whether the navigation bar is sticky.
      */
     const [isNavBarSticky, setIsNavBarSticky] = useState(false);
+    
     /**
      * State variable to determine the bounds of the sticky navigation bar.
      * This is for when the nav bar is in mobile view, as it has fixed positioning at the top of the screen, and at some point it needs to scroll up out of the screen.
@@ -37,7 +38,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
      * Setting event listeners to change navigation bars state.
      */
     useEffect(() => {
-        setTimeout(testNavBars, 50);
+        testNavBars();
         document.addEventListener('scroll', testNavBars);
         window.addEventListener('resize', testNavBars);
     }, [testNavBars]);
@@ -49,7 +50,9 @@ const NavBars:FunctionComponent<Props> = (props) => {
         /**
          * Make sure elements are present and getting their bounding boxes.
          */
-        if(!props.contentWrapper.current || !navBarTop.current || !navBarBottom.current || !navBarStatic.current) return;
+        if(!props.contentWrapper.current || !navBarTop.current || !navBarBottom.current || !navBarStatic.current) {
+            return;
+        }
 
         const contentBox = props.contentWrapper.current.getBoundingClientRect();
         const navBarTopBox = navBarTop.current.getBoundingClientRect();
@@ -63,15 +66,16 @@ const NavBars:FunctionComponent<Props> = (props) => {
          * If the screen width is larger than 1400px, then we'll test if the center of the top nav bar is at least above center screen, and if the center of the bottom nav bar is at least below center screen.
          */
         const areNavBarsOnscreen = window.innerWidth > 1400 ? (navBarTopBox.top + (navBarTopBox.height/2) < window.innerHeight/2) && (navBarBottomBox.top + (navBarBottomBox.height/2) > window.innerHeight/2) : navBarTopBox.top < 0;
-        
+
         /**
          * If both are true, that means the scroll position requires a sticky nav bar to scroll with it.
          */
         setIsNavBarSticky(isContentOnscreen && areNavBarsOnscreen);
+        
         /**
          * If we are in mobile view, then we need to scroll the sticky nav with the bottom of the content box so it scrolls out of screen.
          */
-        setNavBarStaticLimit(window.innerWidth < 1400 && navBarStatic.current.clientHeight - contentBox.bottom > 0 ? -(navBarStatic.current.clientHeight - contentBox.bottom) : 0);
+        setNavBarStaticLimit(window.innerWidth < 1400 && navBarStatic.current.clientHeight - contentBox.bottom > 0 && contentBox.bottom > -25 ? -(navBarStatic.current.clientHeight - contentBox.bottom) : 0);
     }
 
     return <div className='NavBars'>

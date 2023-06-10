@@ -93,7 +93,7 @@ const Portfolio: FunctionComponent<Props> = (props) => {
     return <>
         <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName="portfolio"></AddPageView>
         <Header></Header>
-        <div className="Contain">
+        <div className="Contain" id="Portfolio">
             <h1>Portfolio Projects</h1>
             <div className="TagsWrapper">
                 <p className={selectedTag === 'all' ? 'Activated' : ' '} onClick={() => {setSelectedTag('all')}}>All</p>

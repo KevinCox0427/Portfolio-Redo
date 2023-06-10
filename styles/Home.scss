@@ -275,7 +275,7 @@
             &.Static {
                 position: fixed;
                 width: 23em;
-                left: clamp(2.2em, calc(calc(calc(100% - 1600px) * 0.5) + 0.7em), 100%);
+                left: clamp(2.2em, calc(calc(calc(100% - 1600px) * 0.5) + 2.7em), 100%);
                 top: 50%;
                 transform: translateY(-50%);
             }

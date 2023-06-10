@@ -82,6 +82,7 @@ const Home:FunctionComponent<Props> = (props) => {
      */
     const scrollTimeoutBuffer = useRef<NodeJS.Timeout | null>(null);
     useEffect(() => {
+        checkSections();
         document.addEventListener('scroll', e => {
             if(scrollTimeoutBuffer.current) clearTimeout(scrollTimeoutBuffer.current)
             scrollTimeoutBuffer.current = setTimeout(() => {
@@ -139,15 +140,18 @@ const Home:FunctionComponent<Props> = (props) => {
          * If the section on screen changes, then we'll update the current section and the watch time of the previous section.
          */
         if(newSection.id !== currentSection) {
-            setWatchTime(previousWatchTime => {
-                return {...previousWatchTime,
-                    start: Date.now(),
-                    timeStamps: {...previousWatchTime.timeStamps,
-                        [currentSection]: previousWatchTime.timeStamps[currentSection as keyof typeof previousWatchTime.timeStamps] + (Date.now() - previousWatchTime.start)
-                    }
-                }
-            });
             setCurrentSection(newSection.id);
+
+            if(currentSection) {
+                setWatchTime(previousWatchTime => {
+                    return {...previousWatchTime,
+                        start: Date.now(),
+                        timeStamps: {...previousWatchTime.timeStamps,
+                            [currentSection]: previousWatchTime.timeStamps[currentSection as keyof typeof previousWatchTime.timeStamps] + (Date.now() - previousWatchTime.start)
+                        }
+                    }
+                });
+            }
         }
     }
 

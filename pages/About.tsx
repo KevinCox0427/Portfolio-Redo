@@ -45,7 +45,7 @@ const About: FunctionComponent<Props> = (props) => {
     return <>
         <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName="about"></AddPageView>
         <Header></Header>
-        <div className="Contain">
+        <div className="Contain" id="About">
             {/* <h1 className="Title">About Me</h1>
             <div className="AboutMe">
                 <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/profile.jpg" loading="lazy"></img>

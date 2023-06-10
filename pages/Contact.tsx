@@ -269,7 +269,7 @@ const Contact: FunctionComponent<Props> = (props) => {
     return <>
         <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName="contact"></AddPageView>
         <Header></Header>
-        <div className="Contain">
+        <div className="Contain" id="Contact">
             <h1 style={{display: 'none'}}>Contact</h1>
             <form id="general">
                 <h2>General Contact Form</h2>

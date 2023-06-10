@@ -31,7 +31,7 @@ const WatchTime:FunctionComponent<Props> = (props) => {
     function createTimeString(time: number) {
         const hours = Math.floor((time/1000) / 3600);
         const minutes = Math.floor((time/1000) / 60) % 60;
-        const seconds = Math.floor((time/100) % 600) / 10;
+        const seconds = Math.floor((time/1000) % 60);
         return (hours ? `${hours}h ` : '') + (minutes ? `${minutes}m ` : '') + `${seconds}s`;
     }
 
