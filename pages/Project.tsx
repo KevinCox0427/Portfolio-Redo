@@ -5,6 +5,9 @@ import Footer from "./components/Footer";
 import AddPageView from "./components/AddPageView";
 import PortfolioCard from "./components/PortfolioCard";
 
+/**
+ * Declaring globally what properties this page should inherited from the server under "ProjectPageProps".
+ */
 declare global {
     type ProjectPageProps = {
         portfolioConfig: PortfolioConfig[],
@@ -16,10 +19,22 @@ type Props = {
     ServerProps: ServerPropsType
 }
 
+/**
+ * A React page that will render a project page. This is being rendered on the server and hydrated on the client.
+ * 
+ * @param portfolioConfig The configuration of the portfolio to render its content appropriately.
+ * @param projectIndex The index of this project to get from the portfolioConfig.
+ */
 const Project: FunctionComponent<Props> = (props) => {
+    /**
+     * Making sure we've inherited the properties from the server.
+     */
     const pageProps = props.ServerProps.projectPageProps;
     if(typeof pageProps === 'undefined') return <></>;
 
+    /**
+     * References to the current, next and previous projects' data.
+     */
     const project = pageProps.portfolioConfig[pageProps.projectIndex];
 
     const nextProject = pageProps.portfolioConfig[pageProps.projectIndex + 1 < pageProps.portfolioConfig.length ? pageProps.projectIndex + 1 : 0];
@@ -87,15 +102,15 @@ const Project: FunctionComponent<Props> = (props) => {
             <div className="Suggestions">
                 <div className="Suggestion">
                     <div className="SuggestLink">
-                        <a href={`/portfolio/${previousProject.route}`}>Previous</a>
-                    </div>
-                    <PortfolioCard project={previousProject}></PortfolioCard>
-                </div>
-                <div className="Suggestion">
-                    <div className="SuggestLink">
                         <a href={`/portfolio/${nextProject.route}`}>Next</a>
                     </div>
                     <PortfolioCard project={nextProject}></PortfolioCard>
+                </div>
+                <div className="Suggestion">
+                    <div className="SuggestLink">
+                        <a href={`/portfolio/${previousProject.route}`}>Previous</a>
+                    </div>
+                    <PortfolioCard project={previousProject}></PortfolioCard>
                 </div>
             </div>
         </article>

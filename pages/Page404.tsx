@@ -30,9 +30,9 @@ const Page404:FunctionComponent<Props> = (props) => {
 
     return <>
         <Header></Header>
-        <main className="contain">
+        <div className="contain">
             <h1>Error: Page Not Found</h1>
-        </main>
+        </div>
         <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>
     </>
 }

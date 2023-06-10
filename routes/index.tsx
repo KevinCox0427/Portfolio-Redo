@@ -13,6 +13,9 @@ dotenv.config();
 const index = express.Router();
 
 index.route('/')
+    /**
+     * GET route to serve the homepage.
+     */
     .get(async (req, res) => {
         /**
          * Getting the ip from the request. Ik this can be easily spoofed, but it's is just a demo.
@@ -49,6 +52,9 @@ index.route('/')
          */
         catch (e) {}
 
+        /**
+         * Creating the server properties to be passed to the client side
+         */
         const serverProps:ServerPropsType = {
             homePageProps: {
                 portfolioConfig: portfolioConfig,
@@ -57,6 +63,10 @@ index.route('/')
             }
         }
 
+        /**
+         * Rendering and serving the react file.
+         * See utils/serveHtml.ts for more details.
+         */
         res.status(200).send(serveHTML(<Home ServerProps={serverProps}/>, 'Home', serverProps, {
             title: 'Dream State',
             name: 'Dream State',
@@ -67,7 +77,30 @@ index.route('/')
     });
 
 index.route('/encrypt')
+    /**
+     * A POST request to intake a string and return it with type 8 encrypted.
+     * This is used in the "authentication" section on the homepage.
+     */
     .post(async (req, res) => {
+        /**
+         * Making sure it's a string.
+         */
+        if(typeof req.body.password !== 'string') {
+            res.status(400).send('Invalid Request');
+            return;
+        }
+
+        /**
+         * Also making sure we're not encrypting something ridiculous.
+         */
+        if(req.body.password.length > 100) {
+            res.status(400).send('Invalid Request');
+            return;
+        }
+
+        /**
+         * Sending the encrypted string in base64.
+         */
         const salt = randomBytes(16).toString('base64');
         res.status(200).send({
             salt: salt,
@@ -75,65 +108,25 @@ index.route('/encrypt')
         });
     })
 
+/**
+ * Saving a bearer token in memory to make API requests to spotify.
+ * This will also recorded in db/spotifyBearerToken.json
+ * Timestamp is used to see if the token is expired. Its max age is 1 hour.
+ */
+let bearerToken: {
+    token: string,
+    timestamp: number
+};
 
-type SongType = {
-    album: {
-        artists: {
-            name: string,
-            external_urls: {
-                spotify: string
-            }
-        }[],
-        external_urls: {
-            spotify: string
-        },
-        images: {
-            url: string
-        }[],
-        name: string,
-        release_date: string,
-        total_tracks: number
-    },
-    artists: {
-        name: string,
-        external_urls: {
-            spotify: string
-        }
-    }[],
-    disc_number: number,
-    duration_ms: number,
-    external_urls: {
-        spotify: string
-    },
-    id: string,
-    name: string,
-    track_number: number,
-}
-
-function readSpotifyBearerToken() {
-    if(!existsSync('./db')) mkdirSync('./db');
-
-    try {
-        const result = JSON.parse(readFileSync('./db/spotifyBearerToken.json').toString());
-
-        if(typeof result != 'undefined' && typeof result.token === 'string' && typeof result.timestamp === 'number') {
-            bearerToken = result;
-            return true;
-        }
-        else {
-            throw new Error("Invalid Data Type");
-        }
-    } catch (e) {
-        bearerToken = {
-            token: '',
-            timestamp: 0
-        }
-        writeFileSync('./db/spotifyBearerToken.json', JSON.stringify(bearerToken));
-        return false;
-    }
-}
-
-async function getSpotifyBearerToken() {
+/**
+ * A helper function to request a bearer token via by authenticating the spotify account.
+ * 
+ * @returns A boolean representing whether it was successful or not.
+ */
+async function createSpotifyBearerToken() {
+    /**
+     * Making the POST request with the credentials.
+     */
     const url = `https://accounts.spotify.com/api/token?grant_type=client_credentials&client_id=${process.env.SpotifyClientID}&client_secret=${process.env.SpotifyClientSecret}`;
 
     const result = await axios.post(url, {}, {
@@ -142,25 +135,74 @@ async function getSpotifyBearerToken() {
         }
     });
 
+    /**
+     * Seeing if the response is valid.
+     */
     if(typeof result !== 'undefined' && typeof result.data === 'object' && typeof result.data.access_token === 'string') {
         bearerToken = {
             token: result.data.access_token,
             timestamp: Date.now()
         }
+        /**
+         * Saving the result to a JSON file.
+         */
         writeFileSync('./db/spotifyBearerToken.json', JSON.stringify(bearerToken));
         return true;
     }
     else return false;
 }
 
-let bearerToken: {
-    token: string,
-    timestamp: number
-};
-readSpotifyBearerToken();
+/**
+ * A helper function to read the bearer token from the JSON file.
+ * If it doesn't exist or is expired, then we'll create a new one.
+ * 
+ * @returns A boolean representing whether the operation was successful or not.
+ */
+async function readSpotifyBearerToken() {
+    /**
+     * If the directory doesn't exists, then we need to make one.
+     */
+    if(!existsSync('./db')) mkdirSync('./db');
+
+    /**
+     * Attempting to read the JSON file. If t
+     */
+    try {
+        const readResult = JSON.parse(readFileSync('./db/spotifyBearerToken.json').toString());
+
+        /**
+         * If the read result doesn't exist, has bad syntax, or is expired, then throw an error.
+         * Otherwise just set the variable and return true.
+         */
+        if(
+            typeof readResult !== 'undefined' &&
+            typeof readResult.token === 'string' &&
+            typeof readResult.timestamp === 'number' &&
+            Date.now() - bearerToken.timestamp > 60*60*1000
+        ) {
+            bearerToken = readResult;
+            return true;
+        }
+        else {
+            throw new Error("Invalid Data Type");
+        }
+    } 
+    /**
+     * If there's an error, then we'll attempt to create a new bearer token and return the success of the operation.
+     */
+    catch (e) {
+        return (await createSpotifyBearerToken());
+    }
+}
 
 index.route('/spotify')
+    /**
+     * A POST route to search or get song recommendations from Spotify's API.
+     */
     .post(async (req, res) => {
+        /**
+         * Guard clause to ensure we have a valid request body.
+         */
         if( ! (
             typeof req.body !== 'undefined' && 
             (typeof req.body.search === 'string' || typeof req.body.id === 'string')
@@ -169,20 +211,27 @@ index.route('/spotify')
             return;
         }
 
-        const readResult = readSpotifyBearerToken();
-        if(!readResult || Date.now() - bearerToken.timestamp > 60*60*1000) {
-            const writeResult = await getSpotifyBearerToken();
-            if(!writeResult) {
-                res.status(400).send('Error: Spotify API configuration is not working');
-                return;
-            }
+        /**
+         * Attempting to get current bearer token.
+         * If it's expired, then it'll create a new one.
+         */
+        const readResult = await readSpotifyBearerToken();
+        if(!readResult) {
+            res.status(400).send('Error: Spotify API configuration is not working');
+            return;
         }
         
+        /**
+         * Forming the correct url based on request body.
+         */
         const url = req.body.search ? 
             `https://api.spotify.com/v1/search?q=${req.body.search}&type=track&market=US&limit=40` 
         :   
             `https://api.spotify.com/v1/recommendations?seed_tracks=${req.body.id}&market=US&limit=40`;
 
+        /**
+         * Then we'll make the request, parse only the information we want out of it, and send it to the client.
+         */
         try {
             const result = await axios.get(url, {
                 headers: {
@@ -191,7 +240,39 @@ index.route('/spotify')
                 }
             });
 
-            const tracks = (req.body.search ? result.data.tracks.items : result.data.tracks) as SongType[];
+            const tracks = (req.body.search ? result.data.tracks.items : result.data.tracks) as {
+                album: {
+                    artists: {
+                        name: string,
+                        external_urls: {
+                            spotify: string
+                        }
+                    }[],
+                    external_urls: {
+                        spotify: string
+                    },
+                    images: {
+                        url: string
+                    }[],
+                    name: string,
+                    release_date: string,
+                    total_tracks: number
+                },
+                artists: {
+                    name: string,
+                    external_urls: {
+                        spotify: string
+                    }
+                }[],
+                disc_number: number,
+                duration_ms: number,
+                external_urls: {
+                    spotify: string
+                },
+                id: string,
+                name: string,
+                track_number: number,
+            }[];
 
             const parsedResponse = tracks.map(track => {
                  return {
@@ -218,8 +299,13 @@ index.route('/spotify')
             });
 
             res.status(200).send(parsedResponse);
-        } catch (e:any) {
+        }
+        /**
+         * Otherwise if the API request returns an error, then we'll send the error message to the client.
+         */
+        catch (e:any) {
             console.log(e);
+
             res.status(400).send({
                 error: typeof e.response === 'object' ? e.response.data.error.message : e
             });

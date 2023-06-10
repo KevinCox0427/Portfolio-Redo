@@ -17,7 +17,7 @@ const about = express.Router();
  * Basic GET route for /about
  */
 about.route('/')
-    .get(async (req, res) => {
+    .get(async (_, res) => {
         let response;
 
         /**
@@ -80,10 +80,10 @@ about.route('/')
     })
 
 /**
- * Making my resume available for download.
+ * Opening a GET route to make my resume available for download.
  */
 about.route('/resume')
-    .get(async (req, res) => {
+    .get(async (_, res) => {
         res.download('dist/public/assets/Resume Kevin Cox.pdf');
     });
 

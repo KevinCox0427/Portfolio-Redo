@@ -25,7 +25,7 @@ contact.route('/')
     /**
      * A basic GET route for our contact page.
      */
-    .get((req, res) => {
+    .get((_, res) => {
         /**
          * Loading the server properties to be passed to the client side
          */

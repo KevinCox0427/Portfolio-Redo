@@ -34,8 +34,7 @@ function serveHTML(reactComponent:ReactElement<any>, fileName:string, inputServe
     description: '',
     name: '',
     image: ''
-}){
-
+}) {
     return `
         <!DOCTYPE html>
         <html lang="en">

@@ -15,6 +15,7 @@
         .Graph {
             flex-basis: 20.5em;
             flex-grow: 1;
+            max-width: 100%;
             height: fit-content;
             justify-content: center;
             align-items: center;
@@ -50,11 +51,13 @@
             flex-wrap: wrap;
             border-radius: 1em;
             gap: 2em;
+            max-width: 100%;
 
             .MapWrapper {
                 flex-direction: row;
                 flex-grow: 1;
                 flex-basis: 225px;
+                max-width: 100%;
                 box-shadow: 0.3em 0.25em 0 0 rgba(0,0,0, 0.05);
                 overflow: hidden;
                 border-radius: 0.5em;
@@ -65,6 +68,8 @@
                     flex-grow: 1;
                     height: 275px;
                     width: 225px;
+                    flex-basis: 225px;
+                    max-width: 100%;
                     border-radius: inherit;
     
                     * {
@@ -125,12 +130,14 @@
             .Location {
                 gap: 0.8em;
                 flex-basis: 100%;
+                max-width: 100%;
     
                 p {
                     flex-direction: row;
+                    flex-wrap: wrap;
                     align-items: center;
                     justify-content: space-between;
-                    gap: 1em;
+                    gap: 0.25em 1em;
                     font-size: 1.25em;
                     font-weight: 400;
                     border-bottom: 0.08em dashed var(--black);
@@ -167,6 +174,7 @@
         .AxisWrapper {
             display: grid;
             grid-template-rows: 100%;
+            height: 35em;
             
             .Column {
                 display: grid;

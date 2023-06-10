@@ -80,8 +80,10 @@ button, input, select, option {
 }
 
 .Contain {
-    width: 1600px;
+    width: calc(1600px - 4em);
     max-width: calc(100vw - 4em);
+    padding: 0 2em;
+    overflow-x: hidden;
     align-self: center;
 }
 

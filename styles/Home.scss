@@ -282,7 +282,7 @@
     
             h2 {
                 font-weight: 300;
-                font-size: clamp(3em, 4.5vw, 3.9em);
+                font-size: clamp(2.75em, 4.5vw, 3.9em);
                 font-family: var(--arima);
                 font-weight: 200;
     
@@ -300,7 +300,7 @@
     
                 .Link {
                     @include LinkHover(var(--yellow), var(--black), 0.1em);
-                    font-size: clamp(1.25em, 1.75vw, 1.4em);
+                    font-size: clamp(1.1em, 1.75vw, 1.4em);
                     font-weight: 300;
                     font-family: var(--franklin);
                     pointer-events: all;
@@ -345,7 +345,6 @@
             padding-top: 17em;
             padding-bottom: 0.25em;
             margin-top: -5em;
-            overflow-x: hidden;
 
             &:first-child {
                 margin-top: 0em;

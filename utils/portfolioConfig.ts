@@ -13,6 +13,9 @@ declare global {
     }
 }
 
+/**
+ * An object storing all the configuration data for the portfolio and its projects.
+ */
 const portfolioConfig: PortfolioConfig[] = [
     {
         name: "New York Land Quest",

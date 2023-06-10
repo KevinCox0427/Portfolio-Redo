@@ -1,7 +1,7 @@
 {
-  "name": "hydrated-react-local-full-stack",
-  "version": "1.0.8",
-  "description": "Express server using a hydrated React frontend, Passport authentication, and a Mongoose database.",
+  "name": "portfolio-redo",
+  "version": "1.0.9",
+  "description": "A server-side rendered react project to recreate my portfolio website.",
   "main": "public/server.js",
   "scripts": {
     "test": "jest --coverage",

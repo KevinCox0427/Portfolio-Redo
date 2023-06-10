@@ -269,7 +269,7 @@ const Contact: FunctionComponent<Props> = (props) => {
     return <>
         <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName="contact"></AddPageView>
         <Header></Header>
-        <main className="Contain">
+        <div className="Contain">
             <h1 style={{display: 'none'}}>Contact</h1>
             <form id="general">
                 <h2>General Contact Form</h2>
@@ -393,7 +393,7 @@ const Contact: FunctionComponent<Props> = (props) => {
                 }
                 <button className="Submit" onClick={inquirySubmit}>Submit</button>
             </form>
-        </main>
+        </div>
         <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>
     </>
 }
