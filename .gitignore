@@ -5,3 +5,4 @@ db/*
 app
 .env
 .DS_Store
+public

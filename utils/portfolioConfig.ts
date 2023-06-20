@@ -37,6 +37,25 @@ const portfolioConfig: PortfolioConfig[] = [
         gallery: ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest_Buy.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest_Listing.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest_Sell.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest_About.jpg"]
     },
     {
+        name: "Materials Matter Prototype",
+        route: "materialsmatter",
+        description: [
+            "A reserach project funded by Binghamton University to assist in providing professors with more interactive and engaging lectures through the use of technology. This application specifically was designed for professors to create \"Maps\" for presentations, and students being able to directly comment on top."
+        ],
+        logo: "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/binglogo.png",
+        problem: [
+            "One of my art professor approached me with several others, saying they wanted an application made so that they could increase their interactivity with students, while also recieving feedback in the form of analytics. They wanted to be able to \"map\" their lectures vertically, while also having students be able to asynchronously ask questions or provide feedback. They wanted this to be fleixible, such that it acted more as a system that can be used across a wide array of use cases."
+        ],
+        solution: [
+            "The biggest concern was the commenting in real-time. To solve this, I used a socket.io server to intake and emit comments in real-time. These would be stored in \"sessions\" so that the professor can use the same map for different lectures, while limiting what time students could comment.",
+            "For the maps, I went with a row system where professors could drag and drop as many rows as they wanted, and as many nodes inside the rows. These nodes would swing out a menu from the side, where professors can further customize their maps with an image gallery and a rich text editor (quill.js)."
+        ],
+        skills: ['Node.js', 'React.js', 'Socket.io', 'UI / UX Design', 'TypeScript', 'MySQL', 'SASS'],
+        tag: "Web Development",
+        link: "https://teachingappdemo.herokuapp.com/",
+        gallery: ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/map.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/node.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/editnode.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/comment.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/session.jpg"]
+    },
+    {
         name: "Red Barn HPC",
         route: "redbarnhpc",
         description: [
