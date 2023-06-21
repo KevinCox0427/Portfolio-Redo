@@ -34,7 +34,7 @@ const WebsiteSlider:FunctionComponent<Props> = (props) => {
     let sliderProjects = [...props.portfolioConfig];
     sliderProjects.unshift(sliderProjects.pop()!);
 
-    for(let i = 0; i < (Math.floor(10/props.portfolioConfig.length) * 6); i++) {
+    for(let i = 0; i < (Math.floor(10/props.portfolioConfig.length) * props.portfolioConfig.length); i++) {
         sliderProjects.push(sliderProjects[i % props.portfolioConfig.length])
     }
 

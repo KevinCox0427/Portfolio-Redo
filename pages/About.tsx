@@ -130,7 +130,7 @@ const About: FunctionComponent<Props> = (props) => {
                                     </div>
                                     <div className="Skill">
                                         <h4>Back-end Development</h4>
-                                        <p>Node.JS, Express.JS, C#, .NET, PHP, WordPress, AWS, Server-side Rendering, Routing, Authentication Procedures, User Session Management</p>
+                                        <p>Node.JS, Express.JS, Python, Flask, PHP, WordPress, AWS, Server-side Rendering, Routing, Authentication Procedures, User Session Management</p>
                                     </div>
                                     <div className="Skill">
                                         <h4>Graphic Design</h4>
