@@ -3,8 +3,8 @@ declare global {
         name: string
         route: string,
         description: string[],
-        problem: string[],
-        solution: string[],
+        problem?: string[],
+        solution?: string[],
         logo: string,
         tag: string,
         skills: string[],
@@ -75,25 +75,6 @@ const portfolioConfig: PortfolioConfig[] = [
         gallery: ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Products.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Configurator.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Support.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Quote.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Customers.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Testimonials.jpg']
     },
     {
-        name: "High Atlas Foundation",
-        route: "highatlasfoundation",
-        description: [
-            "A non-profit organization based of out Morocco founded by a few Peace Corps volunteers. They primarily contribute to sustainable agriculture, school infrastructure, clean water infrastructure, environmental management, and women's empowerment. Their mission: \"HAF supports Moroccan communities to take action in implementing human development initiatives. HAF promotes organic agriculture, women's empowerment, youth development, education, and health.\""
-        ],
-        logo: "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/haf.png",
-        problem: [
-            "This client wanted to expand into carbon crediting through their tree nurseries. They had contacted a PHD student from Germany to create an algorithm that calculates the ogranic carbon for a given tree nursery's planting output. I was responsible for converting these scientific alogrithms into a web-based prototype.",
-            "Seems fairly straightforward, however the sheer amount of geological data used in these algorithms proved to be an interesting project. Most of the work was converting such data from \"R\" scripts into a Node.js server. This consisted of a few excel sheets and 6 numeric matrices representing geological map data. Each matrix had different sizes, areas, and indices. And to top it all off, they were stored as .TIF images, which is an encoded format, and therefore useless for any real-time mathematical operations."
-        ],
-        solution: [
-            "First, I had to learn R to decode all of these images into 2-D arrays, since the C#, JS, and Python libraries I tried couldn't do so. Due to the variety of the maps, I had to use R again to figure out what part of the globe each one covered, as well as the delta change of its indices. Based on these values, I then calculated which sections of the matrices I needed to just cover Morocco, cut them out, and stored all this information as metadata to be used in the SQL queries. Then I inserted the data into an SQL database, with one table for each row. Then it was just a matter of wiring it all together within a Node server, and creating a basic front-end for accepting parameters and displaying results."
-        ],
-        skills: ["TypeScript", "Node", "Express", "SQL", "R"],
-        tag: "Web Development",
-        link: "http://hafcarbon.com/",
-        gallery: ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/HAF Carbon Prototype.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/HAF Carbon Prototype Results.jpg']
-    },
-    {
         name: "Beck Automotive",
         route: "beck",
         description: [
@@ -111,6 +92,25 @@ const portfolioConfig: PortfolioConfig[] = [
         tag: "Web Development",
         link: "https://beckspeedster.dev/",
         gallery: ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Products.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Configurator.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Manuals.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster About.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Contact.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster FAQs.jpg']
+    },
+    {
+        name: "High Atlas Foundation",
+        route: "highatlasfoundation",
+        description: [
+            "A non-profit organization based of out Morocco founded by a few Peace Corps volunteers. They primarily contribute to sustainable agriculture, school infrastructure, clean water infrastructure, environmental management, and women's empowerment. Their mission: \"HAF supports Moroccan communities to take action in implementing human development initiatives. HAF promotes organic agriculture, women's empowerment, youth development, education, and health.\""
+        ],
+        logo: "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/haf.png",
+        problem: [
+            "This client wanted to expand into carbon crediting through their tree nurseries. They had contacted a PHD student from Germany to create an algorithm that calculates the ogranic carbon for a given tree nursery's planting output. I was responsible for converting these scientific alogrithms into a web-based prototype.",
+            "Seems fairly straightforward, however the sheer amount of geological data used in these algorithms proved to be an interesting project. Most of the work was converting such data from \"R\" scripts into a Node.js server. This consisted of a few excel sheets and 6 numeric matrices representing geological map data. Each matrix had different sizes, areas, and indices. And to top it all off, they were stored as .TIF images, which is an encoded format, and therefore useless for any real-time mathematical operations."
+        ],
+        solution: [
+            "First, I had to learn R to decode all of these images into 2-D arrays, since the C#, JS, and Python libraries I tried couldn't do so. Due to the variety of the maps, I had to use R again to figure out what part of the globe each one covered, as well as the delta change of its indices. Based on these values, I then calculated which sections of the matrices I needed to just cover Morocco, cut them out, and stored all this information as metadata to be used in the SQL queries. Then I inserted the data into an SQL database, with one table for each row. Then it was just a matter of wiring it all together within a Node server, and creating a basic front-end for accepting parameters and displaying results."
+        ],
+        skills: ["TypeScript", "Node", "Express", "SQL", "R"],
+        tag: "Web Development",
+        link: "http://hafcarbon.com/",
+        gallery: ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/HAF Carbon Prototype.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/HAF Carbon Prototype Results.jpg']
     },
     {
         name: "Little Venice",
@@ -148,7 +148,106 @@ const portfolioConfig: PortfolioConfig[] = [
         tag: "Web Development",
         link: "https://welltankgoodness.com/",
         gallery: ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness Service.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness Shop.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness About.jpg']
+    },
+    {
+        name: "Chester Diner Menus",
+        route: "chesterdiner",
+        description: [
+            "A menu I created for a small town in upstate new york. This was part of a larger re-branding effort to promote itself amoungst the competing corporate restaruants."
+        ],
+        logo: "https://dreamstateospublic.s3.us-east-2.amazonaws.com/logo2.png",
+        problem: [
+            "Their previous menus were in a state of disrepair, and they saw this as an opportunity to update their look. Many of the patrons had a hard time reading the small fonts, and felt that the menu was disorganized. The owners also felt they need a strong brand to stick out amoungst the many new coporate restaraunt that started to move into the small town."
+        ],
+        solution: [
+            "To assist with the legibility and organization, a strong type heirarchy was implemented to clearly defined what was a category, menu item, and description. These were printed on a large 8\" x 12\" spiral to increase the font sizes for accessibility.",
+            "To achieve a strong brand, I went with 70's western style to play into their American identity. These were printed in four different bold colors, with each page having it's own unique pallet to imply the meal."
+        ],
+        skills: ["Print", "Menus", "Typography", "Layout", "Branding", "Illustrator"],
+        tag: "Graphic Design",
+        link: "",
+        gallery: ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover1.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover2.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover3.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover4.jpeg"]
+    },
+    {
+        name: "Binghamton Running Club",
+        route: "burc",
+        description: [
+            "A singlet for the Binghamton University Running Club for the 2022-23 school year, of which they still use today. They wanted 41 mens & womens singlets for their teams to race in, and they took the opportunity to partner with me to create something fun, memorable and unique."
+        ],
+        logo: "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/burclogo.png",
+        skills: ["Apparel", "Branding", "Typography"],
+        tag: "Graphic Design",
+        link: "https://www.instagram.com/burcrunning/?hl=en",
+        gallery: ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/BingRunningClub.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/BingRunningClub2.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/burclogo.png"]
+    },
+    {
+        name: "Ross Park Zoo Maps & Signage",
+        route: "rossparkzoo",
+        description: [
+            "Zoo maps and signage I made as a collboration between Binghamton University and the Ross Park Zoo. This was an attempt to create more efficient environmental design to ease navigation without a map"
+        ],
+        logo: "https://rossparkzoo.org/wp-content/uploads/2020/06/rpz_bridge_logo.png",
+        problem: [
+            "Much of the environmental signage in the zoo did not assist in navigation, but was purely informational. Since the campus was very hilly, the owners felt it was important to lay out the navigation upfront, so that those with accessiblity issues could be more comfortable navigating the zoo. They also felt that the map pamphlets looked outdated, and wanted something more stylized."
+        ],
+        solution: [
+            "To ease the costs of this project, I used the dimensions of the previous signs so that they could simply swap the printed sheets incase in the glass. These would then point to the direction of the next exhibit, to clearly instruct the user where to go without having to reference the map.",
+            "I also made sure to make the campus maps as large as possible with topographic features, as the previous map was quite small. I went with a retro style heavily influence by the famous national park branding and typography from the 1980's. The front was decorated like of these posters to further strengthen the brand and act as a keep-sake."
+        ],
+        skills: ["Print", "Environmental Design", "Maps", "Signs", "Branding", "Typography"],
+        tag: "Graphic Design",
+        link: "",
+        gallery: ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/rossparkzoo/RossParkZooMap.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/rossparkzoo/RoosParkZooPoster.jpeg"]
+    },
+    {
+        name: "Student Book Covers",
+        route: "bookcovers",
+        description: [
+            "Some of my student projects where the deliverables were book covers. The Life of Pi book covers symbolize the three thematic religions throughout the book, with Pi standing between all three. The City Full of Voices book sleeves are meant to symbolize the introspective and lonely nature of the poems in the books."
+        ],
+        logo: "https://dreamstateospublic.s3.us-east-2.amazonaws.com/logo2.png",
+        skills: ["Print", "Books", "Illustration", "Typography", "Composition"],
+        tag: "Graphic Design",
+        link: "",
+        gallery: ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/bookcovers/LifeOfPi1.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/bookcovers/LifeOfPi2.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/bookcovers/CitiesFullOfVoices1.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/bookcovers/CitiesFullOfVoices2.jpeg"]
+    },
+    {
+        name: "Cooper Font Speciment",
+        route: "cooper",
+        description: [
+            "A student project of a font speciment for the famous Cooper Black. This book illustrates the advertizing techniques of American companies in the 1970's who's branding utilized Cooper. It attempts to create irony through explicity stating the subconscious effects of their marketing techniques in a faux advertisement inspired by their branding."
+        ],
+        logo: "https://dreamstateospublic.s3.us-east-2.amazonaws.com/logo2.png",
+        skills: ["Print", "Layout", "Magazine", "Typography", "Illustration"],
+        tag: "Graphic Design",
+        link: "",
+        gallery: ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/CopperCover.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper2.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper3.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper4.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper5.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper6.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper7.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper8.jpeg"]
+    },
+    {
+        name: "Mad Men Magazine",
+        route: "madmenzine",
+        description: [
+            "A student project to create a magazine with unique composition and iconography. This project goes through each character's development in the show Mad Men, and utilizes a illustrative style heavily inspired by Milton Galzer's Pinwheel studios."
+        ],
+        logo: "https://dreamstateospublic.s3.us-east-2.amazonaws.com/logo2.png",
+        skills: ["Print", "Layout", "Magazine", "Typography", "Illustration"],
+        tag: "Graphic Design",
+        link: "",
+        gallery: ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMenCover.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen1.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen2.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen3.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen4.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen5.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen6.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen7.jpeg"]
+    },
+    {
+        name: "Student Posters",
+        route: "posters",
+        description: [
+            "Some of my student projects that required a poster as the deliverable. One poster goes throught the famous story of Peter Tripp staying awake for 7 days, and features a style inspired by 1950's comic books. The others are a poster series meant to show the contrast in which postive nostagia can affect the perception of a memory."
+        ],
+        logo: "https://dreamstateospublic.s3.us-east-2.amazonaws.com/logo2.png",
+        skills: ["Posters", "Illustraion", "Typography", "Layout", "Illustration"],
+        tag: "Graphic Design",
+        link: "",
+        gallery: ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/posters/PeterTrippPoster.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/posters/TodaysYesterday1.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/posters/TodaysYesterday2.jpg"]
     }
+
 ]
 
 export default portfolioConfig;

@@ -10,9 +10,24 @@
         position: relative;
     }
 
-    h1 {
-        font-size: 5em;
-        font-weight: 200;
+    .Title {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 0 2em;
+            
+        h1 {
+            font-size: clamp(3em, 5vw, 5em);
+            font-weight: 200;
+            line-height: 80%;
+        }
+
+        p {
+            font-family: var(--franklin);
+            font-weight: 100;
+            font-size: clamp(1.5em, 2vw, 2em);
+        }
     }
 
     .TagsWrapper {

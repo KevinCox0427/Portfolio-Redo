@@ -62,29 +62,33 @@ const Project: FunctionComponent<Props> = (props) => {
                     </ul>
                 </div>
             </div>
-            <div className="Body">
-                <div className="Left">
-                    <h2 className="Title">The Client</h2>
-                    {project.description.map((text, i) => <p key={i}>{text}</p>)}
-                    <h2 className="Title">The Project</h2>
-                    {project.problem.map((text, i) => <p key={i}>{text}</p>)}
-                    <h2 className="Title">The Solution</h2>
-                    {project.solution.map((text, i) => <p key={i}>{text}</p>)}
-                    {project.link ? <a href={project.link} target="_blank" rel="nofollow">View their website</a> : <></>}
-                </div>
-                <div className="Right">
-                    <div className="BrowserWrapper">
-                        <div className='FakeBrowser'>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                        <div className="MainImage">
-                            <img src={project.gallery[0]} alt={`${project.name} website image`} loading="lazy"></img>
+            {project.problem || project.solution ? <>
+                <div className="Body">
+                    <div className="Left">
+                        <h2 className="Title">The Client</h2>
+                        {project.description.map((text, i) => <p key={i}>{text}</p>)}
+                        <h2 className="Title">The Project</h2>
+                        {project.problem ? project.problem.map((text, i) => <p key={i}>{text}</p>) : <></>}
+                        <h2 className="Title">The Solution</h2>
+                        {project.solution ? project.solution.map((text, i) => <p key={i}>{text}</p>) : <></>}
+                        {project.link ? <a href={project.link} target="_blank" rel="nofollow">View their website</a> : <></>}
+                    </div>
+                    <div className="Right">
+                        <div className="BrowserWrapper">
+                            <div className='FakeBrowser'>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div className="MainImage">
+                                <img src={project.gallery[0]} alt={`${project.name} website image`} loading="lazy"></img>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </> : <div className="Top">
+                {project.description.map((text, i) => <p key={i}>{text}</p>)}
+            </div>}
             <div className="Gallery">
                 {project.gallery.map((url, i) => {
                     return <div key={i} className="BrowserWrapper">

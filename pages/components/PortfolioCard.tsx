@@ -41,8 +41,8 @@ const PortfolioCard: FunctionComponent<Props> = (props) => {
         <div className="Card">
             <h2>{props.project.name}</h2>
             <p className="Description">{
-                props.project.description[0].length > 200 ? 
-                    props.project.description[0].substring(0,197) + '...' 
+                props.project.description[0].length > 150 ? 
+                    props.project.description[0].substring(0,147) + '...' 
                 : 
                     props.project.description[0]
             }</p>

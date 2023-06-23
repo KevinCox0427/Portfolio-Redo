@@ -40,10 +40,8 @@ const Portfolio: FunctionComponent<Props> = (props) => {
     /**
      * Getting every tag option.
      */
-    const tags:string[] = [];
-    projects.forEach(project => {
-        if(!tags.includes(project.tag)) tags.push(project.tag);
-    })
+    let tags = pageProps.portfolioConfig.map(project => project.tag);
+    tags = tags.filter((tag, i) => tags.indexOf(tag) === i);
 
     /**
      * State variable for what tag is selected. 
@@ -66,9 +64,7 @@ const Portfolio: FunctionComponent<Props> = (props) => {
             window.history.pushState({}, '', `/portfolio?tag=${encodeURIComponent(selectedTag)}`);
         }
         
-        /**
-         * Forcing a re-render for project elements so the animations will fire.
-         */
+        // Forcing a re-render for project elements so the animations will fire.
         setProjects([]);
         setTimeout(() => {
             setProjects(pageProps!.portfolioConfig.filter(project => {
@@ -83,18 +79,20 @@ const Portfolio: FunctionComponent<Props> = (props) => {
      * @param tag The tag to change to.
      */
     function handleTagClick(e: React.MouseEvent, tag:string) {
-        /**
-         * Preventing default since it's wrapped by an A tag and we don't want the user redirected.
-         */
+        // Preventing default since it's wrapped by an A tag and we don't want the user redirected.
         e.preventDefault();
         setSelectedTag(tag);
+        setTimeout(() => document.body.parentElement!.scrollTo(0, 1), 50);
     }
     
     return <>
         <AddPageView portfolioConfig={pageProps.portfolioConfig} pageName="portfolio"></AddPageView>
         <Header></Header>
         <div className="Contain" id="Portfolio">
-            <h1>Portfolio Projects</h1>
+            <div className="Title">
+                <h1>Portfolio Projects</h1>
+                <p>{projects.length}/{pageProps.portfolioConfig.length}</p>
+            </div>
             <div className="TagsWrapper">
                 <p className={selectedTag === 'all' ? 'Activated' : ' '} onClick={() => {setSelectedTag('all')}}>All</p>
                 {tags.map((tag, i) => {
