@@ -1,8 +1,10 @@
-dist
-node_modules
-coverage
-db/*
-app
-.env
 .DS_Store
-public
+.flaskenv
+.env
+node_modules
+dist
+static
+pyvenv.cfg
+lib
+include
+__pycache__

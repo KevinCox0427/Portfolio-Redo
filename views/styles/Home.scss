@@ -1,0 +1,450 @@
+@import 'mixins';
+
+.SplashImage {
+    width: 100vw;
+    min-height: 90vh;
+    display: flex;
+    overflow: hidden;
+    * {
+        display: flex;
+    }
+
+    #FloralPatternSVG {
+        position: absolute;
+        pointer-events: none;
+        width: 77vw;
+        height: auto;
+        top: -12.1vw;
+        right: 8vw;
+        filter: drop-shadow(0.3em 0.4em 0px rgba(0, 0, 0, 0.08));
+
+        .FloralItem {
+            transform: scale(0);
+            transform-origin: bottom right;
+            transform-box: content-box;
+            will-change: transform;
+        }
+
+        @for $i from 1 through 25 {
+            #Floral#{$i} {
+                animation: 0.35s ease-out (3s + ($i*0.02s)) forwards Burst;
+            }
+        }
+
+        @keyframes Burst {
+            from {
+                transform: translateX(-3vw) scale(0);
+            }
+            to {
+                transform: translateX(0) scale(1);
+            }
+        }
+    }
+
+    #HandSVG {
+        position: absolute;
+        pointer-events: none;
+        width: 37vw;
+        height: auto;
+        top: 31.85vw;
+        right: -25.6vw;
+        transform: translateX(15vw);
+        animation: 0.75s ease-in-out 1s forwards SlideIn, 0.75s ease-in-out 2.25s forwards LiftHand;
+    }
+
+    #RightCover {
+        position: absolute;
+        pointer-events: none;
+        right: -0.5vw;
+        top: 4.17vw;
+        width: 17vw;
+    }
+
+    .MainCopy {
+        width: 88vw;
+        align-items: flex-start;
+        padding-left: 6vw;
+        padding-top: clamp(11em, 12vw, 12em);
+        z-index: 2;
+        will-change: filter, opacity;
+        filter: blur(20px); 
+        opacity: 0;
+        gap: 0.25em 0;
+        animation: 0.5s ease-in 0.1s forwards DiffuseIn;
+
+        h3 {
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5em;
+            font-family: var(--franklin);
+            font-size: clamp(1.5em, 2.5vw, 2.5em);
+            font-weight: 100;
+            margin: 0.2em 0 0.2em 0em;
+
+            &:first-child {
+                margin-bottom: 0.1em;
+            }
+
+            .Titling {
+                font-weight: 300;
+                font-size: 2em;
+                font-family: var(--arima);
+                margin-left: -0.07em;
+                line-height: 90%;
+            }
+        }
+
+        .Subtitle {
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.85em;
+
+            h2 {
+                flex-wrap: wrap;
+                font-size: clamp(1.25em, 1.8vw, 1.8em);
+                font-family: var(--cairo);
+                font-weight: 300;
+                width: fit-content;
+                opacity: 0;
+                transform: translateY(-35%);
+                animation: 0.25s ease-out 4s forwards SlideDown;
+                margin-top: -0.15em;
+            }
+
+            .LinkWrapper {
+                opacity: 0;
+                animation: 0.25s ease-out 4.25s forwards SlideDown;
+                
+                a {
+                    color: var(--black);
+                    text-decoration: none;
+                    font-size: clamp(0.9em, 1.1vw, 1.1em);
+                    font-family: var(--workSans);
+                    padding: clamp(0.4em, 0.55vw, 0.55em) 1.25em;
+                    box-shadow: 0em 0em 0 0.07em var(--black);
+                    border-radius: 100em;
+                    text-transform: uppercase;
+                    transition: color 0.1s linear, font-weight 0.1s linear, box-shadow 0.1s linear;
+    
+                    &:hover {
+                        color: var(--white);
+                        font-weight: 500;
+                        box-shadow: 0em 0em 0 0em var(--black);
+                        animation: 0.4s linear 0s forwards ColorJump !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .SliderWrapper {
+        flex-direction: row;
+        gap: 25px;
+        margin-top: 4.5em;
+
+        .Slider {
+            flex-direction: row;
+            gap: 25px;
+
+            .BrowserWrapper {
+                @include FakeBrowser();
+            }
+        }
+
+        @keyframes MoveFrontIframes {
+            from {
+                transform: translateX(calc(0%));
+            }
+            to {
+                transform: translateX(calc(-100% - 25px));
+            }
+        }
+
+        @keyframes MoveBackIframes {
+            from {
+                transform: translateX(calc(-100% - 25px))
+            }
+            to {
+                transform: translateX(calc(-200% - 50px));
+            }
+        }
+    }
+
+    .ScrollDown {
+        flex-direction: row;
+        align-items: center;
+        font-size: clamp(1.4em, 1.9vw, 1.9em);
+        font-family: var(--arima);
+        font-weight: 300;
+        gap: 0.35em;
+        color: var(--black);
+        align-self: center;
+        margin: 3.25em 0;
+        opacity: 0;
+        animation: 0.2s ease-in 5.7s forwards DiffuseIn;
+
+        i {
+            opacity: 0.9;
+            font-size: 0.7em;
+            animation: 1.5s ease-in-out 0s infinite PointDown;
+        }
+
+        @keyframes PointDown {
+            from {
+                transform: translateY(12.5%);
+            }
+            50% {
+                transform: translateY(-12.5%);
+            }
+            to {
+                transform: translateY(12.5%);
+            }
+        }
+    }
+
+    @media (max-width: 900px) {
+        .MainCopy {
+            // padding-top: calc(25em - 20vw);
+            // width: 80vw;
+            padding-top: 8.5em;
+
+            .Subtitle {
+                h2 {
+                    animation: 0.25s ease-out 1.25s forwards SlideDown;
+                }
+
+                .LinkWrapper {
+                    animation: 0.25s ease-out 1.5s forwards SlideDown;
+                }
+            }
+        }
+
+        .ScrollDown {
+            animation: 0.2s ease-in 3s forwards DiffuseIn;
+        }
+
+        #FloralPatternSVG {
+            opacity: 0;
+            // width: 43em;
+            // right: 0.5em;
+            // top: -8em;
+        }
+
+        #HandSVG {
+            opacity: 0;
+            // width: 17em;
+            // right: -12.5em;
+            // top: 19.9em;
+        }
+
+        #RightCover {
+            opacity: 0;
+        }
+
+        .SliderWrapper {
+            margin-top: 3em;
+        }
+    }
+}
+
+#MyServices {
+    display: flex;
+    align-items: stretch;
+    flex-direction: row;
+    gap: 0em 3em;
+    margin: -5em 0 15em 0;
+
+    .NavBars {
+        flex-basis: 1px;
+        flex-grow: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 10;
+        display: flex;
+        padding-top: 17em;
+
+        * {
+            display: flex;
+        }
+
+        .NavBar {
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            width: 100%;
+            gap: clamp(0em, 1vw, 1em) 3em;
+            background-color: var(--white);
+            border-right: 0.125em dashed var(--black);
+            transform: translateX(0.1em);
+            padding: 1em 0;
+            pointer-events: none;
+    
+            &.Static {
+                position: fixed;
+                width: 23em;
+                left: clamp(2.2em, calc(calc(calc(100% - 1600px) * 0.5) + 2.7em), 100%);
+                top: 50%;
+                transform: translateY(-50%);
+            }
+    
+            h2 {
+                font-weight: 300;
+                font-size: clamp(2.75em, 4.5vw, 3.9em);
+                font-family: var(--arima);
+                font-weight: 200;
+    
+                * {
+                    line-height: 100%;
+                }
+            }
+    
+            .LinksWrapper {
+                flex-basis: 40em;
+                flex-grow: 1;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: clamp(0.25em, 1vw, 0.75em) 1.5em;
+    
+                .Link {
+                    @include LinkHover(var(--yellow), var(--black), 0.1em);
+                    font-size: clamp(1.1em, 1.75vw, 1.4em);
+                    font-weight: 300;
+                    font-family: var(--franklin);
+                    pointer-events: all;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 1400px) {
+        flex-direction: column;
+
+        .NavBars .NavBar {
+            border-right: none;
+            border-bottom: 0.125em dashed var(--black);
+
+            &.Top {
+                margin-bottom: 3em;
+            }
+
+            &.Bottom {
+                display: none;
+            }
+
+            &.Static {
+                padding: 1em 2.1em;
+                width: calc(100vw - 4.2em);
+                left: 0;
+                top: 0;
+                transform: none;
+            }
+        }
+    }
+
+    .Content {
+        display: flex;
+        flex-basis: 1px;
+        flex-grow: 1;
+        min-width: calc(100% - 26em);
+        max-width: calc(100vw - 4em);
+
+        .Section {
+            padding-top: 17em;
+            padding-bottom: 0.25em;
+            margin-top: -5em;
+
+            &:first-child {
+                margin-top: 0em;
+            }
+
+            .TitleWrapper {
+                display: inline-block !important;
+                font-family: var(--franklin);
+
+                .ql-align-right {
+                    text-align: right;
+                }
+                .ql-align-center {
+                    text-align: center;
+                }
+
+                @for $i from 1 through 8 {
+                    .ql-indent-#{$i} {
+                        padding-left: $i*2em;
+                    }
+                }
+
+                .ql-color-yellow {
+                    color: var(--yellow);
+                }
+                .ql-color-green {
+                    color: var(--green);
+                }
+                .ql-color-lightRed {
+                    color: var(--lightRed);
+                }
+                .ql-color-lightPurple {
+                    color: var(--lightPurple);
+                }
+                .ql-color-blue {
+                    color: var(--blue);
+                }
+                .ql-color-grey {
+                    color: var(--grey);
+                }
+
+                h3 {
+                    display: block !important;
+                    font-weight: 200;
+                    font-size: clamp(2.75em, 2.5vw, 3.5em);
+                    margin: 0.2em 0;
+                }
+    
+                p, ol, ul {
+                    display: block !important;
+                    margin: 0.625em 0;
+                    font-weight: 100;
+                    font-size: clamp(1.25em, 1.5vw, 1.5em);
+                    line-height: 140%;
+                }
+
+                blockquote {
+                    display: block !important;
+                    margin: 0.625em 0;
+                    font-family: var(--cairo);
+                    font-weight: 300;
+                    font-size: 1.35em;
+                    line-height: 130%;
+                    border-left: 0.15em solid var(--yellow);
+                    padding-left: 1em;
+                    margin-left: 1.5em !important;
+                }
+
+                ol, ul {
+                    flex-direction: column;
+                    gap: 1em;
+                }
+
+                li {
+                    margin: 0.625em 0;
+                }
+
+                span, sub, sup, strong, em, a, u, s {
+                    display: inline !important;
+                }
+            }
+
+            .Example {
+                flex-direction: row;
+                flex-wrap: wrap;
+                margin-top: 4em;
+                gap: 2em;
+                max-width: 100%;
+            }
+        }
+    }
+
+    @import 'Homepage/AuthSection', 'Homepage/DataSection', 'Homepage/IntegrationSection', 'Homepage/AnalyticsSection', 'Homepage/UISection', 'Homepage/WebSection.scss';
+}
