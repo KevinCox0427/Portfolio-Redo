@@ -20,7 +20,7 @@ ___
 
 ### Important files:
 
-[app.py](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/app.py): A small but important file that starts the node server and imports all the routes made in the [controllers](https://github.com/KevinCox0427/Portfolio-Redo/tree/main/controllers) directory.
-[Server.tsx](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/server.tsx): This is the express server that listens for HTTP requests, SSRs the react files, and returns them to the python server.
-[views/Home/Home.tsx](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/views/Home/Home.tsx): The homepage and by far the largest React page rendered for this website.
-[views/styles/globals.scss](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/views/styles/globals.scss): A SCSS file that is bundled for every webpage served.
+* [app.py](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/app.py): A small but important file that starts the node server and imports all the routes made in the [controllers](https://github.com/KevinCox0427/Portfolio-Redo/tree/main/controllers) directory.
+* [Server.tsx](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/server.tsx): This is the express server that listens for HTTP requests, SSRs the react files, and returns them to the python server.
+* [views/Home/Home.tsx](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/views/Home/Home.tsx): The homepage and by far the largest React page rendered for this website.
+* [views/styles/globals.scss](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/views/styles/globals.scss): A SCSS file that is bundled for every webpage served.
