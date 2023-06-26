@@ -24,3 +24,5 @@ ___
 * [Server.tsx](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/server.tsx): This is the express server that listens for HTTP requests, SSRs the react files, and returns them to the python server.
 * [views/Home/Home.tsx](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/views/Home/Home.tsx): The homepage and by far the largest React page rendered for this website.
 * [views/styles/globals.scss](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/views/styles/globals.scss): A SCSS file that is bundled for every webpage served.
+* [utils/regexTester.py](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/utils/regexTester.py): A utility class made to validate a incoming JSON request body against a formatted object with regular expressions as the values.
+* [utils/portfolioConfig.py](https://github.com/KevinCox0427/Portfolio-Redo/blob/main/utils/portfolioConfig.py): An array containing all the information for each rendered project on the portfolio.
