@@ -77,6 +77,18 @@ portfolioConfig = [
         "gallery": ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Products.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Configurator.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Manuals.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster About.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Contact.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster FAQs.jpg']
     },
     {
+        "name": "Red Barn Creative Website Mockup",
+        "route": "rbcreative",
+        "description": [
+            "A web mockup for a new website for Red Barn Creative team. Many of their users reported their site as confsuing, difficult to navigate, and looked outdate. So, the team requested a more organzie, clean aesthetic, while integrating their SAGE storefront. To achieve the \"clean\" look, I went with a high-contrast color pallet with a heavy emphasis on white-space. To still retain the creative aspect of their brand, I included a serif header contrasted with thin sans-serif for their body paragraphs, along with splashes of red illustrations."
+        ],
+        "logo": "https://rbcreative.team/wp-content/uploads/2021/01/RB-Creative-01-300x101.png",
+        "skills": ['UI / UX Design', 'Branding', 'Graphic Design', 'Vector graphics', "Illustrator"],
+        "tag": "Graphic Design",
+        "link": "https://rbcreative.team/",
+        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Homepage.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Services.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Contact.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Portfolio+Directory.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Portfolio+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Catalog.jpg"]
+    },
+    {
         "name": "High Atlas Foundation",
         "route": "highatlasfoundation",
         "description": [
@@ -131,6 +143,18 @@ portfolioConfig = [
         "tag": "Web Development",
         "link": "https://welltankgoodness.com/",
         "gallery": ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness Service.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness Shop.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness About.jpg']
+    },
+    {
+        "name": "Long Island Loyalty Branding",
+        "route": "loy",
+        "description": [
+            "A branding overhall for a marketing agency based in Long Island. Some deliveribles include a logo and website mockup. Long Island Loyalty started as a Facebook group, but quickly outpaced the limitations of Facebook as they grew. They mainly wanted a more consistant, \"modern\" aesthetic, while being able to gather more information on their userbase. Using a reference they provided, I went with a high-contrast color pallet with thin sans-serifs for their typography. These designs also feature a heavy emphasis on white-space and photograpic work to assist in its professional look."
+        ],
+        "logo": "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/logo_1.png",
+        "skills": ['UI / UX Design', 'Branding', 'Graphic Design', 'Vector graphics', "Illustrator"],
+        "tag": "Graphic Design",
+        "link": "https://www.facebook.com/LILoyalty?hc_ref=ARQnt4_zGlxNn-HPyVE1Z5W0v2zAfOAsoW9p9gHgPvsBzQw71YZsoSXpMskxeyqRNyo&fref=nf&__xts__[0]=68.ARBLgOkC9iiiFGtqGa8R0OuE7uaHcNY0u3dAvAC5GWEjy0XGKlcwEwlRPK9O_-rMkieXddzz9rL75m6-Jyx3i7yRc79a7eOj0UMxHO5CknV5CkilhIvHSuZlv8PzGE7FPOENJ_YUMxP8MSg6QJ8A-AvmlqL4bO2k-oDqAYBBy_tJnSudhsAUAhnVQSVQWHN5huiIDFGL3VjqyHoSWNIufMkQRoCIERg1AMCHn0oDpI9oQb3Nc7zTE_M_qgjHyQSyEh4-hLUWYH5wvvjDU58qCpGkgn1nfYb9",
+        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Homepage.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Merchant+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Business+Spotlight+Article.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Merchant+Directory.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Business+Spotlights.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+User+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Services.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Contact.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Merchant+Settings+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+User+Settings+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+portal.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Portal+Editor.jpg"]
     },
     {
         "name": "Chester Diner Menus",

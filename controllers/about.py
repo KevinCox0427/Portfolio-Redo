@@ -14,27 +14,30 @@ def about():
     GET route to render and serve the about react page.
     """
 
-    # Fetching my Github profile and most recent repos.
-    response = requests.get('https://api.github.com/users/KevinCox0427/repos?sort=pushed', headers={
-        "Authorization": 'Bearer {githubAPIKey}'.format(githubAPIKey=getenv("GithubAPIKey"))
-    }).json()
+    # Loading default info for my github repos.
+    githubData = [{
+        "owner": {
+            "avatar_url": '/assets/headshot.jpg',
+            "login": 'KevinCox0427',
+            "repos": []
+        }
+    }]
 
-    # If it fails just use my profile pic without any repos.
-    if not isinstance(response, list):
-        response = [{
-            "owner": {
-                "avatar_url": '/assets/headshot.jpg',
-                "login": 'KevinCox0427',
-                "repos": []
-            }
-        }]
+    # Fetching my Github profile and most recent repos.
+    try:
+        response = requests.get('https://api.github.com/users/KevinCox0427/repos?sort=pushed', headers={
+            "Authorization": 'Bearer {githubAPIKey}'.format(githubAPIKey=getenv("GithubAPIKey"))
+        }).json()
+        githubData = response
+    except Exception as e:
+        print(e)
 
     # Loading the server properties to be passed to the client side.
     serverProps = {
         "portfolioConfig": portfolioConfig,
         "github": {
-            "avatar": response[0]["owner"]["avatar_url"],
-            "owner": response[0]["owner"]["login"],
+            "avatar": githubData[0]["owner"]["avatar_url"],
+            "owner": githubData[0]["owner"]["login"],
             "repos": list(map(lambda repo:
                 {
                     "name": repo["name"],
@@ -44,7 +47,7 @@ def about():
                     "topics": repo["topics"],
                     "pushed": repo["pushed_at"]
                 }
-            , response))
+            , githubData))
         }
     }
 
@@ -52,7 +55,14 @@ def about():
     renderedPage = serveHTML(
         pagePath='views/About/About.tsx',
         serverProps=serverProps,
-        cssLinks=['/static/css/globals.css', '/static/css/About.css']
+        cssLinks=['/static/css/globals.css', '/static/css/About.css'],
+        seoOptions={
+            "title": 'Dream State - About',
+            "name": 'Dream State',
+            "description": 'About page for Kevin Cox. A holistic, ideas-driven full stack developer and graphic designer that uses a diverse skill-set to supply any technical or graphical need.',
+            "url": 'https://www.dreamstate.graphics/about',
+            "image": 'https://www.dreamstate.graphics/static/assets/favicon.png'
+        }
     )
 
     if renderedPage:

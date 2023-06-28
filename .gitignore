@@ -4,6 +4,7 @@
 node_modules
 dist
 static
+bin
 pyvenv.cfg
 lib
 include

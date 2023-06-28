@@ -1,2 +1,8 @@
 node_modules
 dist
+.DS_Store
+bin
+pyvenv.cfg
+lib
+include
+__pycache__

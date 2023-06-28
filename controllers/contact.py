@@ -25,7 +25,14 @@ def contact():
     renderedPage = serveHTML(
         pagePath='views/Contact/Contact.tsx',
         serverProps=serverProps,
-        cssLinks=['/static/css/globals.css', '/static/css/Contact.css']
+        cssLinks=['/static/css/globals.css', '/static/css/Contact.css'],
+        seoOptions={
+            "title": 'Dream State - Contact',
+            "name": 'Dream State',
+            "description": 'Contact forms to reach out to Dream State for general questions or product inquiries.',
+            "url": 'https://www.dreamstate.graphics/contact',
+            "image": 'https://www.dreamstate.graphics/static/assets/favicon.png'
+        }
     )
 
     if renderedPage:

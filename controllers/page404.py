@@ -18,7 +18,14 @@ def paeg404(e):
     renderedPage = serveHTML(
         pagePath='views/Page404/Page404.tsx',
         serverProps=serverProps,
-        cssLinks=['/static/css/globals.css', '/static/css/Page404.css']
+        cssLinks=['/static/css/globals.css', '/static/css/Page404.css'],
+        seoOptions={
+            "title": 'Dream State',
+            "name": 'Dream State',
+            "description": 'Your bridge between dreams and reality. A full stack web development and graphic design agency made by Kevin Cox. Take a look, and see what I can do!',
+            "url": 'https://www.dreamstate.graphics/',
+            "image": 'https://www.dreamstate.graphics/static/assets/favicon.png'
+        }
     )
 
     if renderedPage:

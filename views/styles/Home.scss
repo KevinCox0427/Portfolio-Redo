@@ -17,12 +17,12 @@
         top: -12.1vw;
         right: 8vw;
         filter: drop-shadow(0.3em 0.4em 0px rgba(0, 0, 0, 0.08));
+        transform-box: fill-box;
 
         .FloralItem {
             transform: scale(0);
-            transform-origin: bottom right;
-            transform-box: content-box;
             will-change: transform;
+            transform-origin: bottom right;
         }
 
         @for $i from 1 through 25 {

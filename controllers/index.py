@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from os import getenv
 from bcrypt import kdf, gensalt
 from base64 import b64encode
-import requests
 import time
 
 load_dotenv()
@@ -20,9 +19,6 @@ def index():
     # Getting ip from request.
     ip = request.remote_addr
 
-    # Getting info on the user based on their ip.
-    response = requests.get('https://ipinfo.io/{ip}?token={IpToken}'.format(ip=ip, IpToken=getenv("IpToken"))).json()
-
     # Loading default user data.
     locationData = {
         "ip": '',
@@ -30,13 +26,19 @@ def index():
         "ll": [0,0]
     }
 
-    # Overwriting user data if found.
-    if "city" in response:
-        locationData = {
-            "ip": response["ip"],
-            "city": '{city}, {region}, {country}'.format(city=response["city"], region=response["region"], country=response["country"]),
-            "ll": response["loc"].split(',')
-        }
+    try:
+        # Getting info on the user based on their ip.
+        response = requests.get('https://ipinfo.io/{ip}?token={IpToken}'.format(ip=ip, IpToken=getenv("IpToken"))).json()
+
+        # Overwriting user data if found.
+        if "city" in response:
+            locationData = {
+                "ip": response["ip"],
+                "city": '{city}, {region}, {country}'.format(city=response["city"], region=response["region"], country=response["country"]),
+                "ll": response["loc"].split(',')
+            }
+    except Exception as e:
+        print(e)
 
     # Creating server Props to pass to our client side.
     serverProps = {
@@ -49,7 +51,14 @@ def index():
     renderedPage = serveHTML(
         pagePath='views/Home/Home.tsx',
         serverProps=serverProps,
-        cssLinks=["static/css/globals.css", 'static/css/Home.css']
+        cssLinks=["static/css/globals.css", 'static/css/Home.css'],
+        seoOptions={
+            "title": 'Dream State',
+            "name": 'Dream State',
+            "description": 'Your bridge between dreams and reality. A full stack web development and graphic design agency made by Kevin Cox. Take a look, and see what I can do!',
+            "url": 'https://www.dreamstate.graphics/',
+            "image": 'https://www.dreamstate.graphics/static/assets/favicon.png'
+        }
     );
 
     # Returning its response.
@@ -95,16 +104,19 @@ def getBearerToken() -> dict:
     
     # Otherwise make a POST request to Spotify to get a new bearer token and return that.
     else:
-        response = requests.post('https://accounts.spotify.com/api/token?grant_type=client_credentials&client_id={SpotifyClientID}&client_secret={SpotifyClientSecret}'.format(SpotifyClientID=getenv("SpotifyClientID"), SpotifyClientSecret=getenv("SpotifyClientSecret")), headers={
-            "Content-Type": "application/x-www-form-urlencoded"
-        }).json()
+        try:
+            response = requests.post('https://accounts.spotify.com/api/token?grant_type=client_credentials&client_id={SpotifyClientID}&client_secret={SpotifyClientSecret}'.format(SpotifyClientID=getenv("SpotifyClientID"), SpotifyClientSecret=getenv("SpotifyClientSecret")), headers={
+                "Content-Type": "application/x-www-form-urlencoded"
+            }).json()
 
-        bearerToken = {
-            "token": response["access_token"],
-            "timestamp": time.time()
-        }
+            bearerToken = {
+                "token": response["access_token"],
+                "timestamp": time.time()
+            }
 
-        return bearerToken["token"]
+            return bearerToken["token"]
+        except Exception as e:
+            print(e)
 
 
 
@@ -118,23 +130,26 @@ def spotify():
     if not (request.json and (("search" in request.json and isinstance(request.json["search"], str)) or ("id" in request.json and isinstance(request.json["id"], str)))):
         return Response('Invalid request.', status=400)
     
-    # Getting the reponse based on the request.
-    response: list
+    # Loading a default reponse for failute.
+    response = []
     
-    # If the request body has "search", then ping the search endpoint on Spotify's servers.
-    if("search" in request.json):
-        # Setting the response as a list of tracks.
-        response = requests.get('https://api.spotify.com/v1/search?q={search}&type=track&market=US&limit=40'.format(search=request.json["search"]), headers={
-            "Authorization": 'Bearer ' + getBearerToken(),
-            "Accept": 'application/json'
-        }).json()["tracks"]["items"]
-    # Otherwise ping the recommendations endpoint on Spotify's servers.
-    else:
-        # Setting the response as a list of tracks.
-        response = requests.get('https://api.spotify.com/v1/recommendations?seed_tracks={id}&market=US&limit=40'.format(id=request.json["id"]), headers={
-            "Authorization": 'Bearer ' + getBearerToken(),
-            "Accept": 'application/json'
-        }).json()["tracks"]
+    try:
+        # If the request body has "search", then ping the search endpoint on Spotify's servers.
+        if("search" in request.json):
+            # Setting the response as a list of tracks.
+            response = requests.get('https://api.spotify.com/v1/search?q={search}&type=track&market=US&limit=40'.format(search=request.json["search"]), headers={
+                "Authorization": 'Bearer ' + getBearerToken(),
+                "Accept": 'application/json'
+            }).json()["tracks"]["items"]
+        # Otherwise ping the recommendations endpoint on Spotify's servers.
+        else:
+            # Setting the response as a list of tracks.
+            response = requests.get('https://api.spotify.com/v1/recommendations?seed_tracks={id}&market=US&limit=40'.format(id=request.json["id"]), headers={
+                "Authorization": 'Bearer ' + getBearerToken(),
+                "Accept": 'application/json'
+            }).json()["tracks"]
+    except Exception as e:
+        print(e)
 
     # Returning a parse list of tracks based on Spotify's response syntax.
     return Response(json.dumps(list(map(lambda track:

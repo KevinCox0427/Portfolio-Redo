@@ -20,7 +20,14 @@ def portfolio():
     renderedPage = serveHTML(
         pagePath='views/Portfolio/Portfolio.tsx',
         serverProps=serverProps,
-        cssLinks=['/static/css/globals.css', '/static/css/Portfolio.css']
+        cssLinks=['/static/css/globals.css', '/static/css/Portfolio.css'],
+        seoOptions={
+            "title": 'Dream State - Portfolio',
+            "name": 'Dream State',
+            "description": 'A portfolio page of projects by the full stack web developer and graphic designer Kevin Cox. Take a look, and see what I can do!',
+            "url": 'https://www.dreamstate.graphics/portfolio/',
+            "image": 'https://www.dreamstate.graphics/static/assets/favicon.png'
+        }
     )
 
     if renderedPage:
@@ -56,7 +63,14 @@ def project(projectName):
     renderedPage = serveHTML(
         pagePath='views/Portfolio/Project.tsx',
         serverProps=serverProps,
-        cssLinks=['/static/css/globals.css', '/static/css/Project.css']
+        cssLinks=['/static/css/globals.css', '/static/css/Project.css'],
+        seoOptions={
+            "title": f'Dream State - {portfolioConfig[projectIndex]["name"]}',
+            "name": 'Dream State',
+            "description": f'A project for {portfolioConfig[projectIndex]["name"]} by the full stack web developer and graphic designer Kevin Cox.',
+            "url": f'https://www.dreamstate.graphics/portfolio/{projectName}',
+            "image": 'https://www.dreamstate.graphics/favicon.png'
+        }
     )
 
     if renderedPage:
