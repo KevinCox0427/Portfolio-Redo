@@ -102,15 +102,15 @@ const About: FunctionComponent<Props> = (props) => {
                                 <div className="InfoWrapper">
                                     <div className="Link">
                                         <h3>Website</h3>
-                                        <a href="https://dreamstate.graphics">https://dreamstate.graphics</a>
+                                        <a href="https://www.dreamstate.graphics">https://dreamstate.graphics</a>
                                     </div>
                                     <div className="Link">
                                         <h3>Email</h3>
-                                        <a href="https://dreamstate.graphics">kevin@dreamstate.graphics</a>
+                                        <a href="mailto:kevin@dreamstate.graphics">kevin@dreamstate.graphics</a>
                                     </div>
                                     <div className="Link">
                                         <h3>Phone</h3>
-                                        <a href="https://dreamstate.graphics">(845) 649-7476</a>
+                                        <a href="tel:8456497476">(845) 649-7476</a>
                                     </div>
                                     <div className="Link">
                                         <h3>Area</h3>

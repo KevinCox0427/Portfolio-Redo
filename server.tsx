@@ -90,6 +90,7 @@ app.post('/', async (req, res) => {
                     <meta property="og:url" content="${seoOptions.url}">
                     <meta property="og:image" content="${seoOptions.image}">
                     <link rel="canonical" href="${seoOptions.url}">
+                    <link rel="icon" href="https://dreamstateospublic.s3.us-east-2.amazonaws.com/favicon.png" />
                     ${cssLinks.map(path => `<link rel="stylesheet" href="${path}"></link>`).join("")}
                     <script>window.ServerProps=${JSON.stringify(typeof req.body.serverProps === 'object' ? req.body.serverProps : {})}</script>
 

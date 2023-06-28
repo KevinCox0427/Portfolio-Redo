@@ -16,8 +16,6 @@ def index():
     """
     GET route to serve the rendered React Homepage.
     """
-    # Getting ip from request.
-    ip = request.remote_addr
 
     # Loading default user data.
     locationData = {
@@ -27,8 +25,13 @@ def index():
     }
 
     try:
+        # Getting ip from request.
+        ip = request.headers['X-Forwarded-For']
+
+        print(ip)
+
         # Getting info on the user based on their ip.
-        response = requests.get('https://ipinfo.io/{ip}?token={IpToken}'.format(ip=ip, IpToken=getenv("IpToken"))).json()
+        response = requests.get(f'https://ipinfo.io/{ip}?token={getenv("IpToken")}').json()
 
         # Overwriting user data if found.
         if "city" in response:
