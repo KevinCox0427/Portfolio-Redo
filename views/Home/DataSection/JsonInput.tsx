@@ -84,9 +84,10 @@ const JsonInput:FunctionComponent<Props> = (props) => {
      * @param key The top-level key who's array is being pushed to.
      */
     function addToStringArray(key:string) {
+        const newArray = [...(props.currentData[key as keyof typeof props.currentData] as string[]), ''];
         props.setCurrentData(oldData => {
             return {...oldData,
-                [key]: [...oldData.categories, '']
+                [key]: newArray
             }
         });
     }
