@@ -89,7 +89,7 @@ portfolioConfig = [
         "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Homepage.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Services.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Contact.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Portfolio+Directory.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Portfolio+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Catalog.jpg"]
     },
     {
-        "name": "High Atlas Foundation",
+        "name": "Carbon Sequestration Prototype",
         "route": "highatlasfoundation",
         "description": [
             "A non-profit organization based of out Morocco founded by a few Peace Corps volunteers. They primarily contribute to sustainable agriculture, school infrastructure, clean water infrastructure, environmental management, and women's empowerment. Their mission: \"HAF supports Moroccan communities to take action in implementing human development initiatives. HAF promotes organic agriculture, women's empowerment, youth development, education, and health.\""
@@ -176,7 +176,7 @@ portfolioConfig = [
         "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover1.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover2.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover3.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover4.jpeg"]
     },
     {
-        "name": "Binghamton University Running Club",
+        "name": "Binghamton University Running Club Singlets",
         "route": "burc",
         "description": [
             "Racing running singlets for the Binghamton University Running Club for the 2022-23 school year, of which they still use today. They wanted 41 mens & womens singlets for their teams to race in, and they took the opportunity to partner with me to create something fun, memorable and unique."

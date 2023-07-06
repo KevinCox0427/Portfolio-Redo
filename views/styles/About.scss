@@ -38,38 +38,6 @@
         }
     }
 
-    .AboutMe {
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        padding-top: 2.5em;
-        gap: 2em 5em;
-        margin-bottom: 9em;
-
-        img {
-            width: auto;
-            height: 22.5em;
-            border-radius: 1em;
-            box-shadow: 0.2em 0.2em 0 0 rgba(0,0,0, 0.05);
-        }
-
-        .Description {
-            gap: 1em;
-            flex-basis: 20em;
-            flex-grow: 1;
-            font-family: var(--franklin);
-            font-size: clamp(1.5em, 2vw, 1.75em);
-            font-weight: 100;
-            line-height: 140%;
-            letter-spacing: 0.01em;
-
-            p {
-                line-height: inherit;
-            }
-        }
-    }
-
     .Grid {
         flex-direction: row;
         flex-wrap: wrap;
@@ -224,9 +192,10 @@
                                 
                                 p {
                                     font-family: var(--franklin);
-                                    font-weight: 400;
-                                    font-size: 1.1em;
+                                    font-weight: 300;
+                                    font-size: 1.2em;
                                     line-height: 130%;
+                                    margin-top: 0.05em;
                                 }
                             }
                         }
@@ -257,9 +226,9 @@
 
                         p {
                             font-family: var(--franklin);
-                            font-weight: 400;
+                            font-weight: 300;
                             font-size: 1.2em;
-                            line-height: 150%;
+                            line-height: 140%;
                             margin-top: -0.25em;
                         }
                     }
@@ -303,12 +272,17 @@
                                 margin-top: 0.25em;
                             }
 
-                            p {
+                            ul {
                                 font-family: var(--franklin);
-                                font-weight: 400;
+                                font-weight: 300;
                                 font-size: 1.2em;
-                                line-height: 140%;
-                                margin-top: 1em;
+                                margin-top: 0.75em;
+                                gap: 0.5em;
+                                
+                                li {
+                                    display: list-item;
+                                    line-height: 120%;
+                                }
                             }
                         }
                     }
