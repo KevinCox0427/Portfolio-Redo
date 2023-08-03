@@ -171,12 +171,12 @@ const Home:FunctionComponent<Props> = (props) => {
         authentication: {
             order: 3,
             navName: 'Secure authentication',
-            content: '<h3>In order to have users, you need secure authentication...</h3><p>Authentication on the web has given us many functionalities we tend to take for granted: ecommerce, cloud storage, social media. I can give you peace of mind through secure implementations of many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from stratch.</p><p><em>Let\'s create you a user from scratch together!</em></p>'
+            content: '<h3>In order to have users, you need secure authentication...</h3><p>Authentication on the web has given us many functionalities we tend to take for granted: e-commerce, cloud storage, and social media. I can give you peace of mind through secure implementations of many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from scratch.</p><p><em>Let\'s create you a user from scratch together!</em></p>'
         },
         analytics: {
             order: 4,
             navName: 'Detailed analytics',
-            content: '<h3>The more detailed the analytics, the more detailed the strategy...</h3><p>Data collection is an invaluable resource for growing, adapting, and focusing your business operations. Whether it\s analysizing page views, what\'s being viewed, or down to every user interaction, I can create, measure, and store any type of data analysis your business needs to succeed.<p><em>Here\'s some examples of your activity on this page! (Don\'t worry, none of this is stored or sent, you can check the network calls)</em></p><p></p>'
+            content: '<h3><h3>Powerful user interfaces give you the greatest control...</h3><p>UIs are the primary way users interact with any software. This enables users to enter large datasets, change important functionalities, or customize the look down to the smallest of details. So, the better the implementation, the better the user experience. I can create, adjust, and expand your website\'s UIs to enable you and your teams with powerful tools that best suit you.</p><p><em>Let\'s use a UI to screw up all my hard work!</em></p></em></p><p></p>'
         },
         ui: {
             order: 5,
@@ -186,7 +186,7 @@ const Home:FunctionComponent<Props> = (props) => {
         web: {
             order: 6,
             navName: 'Beautiful websites to show it all',
-            content: '<h3>Beautiful websites give your messages the widest reach...</h3><p>In an age where the majority of customers\' first encounters with an organization takes place online, it becomes vitally important to provide not only unique experiences, but effective ones. These serve to strengthen the perception of the organization, trickling into their products or services. I can create, plan, design, and mockup any graphical materials to fit, further strengthen, or form your brand.</p><p><em>Check out my portfolio to see some of my work!</em></p>'
+            content: '<h3>Beautiful websites give your messages the widest reach...</h3><p>In an age where the majority of customers\' first encounters with an organization take place online, it becomes vitally important to provide unique and effective experiences. I can create, plan, design, and mockup any graphical materials to fit, further strengthen, or form your brand.</p><p><em>Check out my portfolio to see some of my work!</em></p>'
         }
     }
     

@@ -2,7 +2,7 @@
 
 FROM python:3.11.4-alpine
 
-WORKDIR /flask-react
+WORKDIR /Portfolio-Redo
 
 COPY requirements.txt requirements.txt
 

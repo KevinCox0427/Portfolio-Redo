@@ -116,12 +116,14 @@
                             justify-content: center;
                             
                             .Link {
+                                flex-grow: 1;
 
                                 h3 {
                                     font-family: var(--rubik);
                                     font-size: 0.9em;
                                     text-transform: uppercase;
                                     font-weight: 600;
+                                    width: fit-content;
                                 }
 
                                 a, p {
@@ -129,6 +131,7 @@
                                     font-weight: 400;
                                     font-size: 1.3em;
                                     word-break: break-all;
+                                    width: fit-content;
                                 }
 
                                 &:nth-child(1) {
@@ -149,6 +152,7 @@
                                         @include LinkHover(var(--yellow), var(--brightWhite), 0.125em);
                                     }
                                 }
+
                                 &:nth-child(3) {
                                     h3 {
                                         color: var(--green);
@@ -167,6 +171,16 @@
                                     p {
                                         border-bottom: 0.125em solid var(--blue);
                                         padding: 0.25em 0.1em 0.075em 0.1em;
+                                    }
+                                }
+
+                                &:nth-child(5) {
+                                    h3 {
+                                        color: var(--lightPurple);
+                                    }
+
+                                    a {
+                                        @include LinkHover(var(--lightPurple), var(--brightWhite), 0.125em);
                                     }
                                 }
                             }
