@@ -5,19 +5,20 @@ import Footer from "../components/Footer";
 import AddPageView from "../components/AddPageView";
 import PortfolioCard from "../components/PortfolioCard";
 
-/**
- * Declaring what properties this page should inherited from the server.
- */
-type Props = {
-    ServerProps: {
+// Declaring what properties this page should inherited from the server.
+declare global {
+    type ProjectPageProps = {
         portfolioConfig: PortfolioConfig[],
         projectIndex: number
     }
 }
 
+type Props = {
+    ServerProps: ProjectPageProps
+}
+
 /**
  * A React page that will render a project page. This is being rendered on the server and hydrated on the client.
- * 
  * @param portfolioConfig The configuration of the portfolio to render its content appropriately.
  * @param projectIndex The index of this project to get from the portfolioConfig.
  */
@@ -127,6 +128,6 @@ const Project: FunctionComponent<Props> = (props) => {
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Project ServerProps={window.ServerProps} />);
+if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Project ServerProps={window.ServerProps.projectPageProps!} />);
 
 export default Project;

@@ -14,19 +14,16 @@ import UISection from './UISection/UISection';
 import WebSection from './WebSection/WebSection';
 import WebsiteSlider from './components/WebsitesSliders';
 
-/**
- * Declaring what properties this page should inherited from the server
- */
-type Props = {
-    ServerProps: {
+// Declaring what properties this page should inherited from the server
+declare global {
+    type HomePageProps = {
         portfolioConfig: PortfolioConfig[]
-        domain: string,
-        locationData: {
-            ip: string,
-            city: string,
-            ll: number[]
-        }
+        domain: string
     }
+}
+
+type Props = {
+    ServerProps: HomePageProps
 }
 
 /**
@@ -274,6 +271,6 @@ const Home:FunctionComponent<Props> = (props) => {
     </>
 }
 
-if (typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Home ServerProps={window.ServerProps}/>);
+if (typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Home ServerProps={window.ServerProps.homePageProps!}/>);
 
 export default Home;

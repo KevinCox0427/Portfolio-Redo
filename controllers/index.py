@@ -1,7 +1,5 @@
 from app import app
-from utils.serveHTML import serveHTML
-from flask import request, Response, json
-from utils.portfolioConfig import portfolioConfig
+from flask import send_from_directory, request, Response, json
 import requests
 from dotenv import load_dotenv
 from os import getenv
@@ -16,60 +14,8 @@ def index():
     """
     GET route to serve the rendered React Homepage.
     """
+    return send_from_directory('static/html', 'Home.html')
 
-    # Loading default user data.
-    locationData = {
-        "ip": '',
-        "city": '',
-        "ll": [0,0]
-    }
-
-    try:
-        # Getting ip from request.
-        ip = request.headers['X-Forwarded-For']
-
-        print(ip)
-
-        # Getting info on the user based on their ip.
-        response = requests.get(f'https://ipinfo.io/{ip}?token={getenv("IpToken")}').json()
-
-        # Overwriting user data if found.
-        if "city" in response:
-            locationData = {
-                "ip": response["ip"],
-                "city": '{city}, {region}, {country}'.format(city=response["city"], region=response["region"], country=response["country"]),
-                "ll": response["loc"].split(',')
-            }
-    except Exception as e:
-        print(e)
-
-    # Creating server Props to pass to our client side.
-    serverProps = {
-        "portfolioConfig": portfolioConfig,
-        "domain": request.headers['Host'],
-        "locationData": locationData
-    }
-
-    # Rendering the React page on our Node server
-    renderedPage = serveHTML(
-        pagePath='views/Home/Home.tsx',
-        serverProps=serverProps,
-        cssLinks=["static/css/globals.css", 'static/css/Home.css'],
-        seoOptions={
-            "title": 'Dream State',
-            "name": 'Dream State',
-            "description": 'Your bridge between dreams and reality. A full stack web development and graphic design agency made by Kevin Cox. Take a look, and see what I can do!',
-            "url": 'https://www.dreamstate.graphics/',
-            "image": 'https://www.dreamstate.graphics/static/assets/favicon.png'
-        }
-    );
-
-    # Returning its response.
-    if renderedPage:
-        return Response(renderedPage, status=200)
-    else:
-        return Response(status=404)
-    
 
     
 @app.route('/encrypt', methods=["POST"])

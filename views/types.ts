@@ -1,4 +1,18 @@
 declare global {
+    // Declaration merging the window object to include "ServerProps". This is how we'll pass properties from the server to the client side.
+    interface Window {
+        ServerProps: Partial<ServerProps>;
+    }
+
+    type ServerProps = {
+        homePageProps: HomePageProps,
+        aboutPageProps: AboutPageProps,
+        contactPageProps: ContactPageProps,
+        page404Props: Page404Props,
+        projectPageProps: ProjectPageProps,
+        portfolioPageProps: PortfolioPageProps
+    }
+
     type PortfolioConfig = {
         name: string
         route: string,

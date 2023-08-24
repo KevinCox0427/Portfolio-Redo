@@ -6,12 +6,20 @@ import PortfolioCard from "../components/PortfolioCard";
 import AddPageView from "../components/AddPageView";
 
 // Declaring what properties this page should inherited from the server.
-type Props = {
-    ServerProps: {
-        portfolioConfig: PortfolioConfig[],
-        currentTag: string
+declare global {
+    type PortfolioPageProps = {
+        portfolioConfig: PortfolioConfig[]
     }
 }
+
+type Props = {
+    ServerProps: PortfolioPageProps
+}
+
+// Getting the starting filter tag from the url search parameters.
+const startingTag = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('tag')
+    ? new URLSearchParams(window.location.search).get('tag')!
+    : 'all';
 
 /**
  * A React page that will render the portfolio page. This is being rendered on the server and hydrated on the client.
@@ -31,10 +39,7 @@ const Portfolio: FunctionComponent<Props> = (props) => {
     tags = tags.filter((tag, i) => tags.indexOf(tag) === i);
 
     // State variable for what tag is selected. 
-    const [selectedTag, setSelectedTag] = useState(tags.includes(decodeURIComponent(pageProps!.currentTag))
-        ? decodeURIComponent(pageProps.currentTag)
-        : 'all'
-    );
+    const [selectedTag, setSelectedTag] = useState(startingTag);
 
     // Callback function such that when a tag is changed, the appropriate projects are displayed.
     useEffect(() => {
@@ -104,6 +109,6 @@ const Portfolio: FunctionComponent<Props> = (props) => {
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Portfolio ServerProps={window.ServerProps} />);
+if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Portfolio ServerProps={window.ServerProps.portfolioPageProps!} />);
 
 export default Portfolio;

@@ -1,10 +1,8 @@
 from app import app
-from utils.portfolioConfig import portfolioConfig
-from utils.serveHTML import serveHTML
 from utils.regexTester import RegexTester
 from utils.emailGenerator import EmailGenerator
 from utils.smtp import sendEmail
-from flask import request, Response, json
+from flask import send_from_directory, request, Response, json
 from dotenv import load_dotenv
 from os import getenv
 
@@ -13,32 +11,9 @@ load_dotenv()
 @app.route('/contact', methods=["GET"])
 def contact():
     """
-    GET route to render and serve the Contact react page.
+    GET route to serve the Contact react page.
     """
-
-    # Loading the server properties to be passed to the client side.
-    serverProps = {
-        "portfolioConfig": portfolioConfig
-    }
-
-    # Rendering and serving the react file.
-    renderedPage = serveHTML(
-        pagePath='views/Contact/Contact.tsx',
-        serverProps=serverProps,
-        cssLinks=['/static/css/globals.css', '/static/css/Contact.css'],
-        seoOptions={
-            "title": 'Dream State - Contact',
-            "name": 'Dream State',
-            "description": 'Contact forms to reach out to Dream State for general questions or product inquiries.',
-            "url": 'https://www.dreamstate.graphics/contact',
-            "image": 'https://www.dreamstate.graphics/static/assets/favicon.png'
-        }
-    )
-
-    if renderedPage:
-       return Response(renderedPage, status=200);
-    else:
-       return Response(status=404)
+    return send_from_directory('static/html', 'Contact.html')
 
 
 # Instaniating a class to generate HTML emails based on a string or dictionary data set.

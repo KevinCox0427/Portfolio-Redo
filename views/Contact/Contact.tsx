@@ -5,10 +5,14 @@ import Footer from "../components/Footer";
 import AddPageView from "../components/AddPageView";
 
 // Declaring what properties this page should inherited from the server.
-type Props = {
-    ServerProps: {
+declare global {
+    type ContactPageProps = {
         portfolioConfig: PortfolioConfig[]
     }
+}
+
+type Props = {
+    ServerProps: ContactPageProps
 }
 
 /**
@@ -361,6 +365,6 @@ const Contact: FunctionComponent<Props> = (props) => {
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Contact ServerProps={window.ServerProps} />);
+if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Contact ServerProps={window.ServerProps.contactPageProps!} />);
 
 export default Contact;

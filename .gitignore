@@ -3,7 +3,7 @@
 .env
 node_modules
 dist
-static
+public
 bin
 pyvenv.cfg
 lib

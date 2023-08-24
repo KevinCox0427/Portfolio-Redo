@@ -7,8 +7,8 @@ import AddPageView from "../components/AddPageView";
 /**
  * Declaring what properties this page should inherited from the server.
  */
-type Props = {
-    ServerProps: {
+declare global {
+    type AboutPageProps = {
         portfolioConfig: PortfolioConfig[],
         github: {
             owner: string,
@@ -23,6 +23,10 @@ type Props = {
             }[]
         }
     }
+}
+
+type Props = {
+    ServerProps: AboutPageProps
 }
 
 /**
@@ -224,6 +228,6 @@ const About: FunctionComponent<Props> = (props) => {
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <About ServerProps={window.ServerProps} />);
+if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <About ServerProps={window.ServerProps.aboutPageProps!} />);
 
 export default About;

@@ -4,10 +4,14 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 // Declaring what properties this page should inherited from the server.
-type Props = {
-    ServerProps: {
+declare global {
+    type Page404Props = {
         portfolioConfig: PortfolioConfig[]
     }
+}
+
+type Props = {
+    ServerProps: Page404Props
 }
 
 /**
@@ -30,6 +34,6 @@ const Page404:FunctionComponent<Props> = (props) => {
     </>
 }
 
-if(typeof window != 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Page404 ServerProps={window.ServerProps}/>);
+if(typeof window != 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Page404 ServerProps={window.ServerProps.page404Props!}/>);
 
 export default Page404;

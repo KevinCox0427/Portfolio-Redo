@@ -1,19 +1,11 @@
 from flask import Flask
-import subprocess
-import signal
-import atexit
+from redis import Redis;
 
 # Initalizing the Flask application
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='public', template_folder='templates')
 
-# Initializing the Node application to server-side render our React pages.
-nodeApp = subprocess.Popen(['npm', 'run', 'start'])
-
-# Making sure our Node server is killed when the Flask app is.
-def exit_handler():
-    nodeApp.send_signal(signal.SIGTERM)
-
-atexit.register(exit_handler)
+# Connecting the redis client.
+redis = Redis(host='localhost', port=6379, decode_responses=True)
 
 # Importing all our controllers.
 from controllers import index, about, contact, portfolio, page404

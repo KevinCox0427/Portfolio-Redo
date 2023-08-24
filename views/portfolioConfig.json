@@ -1,5 +1,4 @@
-# An array storing all the configuration data for the portfolio and its projects.
-portfolioConfig = [
+[
     {
         "name": "New York Land Quest",
         "route": "newyorklandquest",
@@ -14,7 +13,7 @@ portfolioConfig = [
             "Since the client wanted a radical shift in their front-end AND back-end, I took this opportunity to re-develop the entire project in PHP as far away from the Wordpress framework as possible. I also re-designed / mocked it up alongside them to make sure they understood and approved exactly what they were getting.", 
             "To reduce content sprawl and confusion, I consolidated all their digital operations into two pages, a \"Buy\" page, a map-based UI with 10 filtering options to search for every listing, and \"Sold\" page, a standardized form to provide a single source of intake for new listings. To tackle the server side, I immediately removed all \"Plugins\" from the site, only migrated the SQL database responsible for their listings and agents, and cleaned up the schemas."
         ],
-        "skills": ['PHP', 'UI / UX Design', 'TypeScript', 'MySQL', 'SASS', 'Leaflet.js'],
+        "skills": ["PHP", "UI / UX Design", "TypeScript", "MySQL", "SASS", "Leaflet.js"],
         "tag": "Web Development",
         "link": "https://nylandquest.com",
         "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest_Buy.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest_Listing.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest_Sell.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/nylq/New_York_Land_Quest_About.jpg"]
@@ -33,7 +32,7 @@ portfolioConfig = [
             "The biggest concern was the commenting in real-time. To solve this, I used a socket.io server to intake and emit comments in real-time. These would be stored in \"sessions\" so that the professor can use the same map for different lectures, while limiting what time students could comment.",
             "For the maps, I went with a row system where professors could drag and drop as many rows as they wanted, and as many nodes inside the rows. These nodes would swing out a menu from the side, where professors can further customize their maps with an image gallery and a rich text editor (quill.js)."
         ],
-        "skills": ['Node.js', 'React.js', 'Socket.io', 'UI / UX Design', 'TypeScript', 'MySQL', 'SASS'],
+        "skills": ["Node.js", "React.js", "Socket.io", "UI / UX Design", "TypeScript", "MySQL", "SASS"],
         "tag": "Web Development",
         "link": "https://teachingappdemo.herokuapp.com/",
         "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/map.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/node.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/editnode.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/comment.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/materialsmatter/session.jpg"]
@@ -55,7 +54,7 @@ portfolioConfig = [
         "skills": ["PHP", "UI / UX Design", "Typescript", "SASS", "MySQL", "Vector Graphics"],
         "tag": "Web Development",
         "link": "https://redbarnhpc.com/",
-        "gallery": ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Products.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Configurator.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Support.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Quote.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Customers.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Testimonials.jpg']
+        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Products.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Configurator.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Support.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Quote.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Customers.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/hpc/Red Barn HPC Testimonials.jpg"]
     },
     {
         "name": "Beck Automotive",
@@ -71,10 +70,10 @@ portfolioConfig = [
             "This was one of the rare instances where I actually suggested a Wordpress build, since normally whenever I deal with Wordpress, it's fixing previous fragile architecture and then developing as independently as possible from it. But in this case, they needed to change content very frequently. Whether it be a manual, some car specs, a legislation change, an FAQ, or an entirely new page, these were to be done by people who make cars all day, not websites. So, having something that mimicked Word and Excel while being able to edit and publish changes immediately was a big draw for them.",
             "However I still developed everything that required back-end architecture outside of Wordpress to avoid deprecation, which was mainly the car configurator and a contact form. To achieve this hybrid model, I stored the car models, parts, engine options, and color options in a separate database. Due to how customizable these cars are, the configuration options were very interrelated and had complex conditionals, so they wouldn't have been achievable inside Wordpress's framework. I then created basic CRUD operations and used these inside the Wordpress portal for data entry. Using Wordpress's \"Shortcode\", I was able to inject my own PHP into the block editor to render the configuration UI, such that other users can still edit the page's content."
         ],
-        "skills": ['PHP', 'UI / UX Design', 'TypeScript', 'MySQL', 'SASS'],
+        "skills": ["PHP", "UI / UX Design", "TypeScript", "MySQL", "SASS"],
         "tag": "Web Development",
         "link": "https://beckspeedster.dev/",
-        "gallery": ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Products.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Configurator.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Manuals.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster About.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Contact.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster FAQs.jpg']
+        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Products.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Configurator.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Manuals.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster About.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Contact.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster FAQs.jpg"]
     },
     {
         "name": "Red Barn Creative Website Mockup",
@@ -83,7 +82,7 @@ portfolioConfig = [
             "A web mockup for a new website for Red Barn Creative team. Many of their users reported their site as confsuing, difficult to navigate, and looked outdate. So, the team requested a more organzie, clean aesthetic, while integrating their SAGE storefront. To achieve the \"clean\" look, I went with a high-contrast color pallet with a heavy emphasis on white-space. To still retain the creative aspect of their brand, I included a serif header contrasted with thin sans-serif for their body paragraphs, along with splashes of red illustrations."
         ],
         "logo": "https://rbcreative.team/wp-content/uploads/2021/01/RB-Creative-01-300x101.png",
-        "skills": ['UI / UX Design', 'Branding', 'Graphic Design', 'Vector graphics', "Illustrator"],
+        "skills": ["UI / UX Design", "Branding", "Graphic Design", "Vector graphics", "Illustrator"],
         "tag": "Graphic Design",
         "link": "https://rbcreative.team/",
         "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Homepage.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Services.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Contact.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Portfolio+Directory.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Portfolio+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/redbarncreative/Catalog.jpg"]
@@ -105,7 +104,7 @@ portfolioConfig = [
         "skills": ["TypeScript", "Node", "Express", "SQL", "R"],
         "tag": "Web Development",
         "link": "http://hafcarbon.com/",
-        "gallery": ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/HAF Carbon Prototype.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/HAF Carbon Prototype Results.jpg']
+        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/HAF Carbon Prototype.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/haf/HAF Carbon Prototype Results.jpg"]
     },
     {
         "name": "Little Venice",
@@ -124,7 +123,7 @@ portfolioConfig = [
         "skills": ["PHP", "UI / UX Design", "Typescript", "SASS", "MySQL", "Integrations", "WooCommerce"],
         "tag": "Web Development",
         "link": "https://littlevenicerestaurant.com",
-        "gallery": ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Menu.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Shop.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Reservation.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Item.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Sauce.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice FAQ.jpg']
+        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Menu.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Shop.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Reservation.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Item.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice Sauce.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/littlevenice/Little Venice FAQ.jpg"]
     },
     {
         "name": "Well Tank Goodness",
@@ -142,7 +141,7 @@ portfolioConfig = [
         "skills": ["PHP", "UI / UX Design", "Typescript", "SASS", "HTML", "Integrations"],
         "tag": "Web Development",
         "link": "https://welltankgoodness.com/",
-        "gallery": ['https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness Service.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness Shop.jpg', 'https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness About.jpg']
+        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness Service.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness Shop.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/wtg/Well Tank Goodness About.jpg"]
     },
     {
         "name": "Long Island Loyalty Branding",
@@ -151,7 +150,7 @@ portfolioConfig = [
             "A branding overhall for a marketing agency based in Long Island. Some deliveribles include a logo and website mockup. Long Island Loyalty started as a Facebook group, but quickly outpaced the limitations of Facebook as they grew. They mainly wanted a more consistant, \"modern\" aesthetic, while being able to gather more information on their userbase. Using a reference they provided, I went with a high-contrast color pallet with thin sans-serifs for their typography. These designs also feature a heavy emphasis on white-space and photograpic work to assist in its professional look."
         ],
         "logo": "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/logo_1.png",
-        "skills": ['UI / UX Design', 'Branding', 'Graphic Design', 'Vector graphics', "Illustrator"],
+        "skills": ["UI / UX Design", "Branding", "Graphic Design", "Vector graphics", "Illustrator"],
         "tag": "Graphic Design",
         "link": "https://www.facebook.com/LILoyalty?hc_ref=ARQnt4_zGlxNn-HPyVE1Z5W0v2zAfOAsoW9p9gHgPvsBzQw71YZsoSXpMskxeyqRNyo&fref=nf&__xts__[0]=68.ARBLgOkC9iiiFGtqGa8R0OuE7uaHcNY0u3dAvAC5GWEjy0XGKlcwEwlRPK9O_-rMkieXddzz9rL75m6-Jyx3i7yRc79a7eOj0UMxHO5CknV5CkilhIvHSuZlv8PzGE7FPOENJ_YUMxP8MSg6QJ8A-AvmlqL4bO2k-oDqAYBBy_tJnSudhsAUAhnVQSVQWHN5huiIDFGL3VjqyHoSWNIufMkQRoCIERg1AMCHn0oDpI9oQb3Nc7zTE_M_qgjHyQSyEh4-hLUWYH5wvvjDU58qCpGkgn1nfYb9",
         "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Homepage.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Merchant+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Business+Spotlight+Article.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Merchant+Directory.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Business+Spotlights.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+User+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Services.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Contact.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Merchant+Settings+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+User+Settings+Page.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+portal.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/loy/LOY+Portal+Editor.jpg"]
