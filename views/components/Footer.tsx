@@ -1,14 +1,11 @@
 import React, { FunctionComponent } from 'react';
-
-type Props = {
-    portfolioConfig: PortfolioConfig[]
-}
+import portfolioConfig from '../portfolioConfig.json';
 
 /**
  * A simple footer component to be used in all our pages.
  * @param portfolioConfig the portfolio configuration so we can link to all the projects.
  */
-const Footer:FunctionComponent<Props> = (props) => {
+const Footer:FunctionComponent = () => {
     return <footer id="footer">
         <div className='Contain'>
             <div className='Left'>
@@ -39,7 +36,7 @@ const Footer:FunctionComponent<Props> = (props) => {
                 <div className='Row'>
                     <a className="Link" href="/portfolio">Portfolio</a>
                     <div className='SubLinks'>{
-                        props.portfolioConfig.map((porfolio, i) => {
+                        portfolioConfig.map((porfolio, i) => {
                             return <a key={i} href={`/portfolio/${porfolio.route}`}>{porfolio.name}</a>
                         })}
                     </div>

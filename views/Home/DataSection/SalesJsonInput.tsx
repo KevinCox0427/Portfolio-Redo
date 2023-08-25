@@ -15,7 +15,6 @@ type Props = {
 const SaleJsonInput: FunctionComponent<Props> = (props) => {
     /**
     * A function to overwrite a value for a sale at a given index.
-    * 
     * @param key The key who's value is being overwritten.
     * @param value The new value to overwrite with.
     * @param index The index of the sale that's being editted.

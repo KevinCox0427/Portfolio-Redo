@@ -17,6 +17,34 @@ def index():
     return send_from_directory('static/html', 'Home.html')
 
 
+
+@app.route('/location', methods=["POST"])
+def location():
+    """
+    A POST route to get a user ip and return some information on where they're located.
+    """
+    try:
+        # Getting ip from request.
+        ip = request.headers['X-Forwarded-For']
+        print(ip)
+
+        # Getting info on the user based on their ip.
+        response = requests.get(f'https://ipinfo.io/{ip}?token={getenv("IpToken")}').json()
+
+        # Returning user data if found.
+        if "city" in response:
+            return Response({
+                "ip": response["ip"],
+                "city": f'{response["city"]}, {response["region"]}, {response["country"]}',
+                "ll": response["loc"].split(',')
+            }, status=200)
+        else:
+            return Response(False, response=500)
+    except Exception as e:
+        print(e)
+        return Response(False, response=500)
+
+
     
 @app.route('/encrypt', methods=["POST"])
 def encrypt():

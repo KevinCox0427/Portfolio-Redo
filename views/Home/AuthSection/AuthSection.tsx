@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
-import WindowCache from "../../components/windowCache";
 import Register from "./Register";
 import Login from "./Login";
 import Title from "../components/Title";
@@ -23,18 +22,12 @@ type UserAuthData = {
     }
 }
 
-type Props = {
-    windowCache: WindowCache,
-    cachedHadLoaded: boolean,
-    sectionContent: SectionContent
-}
-
 /**
  * A component that renders the authentication section on the homepage.
  * @param windowCache The utility class that saves state variables into local storage upon state change.
  * @param sectionContent The title and description for this section. Can be changed.
  */
-const AuthSection:FunctionComponent<Props> = (props) => {
+const AuthSection:FunctionComponent = () => {
     // State variable to keep track of the login & register forms, as well as the encrypted password and login sessions.
     // We're also loading & saving this to local storage.
     const [userData, setUserData] = useState<UserAuthData>({

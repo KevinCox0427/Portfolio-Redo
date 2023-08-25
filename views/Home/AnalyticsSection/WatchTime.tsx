@@ -1,23 +1,16 @@
 import React, { FunctionComponent, useEffect } from "react";
-
-type Props = {
-    watchTime: {
-        start: number,
-        timeStamps: {
-            [sectionName: string]: number
-        }
-    },
-    setWatchTime: React.Dispatch<React.SetStateAction<Props["watchTime"]>>,
-    currentSection: string
-}
+import { useSelector, useDispatch } from "../../store/store";
+import { resetWatchTime, setNewTimeStamp } from "../../store/watchTime";
 
 /**
  * A component for the Analytics section on the homepage that displays the watch time for each section on a bar graph.
- * @param watchTime An object that stores the view times for each section
- * @param resetWatchTime A function that resets all the view times to 0
- * @param currentSection A state variable that indicates what section on the homepage a user is currently viewing. 
  */
-const WatchTime:FunctionComponent<Props> = (props) => {
+const WatchTime:FunctionComponent = () => {
+    const dispatch = useDispatch();
+    const watchTime = useSelector(state => state.watchTime);
+    const currentSection = useSelector(state => state.currentSection);
+
+
     // Each section's label on the x axis of the bar graph being rendered.
     const XAxisLabels = ["Landing Page", "Optimized Data", "Secure Authentication", "Seamless Integrations", "Detailed Analytics", "User Interfaces", "Beautiful Websites", "Footer"];
 
@@ -33,54 +26,26 @@ const WatchTime:FunctionComponent<Props> = (props) => {
     }
 
     // Reducing the timestamps to find the largest one. This will be used to determine the labels on the Y-axis.
-    const largestTimestamp = Object.keys(props.watchTime.timeStamps).reduce((largestTimestamp, sectionKey) => {
-        const value = props.watchTime.timeStamps[sectionKey as keyof typeof props.watchTime.timeStamps];
+    const largestTimestamp = Object.keys(watchTime.timeStamps).reduce((largestTimestamp, sectionKey) => {
+        const value = watchTime.timeStamps[sectionKey as keyof typeof watchTime.timeStamps];
         return value > largestTimestamp
             ? value
             : largestTimestamp;
     }, 0);
 
-    /**
-     * A function to reset all the watch times back to 0.
-     */
-    function reset() {
-        props.setWatchTime({
-            start: Date.now(),
-            timeStamps: {
-                home: 0,
-                data: 0,
-                authentication: 0,
-                integration: 0,
-                analytics: 0,
-                ui: 0,
-                web: 0,
-                footer: 0
-            }
-        });
-    }
-
     // A useeffect callback to start a 1 second interval when the user is viewing the analytics section.
     // This is so that the analytics watch time ticks up when the user is looking at the bar graph.
     useEffect(() => {
-        if(props.currentSection === 'analytics') {
-            const interval = setInterval(() => {
-                props.setWatchTime(previousWatchTime => {
-                    return {...previousWatchTime,
-                        start: previousWatchTime.start + 1000,
-                        timeStamps: {...previousWatchTime.timeStamps,
-                            analytics: previousWatchTime.timeStamps.analytics + 1000
-                        }
-                    }
-                })
-            }, 1000);
+        if(currentSection === 'analytics') {
+            const interval = setInterval(() => dispatch(setNewTimeStamp('analytics')), 1000);
             return () => clearInterval(interval);
         }
-    }, [props.currentSection]);
+    }, [currentSection]);
 
     return <div className="Graph WatchTime">
         <h3>
             Watch Time:
-            <i className="fa-solid fa-rotate-left Reset" onClick={reset}></i>
+            <i className="fa-solid fa-rotate-left Reset" onClick={() => dispatch(resetWatchTime())}></i>
         </h3>
         <div className="AxisWrapper" style={{
             gridTemplateColumns: `clamp(0.1px, 4.5em, ${100/(XAxisLabels.length+3)}vw) ${`clamp(0.1px, 3.5em, ${100/(XAxisLabels.length+3)}vw) `.repeat(XAxisLabels.length)}`
@@ -96,13 +61,13 @@ const WatchTime:FunctionComponent<Props> = (props) => {
                 </div>
                 <div className="Spacer"></div>
             </div>
-            {Object.keys(props.watchTime.timeStamps).map((timeStampKey, i) => {
-                const value = props.watchTime.timeStamps[timeStampKey as keyof typeof props.watchTime.timeStamps];
+            {Object.keys(watchTime.timeStamps).map((timeStampKey, i) => {
+                const value = watchTime.timeStamps[timeStampKey as keyof typeof watchTime.timeStamps];
                 
                 return <div key={i} className="Column">
                     <div className="Timestamp">
                         <p className="Value" style={{
-                            height: props.currentSection === 'analytics'
+                            height: currentSection === 'analytics'
                                 ? `${(value/largestTimestamp) * 100}%`
                                 : '0%'
                         }}>

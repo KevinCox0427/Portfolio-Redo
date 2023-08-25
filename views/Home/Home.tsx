@@ -1,5 +1,8 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef } from 'react';
 import { hydrateRoot } from 'react-dom/client';
+import { useDispatch, useSelector } from '../store/store';
+import { setNewTimeStamp } from '../store/watchTime';
+
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import FloralSVG from './components/FloralSVG';
@@ -9,15 +12,14 @@ import NavBars from './components/NavBars';
 import AuthSection from './AuthSection/AuthSection';
 import IntegrationSection from './IntegrationSection/IntegrationSection';
 import AnalyticsSection from './AnalyticsSection/AnalyticsSection';
-import WindowCache from '../components/windowCache';
 import UISection from './UISection/UISection';
 import WebSection from './WebSection/WebSection';
 import WebsiteSlider from './components/WebsitesSliders';
+import { setCurrentSection } from '../store/currentSection';
 
 // Declaring what properties this page should inherited from the server
 declare global {
     type HomePageProps = {
-        portfolioConfig: PortfolioConfig[]
         domain: string
     }
 }
@@ -37,15 +39,11 @@ const Home:FunctionComponent<Props> = (props) => {
     const pageProps = props.ServerProps;
     if(typeof pageProps === 'undefined') return <></>;
 
-    // Creating a utility class to save and load state variables in local storage.
-    // This will be used throughout the homepage to retain statefulness across user sessions.
-    // See utils/windowCache.ts for more details.
-    const [cacheHasLoaded, setCacheHasLoaded] = useState(false);
-    const windowCache = useRef(new WindowCache(setCacheHasLoaded));
+    const dispatch = useDispatch();
+    const currentSection = useSelector(state => state.currentSection);
 
     // Keeping track of what section the user has currently scrolled to.
     const contentWrapper = useRef<HTMLDivElement>(null);
-    const [currentSection, setCurrentSection] = useState('');
 
     // Setting a scroll event on page load to test for what section the user is currently on.
     // This is buffered such that the callback function will only fire if a user has stopped scrolling for 100ms.
@@ -104,93 +102,11 @@ const Home:FunctionComponent<Props> = (props) => {
 
         // If the section on screen changes, then we'll update the current section and the watch time of the previous section.
         if(newSection.id !== currentSection) {
-            setCurrentSection(newSection.id);
+            dispatch(setCurrentSection(newSection.id as Store["currentSection"]));
             if(!currentSection) return;
-            
-            setWatchTime(previousWatchTime => {
-                return {...previousWatchTime,
-                    start: Date.now(),
-                    timeStamps: {...previousWatchTime.timeStamps,
-                        [currentSection]: previousWatchTime.timeStamps[currentSection as keyof typeof previousWatchTime.timeStamps] + (Date.now() - previousWatchTime.start)
-                    }
-                }
-            });
+            dispatch(setNewTimeStamp(currentSection));
         }
     }
-
-    // A state variable keeping track of how much time the user has spent on each section when they've switched sections.
-    // "Start" represents the starting timestamp of a new seciton.
-    // This will then be subtracted from the current time once a user has scrolled past it, and will stored in the "timeStamps" for the appropriate section.
-    // This is also being saved to local storage upon state change.
-    const [watchTime, setWatchTime] = useState<{
-        start: number,
-        timeStamps: {
-            [sectionName:string]: number
-        }
-    }>({
-        start: Date.now(),
-        timeStamps: {
-            home: 0,
-            data: 0,
-            authentication: 0,
-            integration: 0,
-            analytics: 0,
-            ui: 0,
-            web: 0,
-            footer: 0
-        }
-    });
-    windowCache.current.registerCache('watchTime', watchTime, setWatchTime);
-
-    // A callback function to start the time for the user session on page load.
-    useEffect(() => {
-        if(!cacheHasLoaded) return;
-
-        setWatchTime(oldWatchTime => {
-            return {...oldWatchTime,
-                start: Date.now()
-            }
-        });
-    }, [cacheHasLoaded, currentSection]);
-
-    // Setting the default order and HTML content for each section.
-    const sectionDefaults = {
-        data: {
-            order: 1,
-            navName: 'Optimized Data',
-            content: '<h3>It always starts with the data...</h3><p>Creating a functional and intuitive website entirely depends on modeling good quality data upfront. I can model simplistic yet highly effective data structures, not only to create fast websites now, but to provide a solid foundation for additions in the future.</p><p><em>Let\'s fill in a data structure to create some new products together!</em></p>'
-        },
-        integration: {
-            order: 2,
-            navName: 'Seamless integrations',
-            content: '<h3>Integrations give more power to your applications...</h3><p>Integrations have been instrumental in translating collected user data into real-world action items. This is responsible for many aspects of the web, such as online payments, automated emails, analytics, cloud storage, CMS tools, or any resource management software. I can assess and integrate any software your technology stack needs, whether it uses an SDK, an API, webhooks, or an RPC.</p><p><em>Let\'s use an integration with Spotify together to find you some new music!</em></p>'
-        },
-        authentication: {
-            order: 3,
-            navName: 'Secure authentication',
-            content: '<h3>In order to have users, you need secure authentication...</h3><p>Authentication on the web has given us many functionalities we tend to take for granted: e-commerce, cloud storage, and social media. I can give you peace of mind through secure implementations of many different methods of authentication, whether it be through an OAuth2 provider like Google, or entirely from scratch.</p><p><em>Let\'s create you a user from scratch together!</em></p>'
-        },
-        analytics: {
-            order: 4,
-            navName: 'Detailed analytics',
-            content: '<h3><h3>Powerful user interfaces give you the greatest control...</h3><p>UIs are the primary way users interact with any software. This enables users to enter large datasets, change important functionalities, or customize the look down to the smallest of details. So, the better the implementation, the better the user experience. I can create, adjust, and expand your website\'s UIs to enable you and your teams with powerful tools that best suit you.</p><p><em>Let\'s use a UI to screw up all my hard work!</em></p></em></p><p></p>'
-        },
-        ui: {
-            order: 5,
-            navName: 'User interfaces to control it all',
-            content: '<h3>Powerful user interfaces give you the greatest control...</h3><p>UIs are the primary way users interact with any software. This enables users to enter large datasets, change important functionalities, or customize the look down to the smallest of details. So, the better the implementation, the better the user experience. I can create, adjust, and expand your website\'s UIs to enable you and your teams with powerful tools that best suit you.</p><p><em>Let\'s use a UI to screw up all my hard work!</em></p>'
-        },
-        web: {
-            order: 6,
-            navName: 'Beautiful websites to show it all',
-            content: '<h3>Beautiful websites give your messages the widest reach...</h3><p>In an age where the majority of customers\' first encounters with an organization take place online, it becomes vitally important to provide unique and effective experiences. I can create, plan, design, and mockup any graphical materials to fit, further strengthen, or form your brand.</p><p><em>Check out my portfolio to see some of my work!</em></p>'
-        }
-    }
-    
-    // Assigning a state variable to keep track of the order and HTML content for each section.
-    // This will be stored in local storage upon state change.
-    const [sectionContent, setSectionContent] = useState(sectionDefaults);
-    windowCache.current.registerCache('sectionText', sectionContent, setSectionContent);
 
     return <>
         <Header></Header>
@@ -210,9 +126,7 @@ const Home:FunctionComponent<Props> = (props) => {
                     </div>
                 </div>
             </div>
-            <WebsiteSlider
-                portfolioConfig={pageProps.portfolioConfig}
-            ></WebsiteSlider>
+            <WebsiteSlider></WebsiteSlider>
             <p className='ScrollDown'>
                 Scroll down to see how I do it!
                 <i className="fa-solid fa-angles-down"></i>
@@ -224,50 +138,19 @@ const Home:FunctionComponent<Props> = (props) => {
         <div id="MyServices" className='Contain'>
             <NavBars
                 contentWrapper={contentWrapper}
-                currentSection={currentSection}
-                sectionContent={sectionContent}
             ></NavBars>
             <div className='Content' ref={contentWrapper}>
-                <DataSection
-                    windowCache={windowCache.current}
-                    sectionContent={sectionContent.data}
-                ></DataSection>
-                <AuthSection
-                    windowCache={windowCache.current}
-                    cachedHadLoaded={cacheHasLoaded}
-                    sectionContent={sectionContent.authentication}
-                ></AuthSection>
-                <IntegrationSection
-                    windowCache={windowCache.current}
-                    sectionContent={sectionContent.integration}
-                ></IntegrationSection>
+                <DataSection></DataSection>
+                <AuthSection></AuthSection>
+                <IntegrationSection></IntegrationSection>
                 <AnalyticsSection
-                    windowCache={windowCache.current}
-                    watchTime={watchTime}
-                    currentSection={currentSection}
-                    cacheHasLoaded={cacheHasLoaded}
-                    portfolioConfig={pageProps.portfolioConfig}
-                    setWatchTime={setWatchTime}
-                    sectionContent={sectionContent.analytics}
                     domain={pageProps.domain}
-                    locationData={pageProps.locationData}
                 ></AnalyticsSection>
-                <UISection
-                    sectionContent={sectionContent.ui}
-                    allSectionContent={sectionContent}
-                    setSectionContent={setSectionContent}
-                    defaultSectionContent={sectionDefaults}
-                    cacheHasLoaded={cacheHasLoaded}
-                ></UISection>
-                <WebSection
-                    sectionContent={sectionContent.web}
-                    portfolioConfig={pageProps.portfolioConfig}
-                ></WebSection>
+                <UISection></UISection>
+                <WebSection></WebSection>
             </div>
         </div>
-        <Footer
-            portfolioConfig={pageProps.portfolioConfig}
-        ></Footer>
+        <Footer></Footer>
     </>
 }
 

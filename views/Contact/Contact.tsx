@@ -2,28 +2,15 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import AddPageView from "../components/AddPageView";
 
-// Declaring what properties this page should inherited from the server.
-declare global {
-    type ContactPageProps = {
-        portfolioConfig: PortfolioConfig[]
-    }
-}
-
-type Props = {
-    ServerProps: ContactPageProps
-}
+// Importing the redux store to increment the page count.
+import '../store/store';
 
 /**
  * A React page that will render the about page. This is being rendered on the server and hydrated on the client.
  * @param portfolioConfig The configuration of the portfolio to render its content appropriately.
  */
-const Contact: FunctionComponent<Props> = (props) => {
-    // Making sure we inherit the properties from the server.
-    const pageProps = props.ServerProps;
-    if(typeof pageProps === 'undefined') return <></>;
-
+const Contact: FunctionComponent = () => {
     // Keeping state for inputted values, error messages, and submission for the general contact form.
     const [contactForm, setContactForm] = useState({
         error: {
@@ -231,10 +218,6 @@ const Contact: FunctionComponent<Props> = (props) => {
     }, []);
 
     return <>
-        <AddPageView
-            portfolioConfig={pageProps.portfolioConfig}
-            pageName="contact"
-        ></AddPageView>
         <Header></Header>
         <div className="Contain" id="Contact">
             <h1 style={{display: 'none'}}>Contact</h1>
@@ -361,10 +344,10 @@ const Contact: FunctionComponent<Props> = (props) => {
                 <button className="Submit" onClick={inquirySubmit}>Submit</button>
             </form>
         </div>
-        <Footer portfolioConfig={pageProps.portfolioConfig}></Footer>
+        <Footer></Footer>
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Contact ServerProps={window.ServerProps.contactPageProps!} />);
+if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Contact />);
 
 export default Contact;
