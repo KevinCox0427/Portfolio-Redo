@@ -1,18 +1,13 @@
 import React, { FunctionComponent, Fragment } from "react";
-import { CurrentData } from "./DataSection";
-
-type Props = {
-    currentData: CurrentData,
-    setCurrentData: React.Dispatch<React.SetStateAction<CurrentData>>
-}
+import { useDispatch, useSelector } from "../../store/store";
 
 /**
  * A component for the JsonInput.tsx to render the editor for the sales on a fake product.
- * 
- * @param currentData The state variable that stores the information for the fake product.
- * @param setCurrentData The setter function to edit the information of the fake product.
  */
-const SaleJsonInput: FunctionComponent<Props> = (props) => {
+const SaleJsonInput: FunctionComponent = () => {
+    const dispatch = useDispatch();
+    const saleData = useSelector(state => state.fakeProductData.sales);
+
     /**
     * A function to overwrite a value for a sale at a given index.
     * @param key The key who's value is being overwritten.
@@ -32,7 +27,6 @@ const SaleJsonInput: FunctionComponent<Props> = (props) => {
 
     /**
     * A function to overwrite a value for a expiration date on a sale at a given index.
-    * 
     * @param key The key who's value is being overwritten.
     * @param value The new value to overwrite with.
     * @param index The index of the sale that's being editted.
@@ -89,7 +83,7 @@ const SaleJsonInput: FunctionComponent<Props> = (props) => {
     }
 
     return <>
-        {props.currentData.sales.map((sale, i) => {
+        {saleData.map((sale, i) => {
             return <Fragment key={i}>
                 <div className='Line' style={{marginLeft: '2.5em'}}>
                     <i className="fa-regular fa-trash-can DeleteButton" onClick={e => {deleteSale(i)}}></i>
@@ -136,7 +130,7 @@ const SaleJsonInput: FunctionComponent<Props> = (props) => {
                 </div>
                 <div className='Line' style={{marginLeft: '2.5em'}}>
                     <span className='Yellow'>&#125;</span>
-                    {i != props.currentData.sales.length-1 ? ',' : ''}
+                    {i != saleData.length - 1 ? ',' : ''}
                 </div>
             </Fragment>
         })}

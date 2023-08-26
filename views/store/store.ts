@@ -6,7 +6,8 @@ import currentSectionSlice from "./currentSection";
 import heatmapSlice from "./heatmap";
 import pageViewsSlice from './pageViews';
 import browserDataSlice from "./browserData";
-import fakeUserCredentialsSlice from './userCredenationals';
+import fakeUserCredentialsSlice from './fakeUserCredentials';
+import fakeProductDataSlice from './fakeProductData';
 
 // Declaring globally the typing of the store.
 declare global {
@@ -45,7 +46,7 @@ declare global {
                 ll: number[]
             }
         },
-        userCrendentials: {
+        fakeUserCredentials: {
             registerUsername: string,
             registerPassword: string,
             loginUsername: string,
@@ -56,6 +57,24 @@ declare global {
                 key: string,
                 expires: number
             }
+        },
+        fakeProductData: {
+            name: string,
+            price: string,
+            description: string,
+            minQuantity: number | null,
+            maxQuantity: number | null,
+            categories: string[],
+            imageUrls: string[],
+            sales: {
+                type: 'flat' | 'percent',
+                amount: string | null,
+                expires: {
+                    day: number,
+                    month: number,
+                    year: number
+                }
+            }[]
         }
     }
 }
@@ -86,7 +105,8 @@ export const store = configureStore({
         heatmap: heatmapSlice,
         pageViews: pageViewsSlice,
         browserData: browserDataSlice,
-        fakeUserCredentials: fakeUserCredentialsSlice
+        fakeUserCredentials: fakeUserCredentialsSlice,
+        fakeProductData: fakeProductDataSlice
     },
     middleware: [cache]
 });

@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useState } from "react";
-import WindowCache from "../../components/windowCache";
 import JsonInput from "./JsonInput";
 import Result from "./Result";
 import Title from "../components/Title";
+import { useSelector } from "../../store/store";
 
 export type { CurrentData }
 
@@ -25,50 +25,26 @@ type CurrentData = {
     }[]
 }
 
-type Props = {
-    windowCache: WindowCache,
-    sectionContent: SectionContent
-}
-
 /**
  * The component for the Data section for the homepage.
- * @param windowCache The utility class that saves state variables into local storage upon state change.
- * @param sectionContent The title and description for this section. Can be changed.
  */
-const DataSection:FunctionComponent<Props> = (props) => {
-    // The state variable to control the data of the fake product.
-    // Also saving it to local storage upon state change.
-    const [currentData, setCurrentData] = useState<CurrentData>({
-        name: '',
-        price: '',
-        description: '',
-        minQuantity: null,
-        maxQuantity: null,
-        categories:[],
-        imageUrls: [],
-        sales: []
-    });
-    props.windowCache.registerCache('dataEntry', currentData, setCurrentData);
+const DataSection:FunctionComponent = () => {
+    const sectionContent = useSelector(state => state.sectionContent.data);
 
     return <div
         id="data"
         className='Section'
         style={{
-            order: props.sectionContent.order,
-            zIndex: 6 - props.sectionContent.order
+            order: sectionContent.order,
+            zIndex: 6 - sectionContent.order
         }}
     >
         <Title
-            content={props.sectionContent.content}
+            content={sectionContent.content}
         ></Title>
         <div className='Example'>
-            <JsonInput
-                currentData={currentData}
-                setCurrentData={setCurrentData}
-            ></JsonInput>
-            <Result
-                currentData={currentData}
-            ></Result>
+            <JsonInput></JsonInput>
+            <Result></Result>
         </div>
     </div>
 }

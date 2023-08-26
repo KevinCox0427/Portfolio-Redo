@@ -1,5 +1,6 @@
 import React, { Fragment, FunctionComponent, useState } from "react";
 import { CurrentData } from "./DataSection";
+import { useDispatch, useSelector } from "../../store/store";
 
 // For date comparisons.
 const date = new Date();
@@ -10,15 +11,14 @@ const formatter = new Intl.NumberFormat('en-US', {
     currency: 'USD',
 });
 
-type Props = {
-    currentData: CurrentData
-}
-
 /**
  * A component to render the fake product based on the inputted data from JsonInput.tsx
  * @param currentData The state variable containing all the inputted data.
  */
-const Result: FunctionComponent<Props> = (props) => {
+const Result: FunctionComponent = () => {
+    const dispatch = useDispatch();
+    const productData = useSelector(state => state.fakeProductData);
+
     // State variables to keep track of which image the gallery is on and the quantity of fake products.
     const [galleryIndex, setGalleryIndex] = useState(0);
     const [selectedQuantity, setSelectedQuantity] = useState<number | null>(1);
@@ -36,7 +36,7 @@ const Result: FunctionComponent<Props> = (props) => {
         // Parsing the value and making sure it's in the bounds of the min and max quantity.
         const value = parseInt(e.target.value);
         if(Number.isNaN(value)) return;
-        if(value < props.currentData.minQuantity! || value > props.currentData.maxQuantity!) return;
+        if(value < productData.minQuantity! || value > productData.maxQuantity!) return;
 
         setSelectedQuantity(value);
     }
@@ -50,8 +50,7 @@ const Result: FunctionComponent<Props> = (props) => {
             setSelectedQuantity(1);
             return;
         }
-
-        if(selectedQuantity + 1 > props.currentData.maxQuantity!) return;
+        if(selectedQuantity + 1 > productData.maxQuantity!) return;
         setSelectedQuantity(selectedQuantity + 1);
     }
 
@@ -65,15 +64,15 @@ const Result: FunctionComponent<Props> = (props) => {
             return;
         }
 
-        if(selectedQuantity - 1 < props.currentData.minQuantity!) return;
+        if(selectedQuantity - 1 < productData.minQuantity!) return;
         setSelectedQuantity(selectedQuantity - 1);
     }
     
     // Calculating a price with quantity adjustments.
-    const currentPrice = parseFloat(props.currentData.price) * (selectedQuantity ? selectedQuantity : 1);
+    const currentPrice = parseFloat(productData.price) * (selectedQuantity ? selectedQuantity : 1);
 
     // Calculating how much a user gets in sales based on inputted sales.
-    const saleAmount = props.currentData.sales.reduce((total, sale) => {
+    const saleAmount = productData.sales.reduce((total, sale) => {
         if(!sale.amount) return total;
 
         // Making sure the sale isn't expired.
@@ -90,20 +89,20 @@ const Result: FunctionComponent<Props> = (props) => {
     return <div className='DataResult'>
         <div className="Gallery">
             <div className="GallerySlider" style={{
-                transform: `translateX(-${galleryIndex*(100/props.currentData.imageUrls.length)}%)`,
-                width: `${props.currentData.imageUrls.length}00%`
+                transform: `translateX(-${galleryIndex*(100/productData.imageUrls.length)}%)`,
+                width: `${productData.imageUrls.length}00%`
             }}>{
-                props.currentData.imageUrls.map((url, i) => {
+                productData.imageUrls.map((url, i) => {
                     return <div key={i} className="ImageWrapper" style={{
-                        width: `${100/props.currentData.imageUrls.length}%`
+                        width: `${100/productData.imageUrls.length}%`
                     }}>
                         <img src={url} loading="lazy"></img>
                     </div>
                 })
             }</div>
-            {props.currentData.categories.length > 0 
+            {productData.categories.length > 0 
                 ? <div className="CategoryWrapper">
-                        {props.currentData.categories.map((category, i) => {
+                        {productData.categories.map((category, i) => {
                             return category
                             ?  <p key={i} className="Category">{category}</p> 
                             : <Fragment key={i}></Fragment>
@@ -112,9 +111,9 @@ const Result: FunctionComponent<Props> = (props) => {
                 : <></>
             }
         </div>
-        {props.currentData.imageUrls.length > 1
+        {productData.imageUrls.length > 1
             ? <div className="Pagination">
-                    {props.currentData.imageUrls.map((url, i) => {
+                    {productData.imageUrls.map((url, i) => {
                         return url 
                             ? <div key={i} style={{
                                     backgroundColor: i === galleryIndex ? 'var(--blue)' : ''
@@ -124,9 +123,9 @@ const Result: FunctionComponent<Props> = (props) => {
                 </div>
             : <></>
         }
-        <h3>{props.currentData.name}</h3>
+        <h3>{productData.name}</h3>
         <div className="SubContent">
-            {props.currentData.price 
+            {productData.price 
                 ? <div className="PriceWrapper">
                     <p className="Price">
                         {formatter.format(currentPrice)}
@@ -143,7 +142,7 @@ const Result: FunctionComponent<Props> = (props) => {
                         </p>
                         : <></>
                     }
-                    {props.currentData.maxQuantity && props.currentData.minQuantity && props.currentData.maxQuantity - props.currentData.minQuantity > 0
+                    {productData.maxQuantity && productData.minQuantity && productData.maxQuantity - productData.minQuantity > 0
                         ? <div className="QuantityButtons">
                                 <button onClick={addQuantity}>+</button>
                                 <input value={selectedQuantity ? selectedQuantity : ''} onChange={setQuantity}></input>
@@ -154,12 +153,12 @@ const Result: FunctionComponent<Props> = (props) => {
                 </div> 
                 : <></>
             }
-            {props.currentData.price && props.currentData.description
+            {productData.price && productData.description
                 ? <div className="Divider"></div> 
                 : <></>
             }
-            {props.currentData.description
-                ? <p className="Description">{props.currentData.description}</p>
+            {productData.description
+                ? <p className="Description">{productData.description}</p>
                 : <></>
             }
         </div>
