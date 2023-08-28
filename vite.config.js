@@ -16,7 +16,8 @@ export default defineConfig(({ mode }) => {
                 input: entryObject,
                 output: {
                     entryFileNames: `js/[name].js`,
-                    chunkFileNames: `js/[name].js`
+                    chunkFileNames: `js/[name].js`,
+                    assetFileNames: `[name].[ext]`
                 }
             }
         },

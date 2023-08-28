@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import dotenv from 'dotenv';
 import { renderToString } from 'react-dom/server';
-import { writeFileSync, readdirSync, mkdirSync } from 'fs';
+import { writeFileSync, existsSync, mkdirSync } from 'fs';
+import axios from 'axios';
 import portfolioConfig from './portfolioConfig.json';
 import Home from './Home/Home';
 import About from './About/About';
@@ -9,13 +10,16 @@ import Contact from './Contact/Contact';
 import Page404 from './Page404/Page404';
 import Portfolio from './Portfolio/Portfolio';
 import Project from './Portfolio/Project';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 dotenv.config();
+renderPages();
 
 async function renderPages() {
     // If html pages directory isn't made yet, make one.
-    if(!readdirSync('../public/html')) {
-        mkdirSync('../public/html')
+    if(!existsSync('./public/html')) {
+        mkdirSync('./public/html');
     }
 
     // Rendering all the pages for the website.
@@ -25,12 +29,11 @@ async function renderPages() {
      */
     
     // Making the request to github to get my recent repos.
-    const githubRequest = await (await fetch('https://api.github.com/users/KevinCox0427/repos?sort=pushed', {
-        method: 'GET',
+    const githubRequest = (await axios.get('https://api.github.com/users/KevinCox0427/repos?sort=pushed', {
         headers: {
             "Authorization": `Bearer ${process.env.GithubAPIKey}`
         }
-    })).json();
+    })).data;
 
     // Parsing the repo data
     const githubData = {
@@ -50,13 +53,16 @@ async function renderPages() {
 
     // Loading the About page props
     const aboutPageProps: AboutPageProps = {
-        portfolioConfig: portfolioConfig as PortfolioConfig[],
         github: githubData
     }
 
     // Rendering the file.
-    writeFileSync('../public/html/About.html', render(
-        <About ServerProps={aboutPageProps} />,
+    writeFileSync('./public/html/About.html', render(
+        <React.StrictMode>
+            <Provider store={store}>
+                <About ServerProps={aboutPageProps} />
+            </Provider>
+        </React.StrictMode>,
         'About',
         { aboutPageProps: aboutPageProps },
         {
@@ -72,16 +78,15 @@ async function renderPages() {
      * ************ CONTACT PAGE ************
      */
 
-    // Loading the Server Props
-    const contactPageProps: ContactPageProps = {
-        portfolioConfig: portfolioConfig as PortfolioConfig[]
-    }
-
     // Rendering the file.
-    writeFileSync('../public/html/Contact.html', render(
-        <Contact ServerProps={contactPageProps} />,
+    writeFileSync('./public/html/Contact.html', render(
+        <React.StrictMode>
+            <Provider store={store}>
+                <Contact />
+            </Provider>
+        </React.StrictMode>,
         'Contact',
-        { contactPageProps: contactPageProps },
+        {},
         {
             "title": 'Dream State - Contact',
             "name": 'Dream State',
@@ -97,13 +102,16 @@ async function renderPages() {
 
     // Loading the Server Props
     const homePageProps: HomePageProps = {
-        portfolioConfig: portfolioConfig as PortfolioConfig[],
         domain: 'www.dreamstate.graphics'
     }
 
     // Rendering the file.
-    writeFileSync('../public/html/Home.html', render(
-        <Home ServerProps={homePageProps} />,
+    writeFileSync('./public/html/Home.html', render(
+        <React.StrictMode>
+            <Provider store={store}>
+                <Home ServerProps={homePageProps} />
+            </Provider>
+        </React.StrictMode>,
         'Home',
         { homePageProps: homePageProps },
         {
@@ -119,16 +127,13 @@ async function renderPages() {
      * ************ 404 PAGE ************
      */
 
-    // Loading the Server Props
-    const page404Props: Page404Props = {
-        portfolioConfig: portfolioConfig as PortfolioConfig[]
-    }
-
     // Rendering the file.
-    writeFileSync('../public/html/Page404.html', render(
-        <Page404 ServerProps={page404Props} />,
+    writeFileSync('./public/html/Page404.html', render(
+        <React.StrictMode>
+            <Page404 />
+        </React.StrictMode>,
         'Page404',
-        { page404Props: page404Props },
+        {},
         {
             "title": 'Dream State',
             "name": 'Dream State',
@@ -142,16 +147,15 @@ async function renderPages() {
      * ************ PORTFOLIO PAGE ************
      */
 
-    // Loading the Server Props
-    const portfolioPageProps: PortfolioPageProps = {
-        portfolioConfig: portfolioConfig as PortfolioConfig[]
-    }
-
     // Rendering the file.
-    writeFileSync('../public/html/Portfolio.html', render(
-        <Portfolio ServerProps={portfolioPageProps} />,
+    writeFileSync('./public/html/Portfolio.html', render(
+        <React.StrictMode>
+            <Provider store={store}>
+                <Portfolio/>
+            </Provider>
+        </React.StrictMode>,
         'Portfolio',
-        { portfolioPageProps: portfolioPageProps },
+        {},
         {
             "title": 'Dream State - Portfolio',
             "name": 'Dream State',
@@ -166,16 +170,19 @@ async function renderPages() {
      */
 
     // Looping through each portofolio project to render the page.
-    (portfolioConfig as PortfolioConfig[]).forEach((project, i) => {
+    portfolioConfig.forEach((project, i) => {
         // Loading the Server Props
         const projectPageProps: ProjectPageProps = {
-            portfolioConfig: portfolioConfig as PortfolioConfig[],
             projectIndex: i
         }
 
         // Rendering the file.
-        writeFileSync(`../public/html/${project}.html`, render(
-            <Project ServerProps={projectPageProps} />,
+        writeFileSync(`./public/html/${encodeURIComponent(project.name)}.html`, render(
+            <React.StrictMode>
+                <Provider store={store}>
+                    <Project ServerProps={projectPageProps} />
+                </Provider>
+            </React.StrictMode>,
             'Project',
             { projectPageProps: projectPageProps },
             {
@@ -210,8 +217,8 @@ function render(reactComponent:ReactElement<any>, fileName:string, inputServerPr
     name: '',
     image: ''
 }) {
-    return `
-        <!DOCTYPE html>
+    return (
+        `<!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
@@ -230,18 +237,18 @@ function render(reactComponent:ReactElement<any>, fileName:string, inputServerPr
             <link rel="stylesheet" type="text/css" href="/css/globals.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <script>window.ServerProps=${JSON.stringify(inputServerProps)}</script>
-            ${fileName === 'Home' ? `
-                <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+            ${fileName === 'Home' 
+                ? `<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet-src.min.js" integrity="sha512-3/WyQrhTdqSVmSifQS62akgtNBhZha2lS44TnoN9Jk3J01FvsKK4suVmz6t5FtccGb5iJw58GoFhBjPE5EPc8Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-                <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"></link>
-            ` : ''}
+                <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"></link>`
+                : ''}
         </head>
         <body>
             <div id="root">${renderToString(reactComponent)}</div>
-            <script src="/js/${fileName}.js"></script> 
+            <script type="module" src="/js/${fileName}.js"></script> 
         </body>
-        </html>
-    `;
+        </html>`
+    );
 }

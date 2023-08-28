@@ -7,7 +7,7 @@ def portfolio():
     """
     GET route to render and serve the Portfolio react page.
     """
-    return send_from_directory('static/html', 'Portfolio.html')
+    return send_from_directory('public/html', 'Portfolio.html')
 
 
 @app.route('/portfolio/<projectName>', methods=["GET"])
@@ -15,4 +15,4 @@ def project(projectName):
     """
     GET route to render and serve the Project react page.
     """
-    return Response(send_from_directory('static/html', f'{projectName}.html'))
+    return Response(send_from_directory('public/html', f'{projectName}.html'))

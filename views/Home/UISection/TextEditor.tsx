@@ -4,7 +4,6 @@ type Props = {
     content: string,
     setContent: (content: string, name: string) => void,
     name: string,
-    cacheHasLoaded: boolean,
     resetText: any
 }
 
@@ -58,7 +57,7 @@ const TextEditor: FunctionComponent<Props> = (props) => {
     // A callback function to set the starting text. Also fires on a forced re-render.
     useEffect(() => {
         if(editor.current) editor.current.children[0].innerHTML = `${props.content}`;
-    }, [props.cacheHasLoaded, props.resetText]);
+    }, [props.resetText]);
     
     return <div ref={editor} id={`${props.name}TextEditor`} className="TitleWrapper"></div>
 }

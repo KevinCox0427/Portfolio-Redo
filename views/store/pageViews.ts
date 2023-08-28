@@ -3,7 +3,7 @@ import { initialStore } from "./store";
 import portfolioConfig from '../portfolioConfig.json';
 
 // Loading the object for an empty pageViews object.
-let defaultPageViews = {
+let defaultPageViews: { [pageName: string]: number } = {
     "": 0,
     portfolio: 0,
     resume: 0,
@@ -15,20 +15,14 @@ portfolioConfig.forEach(project => {
     }
 });
 
-// Getting the current page to increment it.
-const domain = window.location.href.split('/');
-domain.shift();
-const page = domain.join('/');
-
 const pageViewsSlice = createSlice({
     name: 'pageViews',
-    // loading intial state while incrementing whatever url was currently loaded
-    initialState: initialStore ? {...initialStore.pageViews,
-        [page]: initialStore.pageViews[page] + 1
-    } : {...defaultPageViews,
-        [page]: defaultPageViews[page as keyof typeof defaultPageViews] + 1
-    } as Store["pageViews"],
+    initialState: initialStore ? initialStore.pageViews : defaultPageViews as Store["pageViews"],
     reducers: {
+        incrementPageView: (state, action: PayloadAction<string>) => {
+            state[action.payload] += 1;
+        },
+
         resetPageViews: (state) => {
             return defaultPageViews;
         }
@@ -36,4 +30,4 @@ const pageViewsSlice = createSlice({
 });
 
 export default pageViewsSlice.reducer;
-export const { resetPageViews } = pageViewsSlice.actions;
+export const { incrementPageView, resetPageViews } = pageViewsSlice.actions;

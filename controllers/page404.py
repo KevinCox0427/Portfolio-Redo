@@ -6,4 +6,4 @@ def paeg404(e):
     """
     A 404 route to render a 404 page.
     """
-    return send_from_directory('static/html', 'Page404.html')
+    return send_from_directory('public/html', 'Page404.html')

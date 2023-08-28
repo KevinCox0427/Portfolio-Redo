@@ -3,18 +3,8 @@ import { hydrateRoot } from "react-dom/client";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PortfolioCard from "../components/PortfolioCard";
+import portfolioConfig from "../portfolioConfig.json";
 import AddPageView from "../components/AddPageView";
-
-// Declaring what properties this page should inherited from the server.
-declare global {
-    type PortfolioPageProps = {
-        portfolioConfig: PortfolioConfig[]
-    }
-}
-
-type Props = {
-    ServerProps: PortfolioPageProps
-}
 
 // Getting the starting filter tag from the url search parameters.
 const startingTag = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('tag')
@@ -23,19 +13,13 @@ const startingTag = typeof window !== 'undefined' && new URLSearchParams(window.
 
 /**
  * A React page that will render the portfolio page. This is being rendered on the server and hydrated on the client.
- * @param portfolioConfig The configuration of the portfolio to render its content appropriately.
- * @param currentTag The starting tag to filter projects with.
  */
-const Portfolio: FunctionComponent<Props> = (props) => {
-    // Making sure we inherited the props from the server.
-    const pageProps = props.ServerProps;
-    if(!pageProps) return <></>;
-
+const Portfolio: FunctionComponent = () => {
     // Setting state for what projects to render based on tags.
-    const [projects, setProjects] = useState(pageProps.portfolioConfig);
+    const [projects, setProjects] = useState(portfolioConfig);
 
     // Getting every tag option.
-    let tags = pageProps.portfolioConfig.map(project => project.tag);
+    let tags = portfolioConfig.map(project => project.tag);
     tags = tags.filter((tag, i) => tags.indexOf(tag) === i);
 
     // State variable for what tag is selected. 
@@ -56,7 +40,7 @@ const Portfolio: FunctionComponent<Props> = (props) => {
         // Forcing a re-render for project elements so the animations will fire.
         setProjects([]);
         setTimeout(() => {
-            setProjects(pageProps!.portfolioConfig.filter(project => project.tag === selectedTag || selectedTag === 'all'));
+            setProjects(portfolioConfig.filter(project => project.tag === selectedTag || selectedTag === 'all'));
         }, 10);
     }, [selectedTag]);
 
@@ -73,15 +57,12 @@ const Portfolio: FunctionComponent<Props> = (props) => {
     }
     
     return <>
-        <AddPageView
-            portfolioConfig={pageProps.portfolioConfig}
-            pageName="portfolio"
-        ></AddPageView>
+        <AddPageView></AddPageView>
         <Header></Header>
         <div className="Contain" id="Portfolio">
             <div className="Title">
                 <h1>Portfolio Projects</h1>
-                <p>{projects.length}/{pageProps.portfolioConfig.length}</p>
+                <p>{projects.length}/{portfolioConfig.length}</p>
             </div>
             <div className="TagsWrapper">
                 <p className={selectedTag === 'all' ? 'Activated' : ' '} onClick={() => {setSelectedTag('all')}}>All</p>
@@ -103,12 +84,10 @@ const Portfolio: FunctionComponent<Props> = (props) => {
                 })}
             </div>
         </div>
-        <Footer
-            portfolioConfig={pageProps.portfolioConfig}
-        ></Footer>
+        <Footer></Footer>
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Portfolio ServerProps={window.ServerProps.portfolioPageProps!} />);
+if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Portfolio/>);
 
 export default Portfolio;

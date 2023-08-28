@@ -1,6 +1,5 @@
 import React, { Fragment, FunctionComponent } from "react";
 import RecordSVG from "./RecordSVG";
-import { SpotifyResponseSong } from "./IntegrationSection";
 
 type Props = {
     searchResult: SpotifyResponseSong
@@ -21,9 +20,7 @@ const Track:FunctionComponent<Props> = (props) => {
                     height: `${props.width}px`
                 }}></img>
             </a>
-            : <a className="AlbumCover" href="/#SpotifyRecommendation" onClick={() => {
-                props.search(props.searchResult.id, true);
-            }}>
+            : <a className="AlbumCover" href="/#SpotifyRecommendation" onClick={() => props.search(props.searchResult.id, true)}>
                 <RecordSVG></RecordSVG>
                 <img src={props.searchResult.image} alt="Spofity album cover" loading="lazy" style={{
                     width: `${props.width}px`,

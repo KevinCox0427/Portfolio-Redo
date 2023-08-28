@@ -14,7 +14,7 @@ def index():
     """
     GET route to serve the rendered React Homepage.
     """
-    return send_from_directory('static/html', 'Home.html')
+    return send_from_directory('public/html', 'Home.html')
 
 
 

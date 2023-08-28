@@ -1,13 +1,5 @@
 import { configureStore, Middleware } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch as dispatch, useSelector as selector } from "react-redux";
-import watchTimeSlice from "./watchTime";
-import sectionContentSlice from "./sectionContent";
-import currentSectionSlice from "./currentSection";
-import heatmapSlice from "./heatmap";
-import pageViewsSlice from './pageViews';
-import browserDataSlice from "./browserData";
-import fakeUserCredentialsSlice from './fakeUserCredentials';
-import fakeProductDataSlice from './fakeProductData';
 
 // Declaring globally the typing of the store.
 declare global {
@@ -75,6 +67,32 @@ declare global {
                     year: number
                 }
             }[]
+        },
+        spotifySearch: {
+            searchBar: string,
+            searchResults: SpotifyResponseSong[],
+            searchRecommendations: SpotifyResponseSong[]
+        }
+    }
+
+    // Typing of an API response from Spotify representing a song.
+    type SpotifyResponseSong = {
+        type: string,
+        id: string,
+        name: string,
+        url: string,
+        image: string,
+        length: number,
+        release: string,
+        artists: {
+            name: string,
+            url:string
+        }[],
+        album: {
+            name: string,
+            url:string,
+            length: number,
+            discNumber: number
         }
     }
 }
@@ -96,6 +114,16 @@ try {
 }
 catch(e) {}
 
+import watchTimeSlice from "./watchTime";
+import sectionContentSlice from "./sectionContent";
+import currentSectionSlice from "./currentSection";
+import heatmapSlice from "./heatmap";
+import pageViewsSlice from './pageViews';
+import browserDataSlice from "./browserData";
+import fakeUserCredentialsSlice from './fakeUserCredentials';
+import fakeProductDataSlice from './fakeProductData';
+import spotifySearchSlice from "./spotifySearch";
+
 // Configuring the store with all the slices.
 export const store = configureStore({
     reducer: {
@@ -106,7 +134,8 @@ export const store = configureStore({
         pageViews: pageViewsSlice,
         browserData: browserDataSlice,
         fakeUserCredentials: fakeUserCredentialsSlice,
-        fakeProductData: fakeProductDataSlice
+        fakeProductData: fakeProductDataSlice,
+        spotifySearch: spotifySearchSlice
     },
     middleware: [cache]
 });

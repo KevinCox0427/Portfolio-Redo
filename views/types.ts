@@ -7,10 +7,7 @@ declare global {
     type ServerProps = {
         homePageProps: HomePageProps,
         aboutPageProps: AboutPageProps,
-        contactPageProps: ContactPageProps,
-        page404Props: Page404Props,
-        projectPageProps: ProjectPageProps,
-        portfolioPageProps: PortfolioPageProps
+        projectPageProps: ProjectPageProps
     }
 
     type PortfolioConfig = {

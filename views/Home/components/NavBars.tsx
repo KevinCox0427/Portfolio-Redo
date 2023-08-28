@@ -1,20 +1,18 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import { useSelector } from "../../store/store";
 
 type Props = {
-    sectionContent: {
-        [sectionName: string]: SectionContent
-    },
-    currentSection: string
     contentWrapper: React.RefObject<HTMLDivElement>
 }
 
 /**
  * A component to render all the navigation bars for the homepage sections.
- * @param sectionContent An object which contains the name, order, title, and description for each section.
- * @param currentSection The section the user is currently viewing.
  * @param contentWrapper The wrapper element that sorrounds all the sections. 
  */
 const NavBars:FunctionComponent<Props> = (props) => {
+    const sections = useSelector(state => state.sectionContent);
+    const currentSection = useSelector(state => state.currentSection);
+
     // References for each navigation bar.
     const navBarStatic = useRef<HTMLDivElement>(null);
     const navBarTop = useRef<HTMLDivElement>(null);
@@ -65,9 +63,9 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                {Object.keys(props.sectionContent).map((sectionName, i) => {
-                    const currentSectionContent = props.sectionContent[sectionName as keyof typeof props.sectionContent];
-                    return <a key={i} className={`Link ${props.currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
+                {Object.keys(sections).map((sectionName, i) => {
+                    const currentSectionContent = sections[sectionName];
+                    return <a key={i} className={`Link ${currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
                         order: currentSectionContent.order,
                         pointerEvents: isNavBarSticky ? "none" : "all"
                     }}>
@@ -81,9 +79,9 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                {Object.keys(props.sectionContent).map((sectionName, i) => {
-                    const currentSectionContent = props.sectionContent[sectionName as keyof typeof props.sectionContent];
-                    return <a key={i} className={`Link ${props.currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
+                {Object.keys(sections).map((sectionName, i) => {
+                    const currentSectionContent = sections[sectionName];
+                    return <a key={i} className={`Link ${currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
                         order: currentSectionContent.order,
                         pointerEvents: isNavBarSticky ? "none" : "all"
                     }}>
@@ -100,9 +98,9 @@ const NavBars:FunctionComponent<Props> = (props) => {
         }}>
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
-                {Object.keys(props.sectionContent).map((sectionName, i) => {
-                    const currentSectionContent = props.sectionContent[sectionName as keyof typeof props.sectionContent];
-                    return <a key={i} className={`Link ${props.currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
+                {Object.keys(sections).map((sectionName, i) => {
+                    const currentSectionContent = sections[sectionName];
+                    return <a key={i} className={`Link ${currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
                         order: currentSectionContent.order,
                         pointerEvents: isNavBarSticky ? "all" : "none"
                     }}>

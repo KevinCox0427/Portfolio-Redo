@@ -1,67 +1,23 @@
 import React, { FunctionComponent, useState } from "react";
-import WindowCache from "../../components/windowCache";
 import Title from "../components/Title";
 import TrackSlider from "./TrackSlider";
-
-export type { SpotifyResponseSong };
-/**
- * Typing of an API response from Spotify representing a song.
- */
-type SpotifyResponseSong = {
-    type: string,
-    id: string,
-    name: string,
-    url: string,
-    image: string,
-    length: number,
-    release: string,
-    artists: {
-        name: string,
-        url:string
-    }[],
-    album: {
-        name: string,
-        url:string,
-        length: number,
-        discNumber: number
-    }
-}
-
-type Props = {
-    windowCache: WindowCache,
-    sectionContent: SectionContent
-}
+import { useDispatch, useSelector } from "../../store/store";
+import { resetSpotifyResults, setSpotifyRecommendationResults, setSpotifySearchBar, setSpotifySearchResults } from "../../store/spotifySearch";
 
 /**
  * The component for the integration section on the home page.
- * @param windowCache The utility class that saves state variables into local storage upon state change.
- * @param sectionContent The title and description for this section. Can be changed.
  */
-const IntegrationSection:FunctionComponent<Props> = (props) => {
+const IntegrationSection:FunctionComponent = () => {
+    const dispatch = useDispatch();
     // State variable to represent what was entered in the search bar, and both results from the spotify API.
-    // This is also saved to local storage upon every state change.
-    const [searchData, setSearchData] = useState<{
-        searchBar: string,
-        searchResults: SpotifyResponseSong[],
-        searchRecommendations: SpotifyResponseSong[]
-    }>({
-        searchBar: '',
-        searchResults: [],
-        searchRecommendations: []
-    });
-    props.windowCache.registerCache('searchData', searchData, setSearchData);
+    const searchData = useSelector(state => state.spotifySearch);
+    const sectionContent = useSelector(state => state.sectionContent.integration);
 
-    /**
-     * Event handler for when the user searches for a song.
-     * We'll also reset the current results as they will change.
-     */
-    function handleSearchInput(e:React.ChangeEvent<HTMLInputElement>) {
-        setSearchData({...searchData,
-            searchBar: e.target.value,
-            searchResults: [],
-            searchRecommendations: []
-        });
-    }
+    // State variable used to rendered loading icons.
+    const [isSearching, setIsSearching] = useState({
+        search: false,
+        recommendations: false
+    });
 
     /**
      * Event handler to enter search and make a POST call to spotify.
@@ -75,23 +31,6 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
             search(searchData.searchBar, false);
         }
     }
-
-    /**
-     * Event handler to reset all the search data.
-     */
-    function handleReset() {
-        setSearchData({
-            searchBar: '',
-            searchResults: [],
-            searchRecommendations: []
-        });
-    }
-
-    // State variable used to rendered loading icons.
-    const [isSearching, setIsSearching] = useState({
-        search: false,
-        recommendations: false
-    });
 
     /**
      * A function to make a POST request to Spotify for song searches and recommendations.
@@ -127,13 +66,8 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
         }
 
         // Setting state data if request was successful.
-        if(isRecommend) setSearchData({...searchData,
-            searchRecommendations: result as SpotifyResponseSong[]
-        });
-        else setSearchData({...searchData,
-            searchResults: result as SpotifyResponseSong[],
-            searchRecommendations: []
-        });
+        if(isRecommend) dispatch(setSpotifyRecommendationResults(result as SpotifyResponseSong[]));
+        else dispatch(setSpotifySearchResults(result as SpotifyResponseSong[]));
 
         // Setting that we aren't searching anymore.
         setIsSearching({
@@ -143,28 +77,38 @@ const IntegrationSection:FunctionComponent<Props> = (props) => {
     }
 
     return <div id="integration" className='Section' style={{
-        order: props.sectionContent.order,
-        zIndex: 6 - props.sectionContent.order
+        order: sectionContent.order,
+        zIndex: 6 - sectionContent.order
     }}>
         <Title
-            content={props.sectionContent.content}
+            content={sectionContent.content}
         ></Title>
         <div className="Example">
             <div className="InputWrapper">
-                <i className="fa-solid fa-rotate-left Reset" onClick={handleReset}></i>
-                <i className="fa-solid fa-arrow-turn-down EnterButton" onClick={handleEnterSearch}></i>
-                <input placeholder=" " id="spotifySearch" value={searchData.searchBar} onChange={handleSearchInput} onKeyDown={handleEnterSearch}></input>
+                <i
+                    className="fa-solid fa-rotate-left Reset"
+                    onClick={() => dispatch(resetSpotifyResults())}
+                ></i>
+                <i
+                    className="fa-solid fa-arrow-turn-down EnterButton"
+                    onClick={e => handleEnterSearch(e)}
+                ></i>
+                <input
+                    placeholder=" "
+                    id="spotifySearch" 
+                    value={searchData.searchBar}
+                    onChange={e => dispatch(setSpotifySearchBar(e.target.value))}
+                    onKeyDown={e => handleEnterSearch(e)}
+                ></input>
                 <label htmlFor="spotifySearch">Search your favorite song:</label>
             </div>
             <TrackSlider
                 name="Search"
-                searchResults={searchData.searchResults}
                 isSearching={isSearching.search}
                 search={search}
             ></TrackSlider>
             <TrackSlider 
-                name="Recommendation" 
-                searchResults={searchData.searchRecommendations}
+                name="Recommendation"
                 isSearching={isSearching.recommendations}
                 search={search}
             ></TrackSlider>

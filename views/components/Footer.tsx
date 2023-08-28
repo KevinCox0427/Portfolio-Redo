@@ -3,7 +3,6 @@ import portfolioConfig from '../portfolioConfig.json';
 
 /**
  * A simple footer component to be used in all our pages.
- * @param portfolioConfig the portfolio configuration so we can link to all the projects.
  */
 const Footer:FunctionComponent = () => {
     return <footer id="footer">
@@ -16,9 +15,6 @@ const Footer:FunctionComponent = () => {
                         <p>"Your bridge between dreams and reality"</p>
                     </div>
                 </a>
-            </div>
-            <div className='Right'>
-
             </div>
             <div className='Links'>
                 <div className='Row'>

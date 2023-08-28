@@ -1,27 +1,24 @@
 import React, { Fragment, FunctionComponent } from "react";
 import Title from "../components/Title";
 import PortfolioCard from "../../components/PortfolioCard";
-
-type Props = {
-    sectionContent: SectionContent,
-    portfolioConfig: PortfolioConfig[]
-}
+import portfolioConfig from '../../portfolioConfig.json';
+import { useSelector } from "../../store/store";
 
 /**
  * A component to render the web section on the homepage
- * @param sectionContent The title and description of this section. (Can change)
- * @param portfolioConfig The configuration of the portfolio. This is used to link the 4 most recent projects.
  */
-const WebSection: FunctionComponent<Props> = (props) => {
+const WebSection: FunctionComponent = () => {
+    const sectionContent = useSelector(state => state.sectionContent.web);
+
     return <div id="web" className='Section' style={{
-        order: props.sectionContent.order,
-        zIndex: 6 - props.sectionContent.order
+        order: sectionContent.order,
+        zIndex: 6 - sectionContent.order
     }}>
         <Title
-            content={props.sectionContent.content}
+            content={sectionContent.content}
         ></Title>
         <div className="Example">
-            {props.portfolioConfig.map((project, i) => {
+            {portfolioConfig.map((project, i) => {
                 if(i >= 4) return <Fragment key={i}></Fragment>
                 return <Fragment key={i}>
                     <PortfolioCard

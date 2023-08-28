@@ -116,35 +116,25 @@ const fakeProductDataSlice = createSlice({
         */
         editSaleExpiration: (state, action: PayloadAction<{ key:'day' | 'month' | 'year', value: string, index: number }>) => {
             if(action.payload.index > state.sales.length - 1) return;
-            
+
             const parsedValue = parseInt(action.payload.value);
-            if(value && Number.isNaN(parsedValue)) return;
+            if(action.payload.value && Number.isNaN(parsedValue)) return;
 
-            newSales[index].expires[key] = Number.isNaN(parsedValue) ? null : parsedValue;
-
-            props.setCurrentData(oldData => {
-                return {...oldData,
-                    sales: newSales
-                }
-            });
+            state.sales[action.payload.index].expires[action.payload.key] = parsedValue;
         },
 
         /**
         * A function to add a new sale.
         */
-        addSale: () => {
-            props.setCurrentData(oldData => {
-                const date = new Date();
-                return {...oldData,
-                    sales: [...oldData.sales, {
-                        type: 'flat',
-                        amount: '',
-                        expires: {
-                            day: date.getDate() + 1,
-                            month: date.getMonth() + 1,
-                            year: date.getFullYear()
-                        }
-                    }]
+        addSale: (state) => {
+            const date = new Date();
+            state.sales.push({
+                type: 'flat',
+                amount: '',
+                expires: {
+                    day: date.getDate() + 1,
+                    month: date.getMonth() + 1,
+                    year: date.getFullYear()
                 }
             });
         },
@@ -153,18 +143,12 @@ const fakeProductDataSlice = createSlice({
          * A function to remove a sale at a given index.
          * @param index The index to remove.
          */
-        deleteSale: (index:number) => {
-            const newSales = [...props.currentData.sales];
-            newSales.splice(index, 1);
-
-            props.setCurrentData(oldData => {
-                return {...oldData,
-                    sales: newSales
-                }
-            });
+        deleteSale: (state, action: PayloadAction<number>) => {
+            if(action.payload < 0 || action.payload >= state.sales.length) return;
+            state.sales.splice(action.payload, 1);
         },
     }
 });
 
 export default fakeProductDataSlice.reducer;
-export const { resetProduct, setStringData, setPriceData, setQuantity, addToStringArrayData, editStringArrayData, deleteFromArrayData } = fakeProductDataSlice.actions;
+export const { resetProduct, setStringData, setPriceData, setQuantity, addToStringArrayData, editStringArrayData, deleteFromArrayData, changeSaleAmount, changeSaleType, editSaleExpiration, addSale, deleteSale } = fakeProductDataSlice.actions;

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { initialStore } from "./store";
 
 // Setting the default order and HTML content for each section.
@@ -39,8 +39,67 @@ const sectionContentSlice = createSlice({
     name: 'sectionContent',
     initialState: initialStore ? initialStore.sectionContent : sectionDefaults as Store["sectionContent"],
     reducers: {
+        /**
+         * Reducer to update the name of a section.
+         * @param name The string value to overwrite with.
+         * @param section The section who is being overwritten.
+         */
+        changeSectionName: (state, action: PayloadAction<{ name: string, section: keyof Store["sectionContent"] }>) => {
+            state[action.payload.section].navName = action.payload.name;
+        },
 
+        /**
+         * Reducer to update the content of a section.
+         * @param name The string value to overwrite with.
+         * @param section The section who is being overwritten.
+         */
+        changeSectionContent: (state, action: PayloadAction<{ content: string, section: keyof Store["sectionContent"] }>) => {
+            state[action.payload.section].content = action.payload.content;
+        },
+
+        /**
+         * Reducer to move the order of the sections.
+         * @param from The name of the current section that's being moved.
+         * @param to The name of the section that's the destination.
+         */
+        moveSection: (state, action: PayloadAction<{ from: keyof Store["sectionContent"], to: keyof Store["sectionContent"] }>) => {
+            // Setting references for the from and to sections' data.
+            const toSection = state[action.payload.to];
+            const fromSection = state[action.payload.from];
+
+            // Looping through each section and overwritting it's "order" value to reflect the movement.
+            Object.keys(state).map(sectionName => {
+                const currentSection = state[sectionName];
+
+                // If this is the section we're moving, just set the order to the one specified in the parameter.
+                if(sectionName === action.payload.from) {
+                    state[sectionName].order = toSection.order
+                }
+
+                // If the section is being moved upwards, then the sections inbetween the from and to sections must move down 1.
+                if(fromSection.order > toSection.order) {
+                    if(currentSection.order >= toSection.order && currentSection.order < fromSection.order) {
+                        state[sectionName].order = currentSection.order + 1;
+                    }
+                }
+                // If the section is being moved downwards, then the sections inbetween the from and to sections must move up 1.
+                else {
+                    if(currentSection.order <= toSection.order && currentSection.order > fromSection.order) {
+                        state[sectionName].order = currentSection.order - 1;
+                    }
+                }
+            });
+        },
+
+        /**
+         * Reducer to reset the values of a section.
+         * @param action The name of the section that will be reset.
+         */
+        resetSection: (state, action: PayloadAction<keyof Store["sectionContent"]>) => {
+            state[action.payload] = sectionDefaults[action.payload as keyof typeof sectionDefaults];
+        }
     }
 });
 
 export default sectionContentSlice.reducer;
+export const { changeSectionContent, changeSectionName, moveSection, resetSection } = sectionContentSlice.actions;

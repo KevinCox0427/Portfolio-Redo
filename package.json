@@ -4,8 +4,8 @@
   "description": "A node server to ssr our react files.",
   "main": "./dist/views/prerender.js",
   "scripts": {
-    "build": "sass views/styles:public/css && tsc && vite build && node dist/views/prerender.js",
-    "prerender": "node dist/views/prerender.js",
+    "build": "sass views/styles:public/css && tsc && vite build && node dist/prerender.js",
+    "prerender": "node dist/prerender.js",
     "nodemon": "nodemon prerender.ts --exec 'tsc && vite build && node dist/prerender.js' -e ts,tsx --ignore node_modules/ --ignore dist/",
     "sass": "sass views/styles:public/css --watch",
     "start": "node dist/server.js"
@@ -14,11 +14,13 @@
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.5.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "html-react-parser": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-quill": "^2.0.0",
     "react-redux": "^8.1.2",
     "redis": "^4.6.8"
   },

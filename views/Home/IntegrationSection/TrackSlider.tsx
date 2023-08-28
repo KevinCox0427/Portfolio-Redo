@@ -1,10 +1,9 @@
 import React, { Fragment, FunctionComponent, useEffect, useRef, useState } from "react";
-import { SpotifyResponseSong } from "./IntegrationSection";
 import Track from "./Track";
+import { useSelector } from "../../store/store";
 
 type Props = {
     name: 'Search' | 'Recommendation',
-    searchResults: SpotifyResponseSong[],
     isSearching: boolean,
     search: (title: string, isRecommend: boolean) => Promise<void>
 }
@@ -12,11 +11,12 @@ type Props = {
 /**
  * A component to render a slider of spotify tracks.
  * @param name The name of the slider, indicates whether it's showing search results or recommendation results.
- * @param searchResults The array of tracks from spotify.
  * @param isSearching A state variable representing whether the user is searching. This is to show a loading icon.
  * @param search A function to make a POST request to spotify's servers. This is to be able to get recommendations by clicking a track.
  */
 const TrackSlider: FunctionComponent<Props> = (props) => {
+    const tracks = useSelector(state => props.name === 'Search' ? state.spotifySearch.searchResults : state.spotifySearch.searchRecommendations);
+
     // State variable used for styling and sizing the rendered results.
     const [resultDimensions, setResultDimensions] = useState({
         width: 250,
@@ -55,10 +55,10 @@ const TrackSlider: FunctionComponent<Props> = (props) => {
 
     // Also firing the resize callback for when a user searches.
     useEffect(() => {
-        if(props.searchResults.length > 0 || props.searchResults.length > 0) {
+        if(tracks.length > 0 || tracks.length > 0) {
             resizeResults();
         }
-    }, [props.searchResults]);
+    }, [tracks]);
 
     /**
      * A function to set the results state variable based on window width.
@@ -77,8 +77,8 @@ const TrackSlider: FunctionComponent<Props> = (props) => {
                     : 1;
 
         // Determining how much the sliders need to translate horizontally when a user clicks next on the slider.
-        const newTranslateAmount = props.searchResults.length != 0
-            ? (100/props.searchResults.length) * slideWidth
+        const newTranslateAmount = tracks.length != 0
+            ? (100/tracks.length) * slideWidth
             : 0;
 
         // Adjusting the current search slider's horizontal translation if the count of results on screen changes.
@@ -99,12 +99,12 @@ const TrackSlider: FunctionComponent<Props> = (props) => {
     }
 
     // Calculating how much the sliders will translate horizontally based on the user's input.
-    const translateAmount = props.searchResults.length != 0
-        ? (100/props.searchResults.length) * resultDimensions.slideWidth
+    const translateAmount = tracks.length != 0
+        ? (100/tracks.length) * resultDimensions.slideWidth
         : 0;
 
     // A string to show what slide the user is on as well as the total amount of slides.
-    const currentSlide = `${props.searchResults.length > 0 ? resultDimensions.slideIndex + 1 : 0} / ${Math.ceil(props.searchResults.length / resultDimensions.slideWidth)}`
+    const currentSlide = `${tracks.length > 0 ? resultDimensions.slideIndex + 1 : 0} / ${Math.ceil(tracks.length / resultDimensions.slideWidth)}`
     
     return <div className={`SpotifyResults ${props.name}`} id={`Spotify${props.name}`}>
         <h3>
@@ -114,7 +114,7 @@ const TrackSlider: FunctionComponent<Props> = (props) => {
         <div className="SliderWrapper">
             {props.isSearching
                 ? <i className="fa-solid fa-arrows-rotate"></i>
-                : props.searchResults.length > 0 
+                : tracks.length > 0 
                     ? <>
                         <button onClick={handleMoveSliderLeft}>
                             <i className="fa-solid fa-arrow-left"></i>
@@ -123,10 +123,10 @@ const TrackSlider: FunctionComponent<Props> = (props) => {
                             <div className="ResultsSlider" style={{
                                 transform: `translateX(calc(-${translateAmount * resultDimensions.slideIndex}% - ${Math.round(24*((translateAmount * resultDimensions.slideIndex)/100))}px))`
                             }}>
-                                {props.searchResults.map((searchResult, i) => {
+                                {tracks.map((track, i) => {
                                     return <Fragment key={i}>
                                         <Track
-                                            searchResult={searchResult}
+                                            searchResult={track}
                                             width={resultDimensions.width}
                                             isRecommend={props.name === 'Recommendation'}
                                             search={props.search}

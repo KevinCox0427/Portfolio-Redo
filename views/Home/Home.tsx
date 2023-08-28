@@ -16,6 +16,7 @@ import UISection from './UISection/UISection';
 import WebSection from './WebSection/WebSection';
 import WebsiteSlider from './components/WebsitesSliders';
 import { setCurrentSection } from '../store/currentSection';
+import AddPageView from '../components/AddPageView';
 
 // Declaring what properties this page should inherited from the server
 declare global {
@@ -109,6 +110,7 @@ const Home:FunctionComponent<Props> = (props) => {
     }
 
     return <>
+        <AddPageView></AddPageView>
         <Header></Header>
         <h1 style={{ display: 'none' }}>Dream State</h1>
         <div id='home' className='SplashImage'>

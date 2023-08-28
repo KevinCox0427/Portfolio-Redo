@@ -13,7 +13,7 @@ def contact():
     """
     GET route to serve the Contact react page.
     """
-    return send_from_directory('static/html', 'Contact.html')
+    return send_from_directory('public/html', 'Contact.html')
 
 
 # Instaniating a class to generate HTML emails based on a string or dictionary data set.

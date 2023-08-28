@@ -1,27 +1,23 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-
-type Props = {
-    portfolioConfig: PortfolioConfig[]
-}
+import portfolioConfig from '../../portfolioConfig.json';
 
 /**
  * A component to create an infinite sliding gallery of websites for each portfolio project.
  * We'll create two duplicate sliders to mimic it being infinite, with one ontop of the other.
  * The second slider will be offset horizontally for half of the gallery.
  * After a full rotation, the first one will then revert back to it's original position, and then you have an infinite slider!
- * @param portfolioConfig The configuration of the portfolio. 
  */
-const WebsiteSlider:FunctionComponent<Props> = (props) => {
+const WebsiteSlider:FunctionComponent = () => {
     // Guard clause to make sure we have slides.
-    if(props.portfolioConfig.length === 0) return <></>;
+    if(portfolioConfig.length === 0) return <></>;
 
     // Because there's a delay in revealing at the slides, we'll move the last index to the first position so it still seems like it's in order.
     // Then we'll duplicate the array until there are at least 10 slides to avoid the gallery being empty.
-    let sliderProjects = [...props.portfolioConfig];
+    let sliderProjects = [...portfolioConfig];
     sliderProjects.unshift(sliderProjects.pop()!);
 
-    for(let i = 0; i < (Math.floor(10/props.portfolioConfig.length) * props.portfolioConfig.length); i++) {
-        sliderProjects.push(sliderProjects[i % props.portfolioConfig.length])
+    for(let i = 0; i < (Math.floor(10/portfolioConfig.length) * portfolioConfig.length); i++) {
+        sliderProjects.push(sliderProjects[i % portfolioConfig.length])
     }
 
     // Creating the rate in seconds of how long it takes for a full rotation.

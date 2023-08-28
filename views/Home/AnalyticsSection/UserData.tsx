@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "../../store/store";
-import { setLocation } from "../../store/browserData";
+import { setBrowserData } from "../../store/browserData";
 
 /**
  * Because typescript hates leaflet.js
@@ -25,7 +25,7 @@ const UserData:FunctionComponent = () => {
             }).then(response => {
                 if(response === null) return;
                 else response.json().then(jsonResponse => {
-                    dispatch(setLocation(jsonResponse));
+                    dispatch(setBrowserData(jsonResponse));
                 });
             });
         }

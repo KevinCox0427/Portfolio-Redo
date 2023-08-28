@@ -2,13 +2,13 @@ import React, { FunctionComponent } from "react";
 import { hydrateRoot } from "react-dom/client";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import AddPageView from "../components/AddPageView";
 import PortfolioCard from "../components/PortfolioCard";
+import portfolioConfig from "../portfolioConfig.json";
+import AddPageView from "../components/AddPageView";
 
 // Declaring what properties this page should inherited from the server.
 declare global {
     type ProjectPageProps = {
-        portfolioConfig: PortfolioConfig[],
         projectIndex: number
     }
 }
@@ -23,26 +23,17 @@ type Props = {
  * @param projectIndex The index of this project to get from the portfolioConfig.
  */
 const Project: FunctionComponent<Props> = (props) => {
-    /**
-     * Making sure we've inherited the properties from the server.
-     */
+    // Making sure we've inherited the properties from the server.
     const pageProps = props.ServerProps;
     if(typeof pageProps === 'undefined') return <></>;
 
-    /**
-     * References to the current, next and previous projects' data.
-     */
-    const project = pageProps.portfolioConfig[pageProps.projectIndex];
-
-    const nextProject = pageProps.portfolioConfig[pageProps.projectIndex + 1 < pageProps.portfolioConfig.length ? pageProps.projectIndex + 1 : 0];
-
-    const previousProject = pageProps.portfolioConfig[pageProps.projectIndex - 1 < 0 ? pageProps.portfolioConfig.length - 1 : pageProps.projectIndex - 1];
+    // References to the current, next and previous projects' data.
+    const project = portfolioConfig[pageProps.projectIndex];
+    const nextProject = portfolioConfig[pageProps.projectIndex + 1 < portfolioConfig.length ? pageProps.projectIndex + 1 : 0];
+    const previousProject = portfolioConfig[pageProps.projectIndex - 1 < 0 ? portfolioConfig.length - 1 : pageProps.projectIndex - 1];
     
     return <>
-        <AddPageView
-            portfolioConfig={pageProps.portfolioConfig}
-            pageName={`portfolio/${project.route}`}
-        ></AddPageView>
+        <AddPageView></AddPageView>
         <Header></Header>
         <article className="Contain" id="Project">
             <div className="Headline">
@@ -122,9 +113,7 @@ const Project: FunctionComponent<Props> = (props) => {
                 </div>
             </div>
         </article>
-        <Footer
-            portfolioConfig={pageProps.portfolioConfig}
-        ></Footer>
+        <Footer></Footer>
     </>
 }
 
