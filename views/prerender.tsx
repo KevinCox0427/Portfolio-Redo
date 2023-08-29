@@ -29,14 +29,20 @@ async function renderPages() {
      */
     
     // Making the request to github to get my recent repos.
-    const githubRequest = (await axios.get('https://api.github.com/users/KevinCox0427/repos?sort=pushed', {
-        headers: {
-            "Authorization": `Bearer ${process.env.GithubAPIKey}`
-        }
-    })).data;
+    let githubRequest = null;
+    try {
+        githubRequest = (await axios.get('https://api.github.com/users/KevinCox0427/repos?sort=pushed', {
+            headers: {
+                "Authorization": `Bearer ${process.env.GithubAPIKey}`
+            }
+        })).data;
+    }
+    catch(e) {
+        console.log(e);
+    }
 
     // Parsing the repo data
-    const githubData = {
+    const githubData = githubRequest ? {
         "avatar": githubRequest[0].owner.avatar_url,
         "owner": githubRequest[0].owner.login,
         "repos": githubRequest.map((repo:any) => {
@@ -49,6 +55,10 @@ async function renderPages() {
                 "pushed": repo.pushed_at
             }
         })
+    } : {
+        "avatar": "https://dreamstateospublic.s3.us-east-2.amazonaws.com/headshot.jpg",
+        "owner": "KevinCox0427",
+        repos: []
     }
 
     // Loading the About page props
@@ -58,11 +68,7 @@ async function renderPages() {
 
     // Rendering the file.
     writeFileSync('./public/html/About.html', render(
-        <React.StrictMode>
-            <Provider store={store}>
-                <About ServerProps={aboutPageProps} />
-            </Provider>
-        </React.StrictMode>,
+        <About ServerProps={aboutPageProps} />,
         'About',
         { aboutPageProps: aboutPageProps },
         {
@@ -80,11 +86,7 @@ async function renderPages() {
 
     // Rendering the file.
     writeFileSync('./public/html/Contact.html', render(
-        <React.StrictMode>
-            <Provider store={store}>
-                <Contact />
-            </Provider>
-        </React.StrictMode>,
+        <Contact />,
         'Contact',
         {},
         {
@@ -107,11 +109,7 @@ async function renderPages() {
 
     // Rendering the file.
     writeFileSync('./public/html/Home.html', render(
-        <React.StrictMode>
-            <Provider store={store}>
-                <Home ServerProps={homePageProps} />
-            </Provider>
-        </React.StrictMode>,
+        <Home ServerProps={homePageProps} />,
         'Home',
         { homePageProps: homePageProps },
         {
@@ -129,9 +127,7 @@ async function renderPages() {
 
     // Rendering the file.
     writeFileSync('./public/html/Page404.html', render(
-        <React.StrictMode>
-            <Page404 />
-        </React.StrictMode>,
+        <Page404 />,
         'Page404',
         {},
         {
@@ -149,11 +145,7 @@ async function renderPages() {
 
     // Rendering the file.
     writeFileSync('./public/html/Portfolio.html', render(
-        <React.StrictMode>
-            <Provider store={store}>
-                <Portfolio/>
-            </Provider>
-        </React.StrictMode>,
+        <Portfolio/>,
         'Portfolio',
         {},
         {
@@ -177,19 +169,15 @@ async function renderPages() {
         }
 
         // Rendering the file.
-        writeFileSync(`./public/html/${encodeURIComponent(project.name)}.html`, render(
-            <React.StrictMode>
-                <Provider store={store}>
-                    <Project ServerProps={projectPageProps} />
-                </Provider>
-            </React.StrictMode>,
+        writeFileSync(`./public/html/${encodeURIComponent(project.route)}.html`, render(
+            <Project ServerProps={projectPageProps} />,
             'Project',
             { projectPageProps: projectPageProps },
             {
                 "title": `Dream State - ${project.name}`,
                 "name": 'Dream State',
                 "description": `A project for ${project.name} by the full stack web developer and graphic designer Kevin Cox.`,
-                "url": `https://www.dreamstate.graphics/portfolio/${encodeURIComponent(project.name)}`,
+                "url": `https://www.dreamstate.graphics/portfolio/${encodeURIComponent(project.route)}`,
                 "image": 'https://www.dreamstate.graphics/favicon.png'
             }
         ));
@@ -233,20 +221,25 @@ function render(reactComponent:ReactElement<any>, fileName:string, inputServerPr
             <meta property="og:image" content="${seoOptions.image}">
             <link rel="canonical" href="${seoOptions.url}">
             <link rel="icon" href="https://dreamstateospublic.s3.us-east-2.amazonaws.com/favicon.png" />
-            <link rel="stylesheet" type="text/css" href="/css/${fileName}.css">
-            <link rel="stylesheet" type="text/css" href="/css/globals.css">
+            <link rel="stylesheet" type="text/css" href="/css/${fileName}.css" />
+            <link rel="stylesheet" type="text/css" href="/css/globals.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <script>window.ServerProps=${JSON.stringify(inputServerProps)}</script>
             ${fileName === 'Home' 
-                ? `<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet-src.min.js" integrity="sha512-3/WyQrhTdqSVmSifQS62akgtNBhZha2lS44TnoN9Jk3J01FvsKK4suVmz6t5FtccGb5iJw58GoFhBjPE5EPc8Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-                <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-                <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"></link>`
-                : ''}
+            ? `<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet-src.min.js" integrity="sha512-3/WyQrhTdqSVmSifQS62akgtNBhZha2lS44TnoN9Jk3J01FvsKK4suVmz6t5FtccGb5iJw58GoFhBjPE5EPc8Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+            <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />`
+            : ''}
         </head>
         <body>
-            <div id="root">${renderToString(reactComponent)}</div>
+            <div id="root">${renderToString(
+                <React.StrictMode>
+                    <Provider store={store}>
+                        {reactComponent}
+                    </Provider>
+                </React.StrictMode>)}</div>
             <script type="module" src="/js/${fileName}.js"></script> 
         </body>
         </html>`

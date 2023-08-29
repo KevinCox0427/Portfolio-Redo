@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { initialStore } from "./store";
+import initialStore from "./cachedstore";
 
 // Setting the default order and HTML content for each section.
 export const sectionDefaults = {

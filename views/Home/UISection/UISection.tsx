@@ -136,8 +136,6 @@ const UISection: FunctionComponent = () => {
         setMoving(null);
         document.body.removeEventListener('click', cancelMove);
     }
-
-    console.log(typeof document);
     
     return <div id="ui" className='Section' style={{
         order: sectionContent.order,

@@ -33,11 +33,11 @@ def location():
 
         # Returning user data if found.
         if "city" in response:
-            return Response({
+            return Response(json.dumps({
                 "ip": response["ip"],
                 "city": f'{response["city"]}, {response["region"]}, {response["country"]}',
                 "ll": response["loc"].split(',')
-            }, status=200)
+            }), status=200)
         else:
             return Response(False, response=500)
     except Exception as e:

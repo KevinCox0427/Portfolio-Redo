@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useRef } from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { useDispatch, useSelector } from '../store/store';
+import { store, useDispatch, useSelector } from '../store/store';
 import { setNewTimeStamp } from '../store/watchTime';
 
 import Header from '../components/Header';
@@ -17,6 +17,7 @@ import WebSection from './WebSection/WebSection';
 import WebsiteSlider from './components/WebsitesSliders';
 import { setCurrentSection } from '../store/currentSection';
 import AddPageView from '../components/AddPageView';
+import { Provider } from 'react-redux';
 
 // Declaring what properties this page should inherited from the server
 declare global {
@@ -156,6 +157,15 @@ const Home:FunctionComponent<Props> = (props) => {
     </>
 }
 
-if (typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLElement, <Home ServerProps={window.ServerProps.homePageProps!}/>);
+if (typeof window !== 'undefined') {
+    hydrateRoot(
+        document.getElementById('root') as HTMLElement,
+        <React.StrictMode>
+            <Provider store={store}>
+                <Home ServerProps={window.ServerProps.homePageProps!} />
+            </Provider>
+        </React.StrictMode>
+    );
+}
 
 export default Home;

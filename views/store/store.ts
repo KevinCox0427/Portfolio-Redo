@@ -1,6 +1,16 @@
 import { configureStore, Middleware } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch as dispatch, useSelector as selector } from "react-redux";
 
+import watchTimeSlice from "./watchTime";
+import sectionContentSlice from "./sectionContent";
+import currentSectionSlice from "./currentSection";
+import heatmapSlice from "./heatmap";
+import pageViewsSlice from './pageViews';
+import browserDataSlice from "./browserData";
+import fakeUserCredentialsSlice from './fakeUserCredentials';
+import fakeProductDataSlice from './fakeProductData';
+import spotifySearchSlice from "./spotifySearch";
+
 // Declaring globally the typing of the store.
 declare global {
     type Store = {
@@ -25,7 +35,7 @@ declare global {
             }
         },
         currentSection: keyof Store["watchTime"]["timeStamps"] | '',
-        heatMap: [number, number][],
+        heatmap: [number, number][],
         pageViews: {
             [pageName: string]: number
         },
@@ -105,24 +115,6 @@ const cache:Middleware = ({ getState }) => {
         return newState;
     }
 }
-
-// Loading the intial store from local storage if it exists.
-export let initialStore: Store | null = null;
-try {
-    const cachedStore = localStorage.getItem('DreamStateStore');
-    if(typeof cachedStore === 'string') initialStore = JSON.parse(cachedStore) as Store;
-}
-catch(e) {}
-
-import watchTimeSlice from "./watchTime";
-import sectionContentSlice from "./sectionContent";
-import currentSectionSlice from "./currentSection";
-import heatmapSlice from "./heatmap";
-import pageViewsSlice from './pageViews';
-import browserDataSlice from "./browserData";
-import fakeUserCredentialsSlice from './fakeUserCredentials';
-import fakeProductDataSlice from './fakeProductData';
-import spotifySearchSlice from "./spotifySearch";
 
 // Configuring the store with all the slices.
 export const store = configureStore({

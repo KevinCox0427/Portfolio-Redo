@@ -5,6 +5,8 @@ import Footer from "../components/Footer";
 import AddPageView from "../components/AddPageView";
 import GeneralContactForm from "./GeneralContactForm";
 import InquiryForm from "./InquiryForm";
+import { Provider } from "react-redux";
+import { store } from "../store/store";
 
 /**
  * A React page that will render the about page. This is being rendered on the server and hydrated on the client.
@@ -31,6 +33,15 @@ const Contact: FunctionComponent = () => {
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Contact />);
+if (typeof window !== 'undefined') {
+    hydrateRoot(
+        document.getElementById('root') as HTMLElement,
+        <React.StrictMode>
+            <Provider store={store}>
+                <Contact />
+            </Provider>
+        </React.StrictMode>
+    );
+}
 
 export default Contact;

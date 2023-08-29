@@ -5,6 +5,8 @@ import Footer from "../components/Footer";
 import PortfolioCard from "../components/PortfolioCard";
 import portfolioConfig from "../portfolioConfig.json";
 import AddPageView from "../components/AddPageView";
+import { Provider } from "react-redux";
+import { store } from "../store/store";
 
 // Declaring what properties this page should inherited from the server.
 declare global {
@@ -117,6 +119,15 @@ const Project: FunctionComponent<Props> = (props) => {
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Project ServerProps={window.ServerProps.projectPageProps!} />);
+if (typeof window !== 'undefined') {
+    hydrateRoot(
+        document.getElementById('root') as HTMLElement,
+        <React.StrictMode>
+            <Provider store={store}>
+                <Project ServerProps={window.ServerProps.projectPageProps!} />
+            </Provider>
+        </React.StrictMode>
+    );
+}
 
 export default Project;

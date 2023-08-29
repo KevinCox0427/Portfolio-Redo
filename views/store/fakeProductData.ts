@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { initialStore } from "./store";
+import initialStore from "./cachedstore";
 
 const fakeProductDataSlice = createSlice({
     name: 'fakeProductData',

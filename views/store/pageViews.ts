@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { initialStore } from "./store";
+import initialStore from "./cachedstore";
 import portfolioConfig from '../portfolioConfig.json';
 
 // Loading the object for an empty pageViews object.
@@ -20,7 +20,7 @@ const pageViewsSlice = createSlice({
     initialState: initialStore ? initialStore.pageViews : defaultPageViews as Store["pageViews"],
     reducers: {
         incrementPageView: (state, action: PayloadAction<string>) => {
-            state[action.payload] += 1;
+            state[action.payload] = state[action.payload] + 1;
         },
 
         resetPageViews: (state) => {

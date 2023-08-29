@@ -4,6 +4,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AddPageView from "../components/AddPageView";
 import Resume from "./Resume";
+import { Provider } from "react-redux";
+import { store } from "../store/store";
 
 // Declaring what properties this page should inherited from the server.
 declare global {
@@ -117,6 +119,15 @@ const About: FunctionComponent<Props> = (props) => {
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <About ServerProps={window.ServerProps.aboutPageProps!} />);
+if (typeof window !== 'undefined') {
+    hydrateRoot(
+        document.getElementById('root') as HTMLElement,
+        <React.StrictMode>
+            <Provider store={store}>
+                <About ServerProps={window.ServerProps.aboutPageProps!} />
+            </Provider>
+        </React.StrictMode>
+    );
+}
 
 export default About;

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { initialStore } from "./store";
+import initialStore from "./cachedstore";
 
 const spotifySearchSlice = createSlice({
     name: 'spotifySearch',

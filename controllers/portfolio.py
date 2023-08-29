@@ -1,6 +1,5 @@
 from app import app
-from flask import send_from_directory, Response, request
-from functools import reduce
+from flask import send_from_directory
 
 @app.route('/portfolio', methods=["GET"])
 def portfolio():
@@ -15,4 +14,4 @@ def project(projectName):
     """
     GET route to render and serve the Project react page.
     """
-    return Response(send_from_directory('public/html', f'{projectName}.html'))
+    return send_from_directory('public/html', f'{projectName}.html')

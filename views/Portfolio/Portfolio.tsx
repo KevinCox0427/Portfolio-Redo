@@ -5,6 +5,8 @@ import Footer from "../components/Footer";
 import PortfolioCard from "../components/PortfolioCard";
 import portfolioConfig from "../portfolioConfig.json";
 import AddPageView from "../components/AddPageView";
+import { Provider } from "react-redux";
+import { store } from "../store/store";
 
 // Getting the starting filter tag from the url search parameters.
 const startingTag = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('tag')
@@ -88,6 +90,15 @@ const Portfolio: FunctionComponent = () => {
     </>
 }
 
-if(typeof window !== 'undefined') hydrateRoot(document.getElementById('root') as HTMLDivElement, <Portfolio/>);
+if (typeof window !== 'undefined') {
+    hydrateRoot(
+        document.getElementById('root') as HTMLElement,
+        <React.StrictMode>
+            <Provider store={store}>
+                <Portfolio />
+            </Provider>
+        </React.StrictMode>
+    );
+}
 
 export default Portfolio;

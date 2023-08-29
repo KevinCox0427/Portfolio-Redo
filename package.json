@@ -5,6 +5,7 @@
   "main": "./dist/views/prerender.js",
   "scripts": {
     "build": "sass views/styles:public/css && tsc && vite build && node dist/prerender.js",
+    "dev": "vite",
     "prerender": "node dist/prerender.js",
     "nodemon": "nodemon prerender.ts --exec 'tsc && vite build && node dist/prerender.js' -e ts,tsx --ignore node_modules/ --ignore dist/",
     "sass": "sass views/styles:public/css --watch",

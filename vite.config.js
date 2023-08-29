@@ -5,13 +5,14 @@ import { readFileSync, readdirSync, lstatSync } from 'fs';
 export default defineConfig(({ mode }) => {
     // Hash table to only bundle the entry pages.
     let entryObject = {};
-    scanDirectory('./');
+    scanDirectory('.');
     
     return {
         build: {
             publicDir: 'public',
             outDir: 'public',
             emptyOutDir: false,
+            minify: true,
             rollupOptions: {
                 input: entryObject,
                 output: {
@@ -26,6 +27,11 @@ export default defineConfig(({ mode }) => {
                 include: "**/*.tsx",
             }),
         ],
+        server: {
+          hmr: true,
+          open: '/index.html',
+          port: 3001
+        }
     }
 
     /**
