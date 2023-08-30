@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import initialStore from "./cachedstore";
 
 // Setting the default order and HTML content for each section.
 export const sectionDefaults = {
@@ -37,8 +36,12 @@ export const sectionDefaults = {
 
 const sectionContentSlice = createSlice({
     name: 'sectionContent',
-    initialState: initialStore ? initialStore.sectionContent : sectionDefaults as Store["sectionContent"],
+    initialState: sectionDefaults as Store["sectionContent"],
     reducers: {
+        setSections: (state, action: PayloadAction<Store["sectionContent"]>) => {
+            return action.payload
+        },
+
         /**
          * Reducer to update the name of a section.
          * @param name The string value to overwrite with.
@@ -68,7 +71,7 @@ const sectionContentSlice = createSlice({
             const fromSection = state[action.payload.from];
 
             // Looping through each section and overwritting it's "order" value to reflect the movement.
-            Object.keys(state).map(sectionName => {
+            Object.keys(state).forEach(sectionName => {
                 const currentSection = state[sectionName];
 
                 // If this is the section we're moving, just set the order to the one specified in the parameter.
@@ -102,4 +105,4 @@ const sectionContentSlice = createSlice({
 });
 
 export default sectionContentSlice.reducer;
-export const { changeSectionContent, changeSectionName, moveSection, resetSection } = sectionContentSlice.actions;
+export const { setSections, changeSectionContent, changeSectionName, moveSection, resetSection } = sectionContentSlice.actions;

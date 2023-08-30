@@ -1,9 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import initialStore from "./cachedstore";
 
 const fakeProductDataSlice = createSlice({
     name: 'fakeProductData',
-    initialState: initialStore ? initialStore.fakeProductData : {
+    initialState: {
         name: '',
         price: '',
         description: '',
@@ -14,6 +13,10 @@ const fakeProductDataSlice = createSlice({
         sales: []
     } as Store["fakeProductData"],
     reducers: {
+        setProduct: (state, action: PayloadAction<Store["fakeProductData"]>) => {
+            return action.payload;
+        },
+
         resetProduct: (state) => {
             return {
                 name: '',
@@ -151,4 +154,4 @@ const fakeProductDataSlice = createSlice({
 });
 
 export default fakeProductDataSlice.reducer;
-export const { resetProduct, setStringData, setPriceData, setQuantity, addToStringArrayData, editStringArrayData, deleteFromArrayData, changeSaleAmount, changeSaleType, editSaleExpiration, addSale, deleteSale } = fakeProductDataSlice.actions;
+export const { setProduct, resetProduct, setStringData, setPriceData, setQuantity, addToStringArrayData, editStringArrayData, deleteFromArrayData, changeSaleAmount, changeSaleType, editSaleExpiration, addSale, deleteSale } = fakeProductDataSlice.actions;

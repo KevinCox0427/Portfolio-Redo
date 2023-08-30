@@ -1,14 +1,17 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import initialStore from "./cachedstore";
 
 const spotifySearchSlice = createSlice({
     name: 'spotifySearch',
-    initialState: initialStore ? initialStore.spotifySearch : {
+    initialState: {
         searchBar: '',
         searchResults: [],
         searchRecommendations: []
     } as Store["spotifySearch"],
     reducers: {
+        setSpotifySearch: (state, action: PayloadAction<Store["spotifySearch"]>) => {
+            return action.payload;
+        },
+
         /**
          * Reducer for when the user inputs a search for a spotify song.
          * We'll also reset the current results as they need to change.
@@ -53,4 +56,4 @@ const spotifySearchSlice = createSlice({
 });
 
 export default spotifySearchSlice.reducer;
-export const { setSpotifySearchBar, setSpotifySearchResults, setSpotifyRecommendationResults, resetSpotifyResults } = spotifySearchSlice.actions;
+export const { setSpotifySearch, setSpotifySearchBar, setSpotifySearchResults, setSpotifyRecommendationResults, resetSpotifyResults } = spotifySearchSlice.actions;

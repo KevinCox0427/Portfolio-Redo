@@ -1,12 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import initialStore from "./cachedstore";
 
 const heatmapSlice = createSlice({
     name: 'heatmap',
-    initialState: initialStore ? initialStore.heatmap : [],
+    initialState: [] as Store["heatmap"],
     reducers: {
         addClick: (state, action: PayloadAction<[number, number]>) => {
             state.push(action.payload)
+        },
+
+        setHeatmap: (state, action: PayloadAction<Store["heatmap"]>) => {
+            return action.payload;
         },
 
         resetHeatmap: (state) => {
@@ -16,4 +19,4 @@ const heatmapSlice = createSlice({
 });
 
 export default heatmapSlice.reducer;
-export const { addClick, resetHeatmap } = heatmapSlice.actions;
+export const { setHeatmap, addClick, resetHeatmap } = heatmapSlice.actions;

@@ -15,7 +15,7 @@ const Title:FunctionComponent<Props> = (props) => {
         {parse(props.content, {
             // A callback function to filter only accepted HTML elements.
             replace: (node) => {
-                const validTags = ['P', 'H3', 'A', 'SPAN', 'EM', 'STRONG', 'SMALL', 'IMAGE'];
+                const validTags = ['P', 'H3', 'A', 'SPAN', 'EM', 'STRONG', 'SMALL', 'IMAGE', 'BLOCKQUOTE', 'SUP', 'S', 'U'];
                 if(!(node instanceof Element)) return node;
                 if(validTags.includes(node.tagName)) return node;
                 return false;

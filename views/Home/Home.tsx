@@ -1,7 +1,5 @@
 import React, { FunctionComponent, useEffect, useRef } from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { store, useDispatch, useSelector } from '../store/store';
-import { setNewTimeStamp } from '../store/watchTime';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -15,9 +13,12 @@ import AnalyticsSection from './AnalyticsSection/AnalyticsSection';
 import UISection from './UISection/UISection';
 import WebSection from './WebSection/WebSection';
 import WebsiteSlider from './components/WebsitesSliders';
-import { setCurrentSection } from '../store/currentSection';
-import AddPageView from '../components/AddPageView';
+import LoadFromCache from '../components/LoadFromCache';
+
+import { store, useDispatch, useSelector } from '../store/store';
+import { setNewTimeStamp } from '../store/watchTime';
 import { Provider } from 'react-redux';
+import { setCurrentSection } from '../store/currentSection';
 
 // Declaring what properties this page should inherited from the server
 declare global {
@@ -43,6 +44,7 @@ const Home:FunctionComponent<Props> = (props) => {
 
     const dispatch = useDispatch();
     const currentSection = useSelector(state => state.currentSection);
+
 
     // Keeping track of what section the user has currently scrolled to.
     const contentWrapper = useRef<HTMLDivElement>(null);
@@ -111,7 +113,7 @@ const Home:FunctionComponent<Props> = (props) => {
     }
 
     return <>
-        <AddPageView></AddPageView>
+        <LoadFromCache currentPage=''></LoadFromCache>
         <Header></Header>
         <h1 style={{ display: 'none' }}>Dream State</h1>
         <div id='home' className='SplashImage'>

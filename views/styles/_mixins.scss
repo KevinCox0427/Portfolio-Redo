@@ -482,24 +482,31 @@
 
         .ql-editor {
             padding: 0;
+            font-family: var(--franklin);
 
-            .ql-color-yellow {
-                color: var(--yellow);
+            h3 {
+                font-family: var(--arima);
+                font-weight: 200;
+                font-size: clamp(2.75em, 3.5vw, 3.5em);
+                margin: 0.2em 0;
             }
-            .ql-color-green {
-                color: var(--green);
+
+            p {
+                margin: 0.625em 0;
+                font-weight: 100;
+                font-size: clamp(1.25em, 1.5vw, 1.5em);
+                line-height: 140%;
             }
-            .ql-color-lightRed {
-                color: var(--lightRed);
-            }
-            .ql-color-lightPurple {
-                color: var(--lightPurple);
-            }
-            .ql-color-blue {
-                color: var(--blue);
-            }
-            .ql-color-grey {
-                color: var(--grey);
+
+            blockquote {
+                margin: 0.625em 0;
+                font-family: var(--cairo);
+                font-weight: 300;
+                font-size: 1.35em;
+                line-height: 130%;
+                border-left: 0.15em solid var(--yellow);
+                padding-left: 1em;
+                margin-left: 1.5em !important;
             }
         }
     }

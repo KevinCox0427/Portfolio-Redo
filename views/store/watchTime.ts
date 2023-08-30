@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import initialStore from "./cachedstore";
 
 // Loading a default timeStamps object to reset it.
 const defaultTimeStamps = {
@@ -19,12 +18,14 @@ const defaultTimeStamps = {
 const watchTimeSlice = createSlice({
     name: 'watchTime',
     // Initial state will be the stored watch timestamps for each section as well as an updated start timestamp
-    initialState: initialStore ? {...initialStore.watchTime,
-        start: Date.now()
-    } : defaultTimeStamps as Store["watchTime"],
+    initialState: defaultTimeStamps as Store["watchTime"],
     reducers: {
+        setWatchTime: (state, action: PayloadAction<Store["watchTime"]>) => {
+            return action.payload;
+        },
+
         setNewTimeStamp: (state, action:PayloadAction<keyof Store["watchTime"]["timeStamps"]>) => {
-            state = {
+            return {
                 start: Date.now(),
                 timeStamps: {...state.timeStamps,
                     [action.payload]: state.timeStamps[action.payload] + (Date.now() - state.start)
@@ -33,10 +34,12 @@ const watchTimeSlice = createSlice({
         },
 
         resetWatchTime: (state) => {
-            return defaultTimeStamps;
+            return {...defaultTimeStamps,
+                start: Date.now()
+            };
         }
     }
 });
 
 export default watchTimeSlice.reducer;
-export const { setNewTimeStamp, resetWatchTime } = watchTimeSlice.actions;
+export const { setWatchTime, setNewTimeStamp, resetWatchTime } = watchTimeSlice.actions;

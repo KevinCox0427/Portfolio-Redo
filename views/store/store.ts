@@ -11,6 +11,7 @@ import fakeUserCredentialsSlice from './fakeUserCredentials';
 import fakeProductDataSlice from './fakeProductData';
 import spotifySearchSlice from "./spotifySearch";
 
+
 // Declaring globally the typing of the store.
 declare global {
     type Store = {
@@ -108,10 +109,14 @@ declare global {
 }
 
 // A middleware function to cache the store data into local storage.
+// Setting a variable to toggle this so that it doesn't overwrite with blank data.
+let hasLoadedFromCache = false;
+export const setHasLoadedFromCache = () => { hasLoadedFromCache = true }
+
 const cache:Middleware = ({ getState }) => {
     return next => action => {
         const newState = next(action);
-        localStorage.setItem('DreamStateStore', JSON.stringify(getState()));
+        if(hasLoadedFromCache) localStorage.setItem('DreamStateStore', JSON.stringify(getState()));
         return newState;
     }
 }

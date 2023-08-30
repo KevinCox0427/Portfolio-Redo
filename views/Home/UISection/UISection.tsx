@@ -1,6 +1,5 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import Title from "../components/Title";
-import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "../../store/store";
 import { changeSectionContent, changeSectionName, moveSection, resetSection } from "../../store/sectionContent";
 
@@ -147,10 +146,35 @@ const UISection: FunctionComponent = () => {
         <div className="Example">
             {Object.keys(allSections).map((sectionName, i) => {
                 const editor = editorHeights[sectionName as keyof AllSectionContent];
-                const content = allSections[sectionName as keyof AllSectionContent];
+                const section = allSections[sectionName as keyof AllSectionContent];
+
+                // Need to dynamically import the quill editor because otherwise it breaks server side rendering.
+                const quillEl = useRef(<></>);
+                useEffect(() => {
+                    import("react-quill").then(ReactQuill => {
+                        const ReactQuillEl = ReactQuill.default;
+                        console.log(section.content)
+                        quillEl.current = <ReactQuillEl
+                            id={`${sectionName}Editor`}
+                            modules={{
+                                toolbar: [
+                                    [{ header: [false, 3] }],
+                                    [{ color: [false, "#f0ab2e", "#96bc51", "#e53f47", "#9542ce", "#1ebbec", "#77787d"] }],
+                                    ["bold", "italic", "underline", "strike", {script: "sub"}, {script: "super"}],
+                                    [{ indent: "-1" }, { indent: "+1" }],
+                                    [{ align: "" }, { align: "center" }, { align: "right" }],
+                                    [{ list: "ordered" }, { list: "bullet" }],
+                                    ["image", "video", "blockquote", "link"]
+                                ]
+                            }}
+                            value={section.content}
+                            onChange={text => dispatch(changeSectionContent({ content: text, section: sectionName }))}
+                        ></ReactQuillEl>
+                    });
+                }, []);
 
                 return <div className={`SectionEditorWrapper ${moving && moving !== sectionName ? 'Activated' : ' '}`} key={i} style={{
-                    order: content.order
+                    order: section.order
                 }} onClick={() => {if(moving) moveToSection(sectionName as keyof AllSectionContent)}}>
                     <div className="MovingIndicator"></div>
                     <div id={`${sectionName}Editor`} className="SectionContent" style={{
@@ -170,7 +194,7 @@ const UISection: FunctionComponent = () => {
                                 <input
                                     placeholder=" "
                                     id={`${sectionName}NavName`}
-                                    value={content.navName}
+                                    value={section.navName}
                                     onChange={e => dispatch(changeSectionName({ name: e.target.value, section: sectionName }))}
                                 ></input>
                                 <label htmlFor={`${sectionName}NavName`}>Name:</label>
@@ -182,25 +206,10 @@ const UISection: FunctionComponent = () => {
                         </div>
                         <div className="ContentWrapper">
                             <div className="TextEditorWrapper">
-                                {/* {typeof document !== 'undefined'
-                                    ? <ReactQuill
-                                        id={`${sectionName}TextEditor`}
-                                        value={allSections[sectionName].content}
-                                        modules={{
-                                            toolbar: [
-                                                [{ header: [false, 3] }],
-                                                [{ color: [false, "yellow", "green", "lightRed", "lightPurple", "blue", "grey"] }],
-                                                ["bold", "italic", "underline", "strike", {script: "sub"}, {script: "super"}],
-                                                [{ indent: "-1" }, { indent: "+1" }],
-                                                [{align: ""}, {align: "center"}, {align: "right"}],
-                                                [{ list: "ordered" }, { list: "bullet" }],
-                                                ["image", "video", "blockquote", "link"]
-                                            ]
-                                        }}
-                                        onChange={text => dispatch(changeSectionContent({ content: text, section: sectionName }))}
-                                    ></ReactQuill>
+                                {typeof document !== 'undefined'
+                                    ? quillEl.current
                                     : <></>
-                                } */}
+                                }
                             </div>
                         </div>
                     </div>

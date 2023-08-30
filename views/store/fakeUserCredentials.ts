@@ -1,9 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import initialStore from "./cachedstore";
 
 const fakeUserCredentialsSlice = createSlice({
     name: 'fakeUserCredentials',
-    initialState: initialStore ? initialStore.fakeUserCredentials : {
+    initialState: {
         registerUsername: '',
         registerPassword: '',
         loginUsername: '',
@@ -16,6 +15,10 @@ const fakeUserCredentialsSlice = createSlice({
         }
     },
     reducers: {
+        setCredentials: (state, action: PayloadAction<Store["fakeUserCredentials"]>) => {
+            return action.payload;
+        },
+
         /**
          * A function that checks the user's credentials and creates a session if login is valid.
          * @returns A boolean representing whether the login and session creation was sucessful.
@@ -99,4 +102,4 @@ const fakeUserCredentialsSlice = createSlice({
 });
 
 export default fakeUserCredentialsSlice.reducer;
-export const { createSession, setEncryptedPassword, setRegisterUsername, setRegisterPassword, resetRegister, setLoginUsername, setLoginPassword, resetLogin } = fakeUserCredentialsSlice.actions;
+export const { setCredentials, createSession, setEncryptedPassword, setRegisterUsername, setRegisterPassword, resetRegister, setLoginUsername, setLoginPassword, resetLogin } = fakeUserCredentialsSlice.actions;

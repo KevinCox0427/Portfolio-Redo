@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "../../store/store";
+import { changeSectionContent } from "../../store/sectionContent";
 
 type Props = {
-    content: string,
-    setContent: (content: string, name: string) => void,
     name: string,
     resetText: any
 }
@@ -12,13 +12,12 @@ declare const Quill: any;
 
 /**
  * A component to render a stateful Quill.js textbox.
- * @param content The state variable containing the content.
- * @param setContent The function to set the state variable.
- * @param name a unique ID for the wrapper div,
- * @param cacheHasLoaded A state variable represnting whether the windowCache utility class has finished loading content from local storage.
- * @param resetText A way to force a re-render by changing state. Can be whatever value you want.
+ * @param name a unique ID for the wrapper div
  */
 const TextEditor: FunctionComponent<Props> = (props) => {
+    const dispatch = useDispatch();
+    const section = useSelector(state => state.sectionContent[props.name]);
+
     // References to the wrapper div and the Quill class.
     const editor = useRef<HTMLDivElement>(null);
     const quill = useRef<any>(null);
@@ -49,14 +48,14 @@ const TextEditor: FunctionComponent<Props> = (props) => {
         // Creating an event listener to set the state variable when a user types.
         quill.current!.on('text-change', (_:any, __:any, source:string) => {
             if(source === 'user') {
-                props.setContent(editor.current!.children[0].innerHTML, props.name);
+                dispatch(changeSectionContent({ content: editor.current!.children[0].innerHTML, section: props.name }));
             }
         });
     }, [editor]);
 
     // A callback function to set the starting text. Also fires on a forced re-render.
     useEffect(() => {
-        if(editor.current) editor.current.children[0].innerHTML = `${props.content}`;
+        if(editor.current) editor.current.children[0].innerHTML = `${section.content}`;
     }, [props.resetText]);
     
     return <div ref={editor} id={`${props.name}TextEditor`} className="TitleWrapper"></div>

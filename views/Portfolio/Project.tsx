@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PortfolioCard from "../components/PortfolioCard";
 import portfolioConfig from "../portfolioConfig.json";
-import AddPageView from "../components/AddPageView";
+import LoadFromCache from "../components/LoadFromCache";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 
@@ -35,7 +35,7 @@ const Project: FunctionComponent<Props> = (props) => {
     const previousProject = portfolioConfig[pageProps.projectIndex - 1 < 0 ? portfolioConfig.length - 1 : pageProps.projectIndex - 1];
     
     return <>
-        <AddPageView></AddPageView>
+        <LoadFromCache currentPage={`portfolio/${project.route}`}></LoadFromCache>
         <Header></Header>
         <article className="Contain" id="Project">
             <div className="Headline">

@@ -1,9 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import initialStore from "./cachedstore";
 
 const browserDataSlice = createSlice({
     name: 'browserData',
-    initialState: initialStore ? initialStore.browserData : {
+    initialState: {
         os: '',
         browser: '',
         locationData: {

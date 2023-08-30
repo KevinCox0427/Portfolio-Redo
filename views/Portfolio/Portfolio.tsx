@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PortfolioCard from "../components/PortfolioCard";
 import portfolioConfig from "../portfolioConfig.json";
-import AddPageView from "../components/AddPageView";
+import LoadFromCache from "../components/LoadFromCache";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 
@@ -59,7 +59,7 @@ const Portfolio: FunctionComponent = () => {
     }
     
     return <>
-        <AddPageView></AddPageView>
+        <LoadFromCache currentPage="portfolio"></LoadFromCache>
         <Header></Header>
         <div className="Contain" id="Portfolio">
             <div className="Title">

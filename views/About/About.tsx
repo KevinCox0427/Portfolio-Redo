@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { hydrateRoot } from "react-dom/client";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import AddPageView from "../components/AddPageView";
+import LoadFromCache from "../components/LoadFromCache";
 import Resume from "./Resume";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
@@ -39,7 +39,7 @@ const About: FunctionComponent<Props> = (props) => {
     if(typeof pageProps === 'undefined') return <></>;
     
     return <>
-        <AddPageView></AddPageView>
+        <LoadFromCache currentPage="about"></LoadFromCache>
         <Header></Header>
         <div className="Contain" id="About">
             <div className="Grid">

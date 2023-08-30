@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import AddPageView from "../components/AddPageView";
+import LoadFromCache from "../components/LoadFromCache";
 import GeneralContactForm from "./GeneralContactForm";
 import InquiryForm from "./InquiryForm";
 import { Provider } from "react-redux";
@@ -22,7 +22,7 @@ const Contact: FunctionComponent = () => {
     }, []);
 
     return <>
-        <AddPageView></AddPageView>
+        <LoadFromCache currentPage="contact"></LoadFromCache>
         <Header></Header>
         <div className="Contain" id="Contact">
             <h1 style={{display: 'none'}}>Contact</h1>
