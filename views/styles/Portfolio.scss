@@ -39,7 +39,7 @@
         margin: 0.25em 0;
         border-top: 0.125em dashed var(--black);
         
-        p {
+        button {
             @include RoundButton(var(--lightPurple));
             padding: 0.3em 1em;
             font-size: 1.3em;

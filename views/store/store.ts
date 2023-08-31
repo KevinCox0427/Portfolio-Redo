@@ -10,6 +10,7 @@ import browserDataSlice from "./browserData";
 import fakeUserCredentialsSlice from './fakeUserCredentials';
 import fakeProductDataSlice from './fakeProductData';
 import spotifySearchSlice from "./spotifySearch";
+import metaDataSlice from "./storeMetaData";
 
 
 // Declaring globally the typing of the store.
@@ -29,11 +30,36 @@ declare global {
             }
         },
         sectionContent: {
-            [name: string]: {
+            data: {
                 order: number,
                 navName: string,
                 content: string
-            }
+            },
+            authentication: {
+                order: number,
+                navName: string,
+                content: string
+            },
+            integration: {
+                order: number,
+                navName: string,
+                content: string
+            },
+            analytics: {
+                order: number,
+                navName: string,
+                content: string
+            },
+            ui: {
+                order: number,
+                navName: string,
+                content: string
+            },
+            web: {
+                order: number,
+                navName: string,
+                content: string
+            },
         },
         currentSection: keyof Store["watchTime"]["timeStamps"] | '',
         heatmap: [number, number][],
@@ -83,6 +109,9 @@ declare global {
             searchBar: string,
             searchResults: SpotifyResponseSong[],
             searchRecommendations: SpotifyResponseSong[]
+        },
+        metaData: {
+            hasLoadedFromCache: boolean
         }
     }
 
@@ -108,15 +137,10 @@ declare global {
     }
 }
 
-// A middleware function to cache the store data into local storage.
-// Setting a variable to toggle this so that it doesn't overwrite with blank data.
-let hasLoadedFromCache = false;
-export const setHasLoadedFromCache = () => { hasLoadedFromCache = true }
-
 const cache:Middleware = ({ getState }) => {
     return next => action => {
         const newState = next(action);
-        if(hasLoadedFromCache) localStorage.setItem('DreamStateStore', JSON.stringify(getState()));
+        if(getState().metaData.hasLoadedFromCache) localStorage.setItem('DreamStateStore', JSON.stringify(getState()));
         return newState;
     }
 }
@@ -132,7 +156,8 @@ export const store = configureStore({
         browserData: browserDataSlice,
         fakeUserCredentials: fakeUserCredentialsSlice,
         fakeProductData: fakeProductDataSlice,
-        spotifySearch: spotifySearchSlice
+        spotifySearch: spotifySearchSlice,
+        metaData: metaDataSlice
     },
     middleware: [cache]
 });

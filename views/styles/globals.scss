@@ -118,7 +118,7 @@ button, input, select, option, textarea {
         pointer-events: all;
         box-shadow: 0.15em 0.15em 0em 0em rgba(0,0,0,0.05);
 
-        &:hover {
+        &:hover, &:focus-visible {
             transform: scale(1.075);
         }
 
@@ -154,22 +154,22 @@ button, input, select, option, textarea {
             transition: background-color 0.1s linear, transform 0.1s linear, color 0.1s linear;
             border-radius: 10em;
 
-            &:hover {
+            &:hover, &:focus-visible {
                 color: var(--brightWhite);
                 transform: scale(1.05);
                 z-index: 1;
             }
 
-            &:nth-child(1):hover {
+            &:nth-child(1):hover, &:nth-child(1):focus-visible {
                 background-color: var(--yellow);
             }
-            &:nth-child(2):hover {
+            &:nth-child(2):hover, &:nth-child(2):focus-visible {
                 background-color: var(--lightRed);
             }
-            &:nth-child(3):hover {
+            &:nth-child(3):hover, &:nth-child(3):focus-visible {
                 background-color: var(--green);
             }
-            &:nth-child(4):hover {
+            &:nth-child(4):hover, &:nth-child(4):focus-visible {
                 background-color: var(--lightPurple);
             }
         }
@@ -204,7 +204,7 @@ button, input, select, option, textarea {
                 transition: opacity 0.1s linear;
                 text-decoration: none;
 
-                &:hover {
+                &:hover, &:focus-visible {
                     opacity: 0.5;
                 }
 

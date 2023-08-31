@@ -70,7 +70,7 @@
             }
         }
 
-        a.Logo:hover {
+        a.Logo:hover, a.Logo:focus-visible {
             img {
                 opacity: 0.5;
             }

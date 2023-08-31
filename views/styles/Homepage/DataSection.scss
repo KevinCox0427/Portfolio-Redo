@@ -53,7 +53,7 @@
                 font-family: var(--franklin);
                 transition: border 0.1s linear;
 
-                &:hover, &:focus {
+                &:hover, &:focus-visible {
                     border-bottom: 0.075em solid var(--white);
                 }
             }
@@ -66,13 +66,13 @@
                 color: var(--white);
                 padding: 0.35em;
                 border-radius: 10em;
+                cursor: pointer;
                 transition: background-color 0.1s linear, color 0.1s linear, transform 0.25s ease-in-out;
 
-                &:hover {
+                &:hover, &:focus-visible {
                     background-color: var(--white);
                     color: var(--black);
                     transform: scale(1.1) rotate(-270deg);
-                    cursor: pointer;
                 }
             }
 
@@ -83,13 +83,13 @@
                 border: 0.125em solid var(--white);
                 border-radius: 0.25em;
                 width: fit-content;
+                cursor: pointer;
                 transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
 
-                &:hover {
+                &:hover, &:focus-visible {
                     background-color: var(--white);
                     color: var(--black);
                     transform: scale(1.1);
-                    cursor: pointer;
                 }
             }
 
@@ -100,13 +100,13 @@
                 padding: 0.25em;
                 border-radius: 0.25em;
                 width: fit-content;
+                cursor: pointer;
                 transition: color 0.1s linear, background-color 0.1s linear, transform 0.1s linear;
 
-                &:hover {
+                &:hover, &:focus-visible {
                     color: var(--white);
                     background-color: var(--lightRed);
                     transform: scale(1.1);
-                    cursor: pointer;
                 }
             }
 
@@ -201,10 +201,10 @@
                 width: 2em;
                 border-radius: 0.1em;
                 background-color: var(--lightGrey);
+                cursor: pointer;
                 transition: background-color 0.1s linear;
 
-                &:hover {
-                    cursor: pointer;
+                &:hover, &:focus-visible {
                     background-color: var(--blue);
                 }
             }
@@ -263,6 +263,7 @@
                         background-color: var(--blue);
                         color: white;
                         line-height: 50%;
+                        cursor: pointer;
                         transition: transform 0.1s linear;
 
                         &:first-of-type {
@@ -273,9 +274,8 @@
                             border-radius: 0 0.3em 0.3em 0;
                         }
 
-                        &:hover {
+                        &:hover, &:focus-visible {
                             transform: scale(1.15);
-                            cursor: pointer;
                         }
                     }
 

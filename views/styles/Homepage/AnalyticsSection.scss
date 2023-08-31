@@ -101,7 +101,7 @@
                                 font-weight: 300;
                             }
     
-                            &:hover {
+                            &:hover, &:focus-visible {
                                 z-index: 9999;
                                 transform: scale(1.15);
                             }

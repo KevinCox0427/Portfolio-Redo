@@ -49,7 +49,12 @@ const Heatmap:FunctionComponent = () => {
     return <div className="Graph Heatmap">
         <h3>
             Interaction Heatmap:
-            <i className="fa-solid fa-rotate-left Reset" onClick={() => dispatch(resetHeatmap())}></i>
+            <button
+                className="Reset"
+                onClick={() => dispatch(resetHeatmap())}
+            >
+                <i className="fa-solid fa-rotate-left"></i>
+            </button>
         </h3>
         <div className="HeatmapScroll">
             <div className="HeatmapWrapper">

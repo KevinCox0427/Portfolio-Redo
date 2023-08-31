@@ -91,7 +91,7 @@
                     color: var(--blue);
                     transition: color 0.1s linear;
 
-                    &:hover {
+                    &:hover, &:focus-visible {
                         color: var(--black);
                     }
                 }

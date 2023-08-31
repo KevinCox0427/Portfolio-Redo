@@ -26,10 +26,10 @@
                 font-size: 1.5em;
                 transform: translateY(-50%) rotate(-90deg);
                 z-index: 1;
+                cursor: pointer;
                 transition: color 0.1s linear, background-color 0.1s linear, transform 0.1s linear;
 
-                &:hover {
-                    cursor: pointer;
+                &:hover, &:focus-visible {
                     background-color: var(--black);
                     transform: translateY(-50%) rotate(-90deg) scale(1.05);
                     color: var(--white);
@@ -67,13 +67,13 @@
                 padding: 0.3em 0.37em;
                 border-radius: 10em;
                 box-shadow: 0.07em 0.1em 0 0 rgba(0,0,0, 0.05);
+                cursor: pointer;
                 transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
 
-                &:hover {
+                &:hover, &:focus-visible {
                     background-color: var(--black);
                     color: var(--white);
                     transform: scale(1.1);
-                    cursor: pointer;
                 }
             }
 
@@ -98,6 +98,7 @@
                         .AlbumCover {
                             width: 100%;
                             height: fit-content;
+                            cursor: pointer;
         
                             .RecordSVG {
                                 position: absolute;
@@ -135,8 +136,7 @@
                                 transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out, font-weight 0.2s ease-in-out;
                             }
         
-                            &:hover {
-                                cursor: pointer;
+                            &:hover, &:focus-visible {
         
                                 img {
                                     transform: translateY(4%);

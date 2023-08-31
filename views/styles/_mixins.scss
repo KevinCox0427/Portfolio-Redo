@@ -11,6 +11,7 @@
     flex-direction: row;
     align-items: center;
     gap: 0.4em;
+    cursor: pointer;
     transition: background-size 0.15s ease-in-out, color 0.1s linear, border-radius 0.15s ease-in-out, font-weight 0.1s linear;
 
     i {
@@ -18,10 +19,9 @@
         transition: color 0.1s linear;
     }
 
-    &:hover, &.Activated {
+    &:hover, &:focus-visible, &.Activated {
         color: $hoverColor;
         background-size: 0.05em 100%;
-        cursor: pointer;
         border-radius: 0.1em;
 
         i {
@@ -42,15 +42,15 @@
     text-decoration: none;
     text-align: center;
     width: fit-content;
+    cursor: pointer;
     transition: box-shadow 0.1s linear, background-color 0.1s linear, color 0.1s linear, transform 0.1s linear, font-weight 0.1s linear;
 
-    &:hover, &.Activated {
+    &:hover, &:focus-visible, &.Activated {
         box-shadow: 0 0 0 0.06em $color;
         font-weight: 400;
         background-color: $color;
         color: var(--white);
         transform: scale(1.05);
-        cursor: pointer;
     }
 }
 
@@ -81,14 +81,14 @@
         align-self: stretch;
         padding: 0.15em 0.2em 0.05em 0.2em;
         border-bottom: 2px solid var(--lightRed);
+        cursor: text;
 
         &:not(:placeholder-shown), &:not(:placeholder-shown) ~ label {
             border-color: var(--green);
         }
 
-        &:hover, &:hover ~ label {
+        &:hover, &:focus-visible, &:hover ~ label, &:focus-visible ~ label {
             border-color: var(--yellow);
-            cursor:text;
         }
     }
 
@@ -103,10 +103,10 @@
         text-align: center;
         align-self: stretch;
         justify-content: center;
+        cursor:text;
 
-        &:hover, &:hover~input {
+        &:hover, &:focus-visible, &:hover ~ input, &:focus-visible ~ input {
             border-bottom: 2px solid var(--yellow);
-            cursor:text;
         }
     }
 }
@@ -161,6 +161,7 @@
             left: 0;
             justify-content: flex-end;
             z-index: 1;
+            cursor:pointer;
 
             i {
                 position: absolute;
@@ -171,21 +172,17 @@
                 border-radius: 10em;
                 font-size: 1.1em;
                 font-family: "Font Awesome 6 Free";
+                cursor: pointer;
                 transition: 0.1s linear color, 0.1s linear background-color, 0.1s linear transform;
 
-                &:hover {
+                &:hover, &:focus-visible {
                     color: var(--brightWhite);
                     background-color: var(--black);
                     transform: scale(1.1);
-                    cursor: pointer;
                 }
-            }  
-            
-            &:hover {
-                cursor:pointer;
             }
 
-            &:hover ~ p {
+            &:hover ~ p, &:focus-visible ~ p {
                 border-color: var(--yellow);
             }
         }
@@ -220,14 +217,14 @@
         width: calc(100% - 24px);
         line-height: 140%;
         transition: border-color 0.1s linear;
+        cursor: text;
 
         &:not(:placeholder-shown), &:not(:placeholder-shown) {
             border-color: var(--green);
         }
 
-        &:hover {
+        &:hover, &:focus-visible {
             border-color: var(--yellow);
-            cursor:text;
         }
     }
 
@@ -262,17 +259,17 @@
             border: 0.1em solid var(--black);
             box-shadow: 0 0 0 0.3em var(--white) inset;
             border-radius: 10em;
+            cursor: pointer;
             transition: background-color 0.1s linear, transform 0.1s linear, box-shadow 0.1s linear;
     
             &:checked {
                 background-color: var(--black) !important;
             }
     
-            &:hover {
+            &:hover, &:focus-visible {
                 transform: scale(1.05);
                 background-color: var(--brightWhite);
                 box-shadow: 0 0 0 0.3em var(--brightWhite) inset;
-                cursor: pointer;
             }
         }
     
@@ -281,16 +278,12 @@
             font-family: var(--franklin);
             font-weight: 300;
             padding-left: 0.4em;
+            cursor: pointer;
 
-            &:hover ~ input {
+            &:hover ~ input, &:focus-visible ~ input {
                 transform: scale(1.05);
                 background-color: var(--brightWhite);
                 box-shadow: 0 0 0 0.3em var(--brightWhite) inset;
-                cursor: pointer;
-            }
-
-            &:hover {
-                cursor: pointer;
             }
         }
     }
@@ -305,13 +298,13 @@
     border-radius: 10em;
     background-color: var(--brightWhite);
     box-shadow: 0.1em 0.1em 0em 0em rgba(0, 0, 0, 0.03);
+    cursor: pointer;
     transition: background-color 0.1s linear, color 0.1s linear, transform 0.25s ease-in-out;
 
-    &:hover {
+    &:hover, &:focus-visible {
         background-color: var(--black);
         color: var(--white);
         transform: scale(1.1) rotate(-270deg);
-        cursor: pointer;
     }
 }
 
@@ -341,7 +334,7 @@
                 transition: transform 0.1s linear;
             }
 
-            button:hover {
+            button:hover, button:focus-visible {
                 transform: scale(1.2);
                 
                 .ql-stroke {
@@ -352,7 +345,7 @@
                 }
             }
 
-            .ql-picker-label:hover {
+            .ql-picker-label:hover, .ql-picker-label:focus-visible {
                 transform: scale(1.1);
                 
                 .ql-stroke {
@@ -388,7 +381,7 @@
             .ql-picker-options {
                 background-color: var(--grey);
 
-                .ql-selected, .ql-picker-item:hover {
+                .ql-selected, .ql-picker-item:hover, .ql-picker-item:focus-visible {
                     color: var(--yellow);
                 }
             }
@@ -483,6 +476,7 @@
         .ql-editor {
             padding: 0;
             font-family: var(--franklin);
+            overflow: hidden;
 
             h3 {
                 font-family: var(--arima);
@@ -530,7 +524,7 @@
             width: fit-content;
         }
 
-        &:hover .Card h2 {
+        &:hover .Card h2, &:focus-visible .Card h2 {
             background-size: 0.05em 100%;
             cursor: pointer;
             border-radius: 0.1em;
@@ -558,7 +552,7 @@
                 transition: transform 0.15s ease-in-out, filter 0.15s ease-in-out;
             }
 
-            &:hover {
+            &:hover, &:focus-visible {
                 img {
                     transform: scale(1.1);
                     filter: blur(3px) brightness(0.9);
@@ -642,7 +636,7 @@
         }
 
         @media (min-width: 650px) {
-            &:hover {
+            &:hover, &:focus-visible {
                 .ImageWrapper {
                     transform: translateX(-1.75em);
                 }
@@ -702,11 +696,11 @@
             background-size: 0.05em 0.15em;
             border-radius: 0em;
             text-decoration: none;
+            cursor: pointer;
             transition: background-size 0.15s ease-in-out, color 0.1s linear, border-radius 0.15s ease-in-out, font-weight 0.1s linear;
 
-            &:hover {
+            &:hover, &:focus-visible {
                 background-size: 0.05em 100%;
-                cursor: pointer;
                 border-radius: 0.1em;
             }
         }
@@ -718,6 +712,7 @@
         border: none;
         outline: none;
         overflow-y: scroll;
+        cursor: pointer;
         transition: 0.1s linear filter;
 
         img {
@@ -725,13 +720,12 @@
             height: auto;
         }
 
-        &:hover {
+        &:hover, &:focus-visible {
             filter: brightness(0.8);
         }
 
-        &:hover ~ .FakeBrowser a {
+        &:hover ~ .FakeBrowser a, &:focus-visible ~ .FakeBrowser a {
             background-size: 0.05em 100%;
-            cursor: pointer;
             border-radius: 0.1em;
         }
     }

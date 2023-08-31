@@ -64,7 +64,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
                 {Object.keys(sections).map((sectionName, i) => {
-                    const currentSectionContent = sections[sectionName];
+                    const currentSectionContent = sections[sectionName as keyof Store["sectionContent"]];
                     return <a key={i} className={`Link ${currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
                         order: currentSectionContent.order,
                         pointerEvents: isNavBarSticky ? "none" : "all"
@@ -80,7 +80,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
                 {Object.keys(sections).map((sectionName, i) => {
-                    const currentSectionContent = sections[sectionName];
+                    const currentSectionContent = sections[sectionName as keyof Store["sectionContent"]];
                     return <a key={i} className={`Link ${currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
                         order: currentSectionContent.order,
                         pointerEvents: isNavBarSticky ? "none" : "all"
@@ -99,7 +99,7 @@ const NavBars:FunctionComponent<Props> = (props) => {
             <h2>I can create:</h2>
             <div className='LinksWrapper'>
                 {Object.keys(sections).map((sectionName, i) => {
-                    const currentSectionContent = sections[sectionName];
+                    const currentSectionContent = sections[sectionName as keyof Store["sectionContent"]];
                     return <a key={i} className={`Link ${currentSection === sectionName ? 'Activated' : ' '}`} href={`/#${sectionName}`} target='_self' style={{
                         order: currentSectionContent.order,
                         pointerEvents: isNavBarSticky ? "all" : "none"

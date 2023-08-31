@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useEffect, useRef } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "../../store/store";
 import { changeSectionContent } from "../../store/sectionContent";
 
 type Props = {
-    name: string,
-    resetText: any
+    name: keyof Store["sectionContent"],
+    initialValue: string
 }
 
 // Because the @types/Quill package was throwing syntax errors.
@@ -16,7 +16,7 @@ declare const Quill: any;
  */
 const TextEditor: FunctionComponent<Props> = (props) => {
     const dispatch = useDispatch();
-    const section = useSelector(state => state.sectionContent[props.name]);
+    const hasLoadedFromCache = useSelector(state => state.metaData.hasLoadedFromCache);
 
     // References to the wrapper div and the Quill class.
     const editor = useRef<HTMLDivElement>(null);
@@ -47,7 +47,9 @@ const TextEditor: FunctionComponent<Props> = (props) => {
 
         // Creating an event listener to set the state variable when a user types.
         quill.current!.on('text-change', (_:any, __:any, source:string) => {
-            if(source === 'user') {
+            console.log(source === 'user', hasLoadedFromCache)
+            if(source === 'user' && hasLoadedFromCache) {
+                console.log(editor.current!.children[0].innerHTML)
                 dispatch(changeSectionContent({ content: editor.current!.children[0].innerHTML, section: props.name }));
             }
         });
@@ -55,10 +57,11 @@ const TextEditor: FunctionComponent<Props> = (props) => {
 
     // A callback function to set the starting text. Also fires on a forced re-render.
     useEffect(() => {
-        if(editor.current) editor.current.children[0].innerHTML = `${section.content}`;
-    }, [props.resetText]);
-    
-    return <div ref={editor} id={`${props.name}TextEditor`} className="TitleWrapper"></div>
+        if(editor.current) editor.current.children[0].innerHTML = `${props.initialValue}`;
+    }, [props.initialValue]);
+
+    console.log('render')
+    return <div ref={editor} id={`${props.name}TextEditor`} className="TitleWrapper"></div>;
 }
 
 export default TextEditor;

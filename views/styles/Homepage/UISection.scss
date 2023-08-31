@@ -40,7 +40,16 @@
                         padding: 0.5em;
                         border-radius: 10em;
                         box-shadow: 0 0 0 1px var(--black) inset;
+                        cursor: pointer;
                         transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
+
+                        &.fa-arrows-up-down {
+                            padding: 0.5em 0.65em;
+                        }
+
+                        &.fa-x {
+                            padding: 0.5em 0.6em;
+                        }
     
                         &.fa-caret-right {
                             font-size: 1.4em;
@@ -49,24 +58,23 @@
                             &.Activated {
                                 transform: rotate(90deg);
     
-                                &:hover {
+                                &:hover, &:focus-visible {
                                     transform: scale(1.1) rotate(90deg);
                                 }
                             }
                         }
         
-                        &:hover {
+                        &:hover, &:focus-visible {
                             background-color: var(--black);
                             color: var(--brightWhite);
                             transform: scale(1.1);
-                            cursor: pointer;
                             z-index: 1;
                         }
 
                         &.fa-arrow-rotate-left {
                             transition: background-color 0.1s linear, color 0.1s linear, transform 0.15s linear;
 
-                            &:hover {
+                            &:hover, &:focus-visible {
                                 transform: rotate(-270deg) scale(1.1);
                             }
                         }
@@ -112,19 +120,23 @@
             }
 
             &.Activated {
+                cursor: pointer;
+
                 .SectionContent {
                     opacity: 0.5;
                     transform: translate(15px);
                     user-select: none;
                 }
 
-                &:hover {
-                    cursor: pointer;
-
+                &:hover, &:focus-visible {
                     .SectionContent {
-                        transform: translate(0px);
+                        //transform: translate(0px);
                         opacity: 1;
                         pointer-events: none;
+
+                        .ButtonWrapper:first-child {
+                            pointer-events: all;
+                        }
                     }
                 }
 

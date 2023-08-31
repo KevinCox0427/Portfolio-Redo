@@ -205,6 +205,7 @@ function render(reactComponent:ReactElement<any>, fileName:string, inputServerPr
     name: '',
     image: ''
 }) {
+    console.log(`Rendering: ${fileName}.tsx`)
     return (
         `<!DOCTYPE html>
         <html lang="en">

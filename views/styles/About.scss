@@ -331,7 +331,7 @@
                     transition: opacity 0.1s linear;
                     width: fit-content;
                     
-                    &:hover {
+                    &:hover, &:focus-visible {
                         opacity: 0.6;
                     }
                 }
@@ -513,7 +513,7 @@
                             font-size: 1.25em;
                         }
 
-                        &:hover {
+                        &:hover, &:focus-visible {
                             text-decoration: underline;
                         }
                     }
@@ -528,7 +528,7 @@
                         box-shadow: 0 0 0 0.05em white inset;
                         transition: 0.1s linear box-shadow;
 
-                        &:hover {
+                        &:hover, &:focus-visible {
                             box-shadow: 0 0 0 0.1em white inset;
                         }
                     }

@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useEffect, useRef } from "react";
-import { setHasLoadedFromCache, useDispatch } from "../store/store";
+import React, { FunctionComponent, useEffect } from "react";
+import { useDispatch, useSelector } from "../store/store";
 import { incrementPageView } from "../store/pageViews";
 import { setBrowserData } from '../store/browserData';
 import { setSections } from '../store/sectionContent';
@@ -9,6 +9,7 @@ import { setHeatmap } from '../store/heatmap';
 import { setPageViews } from '../store/pageViews';
 import { setSpotifySearch } from '../store/spotifySearch';
 import { setWatchTime } from "../store/watchTime";
+import { setHasLoadedFromCache } from "../store/storeMetaData";
 
 type Props = {
     currentPage: string
@@ -19,10 +20,10 @@ type Props = {
  */
 const AddPageView: FunctionComponent<Props> = (props) => {
     const dispatch = useDispatch();
-    const hasLoaded = useRef(false);
+    const hasLoadedFromCache = useSelector(state => state.metaData.hasLoadedFromCache);
 
     useEffect(() => {
-        if(hasLoaded.current) return;
+        if(hasLoadedFromCache) return;
 
         // Loading the intial store from local storage if it exists.
         const cachedStore = localStorage.getItem('DreamStateStore');
@@ -40,10 +41,8 @@ const AddPageView: FunctionComponent<Props> = (props) => {
         if(typeof initialStore.watchTime !== 'undefined') dispatch(setWatchTime(initialStore.watchTime));
         
         // Setting that the loading is done so now future updates can be saved to cache.
-        setHasLoadedFromCache();
-
+        dispatch(setHasLoadedFromCache());
         dispatch(incrementPageView(props.currentPage));
-        hasLoaded.current = true;
     }, []);
 
     return <></>;

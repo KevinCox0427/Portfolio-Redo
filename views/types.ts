@@ -22,21 +22,6 @@ declare global {
         link?: string,
         gallery: string[]
     }
-
-    type SectionContent = {
-        order: number,
-        navName: string,
-        content: string
-    }
-    
-    type AllSectionContent = {
-        data: SectionContent,
-        authentication: SectionContent,
-        integration: SectionContent,
-        analytics: SectionContent,
-        ui: SectionContent,
-        web: SectionContent
-    }
 }
 
 export {}
