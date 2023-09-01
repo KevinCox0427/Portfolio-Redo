@@ -40,11 +40,11 @@ class RegexTester:
         for key in regexTestObject.keys():
             # If it's a required field and it's missing, return an error message.
             if key in self.requiredRegexTests and not key in data:
-                return 'Error: missing field: {key}'.format(key=key)
+                return f'Error: missing field: {key}'
 
-            # If it's an optional field and it's missing, just skip the test entirely.
-            if self.optionalRegexTests and key in self.optionalRegexTests and not key in data:
-                returnData[key]=None
+            # If it's an optional field and it's missing or blank, just skip the test entirely.
+            if self.optionalRegexTests and key in self.optionalRegexTests and (not key in data or data[key] == ""):
+                returnData[key] = None
                 continue
 
             # Now that we're certain the current value is defined, reference it to a variable.
@@ -58,7 +58,7 @@ class RegexTester:
                         result = self.runTest(dataValue, regexTestObject[key])
                         # If it returns an error message, return it to the top level in the call stack.
                         if isinstance(result, str):
-                            return result + ' (At index {index})'.format(index=i+1)
+                            return result + f' (At index {i+1})'
                         
                 # Otherwise, just call this recursevly on the value.
                 else:
@@ -81,7 +81,7 @@ class RegexTester:
                             result = matchTest(str(dataValue), key, regexTestObject[key])
                             # If it returns an error message, return it to the top level in the call stack.
                             if isinstance(result, str):
-                                return result + ' (At index {index})'.format(index=i+1)
+                                return result + f' (At index {i+1})'
                             
                 # Otherwise it's a basic value, and we can just call the match test function.
                 else:
@@ -113,15 +113,15 @@ def matchTest(value:str, key:str, regex:str) -> bool | str:
 
     # If Regex rest completly fails, just return a basic error message.
     if not result:
-        return 'Error: Please provide a valid {key}'.format(key=key)
+        return f'Error: Please provide a valid {key}'
 
     # If Regex test fails but all joined matches are equal to the inputted value, this means it's too long.
     if len(result) > 1 and ''.join(result) == value:
-        return 'Error: {key} exceeds maximum character length.'.format(key=key)
+        return f'Error: {key} exceeds maximum character length.'
     
     # If Regex test fails, then search for the illegal character and send back an error message stating so.
     if ''.join(result) != value:
-        return 'Error: illegal character: "{value}" in: "{key}" at character:'.format(value=value[len(result[0]) if result[0][0] == value[0] else 0], key=key)
+        return f'Error: illegal character: "{value[len(result[0]) if result[0][0] == value[0] else 0]}" in: "{key}" at character:'
 
     # If none of the gaurd clauses apply, then return true.
     return True

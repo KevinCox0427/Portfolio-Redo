@@ -1,6 +1,5 @@
-import React, { Fragment, FunctionComponent, useState } from "react";
-import { CurrentData } from "./DataSection";
-import { useDispatch, useSelector } from "../../store/store";
+import React, { Fragment, FunctionComponent, useEffect, useState } from "react";
+import { useSelector } from "../../store/store";
 
 // For date comparisons.
 const date = new Date();
@@ -16,29 +15,34 @@ const formatter = new Intl.NumberFormat('en-US', {
  * @param currentData The state variable containing all the inputted data.
  */
 const Result: FunctionComponent = () => {
-    const dispatch = useDispatch();
     const productData = useSelector(state => state.fakeProductData);
 
     // State variables to keep track of which image the gallery is on and the quantity of fake products.
     const [galleryIndex, setGalleryIndex] = useState(0);
-    const [selectedQuantity, setSelectedQuantity] = useState<number | null>(1);
+    const [selectedQuantity, setSelectedQuantity] = useState<number | null>(productData.minQuantity ? productData.minQuantity : 1);
+
+    // callback function to make sure that the quantity is bound to the min and max.
+    useEffect(() => adjustQuantity(), [productData.minQuantity, productData.maxQuantity]);
+
+    /**
+     * A function to bound the inputted quantity to the min and max
+     */
+    function adjustQuantity() {
+        if(productData.minQuantity && (!selectedQuantity || selectedQuantity < productData.minQuantity)) {
+            setSelectedQuantity(productData.minQuantity);
+        }
+        if(productData.maxQuantity && selectedQuantity && selectedQuantity > productData.maxQuantity) {
+            setSelectedQuantity(productData.maxQuantity);
+        }
+    }
 
     /**
      * Event handler to set the quantity based on a given input.
      * Options only appear if a min and max quantity are set.
      */
     function setQuantity(e:React.ChangeEvent<HTMLInputElement>) {
-        if(e.target.value == '') {
-            setSelectedQuantity(null);
-            return;
-        }
-
-        // Parsing the value and making sure it's in the bounds of the min and max quantity.
         const value = parseInt(e.target.value);
-        if(Number.isNaN(value)) return;
-        if(value < productData.minQuantity! || value > productData.maxQuantity!) return;
-
-        setSelectedQuantity(value);
+        setSelectedQuantity(Number.isNaN(value) ? null : value);
     }
 
     /**
@@ -47,10 +51,10 @@ const Result: FunctionComponent = () => {
      */
     function addQuantity() {
         if(!selectedQuantity) {
-            setSelectedQuantity(1);
+            setSelectedQuantity(productData.minQuantity ? productData.minQuantity : 1);
             return;
         }
-        if(selectedQuantity + 1 > productData.maxQuantity!) return;
+        if(productData.maxQuantity && selectedQuantity + 1 > productData.maxQuantity) return;
         setSelectedQuantity(selectedQuantity + 1);
     }
 
@@ -60,12 +64,12 @@ const Result: FunctionComponent = () => {
      */
     function removeQuantity() {
         if(!selectedQuantity) {
-            setSelectedQuantity(1);
+            setSelectedQuantity(productData.minQuantity ? productData.minQuantity : 1);
             return;
         }
 
-        if(selectedQuantity - 1 < productData.minQuantity!) return;
-        setSelectedQuantity(selectedQuantity - 1);
+        if(productData.minQuantity && selectedQuantity - 1 < productData.minQuantity) return;
+        setSelectedQuantity(selectedQuantity > 1 ? selectedQuantity - 1 : 1);
     }
     
     // Calculating a price with quantity adjustments.
@@ -115,9 +119,13 @@ const Result: FunctionComponent = () => {
             ? <div className="Pagination">
                     {productData.imageUrls.map((url, i) => {
                         return url 
-                            ? <div key={i} style={{
+                            ? <div
+                                key={i} 
+                                style={{
                                     backgroundColor: i === galleryIndex ? 'var(--blue)' : ''
-                                }} onClick={() => {setGalleryIndex(i)}}></div> 
+                                }}
+                                onClick={() => {setGalleryIndex(i)}}
+                            ></div> 
                             : <Fragment key={i}></Fragment>
                     })}
                 </div>
@@ -142,11 +150,15 @@ const Result: FunctionComponent = () => {
                         </p>
                         : <></>
                     }
-                    {productData.maxQuantity && productData.minQuantity && productData.maxQuantity - productData.minQuantity > 0
+                    {(!productData.maxQuantity || !productData.minQuantity) || productData.maxQuantity - productData.minQuantity > 0
                         ? <div className="QuantityButtons">
-                                <button onClick={addQuantity}>+</button>
-                                <input value={selectedQuantity ? selectedQuantity : ''} onChange={setQuantity}></input>
-                                <button onClick={removeQuantity}>-</button>
+                            <button onClick={addQuantity}>+</button>
+                            <input
+                                value={selectedQuantity ? selectedQuantity : ''}
+                                onChange={setQuantity}
+                                onBlur={adjustQuantity}
+                            ></input>
+                            <button onClick={removeQuantity}>-</button>
                         </div> 
                         : <></>
                     }

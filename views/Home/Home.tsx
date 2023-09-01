@@ -132,10 +132,10 @@ const Home:FunctionComponent<Props> = (props) => {
                 </div>
             </div>
             <WebsiteSlider></WebsiteSlider>
-            <p className='ScrollDown'>
+            <a href="/#MyServices" className='ScrollDown'>
                 Scroll down to see how I do it!
                 <i className="fa-solid fa-angles-down"></i>
-            </p>
+            </a>
             <svg id="RightCover" viewBox="0 0 1000 2000" xmlns="http://www.w3.org/2000/svg"><path d="M 0 0 L 0 1590 L 250 1750 L 475 1750 L 675 2000 L 2000 2000 L 2000 0 Z" fill="#eee5e4"/></svg>
             <FloralSVG></FloralSVG>
             <HandSVG></HandSVG>
@@ -144,7 +144,7 @@ const Home:FunctionComponent<Props> = (props) => {
             <NavBars
                 contentWrapper={contentWrapper}
             ></NavBars>
-            <div className='Content' ref={contentWrapper}>
+            <article className='Content' ref={contentWrapper}>
                 <DataSection></DataSection>
                 <AuthSection></AuthSection>
                 <IntegrationSection></IntegrationSection>
@@ -153,7 +153,7 @@ const Home:FunctionComponent<Props> = (props) => {
                 ></AnalyticsSection>
                 <UISection></UISection>
                 <WebSection></WebSection>
-            </div>
+            </article>
         </div>
         <Footer></Footer>
     </>

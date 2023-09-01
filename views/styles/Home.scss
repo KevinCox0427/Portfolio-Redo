@@ -173,20 +173,17 @@
     }
 
     .ScrollDown {
-        flex-direction: row;
-        align-items: center;
         font-size: clamp(1.4em, 1.9vw, 1.9em);
         font-family: var(--arima);
         font-weight: 300;
-        gap: 0.35em;
-        color: var(--black);
         align-self: center;
         margin: 3.25em 0;
         opacity: 0;
         animation: 0.2s ease-in 5.7s forwards DiffuseIn;
+        @include LinkHover(var(--yellow), var(--black), 0.1em);
 
         i {
-            opacity: 0.9;
+            color: inherit;
             font-size: 0.7em;
             animation: 1.5s ease-in-out 0s infinite PointDown;
         }
@@ -255,85 +252,94 @@
     flex-direction: row;
     gap: 0em 3em;
     margin: -5em 0 15em 0;
+    
 
-    .NavBars {
+    .NavBarPlaceHolder {
         flex-basis: 1px;
         flex-grow: 1;
         flex-direction: column;
         justify-content: space-between;
         z-index: 10;
         display: flex;
-        padding-top: 17em;
+    }
+
+    .NavBar {
+        display: flex;
+        position: absolute;
+        width: 23em;
+        left: clamp(2em, calc(calc(calc(100% - 1600px) * 0.5) + 1.8em), 100%);
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: clamp(0em, 1vw, 1em) 3em;
+        background-color: var(--white);
+        border-right: 0.125em dashed var(--black);
+        transform: translateX(0.1em);
+        padding: 1em 0;
+        pointer-events: none;
+        z-index: 10;
 
         * {
             display: flex;
         }
 
-        .NavBar {
+        &.top {
+            top: 200px;
+        }
+
+        &.bottom {
+            bottom: 0;
+        }
+
+        &.sticky {
+            position: fixed;
+            left: clamp(2em, calc(calc(calc(100% - 1600px) * 0.5) + 2em), 100%);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        h2 {
+            font-weight: 300;
+            font-size: clamp(2.75em, 4.5vw, 3.9em);
+            font-family: var(--arima);
+            font-weight: 200;
+
+            * {
+                line-height: 100%;
+            }
+        }
+
+        .LinksWrapper {
+            flex-basis: 40em;
+            flex-grow: 1;
             flex-direction: row;
             flex-wrap: wrap;
-            align-items: center;
-            width: 100%;
-            gap: clamp(0em, 1vw, 1em) 3em;
-            background-color: var(--white);
-            border-right: 0.125em dashed var(--black);
-            transform: translateX(0.1em);
-            padding: 1em 0;
-            pointer-events: none;
-    
-            &.Static {
-                position: fixed;
-                width: 23em;
-                left: clamp(2.2em, calc(calc(calc(100% - 1600px) * 0.5) + 2.7em), 100%);
-                top: 50%;
-                transform: translateY(-50%);
-            }
-    
-            h2 {
+            gap: clamp(0.25em, 1vw, 0.75em) 1.5em;
+
+            .Link {
+                @include LinkHover(var(--yellow), var(--black), 0.1em);
+                font-size: clamp(1.1em, 1.75vw, 1.4em);
                 font-weight: 300;
-                font-size: clamp(2.75em, 4.5vw, 3.9em);
-                font-family: var(--arima);
-                font-weight: 200;
-    
-                * {
-                    line-height: 100%;
-                }
-            }
-    
-            .LinksWrapper {
-                flex-basis: 40em;
-                flex-grow: 1;
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: clamp(0.25em, 1vw, 0.75em) 1.5em;
-    
-                .Link {
-                    @include LinkHover(var(--yellow), var(--black), 0.1em);
-                    font-size: clamp(1.1em, 1.75vw, 1.4em);
-                    font-weight: 300;
-                    font-family: var(--franklin);
-                    pointer-events: all;
-                }
+                font-family: var(--franklin);
+                pointer-events: all;
             }
         }
     }
 
     @media (max-width: 1400px) {
+        padding-top: 0px;
         flex-direction: column;
 
-        .NavBars .NavBar {
+        .NavBarPlaceHolder {
+            flex-basis: 200px;
+        }
+
+        .NavBar {
+            width: 100%;
             border-right: none;
             border-bottom: 0.125em dashed var(--black);
 
-            &.Top {
-                margin-bottom: 3em;
-            }
-
-            &.Bottom {
-                display: none;
-            }
-
-            &.Static {
+            &.sticky {
                 padding: 1em 2.1em;
                 width: calc(100vw - 4.2em);
                 left: 0;
@@ -351,7 +357,7 @@
         max-width: calc(100vw - 4em);
 
         .Section {
-            padding-top: 12em;
+            padding-top: 200px;
             padding-bottom: 0.25em;
 
             &:first-child {

@@ -36,7 +36,9 @@ const Register: FunctionComponent = () => {
     return <>
         <form className="Form">
             <h4>Register</h4>
-            <i className="fa-solid fa-arrow-rotate-left Reset" onClick={() => dispatch(resetRegister())}></i>
+            <button className="Reset" onClick={() => dispatch(resetRegister())}>
+                <i className="fa-solid fa-arrow-rotate-left"></i>
+            </button>
             <div className="InputWrapper">
                 <input
                     placeholder=" "

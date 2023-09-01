@@ -13,10 +13,9 @@ const SaleJsonInput: FunctionComponent = () => {
         {saleData.map((sale, i) => {
             return <Fragment key={i}>
                 <div className='Line' style={{marginLeft: '2.5em'}}>
-                    <i
-                        className="fa-regular fa-trash-can DeleteButton"
-                        onClick={e => {dispatch(deleteSale(i))}}
-                    ></i>
+                    <button className="DeleteButton" onClick={e => {dispatch(deleteSale(i))}}>
+                        <i className="fa-regular fa-trash-can"></i>
+                    </button>
                     <span className='Yellow'>&#123;</span>
                 </div>
                 <div className='Line' style={{marginLeft: '3.75em'}}>
@@ -85,10 +84,9 @@ const SaleJsonInput: FunctionComponent = () => {
             </Fragment>
         })}
         <div className='Line' style={{marginLeft: '2.5em'}}>
-            <i
-                className="fa-regular fa-plus AddButton"
-                onClick={() => dispatch(addSale())}
-            ></i>
+            <button className="AddButton" onClick={() => dispatch(addSale())}>
+                <i className="fa-regular fa-plus"></i>
+            </button>
         </div>
     </>
 }

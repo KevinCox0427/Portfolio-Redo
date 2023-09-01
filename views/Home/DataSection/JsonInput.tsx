@@ -16,10 +16,9 @@ const JsonInput:FunctionComponent = () => {
             :
             <span className='Purple'>&#91;</span>
             <span className='Yellow'>&#123;</span>
-            <i
-                className="fa-solid fa-arrow-rotate-left Reset"
-                onClick={() => dispatch(resetProduct())}
-            ></i>
+            <button className="Reset" onClick={() => dispatch(resetProduct())}>
+                <i className="fa-solid fa-arrow-rotate-left"></i>
+            </button>
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
             <span className='Green'>"name"</span>
@@ -73,10 +72,9 @@ const JsonInput:FunctionComponent = () => {
         </div>
         {productData.categories.map((category, i) => {
             return <div key={i} className='Line' style={{marginLeft: '2.5em'}}>
-                <i
-                    className="fa-regular fa-trash-can DeleteButton"
-                    onClick={e => {dispatch(deleteFromArrayData({ key: 'categories', index: i }))}}
-                ></i>
+                <button className="DeleteButton" onClick={e => {dispatch(deleteFromArrayData({ key: 'categories', index: i }))}}>
+                    <i className="fa-regular fa-trash-can"></i>
+                </button>
                 <input
                     value={category}
                     onChange={e => {dispatch(editStringArrayData(({key: 'categories', value: e.target.value, index: i })))}}
@@ -84,10 +82,9 @@ const JsonInput:FunctionComponent = () => {
             </div>
         })}
         <div className='Line' style={{marginLeft: '2.5em'}}>
-            <i
-                className="fa-regular fa-plus AddButton"
-                onClick={e => {dispatch(addToStringArrayData('categories'))}}
-            ></i>
+            <button className="AddButton" onClick={e => {dispatch(addToStringArrayData('categories'))}}>
+                <i className="fa-regular fa-plus"></i>
+            </button>
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
             <span className='Purple'>&#93;</span>
@@ -100,10 +97,9 @@ const JsonInput:FunctionComponent = () => {
         </div>
         {productData.imageUrls.map((url, i) => {
             return <div key={i} className='Line' style={{marginLeft: '2.5em'}}>
-                <i
-                    className="fa-regular fa-trash-can DeleteButton"
-                    onClick={e => {dispatch(deleteFromArrayData({ key: 'imageUrls', index: i }))}}
-                ></i>
+                <button className="DeleteButton" onClick={e => {dispatch(deleteFromArrayData({ key: 'imageUrls', index: i }))}}>
+                    <i className="fa-regular fa-trash-can"></i>
+                </button>
                 <input
                     value={url}
                     onChange={e => {dispatch(editStringArrayData(({key: 'imageUrls', value: e.target.value, index: i })))}}
@@ -111,10 +107,9 @@ const JsonInput:FunctionComponent = () => {
             </div>
         })}
         <div className='Line' style={{marginLeft: '2.5em'}}>
-            <i
-                className="fa-regular fa-plus AddButton"
-                onClick={e => {dispatch(addToStringArrayData('imageUrls'))}}
-            ></i>
+            <button className="AddButton" onClick={e => {dispatch(addToStringArrayData('imageUrls'))}}>
+                <i className="fa-regular fa-plus"></i>
+            </button>
         </div>
         <div className='Line' style={{marginLeft: '1.25em'}}>
             <span className='Purple'>&#93;</span>

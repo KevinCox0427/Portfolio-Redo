@@ -16,7 +16,7 @@ const Footer:FunctionComponent = () => {
                     </div>
                 </a>
             </div>
-            <div className='Links'>
+            <nav className='Links'>
                 <div className='Row'>
                     <a className="Link" href="/">Home</a>
                     <div className='SubLinks'>
@@ -57,7 +57,7 @@ const Footer:FunctionComponent = () => {
                 }}>
                     <a className="Link" href="/account">Dream State Account</a>
                 </div>
-            </div>
+            </nav>
         </div>
     </footer>
 }

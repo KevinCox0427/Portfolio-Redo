@@ -13,6 +13,7 @@ declare global {
     type PortfolioConfig = {
         name: string
         route: string,
+        fakeBrowsers: boolean,
         description: string[],
         problem?: string[],
         solution?: string[],

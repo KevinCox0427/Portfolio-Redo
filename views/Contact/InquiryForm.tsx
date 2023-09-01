@@ -1,6 +1,9 @@
 import React, { FunctionComponent, useState } from "react";
 
 const InquiryForm: FunctionComponent = () => {
+    // The options for the needs category
+    const needs = ['Branding', 'Forms', 'Data Entry', 'Users', 'Ecommerce', 'Content Management', 'Integrations'];
+
     // Keeping state for inputted values, error messages, and submission for the inquiry form.
     const [formState, setFormState] = useState<{
         error: {
@@ -154,9 +157,9 @@ const InquiryForm: FunctionComponent = () => {
         <div className="SubSection">
             <h3>Select Project Needs:</h3>
             <div className="ListWrapper">
-                {['Graphic Design', 'Forms', 'Data Entry', 'Users', 'Ecommerce', 'Content Publishing', 'Integrations'].map((need, i) => {
+                {needs.map((need, i) => {
                     return <div key={i} className="Option">
-                        <label htmlFor={`inquiryNeeds${need.split(' ').join('')}`}>Graphic Design</label>
+                        <label htmlFor={`inquiryNeeds${need.split(' ').join('')}`}>{need}</label>
                         <input
                             type="checkbox"
                             id={`inquiryNeeds${need.split(' ').join('')}`}

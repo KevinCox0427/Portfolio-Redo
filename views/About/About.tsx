@@ -42,18 +42,29 @@ const About: FunctionComponent<Props> = (props) => {
         <LoadFromCache currentPage="about"></LoadFromCache>
         <Header></Header>
         <div className="Contain" id="About">
-            <div className="Grid">
+            <article className="Grid">
+                <div className="Top">
+                    <h1 className="Title">About Me</h1>
+                    <iframe
+                        width="560"
+                        height="315"
+                        src="https://www.youtube.com/embed/O9ws-17-x5w?si=R4OZIWqSiwY5jOHR"
+                        title="Full Stack Developer Introduction - Kevin Cox"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                    ></iframe>
+                    </div>
                 <div className="Left">
-                    <h1 className="Title">
+                    <h2 className="Title">
                         My Resume
                         <a href="/about/resume">Download PDF</a>
-                    </h1>
+                    </h2>
                     <Resume></Resume>
                 </div>
                 <div className="Right">
                     <h2 className="Title">My Socials</h2>
                     <div className="LinkedIn">
-                        <div className="Top">
+                        <div className="LinkedInTop">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 84 21" preserveAspectRatio="xMinYMin meet" version="1.1">
                                 <path d="M82.479,0 L64.583,0 C63.727,0 63,0.677 63,1.511 L63,19.488 C63,20.323 63.477,21 64.333,21 L82.229,21 C83.086,21 84,20.323 84,19.488 L84,1.511 C84,0.677 83.336,0 82.479,0 Z M71,8 L73.827,8 L73.827,9.441 L73.858,9.441 C74.289,8.664 75.562,7.875 77.136,7.875 C80.157,7.875 81,9.479 81,12.45 L81,18 L78,18 L78,12.997 C78,11.667 77.469,10.5 76.227,10.5 C74.719,10.5 74,11.521 74,13.197 L74,18 L71,18 L71,8 Z M66,18 L69,18 L69,8 L66,8 L66,18 Z M69.375,4.5 C69.375,5.536 68.536,6.375 67.5,6.375 C66.464,6.375 65.625,5.536 65.625,4.5 C65.625,3.464 66.464,2.625 67.5,2.625 C68.536,2.625 69.375,3.464 69.375,4.5 Z" fill="#ffffff" fillRule="evenodd"></path>
                                 <path d="M60,18 L57.2,18 L57.2,16.809 L57.17,16.809 C56.547,17.531 55.465,18.125 53.631,18.125 C51.131,18.125 48.978,16.244 48.978,13.011 C48.978,9.931 51.1,7.875 53.725,7.875 C55.35,7.875 56.359,8.453 56.97,9.191 L57,9.191 L57,3 L60,3 L60,18 Z M54.479,10.125 C52.764,10.125 51.8,11.348 51.8,12.974 C51.8,14.601 52.764,15.875 54.479,15.875 C56.196,15.875 57.2,14.634 57.2,12.974 C57.2,11.268 56.196,10.125 54.479,10.125 L54.479,10.125 Z" fill="#ffffff"></path>
@@ -64,7 +75,7 @@ const About: FunctionComponent<Props> = (props) => {
                                 <polygon fill="#ffffff" points="3 3 0 3 0 18 9 18 9 15 3 15"></polygon>
                             </svg>
                         </div>
-                        <div className="Bottom">
+                        <div className="LinkedInBottom">
                             <img src="https://dreamstateospublic.s3.us-east-2.amazonaws.com/headshot.jpg" loading="lazy"></img>
                             <h3>Kevin Cox</h3>
                             <h4>Full-Stack Web Developer & Graphic Designer</h4>
@@ -113,7 +124,7 @@ const About: FunctionComponent<Props> = (props) => {
                         }</div>
                     </div>
                 </div>
-            </div>
+            </article>
         </div>
         <Footer></Footer>
     </>

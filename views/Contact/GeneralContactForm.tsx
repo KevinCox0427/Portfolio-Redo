@@ -89,6 +89,7 @@ const GeneralContactForm: FunctionComponent = () => {
             <input
                 placeholder=" "
                 id="generalEmail"
+                type="email"
                 value={formState.data.Email}
                 onChange={e => {handleContactFormInput('Email', e)}}
             ></input>

@@ -219,15 +219,21 @@ const UISection: FunctionComponent = () => {
                         height: editor.isCollapsed ? '3.75em' : editor.expandedHeight
                     }}>
                         <div className="ButtonWrapper">
-                            <i
-                                className={`Button fa-solid ${ !moving ? 'fa-arrows-up-down' : moving === sectionName ? 'fa-x' : 'fa-check'}`}
-                                draggable={false}
+                            <button
+                                className="Button"
                                 onClick={e => {handleStartMove(sectionName as keyof Store["sectionContent"])}}
-                            ></i>
-                            <i
-                                className={`Button ${editor.isCollapsed ? ' ' : 'Activated'} fa-solid fa-caret-right`}
+                            >
+                                <i
+                                    className={`fa-solid ${ !moving ? 'fa-arrows-up-down' : moving === sectionName ? 'fa-x' : 'fa-check'}`}
+                                    draggable={false}
+                                ></i>
+                            </button>
+                            <button
+                                className={`Button Dropdown ${editor.isCollapsed ? ' ' : 'Activated'}`}
                                 onClick={e => {handleDropDown(sectionName as keyof Store["sectionContent"])}}
-                            ></i>
+                            >
+                                <i className="fa-solid fa-caret-right"></i>
+                            </button>
                             <div className="InputWrapper">
                                 <input
                                     placeholder=" "
@@ -237,10 +243,12 @@ const UISection: FunctionComponent = () => {
                                 ></input>
                                 <label htmlFor={`${sectionName}NavName`}>Name:</label>
                             </div>
-                            <i
-                                className="Button fa-solid fa-arrow-rotate-left"
+                            <button
+                                className="Button Reset"
                                 onClick={() => handleResetSection(sectionName as keyof Store["sectionContent"])}
-                            ></i>
+                            >
+                                <i className="fa-solid fa-arrow-rotate-left"></i>
+                            </button>
                         </div>
                         <div className="ContentWrapper">
                             <div className="TextEditorWrapper">

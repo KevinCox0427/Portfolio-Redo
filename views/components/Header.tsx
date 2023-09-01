@@ -16,12 +16,12 @@ const Header:FunctionComponent = () => {
                 <path fill="#fff" d="m575,438.62l-202.76-200.8,112.86-112.86L63.56,57.87l67.72,420.91,126.76-126.76,202.76,200.8c6.47,6.47,16.95,6.47,23.42,0l90.78-90.78c6.47-6.47,6.47-16.95,0-23.42Z"/>
             </svg>
         </a>
-        <div className='Links'>
+        <nav className='Links'>
             <a href='/#MyServices'>Services</a>
             <a href='/portfolio'>Portfolio</a>
             <a href='/about'>Resume</a>
             <a href='/contact'>Contact</a>
-        </div>
+        </nav>
     </header>
 }
 

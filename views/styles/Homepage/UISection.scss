@@ -34,45 +34,39 @@
                     }
     
                     .Button {
-                        width: fit-content;
-                        height: fit-content;
+                        width: 2em;
+                        height: 2em;
+                        justify-content: center;
+                        align-items: center;
                         font-size: 1.15em;
-                        padding: 0.5em;
                         border-radius: 10em;
                         box-shadow: 0 0 0 1px var(--black) inset;
                         cursor: pointer;
                         transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
 
-                        &.fa-arrows-up-down {
-                            padding: 0.5em 0.65em;
-                        }
-
-                        &.fa-x {
-                            padding: 0.5em 0.6em;
-                        }
-    
-                        &.fa-caret-right {
-                            font-size: 1.4em;
-                            padding: 0.3em 0.55em 0.3em 0.55em;
-    
-                            &.Activated {
-                                transform: rotate(90deg);
-    
-                                &:hover, &:focus-visible {
-                                    transform: scale(1.1) rotate(90deg);
-                                }
-                            }
-                        }
-        
                         &:hover, &:focus-visible {
                             background-color: var(--black);
                             color: var(--brightWhite);
                             transform: scale(1.1);
                             z-index: 1;
                         }
+    
+                        &.Dropdown {
+                            i {
+                                font-size: 1.4em;
+                            }
+    
+                            &.Activated {
+                                transform: rotate(90deg);
 
-                        &.fa-arrow-rotate-left {
-                            transition: background-color 0.1s linear, color 0.1s linear, transform 0.15s linear;
+                                &:hover, &:focus-visible {
+                                    transform: scale(1.1) rotate(90deg);
+                                }
+                            }
+                        }
+
+                        &.Reset {
+                            transition: transform 0.15s linear;
 
                             &:hover, &:focus-visible {
                                 transform: rotate(-270deg) scale(1.1);

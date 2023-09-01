@@ -39,7 +39,10 @@ def general():
 
     # If it returns a string, then it's an error message and just send to client side.
     if isinstance (parsedRequest, str):
-        return Response(parsedRequest, status=400)
+        return Response(json.dumps({
+            "success": False,
+            "message": parsedRequest
+        }), status=400)
     
     # Generating HTML to send the email
     emailHTML = emailGen.generateHTMLEmail(subject='Your submission has been received! Here\'s what we got:', data=parsedRequest)
@@ -86,7 +89,7 @@ inquiryFormRegex = RegexTester({
     "Phone": r"[\d\-()]{1,15}",
     "Availability": r"[\d\w\s\-!@#$%^&*()_+-=\\\/?<>.,;:'\"]{1,1000}",
 }, {
-    "Needs": r"^(Graphic Design|Forms|Data Entry|Users|Ecommerce|Content Publishing|Integrations)$",
+    "Needs": r"^[\w\s]{1,150}$",
     "Start Date": r"^[\d]{4}-[\d]{2}-[\d]{2}$",
     "End Date": r"^[\d]{4}-[\d]{2}-[\d]{2}$",
     "Additional Notes": r"[\d\w\s\-!@#$%^&*()_+-=\\\/?<>.,;:'\"]{1,4000}"
@@ -103,7 +106,10 @@ def inquiry():
     
     # If it returns a string, then it's an error message and just send to client side.
     if isinstance (parsedRequest, str):
-        return Response(parsedRequest, status=400)
+        return Response(json.dumps({
+            "success": False,
+            "message": parsedRequest
+        }), status=400)
     
     # Generating HTML to send the email
     emailHTML = emailGen.generateHTMLEmail(subject='Your submission has been received! Here\'s what we got:', data=parsedRequest)

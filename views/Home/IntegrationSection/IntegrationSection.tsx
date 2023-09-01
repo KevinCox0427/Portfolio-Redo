@@ -85,14 +85,12 @@ const IntegrationSection:FunctionComponent = () => {
         ></Title>
         <div className="Example">
             <div className="InputWrapper">
-                <i
-                    className="fa-solid fa-rotate-left Reset"
-                    onClick={() => dispatch(resetSpotifyResults())}
-                ></i>
-                <i
-                    className="fa-solid fa-arrow-turn-down EnterButton"
-                    onClick={e => handleEnterSearch(e)}
-                ></i>
+                <button className="Reset" onClick={() => dispatch(resetSpotifyResults())}>
+                    <i className="fa-solid fa-rotate-left"></i>
+                </button>
+                <button className="EnterButton" onClick={e => handleEnterSearch(e)}>
+                    <i className="fa-solid fa-arrow-turn-down"></i>
+                </button>
                 <input
                     placeholder=" "
                     id="spotifySearch" 

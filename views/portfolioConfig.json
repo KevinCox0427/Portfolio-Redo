@@ -2,6 +2,7 @@
     {
         "name": "New York Land Quest",
         "route": "newyorklandquest",
+        "fakeBrowsers": true,
         "description": [
             "A New York based real estate company that specializes in selling large plots of land in upstate New York. They also provide a platform for users' plots of land to be evaluated and sold. These range from campgrounds in the Adirondacks, to farmland in the Catskills, to getaway vacation homes in the Finger Lakes. Their slogan - \"Selling Land is Our Specialty — Selling All Types of Real Estate is Our Business\""
         ],
@@ -21,6 +22,7 @@
     {
         "name": "Materials Matter Prototype",
         "route": "materialsmatter",
+        "fakeBrowsers": true,
         "description": [
             "A reserach project funded by Binghamton University to assist in providing professors with more interactive and engaging lectures through the use of technology. This application specifically was designed for professors to create \"Maps\" for presentations, and students being able to directly comment on top."
         ],
@@ -40,6 +42,7 @@
     {
         "name": "Red Barn HPC",
         "route": "redbarnhpc",
+        "fakeBrowsers": true,
         "description": [
             "A high performance computing company based out of Binghamton, New York. This company assesses project requirements for high performance computing, builds the hardware, and installs the software, typically for scientific institutions such as Cornell University, Cold Spring Harbor Laboratory, and the US Airforce. Their slogan: \"We build the servers behind the science.\""
         ],
@@ -59,6 +62,7 @@
     {
         "name": "Beck Automotive",
         "route": "beck",
+        "fakeBrowsers": true,
         "description": [
             "Beck is an automotive company from Indiana that manufactures replicas of retro Porsche cars from the 1970s. They not only make true faith recreations of cars from that era, but can also do custom manufactory at every level. Their slogan: \"Home of the Beck Speedster\""
         ],
@@ -72,12 +76,13 @@
         ],
         "skills": ["PHP", "UI / UX Design", "TypeScript", "MySQL", "SASS"],
         "tag": "Web Development",
-        "link": "https://beckspeedster.dev/",
+        "link": "https://www.beckspeedster.com/",
         "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Products.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Configurator.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Manuals.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster About.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster Contact.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/beck/Beck Speedster FAQs.jpg"]
     },
     {
         "name": "Red Barn Creative Website Mockup",
         "route": "rbcreative",
+        "fakeBrowsers": true,
         "description": [
             "A web mockup for a new website for Red Barn Creative team. Many of their users reported their site as confsuing, difficult to navigate, and looked outdate. So, the team requested a more organzie, clean aesthetic, while integrating their SAGE storefront. To achieve the \"clean\" look, I went with a high-contrast color pallet with a heavy emphasis on white-space. To still retain the creative aspect of their brand, I included a serif header contrasted with thin sans-serif for their body paragraphs, along with splashes of red illustrations."
         ],
@@ -90,6 +95,7 @@
     {
         "name": "Carbon Sequestration Prototype",
         "route": "highatlasfoundation",
+        "fakeBrowsers": true,
         "description": [
             "A non-profit organization based of out Morocco founded by a few Peace Corps volunteers. They primarily contribute to sustainable agriculture, school infrastructure, clean water infrastructure, environmental management, and women's empowerment. Their mission: \"HAF supports Moroccan communities to take action in implementing human development initiatives. HAF promotes organic agriculture, women's empowerment, youth development, education, and health.\""
         ],
@@ -109,6 +115,7 @@
     {
         "name": "Little Venice",
         "route": "littlevenice",
+        "fakeBrowsers": true,
         "description": [
             "An Italian restaurant located in Binghamton, New York. Known for their home-made tomato sauce, they not only have a dine-in restaurant, but sell high quality ingredients on their e-commerce store."
         ],
@@ -128,6 +135,7 @@
     {
         "name": "Well Tank Goodness",
         "route": "welltankgoodness",
+        "fakeBrowsers": true,
         "description": [
             "An aquatic pet store based in Binghamton, New York. Offers all kinds of aquarium supplies, saltwater and freshwater plants and fish, and an aquarium maintenance service."
         ],
@@ -146,6 +154,7 @@
     {
         "name": "Long Island Loyalty Branding",
         "route": "loy",
+        "fakeBrowsers": true,
         "description": [
             "A branding overhall for a marketing agency based in Long Island. Some deliveribles include a logo and website mockup. Long Island Loyalty started as a Facebook group, but quickly outpaced the limitations of Facebook as they grew. They mainly wanted a more consistant, \"modern\" aesthetic, while being able to gather more information on their userbase. Using a reference they provided, I went with a high-contrast color pallet with thin sans-serifs for their typography. These designs also feature a heavy emphasis on white-space and photograpic work to assist in its professional look."
         ],
@@ -158,6 +167,7 @@
     {
         "name": "Chester Diner Menus",
         "route": "chesterdiner",
+        "fakeBrowsers": false,
         "description": [
             "A menu I created for a small town in upstate new york. This was part of a larger re-branding effort to promote itself amoungst the competing corporate restaruants."
         ],
@@ -175,20 +185,22 @@
         "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover1.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover2.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover3.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/chesterdiner/ChesterDinerCover4.jpeg"]
     },
     {
-        "name": "Binghamton University Running Club Singlets",
+        "name": "Binghamton University Running Club",
         "route": "burc",
+        "fakeBrowsers": false,
         "description": [
-            "Racing running singlets for the Binghamton University Running Club for the 2022-23 school year, of which they still use today. They wanted 41 mens & womens singlets for their teams to race in, and they took the opportunity to partner with me to create something fun, memorable and unique."
+            "A redesigned logo and racing running singlets for the Binghamton University Running Club for the 2022-23 school year. They wanted 41 mens & womens singlets for their teams to race in, and they took the opportunity to partner with me to create something fun, memorable and unique."
         ],
         "logo": "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/burclogo.png",
         "skills": ["Apparel", "Branding", "Typography"],
         "tag": "Graphic Design",
         "link": "https://www.instagram.com/burcrunning/?hl=en",
-        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/BingRunningClub.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/BingRunningClub2.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/burclogo.png"]
+        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/burclogo.png", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/BingRunningClub.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/BingRunningClub2.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/burc/burclogo.png"]
     },
     {
         "name": "Ross Park Zoo Maps & Signage",
         "route": "rossparkzoo",
+        "fakeBrowsers": false,
         "description": [
             "Zoo maps and signage I made as a collboration between Binghamton University and the Ross Park Zoo. This was an attempt to create more efficient environmental design to ease navigation without a map"
         ],
@@ -204,53 +216,5 @@
         "tag": "Graphic Design",
         "link": "",
         "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/rossparkzoo/RossParkZooMap.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/rossparkzoo/RoosParkZooPoster.jpeg"]
-    },
-    {
-        "name": "Student Book Covers",
-        "route": "bookcovers",
-        "description": [
-            "Some of my student projects where the deliverables were book covers. The Life of Pi book covers symbolize the three thematic religions throughout the book, with Pi standing between all three. The City Full of Voices book sleeves are meant to symbolize the introspective and lonely nature of the poems in the books."
-        ],
-        "logo": "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/bookcovers/LifeOfPi1.jpg",
-        "skills": ["Print", "Books", "Illustration", "Typography", "Composition"],
-        "tag": "Graphic Design",
-        "link": "",
-        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/bookcovers/LifeOfPi1.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/bookcovers/LifeOfPi2.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/bookcovers/CitiesFullOfVoices1.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/bookcovers/CitiesFullOfVoices2.jpeg"]
-    },
-    {
-        "name": "Cooper Font Speciment",
-        "route": "cooper",
-        "description": [
-            "A student project of a font speciment for the famous Cooper Black. This book illustrates the advertizing techniques of American companies in the 1970's who's branding utilized Cooper. It attempts to create irony through explicity stating the subconscious effects of their marketing techniques in a faux advertisement inspired by their branding."
-        ],
-        "logo": "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/CopperCover.jpeg",
-        "skills": ["Print", "Layout", "Magazine", "Typography", "Illustration"],
-        "tag": "Graphic Design",
-        "link": "",
-        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/CopperCover.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper2.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper3.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper4.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper5.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper6.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper7.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/cooperfont/Cooper8.jpeg"]
-    },
-    {
-        "name": "Mad Men Magazine",
-        "route": "madmenzine",
-        "description": [
-            "A student project to create a magazine with unique composition and iconography. This project goes through each character's development in the show Mad Men, and utilizes a illustrative style heavily inspired by Milton Galzer's Pinwheel studios."
-        ],
-        "logo": "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMenCover.jpg",
-        "skills": ["Print", "Layout", "Magazine", "Typography", "Illustration"],
-        "tag": "Graphic Design",
-        "link": "",
-        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMenCover.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen1.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen2.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen3.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen4.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen5.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen6.jpeg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/madmenmagazine/MadMen7.jpeg"]
-    },
-    {
-        "name": "Student Posters",
-        "route": "posters",
-        "description": [
-            "Some of my student projects that required a poster as the deliverable. One poster goes throught the famous story of Peter Tripp staying awake for 7 days, and features a style inspired by 1950's comic books. The others are a poster series meant to show the contrast in which postive nostagia can affect the perception of a memory."
-        ],
-        "logo": "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/posters/PeterTrippPoster.jpg",
-        "skills": ["Posters", "Illustraion", "Typography", "Layout", "Illustration"],
-        "tag": "Graphic Design",
-        "link": "",
-        "gallery": ["https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/posters/PeterTrippPoster.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/posters/TodaysYesterday1.jpg", "https://dreamstateospublic.s3.us-east-2.amazonaws.com/portfolio/posters/TodaysYesterday2.jpg"]
     }
 ]

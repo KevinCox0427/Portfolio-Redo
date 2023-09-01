@@ -84,7 +84,9 @@ const Login: FunctionComponent<Props> = (props) => {
     return <>
         <form className="Form">
             <h4>Login</h4>
-            <i className="fa-solid fa-arrow-rotate-left Reset" onClick={() => dispatch(resetLogin())}></i>
+            <button className="Reset" onClick={() => dispatch(resetLogin())}>
+                <i className="fa-solid fa-arrow-rotate-left"></i>
+            </button>
             <div className="InputWrapper">
                 <input
                     placeholder=" "

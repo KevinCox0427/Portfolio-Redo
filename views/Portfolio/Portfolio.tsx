@@ -1,12 +1,13 @@
 import React, { Fragment, FunctionComponent, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
+import portfolioConfig from "../portfolioConfig.json";
+import { Provider } from "react-redux";
+import { store } from "../store/store";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PortfolioCard from "../components/PortfolioCard";
-import portfolioConfig from "../portfolioConfig.json";
 import LoadFromCache from "../components/LoadFromCache";
-import { Provider } from "react-redux";
-import { store } from "../store/store";
 
 /**
  * A React page that will render the portfolio page. This is being rendered on the server and hydrated on the client.
@@ -41,6 +42,13 @@ const Portfolio: FunctionComponent = () => {
 
     // Callback function such that when a tag is changed, the appropriate projects are displayed.
     useEffect(() => {
+        if(selectedTag === ''){
+            window.history.replaceState({}, '', '/portfolio');
+        }
+        else {
+            window.history.replaceState({}, '', `/portfolio?tag=${encodeURIComponent(selectedTag)}`);
+        }
+        
         // Forcing a re-render for project elements so the animations will fire.
         setProjects([]);
         setTimeout(() => {

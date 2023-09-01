@@ -45,7 +45,9 @@ const WatchTime:FunctionComponent = () => {
     return <div className="Graph WatchTime">
         <h3>
             Watch Time:
-            <i className="fa-solid fa-rotate-left Reset" onClick={() => dispatch(resetWatchTime())}></i>
+            <button className="Reset" onClick={() => dispatch(resetWatchTime())}>
+                <i className="fa-solid fa-rotate-left"></i>
+            </button>
         </h3>
         <div className="AxisWrapper" style={{
             gridTemplateColumns: `clamp(0.1px, 4.5em, ${100/(XAxisLabels.length+3)}vw) ${`clamp(0.1px, 3.5em, ${100/(XAxisLabels.length+3)}vw) `.repeat(XAxisLabels.length)}`

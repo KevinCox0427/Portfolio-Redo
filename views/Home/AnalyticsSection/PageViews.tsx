@@ -18,7 +18,9 @@ const PageViews: FunctionComponent<Props> = (props) => {
     return <div className="Graph PageViews">
         <h3>
             Page Views:
-            <i className="fa-solid fa-rotate-left Reset" onClick={() => dispatch(resetPageViews())}></i>
+            <button className="Reset" onClick={() => dispatch(resetPageViews())}>
+                <i className="fa-solid fa-rotate-left"></i>
+            </button>
         </h3>
         <div className="Wrapper">
             {Object.keys(pageViews).sort((a, b) => {

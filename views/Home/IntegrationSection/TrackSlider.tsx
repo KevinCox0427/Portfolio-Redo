@@ -16,56 +16,75 @@ type Props = {
  */
 const TrackSlider: FunctionComponent<Props> = (props) => {
     const tracks = useSelector(state => props.name === 'Search' ? state.spotifySearch.searchResults : state.spotifySearch.searchRecommendations);
+    
+    // Reference to the wrapper div of the results. This will be used to calculate the width of the results.
+    const sliderWrapper = useRef<HTMLDivElement>(null);
 
     // State variable used for styling and sizing the rendered results.
-    const [resultDimensions, setResultDimensions] = useState({
-        width: 250,
+    const [sliderData, setSliderData] = useState({
         slideWidth: 3,
         slideIndex: 0
     });
 
-    // Reference to the wrapper div of the results. This will be used to calculate the width of the results.
-    const resultsWrapper = useRef<HTMLDivElement>(null);
+    // Callback function to set the scroll position based on state data.
+    useEffect(setSlider, [sliderData]);
 
-    // Event handler to move the slider's results left one slide.
+    /**
+     * A function that moves the slider to its current position
+     */
+    function setSlider() {
+        if(!sliderWrapper.current) return;
+        sliderWrapper.current.scrollTo({
+            left: Math.round((sliderWrapper.current.clientWidth / sliderData.slideWidth) * sliderData.slideIndex),
+            behavior: 'auto'
+        });
+    }
+
+    /**
+     * Event handler to move the slider's results left one slide.
+     */
     function handleMoveSliderLeft() {
-        if(resultDimensions.slideIndex != 0) setResultDimensions({...resultDimensions,
-            slideIndex: resultDimensions.slideIndex-1
+        if(sliderData.slideIndex > 0) setSliderData(oldSliderData => {
+            return {...oldSliderData,
+                slideIndex: oldSliderData.slideIndex - oldSliderData.slideWidth < 0
+                    ? 0
+                    : oldSliderData.slideIndex - oldSliderData.slideWidth
+            }
         });
     }
 
-    // Event handler to move the slider's results right one slide.
+    /**
+     * Event handler to move the slider's results right one slide.
+     */
     function handleMoveSliderRight() {
-        if((translateAmount * (resultDimensions.slideIndex+1)) < 100) setResultDimensions({...resultDimensions,
-            slideIndex: resultDimensions.slideIndex+1
+        if(sliderData.slideIndex < tracks.length - 1) setSliderData(oldSliderData => {
+            return {...oldSliderData,
+                slideIndex: oldSliderData.slideIndex + oldSliderData.slideWidth > tracks.length - oldSliderData.slideWidth
+                    ? tracks.length - oldSliderData.slideWidth
+                    : oldSliderData.slideIndex + oldSliderData.slideWidth
+            }
         });
     }
-    
+
     // Setting a resize event listener to resize the rendered results based on screen width.
     // This is buffered such that the callback function will only fire if 100ms have passed without an event.
-    const timeoutBuffer = useRef<NodeJS.Timeout | null>(null);
-
+    const resizeBuffer = useRef<NodeJS.Timeout | null>(null);
     useEffect(() => {
-        setTimeout(resizeResults, 100);
         window.addEventListener('resize', () => {
-            if(timeoutBuffer.current) clearTimeout(timeoutBuffer.current);
-            timeoutBuffer.current = setTimeout(resizeResults, 100);
+            if(resizeBuffer.current) clearTimeout(resizeBuffer.current);
+            resizeBuffer.current = setTimeout(resizeResults, 100);
         });
     }, []);
 
     // Also firing the resize callback for when a user searches.
-    useEffect(() => {
-        if(tracks.length > 0 || tracks.length > 0) {
-            resizeResults();
-        }
-    }, [tracks]);
+    useEffect(() => {setTimeout(() => resizeResults(), 100)}, [tracks]);
 
     /**
      * A function to set the results state variable based on window width.
      * This is to resize our rendered song results while also making sure the slider stays on the current song when they are resized.
      */
     function resizeResults() {
-        if(!resultsWrapper.current) return;
+        if(!sliderWrapper.current) return;
 
         // Determining how many results should show at once based on screen width.
         const slideWidth = window.innerWidth >= 1600
@@ -75,41 +94,46 @@ const TrackSlider: FunctionComponent<Props> = (props) => {
                 : window.innerWidth < 1000 && window.innerWidth >= 650
                     ? 2
                     : 1;
-
-        // Determining how much the sliders need to translate horizontally when a user clicks next on the slider.
-        const newTranslateAmount = tracks.length != 0
-            ? (100/tracks.length) * slideWidth
-            : 0;
-
-        // Adjusting the current search slider's horizontal translation if the count of results on screen changes.
-        let sliderIndexAdjust = resultDimensions.slideIndex - Math.floor((slideWidth - resultDimensions.slideWidth) * (resultDimensions.slideIndex/slideWidth));
-
-        // Making sure it doesn't go off screen. This will happen if the new count is not a multiple of the total results.
-        if(newTranslateAmount * sliderIndexAdjust >= 100) sliderIndexAdjust = sliderIndexAdjust - 1;
-        
+                    
         // Setting the new dimensions for the results sliders.
-        setResultDimensions({
-            // Setting the width of each result in pixels. 24px is the gap inbetween the results.
-            width: Math.round((resultsWrapper.current.clientWidth - ((slideWidth - 1) * 24)) / slideWidth),
-            slideWidth: slideWidth,
-            slideIndex: slideWidth != resultDimensions.slideWidth
-                ? sliderIndexAdjust
-                : resultDimensions.slideIndex
+        setSliderData(oldSliderData => {
+            return {...oldSliderData,
+                slideWidth: slideWidth
+            }
         });
     }
 
-    // Calculating how much the sliders will translate horizontally based on the user's input.
-    const translateAmount = tracks.length != 0
-        ? (100/tracks.length) * resultDimensions.slideWidth
-        : 0;
+    /**
+     * A buffered callback funciton on every user scroll so that is automatically adjusts the slide index.
+     */
+    const scrollBuffer = useRef<NodeJS.Timeout | null>(null);
+    function handleScroll() {
+        if(scrollBuffer.current) clearTimeout(scrollBuffer.current);
+        scrollBuffer.current = setTimeout(trackScroll, 500);
+    }
 
-    // A string to show what slide the user is on as well as the total amount of slides.
-    const currentSlide = `${tracks.length > 0 ? resultDimensions.slideIndex + 1 : 0} / ${Math.ceil(tracks.length / resultDimensions.slideWidth)}`
-    
+    /**
+     * A function that converts the scroll position to the slide index.
+     */
+    function trackScroll() {
+        if(!sliderWrapper.current) return;
+        // If the slide is already on this index, just return.
+        if(Math.round(sliderWrapper.current.scrollLeft) === Math.round((sliderWrapper.current.clientWidth / sliderData.slideWidth) * sliderData.slideIndex)) return;
+
+        // Otherwise find the closest index that the scroll position is on.
+        setSliderData(oldSliderData => {
+            return {...oldSliderData,
+                slideIndex: Math.round(sliderWrapper.current!.scrollLeft / (sliderWrapper.current!.clientWidth / sliderData.slideWidth))
+            }
+        });
+    }
+
     return <div className={`SpotifyResults ${props.name}`} id={`Spotify${props.name}`}>
         <h3>
             Search Results:
-            <span>{currentSlide}</span>
+            {tracks.length > 0
+                ? <span>{sliderData.slideIndex+1}-{sliderData.slideIndex+sliderData.slideWidth}/{tracks.length}</span>
+                : <span>0/0</span>}
         </h3>
         <div className="SliderWrapper">
             {props.isSearching
@@ -119,15 +143,17 @@ const TrackSlider: FunctionComponent<Props> = (props) => {
                         <button onClick={handleMoveSliderLeft}>
                             <i className="fa-solid fa-arrow-left"></i>
                         </button>
-                        <div ref={resultsWrapper} className="ResultsWrapper">
-                            <div className="ResultsSlider" style={{
-                                transform: `translateX(calc(-${translateAmount * resultDimensions.slideIndex}% - ${Math.round(24*((translateAmount * resultDimensions.slideIndex)/100))}px))`
-                            }}>
+                        <div
+                            ref={sliderWrapper}
+                            className="ResultsWrapper"
+                            onScroll={handleScroll}
+                        >
+                            <div className="ResultsSlider">
                                 {tracks.map((track, i) => {
                                     return <Fragment key={i}>
                                         <Track
                                             searchResult={track}
-                                            width={resultDimensions.width}
+                                            width={sliderWrapper.current ? (sliderWrapper.current.clientWidth / sliderData.slideWidth) - 24 : 250}
                                             isRecommend={props.name === 'Recommendation'}
                                             search={props.search}
                                         ></Track>
