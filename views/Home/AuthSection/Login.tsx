@@ -13,6 +13,7 @@ type Props = {
 const Login: FunctionComponent<Props> = (props) => {
     const dispatch = useDispatch();
     const fakeUserCredentials = useSelector(state => state.fakeUserCredentials);
+    const hasLoadedFromCache = useSelector(state => state.metaData.hasLoadedFromCache);
 
     // Creating a state variable to update error messages when a user submits.
     const [errorMessage, setErrorMessage] = useState({
@@ -21,14 +22,12 @@ const Login: FunctionComponent<Props> = (props) => {
     });
 
     // Creating a state variable to display a counter when a user creates a session key.
-    const [sessionCounter, setSessionCounter] = useState(
-        fakeUserCredentials.session.expires - Date.now() > 0 
-            ? fakeUserCredentials.session.expires - Date.now()
-            : 0
-    );
+    const [sessionCounter, setSessionCounter] = useState(-1);
 
     // Creating an 1 second interval to count down the session timer.
     useEffect(() => {
+        if(!hasLoadedFromCache) return;
+
         // Guard clauses to stop the counter when it has reached 0.
         if(sessionCounter === 0) return;
         if(fakeUserCredentials.session.expires - Date.now() < 0) {
@@ -37,17 +36,9 @@ const Login: FunctionComponent<Props> = (props) => {
         }
 
         // Setting an interval for 1s to repeatly set the sessionCounter state variable.
-        const interval = setInterval(() =>  setSessionCounter(fakeUserCredentials.session.expires - Date.now()), 1000);
+        const interval = setInterval(() => setSessionCounter(fakeUserCredentials.session.expires - Date.now()), 1000);
         return () => clearInterval(interval);
-    }, [sessionCounter]);
-
-    // Resetting the error message on user input.
-    useEffect(() => {
-        setErrorMessage({
-            message: '',
-            success: false
-        });
-    }, [fakeUserCredentials.loginPassword, fakeUserCredentials.loginUsername]);
+    }, [sessionCounter, hasLoadedFromCache]);
 
     /**
      * A function to submit a users credentials and create a user session if valid.
@@ -69,10 +60,10 @@ const Login: FunctionComponent<Props> = (props) => {
         }
 
         // Creating a user session, returns wether the credentials were correct.
-        dispatch(createSession(sessionCounter));
-    
+        dispatch(createSession(props.sessionCounterAmount));
+
         // Now we'll start the session counter.
-        setSessionCounter(fakeUserCredentials.session.expires - Date.now());
+        setSessionCounter(((props.sessionCounterAmount * 60) - 1) * 1000);
 
         // Setting an appropriate error message based on the success of the operation.
         setErrorMessage({
@@ -84,7 +75,13 @@ const Login: FunctionComponent<Props> = (props) => {
     return <>
         <form className="Form">
             <h4>Login</h4>
-            <button className="Reset" onClick={() => dispatch(resetLogin())}>
+            <button
+                className="Reset"
+                onClick={e => {
+                    e.preventDefault();
+                    dispatch(resetLogin());
+                }}
+            >
                 <i className="fa-solid fa-arrow-rotate-left"></i>
             </button>
             <div className="InputWrapper">
@@ -92,7 +89,13 @@ const Login: FunctionComponent<Props> = (props) => {
                     placeholder=" "
                     id="userLoginUsername"
                     value={fakeUserCredentials.loginUsername}
-                    onChange={e => dispatch(setLoginUsername(e.target.value))}
+                    onChange={e => {
+                        setErrorMessage({
+                            message: '',
+                            success: false
+                        });
+                        dispatch(setLoginUsername(e.target.value));
+                    }}
                 ></input>
                 <label htmlFor="userLoginUsername">Username:</label>
             </div>
@@ -102,7 +105,13 @@ const Login: FunctionComponent<Props> = (props) => {
                     id="userLoginPassword"
                     type="password"
                     value={fakeUserCredentials.loginPassword}
-                    onChange={e => dispatch(setLoginPassword(e.target.value))}
+                    onChange={e => {
+                        setErrorMessage({
+                            message: '',
+                            success: false
+                        });
+                        dispatch(setLoginPassword(e.target.value));
+                    }}
                 ></input>
                 <label htmlFor="userLoginPassword">Password:</label>
             </div>
@@ -118,7 +127,7 @@ const Login: FunctionComponent<Props> = (props) => {
         </form>
         <div className="SessionWrapper">
             <h4>Your current session:</h4>
-            {fakeUserCredentials.session.key && fakeUserCredentials.session.expires > Date.now()
+            {fakeUserCredentials.session.key && fakeUserCredentials.session.expires > Date.now() && sessionCounter >= 0
                 ? <>
                     <p className="Timer" style={{
                         color: Math.floor(sessionCounter/1000) > (props.sessionCounterAmount*60) / 2

@@ -35,24 +35,15 @@ def location():
         # Returning user data if found.
         if "city" in response:
             return Response(json.dumps({
-                "success": False,
-                "data": {
-                    "ip": response["ip"],
-                    "city": f'{response["city"]}, {response["region"]}, {response["country"]}',
-                    "ll": response["loc"].split(',')
-                }
+                "ip": response["ip"],
+                "city": f'{response["city"]}, {response["region"]}, {response["country"]}',
+                "ll": response["loc"].split(',')
             }), status=200)
         else:
-            return Response(json.dumps({
-                "success": False,
-                "message": "Location information could not be found based on the provided ip."
-            }), status=500)
+            return Response("Location information could not be found based on the provided ip.", status=500)
     except Exception as e:
         print(e)
-        return Response(json.dumps({
-            "success": False,
-            "message": "Location information could not be found based on the provided ip."
-        }), status=500)
+        return Response("Location information could not be found based on the provided ip.", status=500)
 
 
     

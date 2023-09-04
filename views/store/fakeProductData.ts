@@ -1,5 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+/**
+ * A Redux slice that stores the data for the product generator on the data section for the homepage.
+ */
 const fakeProductDataSlice = createSlice({
     name: 'fakeProductData',
     initialState: {
@@ -13,10 +16,17 @@ const fakeProductDataSlice = createSlice({
         sales: []
     } as Store["fakeProductData"],
     reducers: {
+        /**
+         * A reducer function to overwrite the data of a product.
+         * @param action The product data's object.
+         */
         setProduct: (state, action: PayloadAction<Store["fakeProductData"]>) => {
             return action.payload;
         },
 
+        /**
+         * A reducer function to reset the product to its initial state.
+         */
         resetProduct: (state) => {
             return {
                 name: '',
@@ -31,7 +41,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-         * A function to overwrite string values on top level keys.
+         * A reducer function to overwrite string values on top level keys.
          * @param key The top-level key who's value is being overwritten.
          * @param value The new value to overwrite with.
          */
@@ -40,7 +50,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-         * A function to overwrite price string values on top level keys.
+         * A reducer function to overwrite the price value.
          * Uses a regex test to ensure valid format.
          * @param value The new value to overwrite with.
          */
@@ -50,7 +60,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-         * A function to overwrite integer values on top level keys.
+         * A reducer function to overwrite quantity integer values.
          * @param key The top-level key who's value is being overwritten.
          * @param value The new value to overwrite with.
          */
@@ -69,7 +79,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-         * A function to overwrite a string value for a given index in a string array.
+         * A reducer function to overwrite a string value for a given index in a string array.
          * @param key The top-level key who's array is being editted.
          * @param value The new value to overwrite with.
          * @param index The index of the value been overwritten.
@@ -83,7 +93,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-         * A function to remove an index on a string array for a top-level key.
+         * A reducer function to remove an index on a string array for a top-level key.
          * @param key The top-level key who's array is being editted.
          * @param index The index of the value been removed.
          */
@@ -92,7 +102,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-        * A function to overwrite a value for a sale at a given index.
+        * A reducer function to overwrite a value for a sale at a given index.
         * @param value The new value to overwrite with.
         * @param index The index of the sale that's being editted.
         */
@@ -102,7 +112,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-        * A function to overwrite a value for a sale at a given index.
+        * A reducer function to overwrite a value for a sale at a given index.
         * @param value The new value to overwrite with.
         * @param index The index of the sale that's being editted.
         */
@@ -112,7 +122,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-        * A function to overwrite a value for a expiration date on a sale at a given index.
+        * A reducer function to overwrite a value for a expiration date on a sale at a given index.
         * @param key The key who's value is being overwritten.
         * @param value The new value to overwrite with.
         * @param index The index of the sale that's being editted.
@@ -127,7 +137,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-        * A function to add a new sale.
+        * A reducer function to add a new sale.
         */
         addSale: (state) => {
             const date = new Date();
@@ -143,7 +153,7 @@ const fakeProductDataSlice = createSlice({
         },
 
         /**
-         * A function to remove a sale at a given index.
+         * A reducer function to remove a sale at a given index.
          * @param index The index to remove.
          */
         deleteSale: (state, action: PayloadAction<number>) => {

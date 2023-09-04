@@ -13,27 +13,27 @@ declare const L:any;
 const UserData:FunctionComponent = () => {
     const dispatch = useDispatch();
     const browserData = useSelector(state => state.browserData);
+    const hasLoadedFromCache = useSelector(state => state.metaData.hasLoadedFromCache);
 
     // A references to store leaflet's map and market object.
     const map = useRef<any>(null);
     const marker = useRef<any>(null);
 
     useEffect(() => {
-        if(browserData.locationData.city === '') {
-            fetch('/location', {
-                method: 'POST'
-            }).then(response => {
-                if(response === null) return;
-                response.json().then(jsonResponse => {
-                    if(!jsonResponse.success) return;
-                    dispatch(setBrowserData(jsonResponse.data));
-                });
+        if(browserData.locationData.ll.length === 2 || !hasLoadedFromCache) return;
+        fetch('/location', {
+            method: 'POST'
+        }).then(response => {
+            if(response === null) return;
+            response.json().then(jsonResponse => {
+                if(typeof jsonResponse === 'string') return;
+                dispatch(setBrowserData(jsonResponse));
             });
-        }
-    }, []);
+        });
+    }, [hasLoadedFromCache]);
 
     useEffect(() => {
-        if(browserData.locationData.ll.length === 2) loadMap();
+        if(browserData.locationData.ll.length === 2 && !map.current) loadMap();
     }, [browserData]);
 
 
