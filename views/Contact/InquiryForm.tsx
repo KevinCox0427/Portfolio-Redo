@@ -123,7 +123,7 @@ const InquiryForm: FunctionComponent = () => {
     return <form id="inquiry">
         <h2>Inquiry Form</h2>
         <p className="Description">
-            Looking to make your dreams a reality? Fill out some prelimenary details so I can assess, plan, and reach out for a follow up meeting.
+            Looking to make your dreams a reality? Fill out some prelimenary details so I can assess, plan, and reach out for a follow up meeting!
         </p>
         <div className="InputWrapper">
             <input

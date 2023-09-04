@@ -1,4 +1,4 @@
-from app import app
+from app import app, checkPrerender
 from flask import send_from_directory, request, Response, json
 import requests
 from dotenv import load_dotenv
@@ -10,6 +10,7 @@ import time
 load_dotenv()
 
 @app.route('/', methods=["GET"])
+@checkPrerender
 def index():
     """
     GET route to serve the rendered React Homepage.
@@ -34,15 +35,24 @@ def location():
         # Returning user data if found.
         if "city" in response:
             return Response(json.dumps({
-                "ip": response["ip"],
-                "city": f'{response["city"]}, {response["region"]}, {response["country"]}',
-                "ll": response["loc"].split(',')
+                "success": False,
+                "data": {
+                    "ip": response["ip"],
+                    "city": f'{response["city"]}, {response["region"]}, {response["country"]}',
+                    "ll": response["loc"].split(',')
+                }
             }), status=200)
         else:
-            return Response(False, response=500)
+            return Response(json.dumps({
+                "success": False,
+                "message": "Location information could not be found based on the provided ip."
+            }), status=500)
     except Exception as e:
         print(e)
-        return Response(False, response=500)
+        return Response(json.dumps({
+            "success": False,
+            "message": "Location information could not be found based on the provided ip."
+        }), status=500)
 
 
     

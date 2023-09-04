@@ -14,7 +14,7 @@
     .Headline {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 2em;
+        gap: 4em;
         align-items: center;
         justify-content: center;
 
@@ -55,12 +55,8 @@
             height: fit-content;
             max-width: calc(100vw - 12em);
             height: 15em;
-            flex-basis: 20em;
+            flex-basis: 25em;
             flex-grow: 1;
-            padding: 1.5em;
-            border-radius: 0.5em;
-            background-color: var(--brightWhite);
-            box-shadow: 0.2em 0.15em 0 0 rgba(0,0,0, 0.04);
             
             img {
                 height: 100%;

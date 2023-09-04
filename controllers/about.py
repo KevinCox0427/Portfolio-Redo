@@ -1,10 +1,11 @@
 from dotenv import load_dotenv
 from flask import send_file, send_from_directory
-from app import app
+from app import app, checkPrerender
 
 load_dotenv()
 
 @app.route('/about', methods=["GET"])
+@checkPrerender
 def about():
     """
     GET route to serve the about react page.

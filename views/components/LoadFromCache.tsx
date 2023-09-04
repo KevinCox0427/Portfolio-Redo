@@ -27,7 +27,12 @@ const AddPageView: FunctionComponent<Props> = (props) => {
 
         // Loading the intial store from local storage if it exists.
         const cachedStore = localStorage.getItem('DreamStateStore');
-        if(!cachedStore) return;
+        if(!cachedStore) {
+            // Setting that the loading is done so now future updates can be saved to cache.
+            dispatch(setHasLoadedFromCache());
+            dispatch(incrementPageView(props.currentPage));
+            return;
+        }
         const initialStore:Store = JSON.parse(cachedStore);
 
         // Setting all the store data to what was found in cache.

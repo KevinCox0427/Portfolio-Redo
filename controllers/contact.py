@@ -1,4 +1,4 @@
-from app import app
+from app import app, checkPrerender
 from utils.regexTester import RegexTester
 from utils.emailGenerator import EmailGenerator
 from utils.smtp import sendEmail
@@ -9,6 +9,7 @@ from os import getenv
 load_dotenv()
 
 @app.route('/contact', methods=["GET"])
+@checkPrerender
 def contact():
     """
     GET route to serve the Contact react page.

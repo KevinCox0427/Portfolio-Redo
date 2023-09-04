@@ -24,16 +24,17 @@ const UserData:FunctionComponent = () => {
                 method: 'POST'
             }).then(response => {
                 if(response === null) return;
-                else response.json().then(jsonResponse => {
-                    dispatch(setBrowserData(jsonResponse));
+                response.json().then(jsonResponse => {
+                    if(!jsonResponse.success) return;
+                    dispatch(setBrowserData(jsonResponse.data));
                 });
             });
         }
     }, []);
 
     useEffect(() => {
-        if(browserData.locationData.city !== '') loadMap();
-    }, [browserData])
+        if(browserData.locationData.ll.length === 2) loadMap();
+    }, [browserData]);
 
 
     /**
